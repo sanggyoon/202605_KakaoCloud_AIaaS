@@ -1,0 +1,26 @@
+# K3s credentials (절대 커밋 금지)
+kubeconfig
+k3s_node_token
+*.pem
+*.key
+
+# Ansible
+*.retry
+.vault_pass
+.ansible/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*~
+
+# 임시 파일
+tmp/
+*.tmp
+*.bak
