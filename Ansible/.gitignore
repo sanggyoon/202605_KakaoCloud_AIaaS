@@ -4,6 +4,10 @@ k3s_node_token
 *.pem
 *.key
 
+# 인프라 정보
+ssh_config
+inventory.ini
+
 # Ansible
 *.retry
 .vault_pass
