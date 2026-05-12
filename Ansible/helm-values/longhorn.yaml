@@ -1,0 +1,21 @@
+defaultSettings:
+  defaultReplicaCount: 1
+  defaultDataPath: /var/lib/longhorn
+  createDefaultDiskLabeledNodes: true
+  taintToleration: 'node-role.kubernetes.io/control-plane=true:NoSchedule'
+
+# vm4에만 배포
+longhornManager:
+  nodeSelector:
+    workload: data
+
+longhornDriver:
+  nodeSelector:
+    workload: data
+
+longhornUI:
+  replicas: 1
+
+persistence:
+  defaultClass: false
+  defaultClassReplicaCount: 1

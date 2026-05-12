@@ -5,9 +5,10 @@ metadata:
   namespace: ai
 spec:
   restartPolicy: Never
+  runtimeClassName: nvidia
   containers:
     - name: cuda
-      image: nvidia/cuda:12.2.0-base-ubuntu22.04
+      image: nvidia/cuda:12.2.0-runtime-ubuntu22.04
       command: ['nvidia-smi']
       resources:
         limits:

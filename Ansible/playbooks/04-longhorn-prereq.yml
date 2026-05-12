@@ -1,0 +1,29 @@
+---
+- name: Longhorn prerequisites
+  hosts: vm4
+  become: yes
+  tasks:
+    - name: Install required packages
+      ansible.builtin.apt:
+        name:
+          - open-iscsi
+          - nfs-common
+          - util-linux
+        state: present
+        update_cache: yes
+
+    - name: Enable iscsid
+      ansible.builtin.systemd:
+        name: iscsid
+        state: started
+        enabled: yes
+
+    - name: Load iscsi_tcp
+      community.general.modprobe:
+        name: iscsi_tcp
+        state: present
+
+    - name: Persist iscsi_tcp
+      ansible.builtin.copy:
+        dest: /etc/modules-load.d/iscsi.conf
+        content: "iscsi_tcp\n"
