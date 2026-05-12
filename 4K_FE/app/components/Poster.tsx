@@ -1,6 +1,6 @@
 'use client';
 
-import { Movie } from '@/app/lib/data';
+import { mockMovies } from './lib/data';
 
 type PosterSize = 'sm' | 'md' | 'lg' | 'xl';
 

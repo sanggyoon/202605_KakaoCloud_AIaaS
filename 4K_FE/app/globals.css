@@ -1,32 +1,29 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
+
+
 @import "tailwindcss";
 
-:root {
-  --bg: #08090d;
-  --fg: #f4f4f6;
-  --accent: #7B61FF;
-}
+@layer base {
+  html, body {
+    font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    background-color: #0B0B0E;
+    color: white;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
-html, body {
-  margin: 0;
-  padding: 0;
-  background: #050507;
-  color: var(--fg);
-}
-
-*::-webkit-scrollbar { width: 8px; height: 8px; }
-*::-webkit-scrollbar-track { background: transparent; }
-*::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
-*::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.16); }
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-button {
-  font-family: inherit;
-}
-
-input::placeholder {
-  color: rgba(255, 255, 255, 0.35);
+  
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0B0B0E;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #2A1B54;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #6B4BF6;
+  }
 }

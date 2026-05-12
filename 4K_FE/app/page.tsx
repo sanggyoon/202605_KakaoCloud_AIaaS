@@ -1,217 +1,161 @@
 'use client';
+import { useState, useEffect, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-import { useState } from 'react';
-import { MOVIES, INITIAL_FILTERS, Movie } from '@/app/lib/data';
-import PosterCard from '@/app/components/PosterCard';
-import FilterBar from '@/app/components/FilterBar';
-import DetailOverlay from '@/app/components/DetailOverlay';
-import RandomModal from '@/app/components/RandomModal';
+import Header from './components/Header';
+import FilterBar from './components/FilterBar';
+import MovieCard from './components/MovieCard';
+import RandomModal from './components/RandomModal';
+import Onboarding from './components/Onboarding';
+import Intro from './components/Intro';
+import { CheckCircle2, Zap, PlayCircle } from 'lucide-react';
 
-interface Filters {
-  yearRange: [number, number];
-  genre: string;
-  situation: string;
-  likes: string[];
-  dislikes: string[];
-}
+// 데이터 불러오는 경로 (수정 완료)
+import { mockMovies } from './lib/data';
+
+const CinematicAmbient = () => (
+  <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none bg-[#0B0B0E]">
+    <div className="absolute inset-0 opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
+    <motion.div animate={{ x: [0, 50, 0], y: [0, 30, 0] }} transition={{ duration: 15, repeat: Infinity, ease: "linear" }} className="absolute -top-[20%] -left-[10%] w-[70vw] h-[70vw] bg-[#6B4BF6]/10 rounded-full blur-[150px]" />
+    <motion.div animate={{ x: [0, -40, 0], y: [0, -50, 0] }} transition={{ duration: 20, repeat: Infinity, ease: "linear" }} className="absolute -bottom-[20%] -right-[10%] w-[60vw] h-[60vw] bg-[#A78BFA]/10 rounded-full blur-[130px]" />
+  </div>
+);
 
 export default function Home() {
-  const [search, setSearch] = useState('');
-  const [filterOpen, setFilterOpen] = useState(false);
-  const [draft, setDraft] = useState<Filters>(INITIAL_FILTERS);
-  const [applied, setApplied] = useState<Filters>(INITIAL_FILTERS);
-  const [hoveredKey, setHoveredKey] = useState<string | null>(null);
-  const [detail, setDetail] = useState<Movie | null>(null);
-  const [randomOpen, setRandomOpen] = useState(false);
+  const [appState, setAppState] = useState<'loading' | 'intro' | 'onboarding' | 'dashboard'>('loading');
+  const [showRandom, setShowRandom] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  const filtered = MOVIES.filter((m) => {
-    if (search && !m.title.toLowerCase().includes(search.toLowerCase()) && !m.titleKo.includes(search)) return false;
-    if (applied.genre !== 'All' && !m.genre.includes(applied.genre)) return false;
-    if (m.year < applied.yearRange[0] || m.year > applied.yearRange[1]) return false;
-    if (applied.dislikes.includes(m.id)) return false;
-    return true;
-  });
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeGenre, setActiveGenre] = useState("전체");
+  const [activeSituation, setActiveSituation] = useState("전체");
+  const [yearRange, setYearRange] = useState<[number, number]>([2010, 2024]);
+  const [likedMovies, setLikedMovies] = useState<string[]>([]);
+  const [dislikedMovies, setDislikedMovies] = useState<string[]>([]);
+  const [toastMsg, setToastMsg] = useState("");
 
-  const repeated = [...filtered, ...filtered].slice(0, 16);
+  // 훅(Hook) 1: 초기 설정
+  useEffect(() => {
+    setShowRandom(false);
+    
+    // 브라우저 뒤로가기 로직
+    const hasSeenIntro = sessionStorage.getItem('has_seen_intro');
+    if (hasSeenIntro === 'true') {
+      setAppState('dashboard');
+    } else {
+      setAppState('intro');
+    }
 
-  const togglePref = (id: string, kind: 'like' | 'dislike') => {
-    setDraft((d) => {
-      const inLikes = d.likes.includes(id);
-      const inDislikes = d.dislikes.includes(id);
-      if (kind === 'like') {
-        return { ...d, likes: inLikes ? d.likes.filter((x) => x !== id) : [...d.likes, id], dislikes: d.dislikes.filter((x) => x !== id) };
-      } else {
-        return { ...d, dislikes: inDislikes ? d.dislikes.filter((x) => x !== id) : [...d.dislikes, id], likes: d.likes.filter((x) => x !== id) };
-      }
-    });
+    const savedLikes = localStorage.getItem('4k_likes');
+    const savedDislikes = localStorage.getItem('4k_dislikes');
+    if (savedLikes) setLikedMovies(JSON.parse(savedLikes));
+    if (savedDislikes) setDislikedMovies(JSON.parse(savedDislikes));
+  }, []);
+
+  // 훅(Hook) 2: 좋아요 상태 저장
+  useEffect(() => {
+    localStorage.setItem('4k_likes', JSON.stringify(likedMovies));
+    localStorage.setItem('4k_dislikes', JSON.stringify(dislikedMovies));
+  }, [likedMovies, dislikedMovies]);
+
+  const handleResetFilters = () => {
+    setSearchQuery(""); setActiveGenre("전체"); setActiveSituation("전체"); setYearRange([2010, 2024]);
+    setLikedMovies([]); dislikedMovies.length > 0 && setDislikedMovies([]);
+    setToastMsg("모든 필터가 초기화되었습니다.");
+    setTimeout(() => setToastMsg(""), 2000);
   };
 
+  const handleStartApp = () => setAppState('onboarding');
+  
+  const handleFinishOnboarding = () => {
+    sessionStorage.setItem('has_seen_intro', 'true');
+    setAppState('dashboard');
+  };
+
+  // 훅(Hook) 3: 영화 필터링
+  const filteredMovies = useMemo(() => {
+    return mockMovies.filter((movie) => {
+      const q = searchQuery.toLowerCase();
+      const matchSearch = movie.title.includes(q) || movie.engTitle.toLowerCase().includes(q) || movie.genre.includes(q);
+      const matchGenre = activeGenre === '전체' ? true : movie.genre.includes(activeGenre);
+      const matchYear = parseInt(movie.year) >= yearRange[0] && parseInt(movie.year) <= yearRange[1];
+      return matchSearch && matchGenre && matchYear;
+    });
+  }, [searchQuery, activeGenre, yearRange]);
+
+  const isFiltering = searchQuery !== "" || activeGenre !== "전체" || activeSituation !== "전체" || yearRange[0] !== 2010 || yearRange[1] !== 2024;
+
+  
+  if (appState === 'loading') return <main className="min-h-screen bg-[#0B0B0E]"></main>;
+
   return (
-    <div style={{
-      width: '100%', minHeight: '100vh',
-      background: 'var(--bg)', color: 'var(--fg)',
-      display: 'flex', flexDirection: 'column',
-      fontFamily: 'var(--font-sans), "Inter Tight", sans-serif',
-      position: 'relative',
-    }}>
-      {/* ambient spotlight */}
-      <div style={{
-        position: 'fixed', top: -100, left: '20%', width: '70%', height: 400,
-        background: 'radial-gradient(ellipse at top, color-mix(in oklch, var(--accent) 10%, transparent) 0%, transparent 65%)',
-        pointerEvents: 'none', zIndex: 0,
-      }} />
+    <main className="min-h-screen bg-[#0B0B0E] pb-32 selection:bg-[#8B5CF6] overflow-x-hidden relative">
+      <CinematicAmbient />
+      <AnimatePresence>{appState === 'intro' && <Intro onStart={handleStartApp} key="intro" />}</AnimatePresence>
 
-      {/* HEADER */}
-      <header style={{
-        position: 'sticky', top: 0, zIndex: 5,
-        display: 'flex', alignItems: 'center', gap: 20,
-        padding: '20px 64px',
-        borderBottom: '1px solid rgba(255,255,255,0.05)',
-        background: 'rgba(8,9,13,0.85)',
-        backdropFilter: 'blur(12px)',
-      }}>
-        {/* Logo */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{
-            width: 30, height: 30, borderRadius: 7,
-            background: 'linear-gradient(135deg, var(--accent), color-mix(in oklch, var(--accent) 55%, black))',
-            display: 'grid', placeItems: 'center',
-            boxShadow: '0 0 20px color-mix(in oklch, var(--accent) 35%, transparent)',
-          }}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2.5">
-              <path d="M3 18 L8 14 L12 16 L16 8 L21 12" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </div>
-          <div>
-            <div style={{ fontWeight: 800, fontSize: 17, letterSpacing: '-0.02em' }}>4K Cinema</div>
-            <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.18em', fontWeight: 600 }}>CLIMAX-BASED RECOMMENDATION</div>
-          </div>
-        </div>
-
-        {/* Search */}
-        <div style={{ flex: 1, maxWidth: 560, position: 'relative', marginLeft: 20 }}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="2" style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)' }}>
-            <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
-          </svg>
-          <input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="영화 이름으로 검색…"
-            style={{
-              width: '100%', padding: '11px 14px 11px 38px',
-              background: 'rgba(255,255,255,0.04)',
-              border: '1px solid rgba(255,255,255,0.08)',
-              borderRadius: 9,
-              color: 'var(--fg)', fontSize: 13,
-              fontFamily: 'inherit', outline: 'none',
-              boxSizing: 'border-box',
-            }}
-          />
-        </div>
-
-        {/* Filter button */}
-        <button
-          onClick={() => setFilterOpen((v) => !v)}
-          style={{
-            display: 'flex', alignItems: 'center', gap: 8,
-            padding: '10px 14px',
-            background: filterOpen ? 'color-mix(in oklch, var(--accent) 14%, transparent)' : 'rgba(255,255,255,0.04)',
-            border: `1px solid ${filterOpen ? 'color-mix(in oklch, var(--accent) 38%, transparent)' : 'rgba(255,255,255,0.08)'}`,
-            borderRadius: 9,
-            color: filterOpen ? 'var(--accent)' : 'rgba(255,255,255,0.85)',
-            fontSize: 12, fontWeight: 600, fontFamily: 'inherit',
-            cursor: 'pointer',
-          }}
-        >
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-            <path d="M3 6h18M7 12h10M11 18h2" strokeLinecap="round" />
-          </svg>
-          필터
-          <svg
-            width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
-            style={{ transform: filterOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.25s' }}
-          >
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
-
-        {/* Random Pick */}
-        <button
-          onClick={() => setRandomOpen(true)}
-          style={{
-            display: 'flex', alignItems: 'center', gap: 8,
-            padding: '10px 16px',
-            background: 'var(--accent)',
-            border: 'none', borderRadius: 9,
-            color: 'black',
-            fontSize: 12, fontWeight: 700, fontFamily: 'inherit',
-            cursor: 'pointer',
-          }}
-        >
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-            <path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-          Random Pick
-        </button>
-      </header>
-
-      {/* FILTER BAR */}
-      <FilterBar
-        open={filterOpen}
-        draft={draft}
-        onChangeDraft={setDraft}
-        onSearch={() => { setApplied(draft); setFilterOpen(false); }}
-        onReset={() => setDraft(INITIAL_FILTERS)}
-      />
-
-      {/* GRID */}
-      <main style={{ flex: 1, position: 'relative', zIndex: 1 }}>
-        <div style={{ padding: '28px 64px 60px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 20 }}>
-            <h2 style={{ fontSize: 18, fontWeight: 700, letterSpacing: '-0.01em', margin: 0 }}>오늘의 영화</h2>
-            <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)' }}>
-              {filtered.length}편 · 포스터에 마우스를 올려 클라이맥스 그래프를 확인하세요
-            </span>
-          </div>
-
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-            gap: 22,
-          }}>
-            {repeated.map((m, i) => {
-              const key = `${m.id}-${i}`;
-              const pref = draft.likes.includes(m.id) ? 'like' as const : draft.dislikes.includes(m.id) ? 'dislike' as const : null;
-              return (
-                <PosterCard
-                  key={key}
-                  movie={m}
-                  isHovered={hoveredKey === key}
-                  onHover={(state) => setHoveredKey(state ? key : null)}
-                  onClick={() => setDetail(m)}
-                  pref={pref}
-                  onTogglePref={togglePref}
+      <div className="relative z-10 w-full" id="header-area">
+        <Header onRandomClick={() => setShowRandom(true)} onFilterToggle={() => setIsFilterOpen(!isFilterOpen)} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+        <div className="max-w-[1400px] mx-auto px-8 pt-8">
+          <AnimatePresence>
+            {isFilterOpen && (
+              <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}>
+                <FilterBar 
+                  activeGenre={activeGenre} setActiveGenre={setActiveGenre} activeSituation={activeSituation} setActiveSituation={setActiveSituation}
+                  yearRange={yearRange} setYearRange={setYearRange} likedMovies={likedMovies} dislikedMovies={dislikedMovies}
+                  onRemoveLike={(t)=>setLikedMovies(l=>l.filter(x=>x!==t))} onRemoveDislike={(t)=>setDislikedMovies(d=>d.filter(x=>x!==t))}
+                  onReset={handleResetFilters} onSearch={() => { setToastMsg("조건에 맞는 영화를 검색합니다."); setTimeout(()=>setToastMsg(""), 2000); }}
                 />
-              );
-            })}
-          </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
-      </main>
+      </div>
 
-      {/* OVERLAYS */}
-      {detail && (
-        <DetailOverlay
-          movie={detail}
-          onClose={() => setDetail(null)}
-          onSelectMovie={(m) => setDetail(m)}
-        />
-      )}
-      {randomOpen && (
-        <RandomModal
-          onClose={() => setRandomOpen(false)}
-          onPick={(m) => { setRandomOpen(false); setDetail(m); }}
-        />
-      )}
-    </div>
+      <div className="relative z-10 max-w-[1400px] mx-auto px-8 mt-12">
+        <div className="mb-10 flex items-end justify-between border-b border-white/5 pb-6">
+          <div className="flex flex-col gap-1">
+             <div className="flex items-center gap-2 text-[#A78BFA] text-[12px] font-bold tracking-wide">
+               <Zap size={14} fill="currentColor" /> {isFiltering ? "맞춤 검색 결과" : "전체 목록"}
+             </div>
+             <h2 className="text-3xl font-black text-white tracking-tight">{isFiltering ? "취향 저격 영화 리스트" : "오늘의 추천 영화"}</h2>
+          </div>
+          <button onClick={() => setAppState('onboarding')} className="text-xs text-gray-500 hover:text-white transition-colors flex items-center gap-2 border-b border-transparent hover:border-white pb-1">
+            <PlayCircle size={14} /> 가이드 다시보기
+          </button>
+        </div>
+        
+        <motion.div layout className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-6 gap-y-12" id="movie-list">
+          <AnimatePresence>
+            {filteredMovies.map((m, index) => (
+              <motion.div 
+                key={m.id} layout 
+                initial={{ opacity: 0, y: 30, scale: 0.95 }} 
+                animate={{ opacity: 1, y: 0, scale: 1 }} 
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.4, delay: index * 0.05 }}
+              >
+                <MovieCard 
+                  {...m} 
+                  isLiked={likedMovies.includes(m.title)}
+                  isDisliked={dislikedMovies.includes(m.title)}
+                  onToggleLike={(t)=>setLikedMovies(l=>l.includes(t)?l.filter(x=>x!==t):[...l,t])}
+                  onToggleDislike={(t)=>setDislikedMovies(d=>d.includes(t)?d.filter(x=>x!==t):[...d,t])}
+                />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
+      </div>
+
+      {appState === 'onboarding' && <Onboarding onFinish={handleFinishOnboarding} />}
+      <AnimatePresence>{showRandom && <RandomModal onClose={() => setShowRandom(false)} movies={filteredMovies.length > 0 ? filteredMovies : mockMovies} />}</AnimatePresence>
+      <AnimatePresence>
+        {toastMsg && (
+          <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 50 }} className="fixed bottom-10 left-1/2 -translate-x-1/2 flex items-center gap-3 bg-[#1A1A1E] border border-[#6B4BF6]/50 text-white px-8 py-4 rounded-2xl shadow-2xl z-[100] font-bold text-sm">
+            <CheckCircle2 className="text-[#8B5CF6] w-5 h-5" /> {toastMsg}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </main>
   );
 }

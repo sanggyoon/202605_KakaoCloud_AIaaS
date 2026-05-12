@@ -1,237 +1,108 @@
 'use client';
-
-import { useEffect, useRef, useState } from 'react';
-import { MOVIES, GENRES, SITUATIONS } from '@/app/lib/data';
-
-interface Filters {
-  yearRange: [number, number];
-  genre: string;
-  situation: string;
-  likes: string[];
-  dislikes: string[];
-}
+import { X, Search, RotateCcw } from 'lucide-react';
 
 interface FilterBarProps {
-  open: boolean;
-  draft: Filters;
-  onChangeDraft: (f: Filters) => void;
-  onSearch: () => void;
+  activeGenre: string; setActiveGenre: (val: string) => void;
+  activeSituation: string; setActiveSituation: (val: string) => void;
+  yearRange: [number, number]; setYearRange: (val: [number, number]) => void;
+  likedMovies: string[]; dislikedMovies: string[];
+  onRemoveLike: (title: string) => void; 
+  onRemoveDislike: (title: string) => void;
   onReset: () => void;
+  onSearch: () => void;
 }
 
-function FilterRow({ label, options, value, onChange }: {
-  label: string;
-  options: string[];
-  value: string;
-  onChange: (v: string) => void;
-}) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-      <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.16em', color: 'rgba(255,255,255,0.5)', width: 90, flexShrink: 0 }}>
-        {label.toUpperCase()}
-      </span>
-      <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-        {options.map((opt) => {
-          const active = value === opt;
-          return (
-            <button
-              key={opt}
-              onClick={() => onChange(opt)}
-              style={{
-                padding: '5px 11px',
-                background: active ? 'color-mix(in oklch, var(--accent) 18%, transparent)' : 'rgba(255,255,255,0.04)',
-                border: `1px solid ${active ? 'color-mix(in oklch, var(--accent) 40%, transparent)' : 'rgba(255,255,255,0.08)'}`,
-                borderRadius: 999,
-                color: active ? 'var(--accent)' : 'rgba(255,255,255,0.75)',
-                fontSize: 11, fontWeight: 600, fontFamily: 'inherit',
-                cursor: 'pointer',
-              }}
-            >
-              {opt}
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-function YearRangeRow({ min, max, value, onChange }: {
-  min: number;
-  max: number;
-  value: [number, number];
-  onChange: (v: [number, number]) => void;
-}) {
-  const [from, to] = value;
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [dragging, setDragging] = useState<'from' | 'to' | null>(null);
-
-  const pctFrom = ((from - min) / (max - min)) * 100;
-  const pctTo = ((to - min) / (max - min)) * 100;
-
-  useEffect(() => {
-    if (!dragging) return;
-    const onMove = (e: MouseEvent) => {
-      const el = trackRef.current;
-      if (!el) return;
-      const r = el.getBoundingClientRect();
-      const pct = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
-      const v = Math.round(min + pct * (max - min));
-      if (dragging === 'from') onChange([Math.min(v, to) as number, to]);
-      else onChange([from, Math.max(v, from) as number]);
-    };
-    const onUp = () => setDragging(null);
-    window.addEventListener('mousemove', onMove);
-    window.addEventListener('mouseup', onUp);
-    return () => {
-      window.removeEventListener('mousemove', onMove);
-      window.removeEventListener('mouseup', onUp);
-    };
-  }, [dragging, from, to, min, max, onChange]);
+export default function FilterBar({ 
+  activeGenre, setActiveGenre, 
+  activeSituation, setActiveSituation, 
+  yearRange, setYearRange, 
+  likedMovies, dislikedMovies, 
+  onRemoveLike, onRemoveDislike, 
+  onReset, onSearch 
+}: FilterBarProps) {
+  
+  const genres = ['SF', '드라마', '스릴러', '액션', '코미디', '미스터리', '음악', '어드벤처'];
+  // 
+  const situations = ['몰입이 필요한 밤', '잠 안 오는 새벽', '연인과 함께', '가족과 오순도순', '함께 웃고 싶을 때', '스트레스 해소'];
+  
+  const MIN_YEAR = 2010;
+  const MAX_YEAR = 2024;
+  const leftPercent = ((yearRange[0] - MIN_YEAR) / (MAX_YEAR - MIN_YEAR)) * 100;
+  const rightPercent = ((yearRange[1] - MIN_YEAR) / (MAX_YEAR - MIN_YEAR)) * 100;
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-      <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.16em', color: 'rgba(255,255,255,0.5)', width: 90, flexShrink: 0 }}>연도</span>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 14, flex: 1, maxWidth: 540 }}>
-        <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent)', fontFamily: 'var(--font-mono), monospace', minWidth: 36 }}>{from}</span>
-        <div ref={trackRef} style={{ position: 'relative', flex: 1, height: 28, cursor: 'pointer' }}>
-          <div style={{ position: 'absolute', left: 0, right: 0, top: '50%', height: 3, background: 'rgba(255,255,255,0.08)', borderRadius: 999, transform: 'translateY(-50%)' }} />
-          {Array.from({ length: max - min + 1 }, (_, i) => i + min).map((y) => {
-            const p = ((y - min) / (max - min)) * 100;
-            return (
-              <div key={y} style={{ position: 'absolute', left: `${p}%`, top: '50%', width: 1, height: 6, background: 'rgba(255,255,255,0.15)', transform: 'translate(-50%, -50%)' }} />
-            );
-          })}
-          <div style={{ position: 'absolute', left: `${pctFrom}%`, right: `${100 - pctTo}%`, top: '50%', height: 3, background: 'var(--accent)', borderRadius: 999, transform: 'translateY(-50%)', boxShadow: '0 0 12px color-mix(in oklch, var(--accent) 50%, transparent)' }} />
-          {(['from', 'to'] as const).map((key) => {
-            const pct = key === 'from' ? pctFrom : pctTo;
-            return (
-              <div
-                key={key}
-                onMouseDown={() => setDragging(key)}
-                style={{
-                  position: 'absolute', left: `${pct}%`, top: '50%',
-                  width: 16, height: 16, borderRadius: 999,
-                  background: 'var(--accent)',
-                  border: '2px solid #08090d',
-                  transform: 'translate(-50%, -50%)',
-                  cursor: 'grab',
-                  boxShadow: dragging === key ? '0 0 0 6px color-mix(in oklch, var(--accent) 25%, transparent)' : '0 2px 6px rgba(0,0,0,0.5)',
-                  transition: 'box-shadow 0.15s',
-                }}
-              />
-            );
-          })}
+    <div id="filter-bar" className="w-full mb-12 space-y-7 animate-in slide-in-from-top-4 fade-in duration-300 bg-[#111115] p-8 rounded-3xl border border-white/5 shadow-2xl relative z-40">
+      
+      {/* 1. 연도 설정 */}
+      <div className="flex items-center gap-8">
+        <span className="text-sm font-bold text-gray-500 w-12 shrink-0">연도</span>
+        <div className="flex-1 relative h-1 max-w-[600px] ml-2 flex items-center">
+          <div className="absolute w-full flex justify-between -top-7 text-sm font-bold text-[#A78BFA]">
+            <span>{yearRange[0]}</span><span>{yearRange[1]}</span>
+          </div>
+          <div className="absolute w-full h-1 bg-gray-800 rounded-full" />
+          <div className="absolute h-1 bg-[#8B5CF6] rounded-full shadow-[0_0_10px_rgba(107,75,246,0.5)]" style={{ left: `${leftPercent}%`, right: `${100 - rightPercent}%` }} />
+          <input type="range" min={MIN_YEAR} max={MAX_YEAR} value={yearRange[0]} onChange={(e) => setYearRange([Math.min(Number(e.target.value), yearRange[1] - 1), yearRange[1]])} className="absolute w-full h-1 opacity-0 cursor-pointer pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:h-6 z-30" />
+          <input type="range" min={MIN_YEAR} max={MAX_YEAR} value={yearRange[1]} onChange={(e) => setYearRange([yearRange[0], Math.max(Number(e.target.value), yearRange[0] + 1)])} className="absolute w-full h-1 opacity-0 cursor-pointer pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:h-6 z-30" />
+          <div className="absolute w-4 h-4 bg-[#0B0B0E] rounded-full border-[3px] border-[#A78BFA] pointer-events-none z-20" style={{ left: `calc(${leftPercent}% - 8px)` }} />
+          <div className="absolute w-4 h-4 bg-[#0B0B0E] rounded-full border-[3px] border-[#A78BFA] pointer-events-none z-20" style={{ left: `calc(${rightPercent}% - 8px)` }} />
         </div>
-        <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent)', fontFamily: 'var(--font-mono), monospace', minWidth: 36 }}>{to}</span>
       </div>
-    </div>
-  );
-}
 
-function PrefRow({ label, ids, onRemove, accent }: {
-  label: string;
-  ids: string[];
-  onRemove: (id: string) => void;
-  accent?: boolean;
-}) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-      <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.16em', color: 'rgba(255,255,255,0.5)', width: 90, flexShrink: 0 }}>
-        {label.toUpperCase()}
-      </span>
-      <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', flex: 1, minHeight: 26, alignItems: 'center' }}>
-        {ids.length === 0 && (
-          <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)' }}>등록된 영화가 없습니다</span>
-        )}
-        {ids.map((id) => {
-          const m = MOVIES.find((x) => x.id === id);
-          if (!m) return null;
-          return (
-            <span key={id} style={{
-              display: 'inline-flex', alignItems: 'center', gap: 6,
-              padding: '5px 6px 5px 11px',
-              background: accent ? 'color-mix(in oklch, var(--accent) 14%, transparent)' : 'rgba(255,255,255,0.06)',
-              border: `1px solid ${accent ? 'color-mix(in oklch, var(--accent) 35%, transparent)' : 'rgba(255,255,255,0.12)'}`,
-              borderRadius: 999,
-              fontSize: 11, fontWeight: 600,
-              color: accent ? 'var(--accent)' : 'rgba(255,255,255,0.85)',
-            }}>
-              {m.title}
-              <button
-                onClick={() => onRemove(id)}
-                style={{
-                  width: 16, height: 16, borderRadius: 999,
-                  border: 'none',
-                  background: accent ? 'color-mix(in oklch, var(--accent) 25%, transparent)' : 'rgba(255,255,255,0.1)',
-                  color: 'inherit',
-                  cursor: 'pointer',
-                  display: 'grid', placeItems: 'center',
-                  padding: 0,
-                }}
-              >
-                <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                  <path d="M18 6 6 18M6 6l12 12" />
-                </svg>
-              </button>
-            </span>
-          );
-        })}
+      {/* 2. 장르 */}
+      <div className="flex items-center gap-8 border-t border-white/5 pt-7">
+        <span className="text-sm font-bold text-gray-500 w-12">장르</span>
+        <div className="flex gap-2 flex-wrap">
+          <button onClick={() => setActiveGenre('전체')} className={`px-5 py-2 rounded-full text-sm font-bold transition-all ${activeGenre === '전체' ? 'bg-[#8B5CF6] text-white shadow-[0_0_10px_rgba(139,92,246,0.4)]' : 'bg-white/5 text-gray-400 hover:bg-white/10'}`}>전체</button>
+          {genres.map(g => (
+            <button key={g} onClick={() => setActiveGenre(g)} className={`px-5 py-2 rounded-full text-sm font-bold transition-all ${activeGenre === g ? 'bg-[#8B5CF6] text-white shadow-[0_0_10px_rgba(139,92,246,0.4)]' : 'bg-white/5 text-gray-400 hover:bg-white/10'}`}>{g}</button>
+          ))}
+        </div>
       </div>
-    </div>
-  );
-}
 
-export default function FilterBar({ open, draft, onChangeDraft, onSearch, onReset }: FilterBarProps) {
-  const removeLike = (id: string) => onChangeDraft({ ...draft, likes: draft.likes.filter((x) => x !== id) });
-  const removeDislike = (id: string) => onChangeDraft({ ...draft, dislikes: draft.dislikes.filter((x) => x !== id) });
+      {/* 3. 상황 (감성적으로 교체됨) */}
+      <div className="flex items-center gap-8 border-t border-white/5 pt-7">
+        <span className="text-sm font-bold text-gray-500 w-12">상황</span>
+        <div className="flex gap-2 flex-wrap">
+          <button onClick={() => setActiveSituation('전체')} className={`px-5 py-2 rounded-full text-sm font-bold transition-all ${activeSituation === '전체' ? 'bg-[#8B5CF6] text-white shadow-[0_0_10px_rgba(139,92,246,0.4)]' : 'bg-white/5 text-gray-400 hover:bg-white/10'}`}>전체</button>
+          {situations.map(s => (
+            <button key={s} onClick={() => setActiveSituation(s)} className={`px-5 py-2 rounded-full text-sm font-bold transition-all ${activeSituation === s ? 'bg-[#8B5CF6] text-white shadow-[0_0_10px_rgba(139,92,246,0.4)]' : 'bg-white/5 text-gray-400 hover:bg-white/10'}`}>{s}</button>
+          ))}
+        </div>
+      </div>
 
-  return (
-    <div style={{
-      position: 'relative', zIndex: 4,
-      maxHeight: open ? 520 : 0,
-      overflow: 'hidden',
-      transition: 'max-height 0.35s cubic-bezier(.2,.7,.2,1)',
-      borderBottom: open ? '1px solid rgba(255,255,255,0.05)' : '1px solid transparent',
-      background: 'rgba(255,255,255,0.018)',
-    }}>
-      <div style={{ padding: '20px 64px 22px', display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <YearRangeRow
-          min={2010}
-          max={2024}
-          value={draft.yearRange}
-          onChange={(v) => onChangeDraft({ ...draft, yearRange: v })}
-        />
-        <FilterRow
-          label="장르"
-          options={['All', ...GENRES]}
-          value={draft.genre}
-          onChange={(v) => onChangeDraft({ ...draft, genre: v })}
-        />
-        <FilterRow
-          label="상황"
-          options={['All', ...SITUATIONS]}
-          value={draft.situation}
-          onChange={(v) => onChangeDraft({ ...draft, situation: v })}
-        />
-        <PrefRow label="선호" ids={draft.likes} onRemove={removeLike} accent />
-        <PrefRow label="비선호" ids={draft.dislikes} onRemove={removeDislike} />
+      {/* 4. 선호 기록 */}
+      <div className="flex items-center gap-8 border-t border-white/5 pt-7">
+        <span className="text-sm font-bold text-[#A78BFA] w-12">선호</span>
+        <div className="flex gap-2 flex-wrap min-h-[40px] items-center">
+          {likedMovies.length > 0 ? likedMovies.map(title => (
+            <button key={title} onClick={() => onRemoveLike(title)} className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#2A1B54] border border-[#6B4BF6] text-white text-xs hover:bg-red-900/50 hover:border-red-500 group animate-in zoom-in duration-200">
+              {title} <X size={12} className="text-gray-400 group-hover:text-red-400" />
+            </button>
+          )) : <span className="text-gray-700 text-xs flex items-center italic">선택된 영화가 없습니다</span>}
+        </div>
+      </div>
 
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 8, paddingTop: 14, borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-          <button
-            onClick={onReset}
-            style={{ padding: '9px 16px', background: 'transparent', color: 'rgba(255,255,255,0.6)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, fontSize: 12, fontWeight: 600, fontFamily: 'inherit', cursor: 'pointer' }}
-          >
-            초기화
+      {/* 5. 비선호 기록 */}
+      <div className="flex items-center gap-8 border-t border-white/5 pt-7">
+        <span className="text-sm font-bold text-red-500/70 w-12">비선호</span>
+        <div className="flex gap-2 flex-wrap min-h-[40px] items-center">
+          {dislikedMovies.length > 0 ? dislikedMovies.map(title => (
+            <button key={title} onClick={() => onRemoveDislike(title)} className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-red-950/20 border border-red-500/30 text-white text-xs hover:bg-red-900/50 hover:border-red-500 group animate-in zoom-in duration-200">
+              {title} <X size={12} className="text-gray-400 group-hover:text-red-400" />
+            </button>
+          )) : <span className="text-gray-700 text-xs flex items-center italic">제외된 영화가 없습니다</span>}
+        </div>
+      </div>
+
+      {/* 6. 초기화 및 검색 버튼 */}
+      <div className="flex justify-end pt-8 border-t border-white/5 mt-7">
+        <div className="flex gap-3">
+          <button onClick={onReset} className="px-6 py-2.5 border border-white/10 text-gray-400 rounded-xl text-sm font-bold hover:bg-white/5 hover:text-white transition-all flex items-center gap-2 active:scale-95">
+            <RotateCcw size={14} /> 필터 초기화
           </button>
-          <button
-            onClick={onSearch}
-            style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '9px 22px', background: 'var(--accent)', color: 'black', border: 'none', borderRadius: 8, fontSize: 12, fontWeight: 700, fontFamily: 'inherit', cursor: 'pointer', boxShadow: '0 0 24px color-mix(in oklch, var(--accent) 30%, transparent)' }}
-          >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
-              <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
-            </svg>
-            검색
+          <button onClick={onSearch} className="px-8 py-2.5 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white rounded-xl text-sm font-bold flex items-center gap-2 transition-all shadow-[0_0_15px_rgba(139,92,246,0.4)] active:scale-95 group">
+            <Search size={16} className="group-hover:animate-bounce" /> 조건 검색
           </button>
         </div>
       </div>

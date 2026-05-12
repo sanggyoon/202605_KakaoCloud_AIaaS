@@ -1,176 +1,112 @@
-export interface Movie {
-  id: string;
-  title: string;
-  titleKo: string;
-  year: number;
-  director: string;
-  cast: string[];
-  genre: string[];
-  runtime: number;
-  dScore: number;
-  pattern: string;
-  poster: string;
-  posterAccent: string;
-  synopsis: string;
-  graph: number[];
-  similar: string[];
-}
-
-export const MOVIES: Movie[] = [
-  {
-    id: "interstellar",
-    title: "Interstellar",
-    titleKo: "인터스텔라",
-    year: 2014,
-    director: "Christopher Nolan",
-    cast: ["Matthew McConaughey", "Anne Hathaway", "Jessica Chastain"],
-    genre: ["SF", "Drama"],
-    runtime: 169,
-    dScore: 92,
-    pattern: "slow-burn",
-    poster: "linear-gradient(155deg, #1a2840 0%, #0a1020 50%, #2a1810 100%)",
-    posterAccent: "#d4a574",
-    synopsis: "지구의 미래를 위해 웜홀을 통한 우주 탐사를 떠나는 전직 NASA 파일럿의 이야기. 시간과 중력, 사랑이 교차하는 서사시.",
-    graph: [12, 18, 22, 30, 35, 28, 40, 55, 48, 62, 75, 88, 92, 78, 95, 70, 50, 35],
-    similar: ["arrival", "gravity", "dune"],
+export const mockMovies = [
+  { 
+    id: "1", 
+    title: "인터스텔라", 
+    engTitle: "Interstellar", 
+    genre: "SF · 드라마", 
+    year: "2014", 
+    gradient: "from-[#1a202c] to-black", 
+    dir: "크리스토퍼 놀란", 
+    cast: "매튜 맥커너히, 앤 해서웨이, 제시카 차스테인", 
+    desc: "세계 각국의 정부와 경제가 완전히 붕괴된 미래, 인류의 멸망을 막기 위해 시공간의 틈을 찾는 임무가 시작됩니다. 사랑하는 자녀를 지구에 남겨둔 채 전직 NASA 조종사 쿠퍼는 인류의 새로운 터전을 찾기 위해 불가능해 보이는 우주 항해를 떠납니다. 중력과 시간의 상대성이 뒤엉키는 블랙홀 속에서 그는 딸 머피와의 약속을 지키기 위한 위대한 사투를 벌입니다." 
   },
-  {
-    id: "parasite",
-    title: "Parasite",
-    titleKo: "기생충",
-    year: 2019,
-    director: "Bong Joon-ho",
-    cast: ["Song Kang-ho", "Lee Sun-kyun", "Cho Yeo-jeong"],
-    genre: ["Thriller", "Drama"],
-    runtime: 132,
-    dScore: 96,
-    pattern: "double-peak",
-    poster: "linear-gradient(165deg, #2c2418 0%, #0d0a05 50%, #3a1a10 100%)",
-    posterAccent: "#c89055",
-    synopsis: "전원 백수인 기택네 가족이 박사장네에 한 명씩 들어가며 벌어지는 예측 불가의 이야기.",
-    graph: [10, 15, 25, 38, 50, 62, 70, 65, 55, 60, 75, 88, 95, 99, 80, 60, 42, 28],
-    similar: ["burning", "oldboy", "gone-girl"],
+  { 
+    id: "2", 
+    title: "기생충", 
+    engTitle: "Parasite", 
+    genre: "스릴러 · 드라마", 
+    year: "2019", 
+    gradient: "from-[#3e2723] to-black", 
+    dir: "봉준호", 
+    cast: "송강호, 이선균, 조여정, 최우식", 
+    desc: "전원 백수로 살 길 막막하지만 사이는 좋은 기택 가족. 장남 기우가 고액 과외 면접을 위해 박사장네 집에 발을 들이면서 두 가족의 기묘한 만남이 시작됩니다. 서로 다른 두 세계가 얽히며 발생하는 걷잡을 수 없는 사건들은 현대 사회의 계급 갈등을 날카롭고도 유머러스하게 파고듭니다. 평화롭던 저택 지하에 숨겨진 충격적인 비밀이 밝혀집니다." 
   },
-  {
-    id: "everything",
-    title: "Everything Everywhere All at Once",
-    titleKo: "에브리씽 에브리웨어 올 앳 원스",
-    year: 2022,
-    director: "Daniels",
-    cast: ["Michelle Yeoh", "Ke Huy Quan", "Jamie Lee Curtis"],
-    genre: ["SF", "Comedy", "Drama"],
-    runtime: 139,
-    dScore: 89,
-    pattern: "chaos-build",
-    poster: "linear-gradient(135deg, #4a1a4a 0%, #1a0820 50%, #2a4a4a 100%)",
-    posterAccent: "#e8a8d8",
-    synopsis: "다중우주를 넘나들며 자신의 평행세계와 마주한 평범한 세탁소 주인의 가족 이야기.",
-    graph: [20, 35, 50, 45, 60, 75, 70, 85, 92, 80, 90, 95, 88, 75, 65, 80, 60, 45],
-    similar: ["matrix", "swiss-army", "scott-pilgrim"],
+  { 
+    id: "3", 
+    title: "에브리씽 에브리웨어 올 앳 원스", 
+    engTitle: "Everything Everywhere", 
+    genre: "SF · 코미디", 
+    year: "2022", 
+    gradient: "from-[#4a148c] to-black", 
+    dir: "다니엘 콴", 
+    cast: "양자경, 키 호이 콴, 스테파니 수", 
+    desc: "미국에서 세탁소를 운영하던 에블린은 남편의 이혼 요구와 세무 조사를 앞두고 삶의 혼란에 빠집니다. 그러던 중 다른 우주에서 온 남편을 만나게 되고, 자신이 수많은 멀티버스 속의 자아들과 연결되어 있다는 사실을 깨닫게 됩니다. 가족과의 화해와 자아를 찾는 여정이 다중 우주를 넘나드는 기상천외하고 현란한 액션과 함께 펼쳐집니다." 
   },
-  {
-    id: "whiplash",
-    title: "Whiplash",
-    titleKo: "위플래쉬",
-    year: 2014,
-    director: "Damien Chazelle",
-    cast: ["Miles Teller", "J.K. Simmons"],
-    genre: ["Drama", "Music"],
-    runtime: 107,
-    dScore: 94,
-    pattern: "crescendo",
-    poster: "linear-gradient(170deg, #3a1a0a 0%, #0a0505 60%, #5a2a0a 100%)",
-    posterAccent: "#e8b070",
-    synopsis: "최고의 드러머가 되기 위해 광기 어린 교수와 부딪히는 음대생의 처절한 성장기.",
-    graph: [15, 22, 30, 28, 40, 48, 55, 50, 62, 70, 75, 68, 80, 85, 92, 96, 99, 70],
-    similar: ["black-swan", "social-network", "la-la-land"],
+  { 
+    id: "4", 
+    title: "위플래쉬", 
+    engTitle: "Whiplash", 
+    genre: "드라마 · 음악", 
+    year: "2014", 
+    gradient: "from-[#3e2723] to-black", 
+    dir: "데이미언 셔젤", 
+    cast: "마일즈 텔러, J.K. 시몬스, 멜리사 베노이스트", 
+    desc: "뉴욕 최고의 음악 학교 신입생인 드러머 앤드류. 그는 최고의 드러머가 되겠다는 야망을 품고 폭군 같은 플레처 교수의 밴드에 들어갑니다. 완벽을 향한 교수의 지독한 채찍질과 폭언은 앤드류의 한계를 끝없이 시험하고, 결국 광기로 치닫는 두 남자의 격돌은 숨 막히는 긴장감을 선사합니다. 드럼 스틱에 피가 맺히는 순간까지 멈추지 않는 열정의 무대가 시작됩니다." 
   },
-  {
-    id: "arrival",
-    title: "Arrival",
-    titleKo: "컨택트",
-    year: 2016,
-    director: "Denis Villeneuve",
-    cast: ["Amy Adams", "Jeremy Renner"],
-    genre: ["SF", "Drama"],
-    runtime: 116,
-    dScore: 85,
-    pattern: "slow-burn",
-    poster: "linear-gradient(150deg, #1a2a35 0%, #050a10 60%, #1a1a2a 100%)",
-    posterAccent: "#7a9eb8",
-    synopsis: "외계인과의 첫 접촉. 언어학자가 풀어내는 시간과 기억의 미스터리.",
-    graph: [8, 14, 20, 28, 35, 42, 38, 50, 58, 65, 72, 80, 85, 78, 88, 65, 48, 30],
-    similar: ["interstellar", "blade-runner", "ex-machina"],
+  { 
+    id: "5", 
+    title: "어라이벌 (컨택트)", 
+    engTitle: "Arrival", 
+    genre: "SF · 미스터리", 
+    year: "2016", 
+    gradient: "from-[#003333] to-black", 
+    dir: "드니 빌뇌브", 
+    cast: "에이미 아담스, 제레미 레너, 포레스트 휘태커", 
+    desc: "어느 날 갑자기 지구 상공 12곳에 정체불명의 거대한 외계 비행 물체가 등장합니다. 세계가 혼란에 빠진 가운데, 언어학자 루이스 뱅크스 박사가 이들이 지구에 온 목적을 파악하기 위해 특별 팀에 합류합니다. 외계 생명체가 사용하는 복잡하고 원형적인 언어를 해독해 나가는 과정에서 루이스는 인류의 운명과 자신의 미래를 뒤바꿀 놀라운 진실을 마주하게 됩니다." 
   },
-  {
-    id: "mad-max",
-    title: "Mad Max: Fury Road",
-    titleKo: "매드맥스: 분노의 도로",
-    year: 2015,
-    director: "George Miller",
-    cast: ["Tom Hardy", "Charlize Theron"],
-    genre: ["Action", "SF"],
-    runtime: 120,
-    dScore: 91,
-    pattern: "constant-high",
-    poster: "linear-gradient(160deg, #4a2010 0%, #1a0805 50%, #6a3010 100%)",
-    posterAccent: "#e87040",
-    synopsis: "황무지를 가로지르는 광기의 추격전. 두 시간 내내 폭주하는 액션의 정수.",
-    graph: [40, 55, 70, 75, 82, 78, 85, 90, 88, 92, 85, 90, 95, 98, 88, 85, 70, 55],
-    similar: ["dune", "blade-runner", "matrix"],
+  { 
+    id: "6", 
+    title: "매드맥스: 분노의 도로", 
+    engTitle: "Mad Max", 
+    genre: "액션 · SF", 
+    year: "2015", 
+    gradient: "from-[#2d1b11] to-black", 
+    dir: "조지 밀러", 
+    cast: "톰 하디, 샤를리즈 테론, 니콜라스 홀트", 
+    desc: "핵전쟁으로 멸망한 22세기. 물과 기름을 독점한 독재자 임모탄 조가 살아남은 인류를 지배합니다. 아내와 딸을 잃고 사막을 떠돌던 맥스는 임모탄의 부하들에게 납치되어 노예로 전락합니다. 한편, 임모탄의 폭정에 반발한 사령관 퓨리오사는 인류 생존의 열쇠를 쥔 여인들을 빼돌려 분노의 탈주를 시작하고, 맥스도 이 미친 질주에 합류하게 됩니다." 
   },
-  {
-    id: "burning",
-    title: "Burning",
-    titleKo: "버닝",
-    year: 2018,
-    director: "Lee Chang-dong",
-    cast: ["Yoo Ah-in", "Steven Yeun", "Jeon Jong-seo"],
-    genre: ["Mystery", "Drama"],
-    runtime: 148,
-    dScore: 88,
-    pattern: "slow-burn",
-    poster: "linear-gradient(175deg, #2a1a08 0%, #0a0805 60%, #1a0a05 100%)",
-    posterAccent: "#a87040",
-    synopsis: "두 청춘과 한 여자, 그리고 사라진 진실. 모호함이 만드는 긴장의 미장센.",
-    graph: [10, 12, 18, 22, 25, 30, 35, 32, 40, 48, 55, 62, 70, 78, 85, 92, 95, 80],
-    similar: ["parasite", "oldboy", "memories"],
+  { 
+    id: "7", 
+    title: "듄: 파트 2", 
+    engTitle: "Dune: Part Two", 
+    genre: "SF · 액션", 
+    year: "2024", 
+    gradient: "from-[#4a2b18] to-black", 
+    dir: "드니 빌뇌브", 
+    cast: "티모시 샬라메, 젠데이아, 오스틴 버틀러", 
+    desc: "황제의 모략으로 가문이 멸문당한 뒤, 유일한 후계자 폴 아토레이데스는 사막의 민족 프레멘과 결속하여 반격을 준비합니다. 메시아로 각성해가는 폴은 챠니와의 사랑과 전 우주를 구원해야 하는 운명 사이에서 갈등합니다. 모래벌레를 타는 거대한 스케일의 전투와 함께, 복수와 권력을 향한 대서사시가 압도적인 영상미로 펼쳐집니다." 
   },
-  {
-    id: "dune",
-    title: "Dune",
-    titleKo: "듄",
-    year: 2021,
-    director: "Denis Villeneuve",
-    cast: ["Timothée Chalamet", "Zendaya", "Rebecca Ferguson"],
-    genre: ["SF", "Adventure"],
-    runtime: 155,
-    dScore: 87,
-    pattern: "rising-wave",
-    poster: "linear-gradient(155deg, #6a4520 0%, #1a0c05 60%, #4a2510 100%)",
-    posterAccent: "#d4a060",
-    synopsis: "우주의 향료를 둘러싼 가문 간 전쟁. 사막 행성 아라키스를 무대로 한 대서사.",
-    graph: [12, 20, 28, 35, 42, 38, 50, 58, 52, 65, 72, 68, 80, 85, 90, 78, 85, 65],
-    similar: ["interstellar", "arrival", "mad-max"],
+  { 
+    id: "8", 
+    title: "조커", 
+    engTitle: "Joker", 
+    genre: "범죄 · 드라마", 
+    year: "2019", 
+    gradient: "from-[#1a4a38] to-black", 
+    dir: "토드 필립스", 
+    cast: "호아킨 피닉스, 로버트 드 니로, 자지 비츠", 
+    desc: "코미디언을 꿈꾸지만 사람들에게 무시와 조롱을 받으며 살아가는 아서 플렉. 고담시의 뒷골목에서 홀로 병든 어머니를 모시며 희망을 놓지 않으려 하지만, 세상의 잔인함과 냉대는 그를 점차 벼랑 끝으로 몰아넣습니다. 억눌렸던 분노와 광기가 폭발하는 순간, 그는 잃을 것 없는 최악의 악당 '조커'로 다시 태어나 고담시를 혼돈의 도가니로 빠뜨립니다." 
   },
+  { 
+    id: "9", 
+    title: "오펜하이머", 
+    engTitle: "Oppenheimer", 
+    genre: "전기 · 스릴러", 
+    year: "2023", 
+    gradient: "from-[#4a1818] to-black", 
+    dir: "크리스토퍼 놀란", 
+    cast: "킬리언 머피, 로버트 다우니 주니어, 에밀리 블런트", 
+    desc: "제2차 세계대전 중 미국 정부는 비밀리에 원자폭탄 개발 프로젝트인 '맨해튼 계획'을 가동합니다. 천재 물리학자 J. 로버트 오펜하이머는 이 역사적인 프로젝트를 이끌며 세상을 구할 무기를 만들어야 한다는 사명감과, 그것이 인류를 멸망시킬 수도 있다는 끔찍한 두려움 사이에서 고뇌합니다. 세상을 영원히 바꿔놓은 한 과학자의 영광과 비극의 일대기." 
+  },
+  { 
+    id: "10", 
+    title: "인셉션", 
+    engTitle: "Inception", 
+    genre: "SF · 스릴러", 
+    year: "2010", 
+    gradient: "from-[#1a2533] to-black", 
+    dir: "크리스토퍼 놀란", 
+    cast: "레오나르도 디카프리오, 조셉 고든 레빗, 톰 하디", 
+    desc: "타인의 꿈에 접속해 무의식 깊은 곳에서 비밀을 훔쳐내는 특수 보안요원 코브. 아내를 살해했다는 누명을 쓰고 도망자가 된 그에게 모든 것을 되찾고 아이들에게 돌아갈 수 있는 마지막 기회가 주어집니다. 임무는 생각을 훔치는 것이 아니라, 타인의 머릿속에 새로운 생각을 심는 '인셉션'. 성공 확률이 희박한 작전을 위해 코브는 최고의 팀을 꾸려 거대한 꿈의 미궁 속으로 뛰어듭니다." 
+  }
 ];
-
-export const PATTERNS: Record<string, { name: string; desc: string }> = {
-  "slow-burn": { name: "Slow Burn", desc: "조용히 끓어오르다 후반에 폭발" },
-  "double-peak": { name: "Double Peak", desc: "두 번의 클라이맥스" },
-  "chaos-build": { name: "Chaos Build", desc: "혼돈 속 점진적 상승" },
-  "crescendo": { name: "Crescendo", desc: "끝없이 치솟는 마무리" },
-  "constant-high": { name: "Constant High", desc: "내내 최고조" },
-  "rising-wave": { name: "Rising Wave", desc: "파도처럼 점차 고조" },
-};
-
-export const SITUATIONS = ["혼자", "데이트", "가족", "친구", "주말 밤", "비 오는 날", "출근길", "여행"];
-export const GENRES = ["SF", "Drama", "Thriller", "Action", "Comedy", "Mystery", "Music", "Adventure"];
-
-export const INITIAL_FILTERS = {
-  yearRange: [2014, 2022] as [number, number],
-  genre: "All",
-  situation: "All",
-  likes: ["interstellar", "whiplash"],
-  dislikes: ["mad-max"],
-};

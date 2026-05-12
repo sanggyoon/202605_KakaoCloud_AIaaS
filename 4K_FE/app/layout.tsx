@@ -1,41 +1,21 @@
-import type { Metadata } from "next";
-import { Inter_Tight, Playfair_Display, JetBrains_Mono } from "next/font/google";
-import "./globals.css";
-
-const interTight = Inter_Tight({
-  variable: "--font-sans",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-});
-
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
-  subsets: ["latin"],
-  weight: ["700", "800", "900"],
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-mono",
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
-});
+import type { Metadata } from 'next';
+import './globals.css';
 
 export const metadata: Metadata = {
-  title: "4K Cinema — Climax-based Movie Recommendation",
-  description: "클라이맥스 그래프를 분석해 비슷한 영화를 추천하는 서비스",
+  title: '4K Cinema',
+  description: '클라이맥스 맞춤 영화 큐레이션',
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html
-      lang="ko"
-      className={`${interTight.variable} ${playfair.variable} ${jetbrainsMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="ko">
+      <body className="antialiased bg-[#0B0B0E] text-white">
+        {children}
+      </body>
     </html>
   );
 }
