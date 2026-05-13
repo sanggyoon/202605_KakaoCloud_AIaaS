@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: 4k-cinema
+  name: frontend
   namespace: fe
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-staging
@@ -11,7 +11,7 @@ spec:
   tls:
     - hosts:
         - cinema.4kakao.kro.kr
-      secretName: 4k-cinema-tls
+      secretName: frontend-tls
   rules:
     - host: cinema.4kakao.kro.kr
       http:
@@ -20,6 +20,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: 4k-cinema
+                name: frontend
                 port:
                   number: 80
