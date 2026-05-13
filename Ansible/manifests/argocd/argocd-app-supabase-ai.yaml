@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: supabase-ai
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: https://supabase-community.github.io/supabase-kubernetes
+      chart: supabase
+      targetRevision: 0.5.6
+      helm:
+        valueFiles:
+          - $values/values/values-ai.yaml
+    - repoURL: https://github.com/sanggyoon/202605_KakaoCloud_AIaaS.git
+      targetRevision: main
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ai
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
