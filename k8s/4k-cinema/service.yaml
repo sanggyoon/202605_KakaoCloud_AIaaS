@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: 4k-cinema
+  namespace: fe
+spec:
+  selector:
+    app: 4k-cinema
+  ports:
+    - port: 80
+      targetPort: 3000

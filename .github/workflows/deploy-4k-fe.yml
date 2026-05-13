@@ -1,0 +1,63 @@
+name: Deploy 4K Cinema FE
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '4K_FE/**'
+      - '.github/workflows/deploy-4k-fe.yml'
+
+env:
+  IMAGE: ghcr.io/sanggyoon/4k-cinema
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # kustomization.yaml 커밋 push
+      packages: write   # GHCR 이미지 push
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Extract short SHA
+        id: vars
+        run: echo "sha=$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_OUTPUT
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./4K_FE
+          push: true
+          tags: |
+            ${{ env.IMAGE }}:${{ steps.vars.outputs.sha }}
+            ${{ env.IMAGE }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Update image tag in kustomization.yaml
+        run: |
+          sed -i 's|newTag:.*|newTag: "${{ steps.vars.outputs.sha }}"|' \
+            k8s/4k-cinema/kustomization.yaml
+
+      - name: Commit and push manifest update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add k8s/4k-cinema/kustomization.yaml
+          git commit -m "ci: update 4k-cinema image → ${{ steps.vars.outputs.sha }} [skip ci]"
+          git push
