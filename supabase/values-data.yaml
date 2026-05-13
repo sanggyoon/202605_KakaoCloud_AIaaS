@@ -1,0 +1,104 @@
+# ─────────────────────────────────────────
+# Secret 참조 (기존 그대로)
+# ─────────────────────────────────────────
+secret:
+  jwt:
+    secretRef: 'supabase-jwt'
+    secretRefKey:
+      anonKey: anonKey
+      serviceKey: serviceKey
+      secret: secret
+  db:
+    secretRef: 'supabase-db'
+    secretRefKey:
+      username: username
+      password: password
+      database: database
+  dashboard:
+    secretRef: 'supabase-dashboard'
+    secretRefKey:
+      username: username
+      password: password
+  smtp:
+    secretRef: 'supabase-smtp'
+    secretRefKey:
+      username: username
+      password: password
+  analytics:
+    secretRef: 'supabase-analytics'
+    secretRefKey:
+      apiKey: apiKey
+
+# ─────────────────────────────────────────
+# 컴포넌트 on/off + 노드 배치
+# ─────────────────────────────────────────
+deployment:
+  db:
+    enabled: true
+    nodeSelector:
+      workload: data
+  studio:
+    enabled: true
+    nodeSelector:
+      workload: data
+  kong:
+    enabled: true
+    nodeSelector:
+      workload: data
+  rest:
+    enabled: true
+    nodeSelector:
+      workload: data
+  meta:
+    enabled: true
+    nodeSelector:
+      workload: data
+
+  functions:
+    enabled: true
+    nodeSelector:
+      workload: data
+
+  # 사용 안 하는 컴포넌트
+  auth:
+    enabled: false
+  realtime:
+    enabled: false
+  storage:
+    enabled: false
+  imgproxy:
+    enabled: false
+  analytics:
+    enabled: false
+  vector:
+    enabled: false
+  minio:
+    enabled: false
+
+# ─────────────────────────────────────────
+# 이미지 태그
+# ─────────────────────────────────────────
+image:
+  db:
+    tag: '15.1.0.147'
+
+# ─────────────────────────────────────────
+# 환경변수
+# ─────────────────────────────────────────
+environment:
+  studio:
+    DEFAULT_ORGANIZATION_NAME: 'Default Organization'
+    DEFAULT_PROJECT_NAME: 'Service DB'
+
+# ─────────────────────────────────────────
+# PVC (PostgreSQL용)
+# ─────────────────────────────────────────
+persistence:
+  db:
+    enabled: true
+    storageClassName: 'longhorn'
+    size: 30Gi
+  functions:
+    enabled: true
+    storageClassName: 'local-path'
+    size: 1Gi

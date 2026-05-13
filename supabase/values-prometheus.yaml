@@ -1,0 +1,74 @@
+# Prometheus
+prometheus:
+  prometheusSpec:
+    nodeSelector:
+      node-role.kubernetes.io/control-plane: 'true'
+    tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        effect: NoSchedule
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: local-path
+          accessModes: ['ReadWriteOnce']
+          resources:
+            requests:
+              storage: 20Gi
+    retention: 15d
+    resources:
+      requests:
+        memory: 512Mi
+      limits:
+        memory: 2Gi
+
+# Grafana
+grafana:
+  nodeSelector:
+    node-role.kubernetes.io/control-plane: 'true'
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      effect: NoSchedule
+  adminPassword: 'admin' # 나중에 변경
+  persistence:
+    enabled: true
+    storageClassName: local-path
+    size: 1Gi
+  service:
+    type: ClusterIP
+
+# Alertmanager (사용 안 하면 비활성화 가능)
+alertmanager:
+  alertmanagerSpec:
+    nodeSelector:
+      node-role.kubernetes.io/control-plane: 'true'
+    tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        effect: NoSchedule
+    storage:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: local-path
+          accessModes: ['ReadWriteOnce']
+          resources:
+            requests:
+              storage: 2Gi
+
+# Node Exporter (모든 노드, DaemonSet이라 자동)
+nodeExporter:
+  enabled: true
+
+# Kube-state-metrics
+kube-state-metrics:
+  nodeSelector:
+    node-role.kubernetes.io/control-plane: 'true'
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      effect: NoSchedule
+
+# Operator
+prometheusOperator:
+  nodeSelector:
+    node-role.kubernetes.io/control-plane: 'true'
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      effect: NoSchedule

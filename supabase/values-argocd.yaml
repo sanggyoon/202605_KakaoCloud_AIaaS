@@ -1,0 +1,38 @@
+global:
+  nodeSelector:
+    node-role.kubernetes.io/control-plane: 'true'
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      effect: NoSchedule
+
+# Web UI 서버
+server:
+  service:
+    type: ClusterIP
+  # Ingress는 별도 매니페스트로
+  extraArgs:
+    - --insecure # nginx ingress가 TLS termination 하므로
+
+# Repo Server
+repoServer:
+  replicas: 1
+
+# Application Controller
+controller:
+  replicas: 1
+
+# Redis (ArgoCD 내장, 우리 Redis와 별개)
+redis:
+  enabled: true
+
+# Dex (SSO) - 안 씀
+dex:
+  enabled: false
+
+# ApplicationSet Controller
+applicationSet:
+  replicas: 1
+
+# Notifications Controller
+notifications:
+  enabled: false

@@ -28,3 +28,8 @@ Thumbs.db
 tmp/
 *.tmp
 *.bak
+
+# supabase secret
+generate-apply-secrets
+supabase/secrets-*
+.env

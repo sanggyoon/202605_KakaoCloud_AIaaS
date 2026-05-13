@@ -1,0 +1,107 @@
+secret:
+  jwt:
+    secretRef: 'supabase-jwt'
+    secretRefKey:
+      anonKey: anonKey
+      serviceKey: serviceKey
+      secret: secret
+  db:
+    secretRef: 'supabase-db'
+    secretRefKey:
+      username: username
+      password: password
+      database: database
+  dashboard:
+    secretRef: 'supabase-dashboard'
+    secretRefKey:
+      username: username
+      password: password
+  smtp:
+    secretRef: 'supabase-smtp'
+    secretRefKey:
+      username: username
+      password: password
+  analytics:
+    secretRef: 'supabase-analytics'
+    secretRefKey:
+      apiKey: apiKey
+  s3:
+    secretRef: 'supabase-s3'
+    secretRefKey:
+      keyId: keyId
+      accessKey: accessKey
+
+deployment:
+  db:
+    enabled: true
+    nodeSelector:
+      workload: gpu
+  studio:
+    enabled: true
+    nodeSelector:
+      workload: gpu
+  kong:
+    enabled: true
+    nodeSelector:
+      workload: gpu
+  rest:
+    enabled: true
+    nodeSelector:
+      workload: gpu
+  meta:
+    enabled: true
+    nodeSelector:
+      workload: gpu
+  storage:
+    enabled: true
+    nodeSelector:
+      workload: gpu
+  imgproxy:
+    enabled: true
+    nodeSelector:
+      workload: gpu
+  functions:
+    enabled: true
+    nodeSelector:
+      workload: gpu
+  minio:
+    enabled: true
+    nodeSelector:
+      workload: gpu
+
+  # 사용 안 함
+  auth:
+    enabled: false
+  realtime:
+    enabled: false
+  analytics:
+    enabled: false
+  vector:
+    enabled: false
+
+environment:
+  studio:
+    DEFAULT_ORGANIZATION_NAME: 'AI Training'
+    DEFAULT_PROJECT_NAME: 'AI DB'
+
+persistence:
+  db:
+    enabled: true
+    storageClassName: 'local-path'
+    size: 20Gi
+  functions:
+    enabled: true
+    storageClassName: 'local-path'
+    size: 1Gi
+  imgproxy:
+    enabled: true
+    storageClassName: 'local-path'
+    size: 1Gi
+  minio:
+    secretRef: 'supabase-minio'
+    secretRefKey:
+      user: user
+      password: password
+
+ingress:
+  enabled: false

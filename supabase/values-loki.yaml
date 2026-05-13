@@ -1,0 +1,93 @@
+# SingleBinary 모드 (소규모용)
+deploymentMode: SingleBinary
+
+loki:
+  auth_enabled: false
+
+  commonConfig:
+    replication_factor: 1
+
+  storage:
+    type: filesystem
+
+  schemaConfig:
+    configs:
+      - from: 2024-01-01
+        store: tsdb
+        object_store: filesystem
+        schema: v13
+        index:
+          prefix: loki_index_
+          period: 24h
+
+  pattern_ingester:
+    enabled: false
+
+  ruler:
+    enable_api: false
+
+  limits_config:
+    allow_structured_metadata: true
+    volume_enabled: true
+
+singleBinary:
+  replicas: 1
+  nodeSelector:
+    workload: data
+  persistence:
+    enabled: true
+    storageClass: longhorn
+    size: 30Gi
+
+# 비활성화 (SingleBinary 모드)
+backend:
+  replicas: 0
+read:
+  replicas: 0
+write:
+  replicas: 0
+ingester:
+  replicas: 0
+querier:
+  replicas: 0
+queryFrontend:
+  replicas: 0
+queryScheduler:
+  replicas: 0
+distributor:
+  replicas: 0
+compactor:
+  replicas: 0
+indexGateway:
+  replicas: 0
+bloomCompactor:
+  replicas: 0
+bloomGateway:
+  replicas: 0
+
+# 테스트/모니터링 비활성화
+test:
+  enabled: false
+lokiCanary:
+  enabled: false
+monitoring:
+  selfMonitoring:
+    enabled: false
+    grafanaAgent:
+      installOperator: false
+  lokiCanary:
+    enabled: false
+
+# MinIO (Loki는 자체 MinIO 안 씀, filesystem 사용)
+minio:
+  enabled: false
+
+# Gateway 비활성화 (단순화)
+gateway:
+  enabled: false
+
+# Chunks 캐시 비활성화 (Redis 안 씀)
+chunksCache:
+  enabled: false
+resultsCache:
+  enabled: false
