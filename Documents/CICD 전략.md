@@ -121,8 +121,8 @@ kustomization.yaml 업데이트 커밋에 `[skip ci]` 태그를 붙여 GitHub Ac
 spec:
   source:
     repoURL: https://github.com/sanggyoon/202605_KakaoCloud_AIaaS.git
-    targetRevision: HEAD
-    path: k8s/4k-cinema          # Kustomize 자동 인식
+    targetRevision: main
+    path: Ansible/manifests/4k-cinema   # Kustomize 자동 인식
   destination:
     server: https://kubernetes.default.svc
     namespace: fe
@@ -197,11 +197,11 @@ images:
 
 ```bash
 # 롤백 (이전 버전으로)
-kubectl rollout undo deployment/4k-cinema -n fe
+kubectl rollout undo deployment/frontend -n fe
 
 # 특정 버전으로 롤백
-kubectl rollout history deployment/4k-cinema -n fe
-kubectl rollout undo deployment/4k-cinema -n fe --to-revision=2
+kubectl rollout history deployment/frontend -n fe
+kubectl rollout undo deployment/frontend -n fe --to-revision=2
 ```
 
 ---
@@ -258,9 +258,9 @@ spec:
 | GitHub Actions 실패 — git push 권한 오류 | 동일. Workflow permissions 확인 |
 | ArgoCD OutOfSync 해소 안 됨 | `Ansible/manifests/4k-cinema/` 경로·repoURL 오타, Git 인증 확인 |
 | Pod `ImagePullBackOff` | GHCR 패키지 visibility(Public/Private), imagePullSecret 확인 |
-| Pod `CrashLoopBackOff` | `kubectl logs -n fe -l app=4k-cinema` → Next.js 빌드 오류 or 환경변수 누락 |
+| Pod `CrashLoopBackOff` | `kubectl logs -n fe -l app=frontend` → Next.js 빌드 오류 or 환경변수 누락 |
 | TLS 인증서 미발급 | `kubectl describe certificate -n fe`, cert-manager 80포트 HTTP-01 챌린지 확인 |
-| 배포 후 구버전 응답 | `kubectl get pods -n fe -o wide`로 Pod 갱신 여부 확인, `kubectl rollout status deployment/4k-cinema -n fe` |
+| 배포 후 구버전 응답 | `kubectl get pods -n fe -o wide`로 Pod 갱신 여부 확인, `kubectl rollout status deployment/frontend -n fe` |
 
 ---
 

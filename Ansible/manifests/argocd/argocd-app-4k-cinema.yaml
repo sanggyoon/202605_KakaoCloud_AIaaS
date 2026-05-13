@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/sanggyoon/202605_KakaoCloud_AIaaS.git
-    targetRevision: HEAD
+    targetRevision: main
     path: Ansible/manifests/4k-cinema
   destination:
     server: https://kubernetes.default.svc

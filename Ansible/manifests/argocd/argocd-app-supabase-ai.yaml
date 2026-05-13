@@ -11,7 +11,7 @@ spec:
       targetRevision: 0.5.6
       helm:
         valueFiles:
-          - $values/values/values-ai.yaml
+          - $values/Ansible/values/values-ai.yaml
     - repoURL: https://github.com/sanggyoon/202605_KakaoCloud_AIaaS.git
       targetRevision: main
       ref: values

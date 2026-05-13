@@ -111,4 +111,3 @@ spec:
                 port:
                   number: 80
 
-# Test sync $(date)
