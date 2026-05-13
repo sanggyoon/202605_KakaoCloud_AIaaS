@@ -37,7 +37,7 @@ GitHub Actions Runner (ubuntu-latest)
   │     ghcr.io/sanggyoon/4k-cinema:latest  ← 가변 태그
   │
   ├─ ③ kustomization.yaml 태그 업데이트
-  │     k8s/4k-cinema/kustomization.yaml
+  │     Ansible/manifests/4k-cinema/kustomization.yaml
   │     newTag: "abc1234" (git short SHA 7자)
   │
   └─ ④ git commit & push [skip ci]
@@ -45,11 +45,11 @@ GitHub Actions Runner (ubuntu-latest)
 
 ArgoCD (argocd.4kakao.kro.kr)
   │
-  │  Git 폴링 (~3분 주기) → k8s/4k-cinema/ 변경 감지
+  │  Git 폴링 (~3분 주기) → Ansible/manifests/4k-cinema/ 변경 감지
   ▼
 K3s 클러스터 (fe 네임스페이스)
   │
-  └─ kubectl apply -k k8s/4k-cinema/
+  └─ kubectl apply -k Ansible/manifests/4k-cinema/
        → Deployment 롤링 업데이트 (2 replica)
        → Pod: vm2 또는 vm3 (workload=app)
        → 도메인: https://cinema.4kakao.kro.kr
@@ -117,7 +117,7 @@ kustomization.yaml 업데이트 커밋에 `[skip ci]` 태그를 붙여 GitHub Ac
 ### Application 설정
 
 ```yaml
-# k8s/argocd-apps/4k-cinema.yaml
+# Ansible/manifests/argocd/argocd-app-4k-cinema.yaml
 spec:
   source:
     repoURL: https://github.com/sanggyoon/202605_KakaoCloud_AIaaS.git
@@ -138,7 +138,7 @@ spec:
 
 ```
 GitHub Actions
-  → k8s/4k-cinema/kustomization.yaml 수정 (newTag 변경)
+  → Ansible/manifests/4k-cinema/kustomization.yaml 수정 (newTag 변경)
   → git push
   → ArgoCD 감지 (~3분)
   → Deployment 이미지 태그 변경 → 롤링 업데이트
@@ -164,7 +164,7 @@ kubectl get application 4k-cinema -n argocd
 ## 5. 매니페스트 구조 (Kustomize)
 
 ```
-k8s/4k-cinema/
+Ansible/manifests/4k-cinema/
 ├── kustomization.yaml   ← CI가 newTag 자동 업데이트
 ├── deployment.yaml
 ├── service.yaml
@@ -243,7 +243,7 @@ spec:
 | 상황 | 동작 |
 |------|------|
 | `4K_FE/` 코드 변경 후 main push | CI 자동 실행 → 이미지 빌드 → 배포 |
-| `k8s/4k-cinema/*.yaml` 직접 수정 후 push | ArgoCD가 감지 → 클러스터 적용 (CI 미실행) |
+| `Ansible/manifests/4k-cinema/*.yaml` 직접 수정 후 push | ArgoCD가 감지 → 클러스터 적용 (CI 미실행) |
 | 클러스터에서 수동 `kubectl edit` | ArgoCD selfHeal이 Git 상태로 복원 |
 | `kustomization.yaml` newTag 수동 변경 push | ArgoCD가 해당 SHA 태그 이미지로 배포 |
 | main 외 브랜치 push | CI/CD 미트리거 |
@@ -256,7 +256,7 @@ spec:
 |------|----------|
 | GitHub Actions 실패 — GHCR push 권한 오류 | Repository Settings → Actions → General → Workflow permissions → `Read and write permissions` 확인 |
 | GitHub Actions 실패 — git push 권한 오류 | 동일. Workflow permissions 확인 |
-| ArgoCD OutOfSync 해소 안 됨 | `k8s/4k-cinema/` 경로·repoURL 오타, Git 인증 확인 |
+| ArgoCD OutOfSync 해소 안 됨 | `Ansible/manifests/4k-cinema/` 경로·repoURL 오타, Git 인증 확인 |
 | Pod `ImagePullBackOff` | GHCR 패키지 visibility(Public/Private), imagePullSecret 확인 |
 | Pod `CrashLoopBackOff` | `kubectl logs -n fe -l app=4k-cinema` → Next.js 빌드 오류 or 환경변수 누락 |
 | TLS 인증서 미발급 | `kubectl describe certificate -n fe`, cert-manager 80포트 HTTP-01 챌린지 확인 |
@@ -272,12 +272,12 @@ spec:
 
 ```
 .github/workflows/deploy-be.yml
-k8s/be/
+Ansible/manifests/be/
   ├── kustomization.yaml
   ├── deployment.yaml
   ├── service.yaml
   └── ingress.yaml
-k8s/argocd-apps/be.yaml
+Ansible/manifests/argocd/argocd-app-be.yaml
 ```
 
 paths 트리거만 `BE/**`로 변경.
