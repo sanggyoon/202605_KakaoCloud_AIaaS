@@ -1,8 +1,7 @@
 'use client';
 
+import { useState } from 'react';
 import { Movie } from '@/app/lib/data';
-import ClimaxGraph from './ClimaxGraph';
-import PatternChip from './PatternChip';
 
 interface PosterCardProps {
   movie: Movie;
@@ -13,13 +12,39 @@ interface PosterCardProps {
   onTogglePref: (id: string, kind: 'like' | 'dislike') => void;
 }
 
+const MAX_TILT = 14;
+
 export default function PosterCard({ movie, isHovered, onHover, onClick, pref, onTogglePref }: PosterCardProps) {
+  const [rot, setRot] = useState({ x: 0, y: 0 });
+  const [glare, setGlare] = useState({ x: 50, y: 50 });
+
+  function handleMouseMove(e: React.MouseEvent<HTMLElement>) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const nx = (e.clientX - rect.left) / rect.width - 0.5;
+    const ny = (e.clientY - rect.top) / rect.height - 0.5;
+    setRot({ x: -ny * MAX_TILT, y: nx * MAX_TILT });
+    setGlare({ x: (nx + 0.5) * 100, y: (ny + 0.5) * 100 });
+  }
+
+  function handleMouseLeave() {
+    setRot({ x: 0, y: 0 });
+    setGlare({ x: 50, y: 50 });
+    onHover(false);
+  }
+
   return (
     <article
       onMouseEnter={() => onHover(true)}
-      onMouseLeave={() => onHover(false)}
+      onMouseLeave={handleMouseLeave}
+      onMouseMove={handleMouseMove}
       onClick={onClick}
-      style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', gap: 10 }}
+      style={{
+        cursor: 'pointer', display: 'flex', flexDirection: 'column', gap: 10,
+        transform: `perspective(700px) rotateX(${rot.x}deg) rotateY(${rot.y}deg)`,
+        transformStyle: 'preserve-3d',
+        transition: isHovered ? 'transform 0.08s linear' : 'transform 0.55s cubic-bezier(.2,.7,.2,1)',
+        willChange: 'transform',
+      }}
     >
       <div style={{
         position: 'relative',
@@ -29,10 +54,9 @@ export default function PosterCard({ movie, isHovered, onHover, onClick, pref, o
         overflow: 'hidden',
         background: movie.poster,
         boxShadow: isHovered
-          ? '0 18px 50px -10px rgba(0,0,0,0.7), 0 0 0 1px color-mix(in oklch, var(--accent) 50%, transparent), 0 0 30px color-mix(in oklch, var(--accent) 25%, transparent)'
+          ? '0 24px 60px -10px rgba(0,0,0,0.8), 0 0 0 1px color-mix(in oklch, var(--accent) 50%, transparent), 0 0 40px color-mix(in oklch, var(--accent) 20%, transparent)'
           : '0 8px 24px -8px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.05)',
-        transform: isHovered ? 'translateY(-4px)' : 'translateY(0)',
-        transition: 'transform 0.3s cubic-bezier(.2,.7,.2,1), box-shadow 0.3s',
+        transition: 'box-shadow 0.35s',
       }}>
         {/* spotlight */}
         <div style={{
@@ -44,6 +68,14 @@ export default function PosterCard({ movie, isHovered, onHover, onClick, pref, o
         <div style={{
           position: 'absolute', inset: 0,
           background: 'linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.55) 100%)',
+          pointerEvents: 'none',
+        }} />
+        {/* glare — follows mouse */}
+        <div style={{
+          position: 'absolute', inset: 0,
+          background: `radial-gradient(circle at ${glare.x}% ${glare.y}%, rgba(255,255,255,0.13) 0%, transparent 60%)`,
+          opacity: isHovered ? 1 : 0,
+          transition: isHovered ? 'opacity 0.2s' : 'opacity 0.4s',
           pointerEvents: 'none',
         }} />
         {/* year badge */}
@@ -60,7 +92,7 @@ export default function PosterCard({ movie, isHovered, onHover, onClick, pref, o
           }}>{movie.year}</span>
         </div>
 
-        {/* title on poster — fades on hover */}
+        {/* title on poster */}
         <div style={{
           position: 'absolute', left: 12, right: 12, bottom: 14,
           color: movie.posterAccent,
@@ -70,30 +102,8 @@ export default function PosterCard({ movie, isHovered, onHover, onClick, pref, o
           lineHeight: 1.05,
           letterSpacing: '-0.01em',
           textShadow: '0 2px 12px rgba(0,0,0,0.7)',
-          opacity: isHovered ? 0 : 1,
-          transition: 'opacity 0.25s',
         }}>
           {movie.title}
-        </div>
-
-        {/* hover overlay: climax graph */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          background: 'linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.85) 60%)',
-          opacity: isHovered ? 1 : 0,
-          transition: 'opacity 0.3s',
-          pointerEvents: 'none',
-          display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
-          padding: 14,
-        }}>
-          <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.55)', letterSpacing: '0.18em', fontWeight: 700, marginBottom: 6 }}>CLIMAX GRAPH</div>
-          <div style={{ height: 80, marginBottom: 8 }}>
-            <ClimaxGraph data={movie.graph} color="var(--accent)" showHover={false} strokeWidth={2} />
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-            <PatternChip pattern={movie.pattern} active />
-            <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.5)', fontFamily: 'var(--font-mono), monospace' }}>{movie.runtime}min</span>
-          </div>
         </div>
       </div>
 

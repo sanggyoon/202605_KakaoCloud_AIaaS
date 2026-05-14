@@ -195,7 +195,7 @@ export default function Dashboard() {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 20 }}>
             <h2 style={{ fontSize: 22, fontWeight: 700, letterSpacing: '-0.02em', margin: 0 }}>오늘의 추천 영화</h2>
             <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)' }}>
-              {filtered.length}편 · 포스터에 마우스를 올려 클라이맥스 그래프를 확인하세요
+              {filtered.length}편
             </span>
           </div>
 
