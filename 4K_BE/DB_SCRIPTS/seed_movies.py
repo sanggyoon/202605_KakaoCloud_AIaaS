@@ -1,0 +1,191 @@
+#!/usr/bin/env python3
+"""
+TMDB 메타데이터를 가져와 Data Supabase(vm4) service.movies 테이블에 저장
+
+사용법:
+  export TMDB_API_KEY=<your_key>
+  pip install httpx
+  python scripts/seed_movies.py
+"""
+import os
+import time
+import httpx
+
+# ── 설정 ─────────────────────────────────────────────────────────
+DATA_URL = os.getenv("DATA_SUPABASE_URL", "https://data.4kakao.kro.kr")
+DATA_KEY = os.getenv(
+    "DATA_SUPABASE_KEY",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic2VydmljZV9yb2xlIiwiaXNzIjoic3VwYWJhc2UiLCJpYXQiOjE3Nzg1NjI5NzcsImV4cCI6MjA5MzkyMjk3N30.g3L9BYFvsz8iVcj6vMd3F66p8ZEU0sI5iE_oS6xQsJ8",
+)
+TMDB_KEY  = os.getenv("TMDB_API_KEY", "")
+TMDB_BASE = "https://api.themoviedb.org/3"
+BATCH_SIZE = 50
+# TMDB 무료 플랜: 40 req/10s → 0.26s 간격
+RATE_LIMIT_DELAY = 0.26
+# ─────────────────────────────────────────────────────────────────
+
+TMDB_IDS = [
+    58, 155, 285, 350, 559, 588, 591, 675, 752, 767, 810, 920, 950,
+    1124, 1250, 1265, 1271, 1402, 1417, 1422, 1427, 1579, 1593, 1724,
+    1726, 1735, 1865, 1930, 1949, 2062, 4588, 4977, 4982, 5559, 6477,
+    6479, 6977, 7345, 7485, 8065, 8355, 8363, 8681, 8909, 8966, 9072,
+    9339, 9502, 9757, 10138, 10191, 10192, 10193, 10195, 10198, 10527,
+    10681, 11324, 11619, 11631, 12155, 12244, 12429, 12444, 12445, 13009,
+    13078, 13183, 13576, 13971, 14160, 14161, 14574, 14836, 16869, 17654,
+    17903, 18239, 18240, 18785, 19173, 19994, 19995, 20352, 22803, 22832,
+    23823, 24021, 24428, 26466, 27205, 30112, 32657, 36557, 38055, 38321,
+    38365, 38575, 38700, 38757, 39254, 43347, 43947, 44896, 46195, 47971,
+    48650, 49013, 49026, 49051, 49444, 49519, 49521, 49529, 49530, 50014,
+    50619, 50620, 50646, 50727, 51876, 57158, 57214, 57800, 59440, 62177,
+    68718, 68721, 68726, 72105, 72190, 73861, 75656, 76341, 76492, 76600,
+    77338, 78192, 80321, 82023, 82507, 82690, 82702, 83533, 84308, 85877,
+    87827, 92060, 93456, 99861, 101299, 102382, 102651, 105864, 106646,
+    107257, 109428, 109445, 120467, 122126, 122917, 135397, 137113, 138843,
+    140300, 140607, 142487, 146233, 150540, 150689, 152601, 156022, 157336,
+    166426, 168259, 173185, 177572, 181808, 184314, 198184, 198663, 204082,
+    205596, 207703, 209112, 210577, 214756, 216015, 228150, 232672, 242582,
+    244786, 245891, 249397, 253376, 257211, 258216, 259693, 260513, 260514,
+    263115, 269149, 269955, 271110, 273477, 273481, 278986, 283995, 284052,
+    284053, 284054, 286217, 290098, 292431, 293660, 296096, 297090, 297762,
+    299534, 299536, 301528, 313369, 315162, 315635, 318256, 321258, 324552,
+    324786, 324857, 329865, 330457, 331482, 333339, 334535, 335983, 335984,
+    337167, 337401, 337404, 338803, 341054, 346364, 346698, 351286, 353069,
+    354912, 361743, 363088, 372058, 373571, 374720, 378064, 378236, 381284,
+    383498, 385687, 396535, 399566, 400535, 402431, 406997, 412117, 414419,
+    414906, 419116, 419430, 420818, 424694, 425274, 429617, 436270, 436969,
+    438631, 439079, 440249, 441168, 447332, 447365, 453395, 454626, 458156,
+    458293, 458423, 460465, 464052, 466272, 475557, 483685, 490132, 493529,
+    493922, 495764, 496243, 497698, 499191, 502356, 505642, 507086, 508442,
+    508642, 508947, 510657, 514847, 516486, 519182, 524047, 530385, 530915,
+    533535, 537915, 545609, 545611, 546554, 550988, 566525, 567609, 568124,
+    569094, 572802, 577922, 603692, 609681, 613504, 614696, 615457, 615677,
+    616037, 619979, 623983, 634649, 635302, 637649, 645710, 646380, 664413,
+    664767, 677638, 693134, 713704, 737057, 744275, 755898, 764339, 766507,
+    774444, 791373, 798645, 801335, 803796, 805681, 829557, 829560, 841755,
+    843527, 848116, 851644, 854804, 866398, 872585, 878667, 911430, 912649,
+    928241, 933720, 939243, 963261, 967998, 976573, 976912, 985939, 1002398,
+    1007401, 1007757, 1010581, 1011985, 1022789, 1031774, 1038392, 1072790,
+    1075175, 1084242, 1087040, 1156593, 1173476, 1173559, 1177445, 1184918,
+    1196067, 1234731, 1235192, 1241752, 1241982, 1242898, 1252309, 1270125,
+    1292662, 1311031, 1352874, 1357633, 1368166, 1404791, 1419406, 1426822,
+]
+
+
+def tmdb_get(path: str, params: dict = {}) -> dict:
+    r = httpx.get(
+        f"{TMDB_BASE}/{path}",
+        params={"api_key": TMDB_KEY, "language": "ko-KR", **params},
+        timeout=10,
+    )
+    r.raise_for_status()
+    return r.json()
+
+
+def pick_trailer(videos: list[dict]) -> str | None:
+    priority = [
+        lambda v: v["site"] == "YouTube" and v["type"] == "Trailer" and v.get("iso_639_1") == "ko",
+        lambda v: v["site"] == "YouTube" and v["type"] == "Trailer",
+        lambda v: v["site"] == "YouTube" and v["type"] == "Teaser",
+    ]
+    for pred in priority:
+        match = next((v for v in videos if pred(v)), None)
+        if match:
+            return match["key"]
+    return None
+
+
+def fetch_movie(tmdb_id: int) -> dict | None:
+    try:
+        d = tmdb_get(f"movie/{tmdb_id}", {"append_to_response": "credits,videos"})
+    except httpx.HTTPStatusError as e:
+        print(f"  [SKIP] {tmdb_id}: HTTP {e.response.status_code}")
+        return None
+    except Exception as e:
+        print(f"  [WARN] {tmdb_id}: {e}")
+        return None
+
+    crew = d.get("credits", {}).get("crew", [])
+    director = next((c["name"] for c in crew if c["job"] == "Director"), None)
+    actors = ", ".join(c["name"] for c in d.get("credits", {}).get("cast", [])[:5])
+    trailer_key = pick_trailer(d.get("videos", {}).get("results", []))
+
+    release_year = None
+    if d.get("release_date"):
+        try:
+            release_year = int(d["release_date"][:4])
+        except ValueError:
+            pass
+
+    return {
+        "tmdb_id":        tmdb_id,
+        "imdb_id":        d.get("imdb_id"),
+        "title":          d.get("title"),
+        "original_title": d.get("original_title"),
+        "poster_path":    d.get("poster_path"),
+        "director":       director,
+        "release_year":   release_year,
+        "runtime":        d.get("runtime") or None,
+        "genre":          ", ".join(g["name"] for g in d.get("genres", [])),
+        "actors":         actors or None,
+        "overview":       d.get("overview") or None,
+        "youtube_key":    trailer_key,
+    }
+
+
+def upsert_batch(movies: list[dict]) -> None:
+    headers = {
+        "apikey":        DATA_KEY,
+        "Authorization": f"Bearer {DATA_KEY}",
+        "Content-Type":  "application/json",
+        "Prefer":        "resolution=merge-duplicates,return=minimal",
+    }
+    r = httpx.post(
+        f"{DATA_URL}/rest/v1/movies",
+        json=movies,
+        headers=headers,
+        timeout=30,
+    )
+    if r.status_code not in (200, 201):
+        print(f"  [ERROR] upsert 실패 {r.status_code}: {r.text[:200]}")
+    else:
+        print(f"  → {len(movies)}개 저장")
+
+
+def main() -> None:
+    if not TMDB_KEY:
+        raise SystemExit("TMDB_API_KEY 환경변수가 설정되지 않았습니다.\n  export TMDB_API_KEY=<your_key>")
+    if not DATA_KEY:
+        raise SystemExit("DATA_SUPABASE_KEY 환경변수가 설정되지 않았습니다.")
+
+    total = len(TMDB_IDS)
+    print(f"총 {total}개 영화 처리 시작\n")
+
+    batch: list[dict] = []
+    failed: list[int] = []
+
+    for i, tmdb_id in enumerate(TMDB_IDS, 1):
+        print(f"[{i:>3}/{total}] tmdb_id={tmdb_id:<10}", end="")
+        movie = fetch_movie(tmdb_id)
+        if movie:
+            batch.append(movie)
+            print(f"✓ {movie['title']}")
+        else:
+            failed.append(tmdb_id)
+
+        if len(batch) >= BATCH_SIZE:
+            upsert_batch(batch)
+            batch.clear()
+
+        time.sleep(RATE_LIMIT_DELAY)
+
+    if batch:
+        upsert_batch(batch)
+
+    print(f"\n완료")
+    print(f"  성공: {total - len(failed)}개")
+    if failed:
+        print(f"  실패: {failed}")
+
+
+if __name__ == "__main__":
+    main()

@@ -2,6 +2,11 @@
 .DS_Store
 *.pem
 
+# Python
+.venv/
+__pycache__/
+*.pyc
+
 # debug
 npm-debug.log*
 yarn-debug.log*
