@@ -10,4 +10,4 @@ resources:
 
 images:
   - name: ghcr.io/sanggyoon/4k-cinema
-    newTag: "50906da"
+    newTag: "050046d"
