@@ -168,7 +168,22 @@ def get_existing_tmdb_ids() -> set[int]:
     return ids
 
 
-def upsert_batch(movies: list[dict]) -> None:
+def verify_insert(tmdb_id: int) -> bool:
+    """upsert 직후 해당 tmdb_id가 실제로 DB에 있는지 확인."""
+    headers = {"apikey": DATA_KEY}
+    r = httpx.get(
+        f"{DATA_URL}/rest/v1/movies",
+        params={"select": "tmdb_id", "tmdb_id": f"eq.{tmdb_id}"},
+        headers=headers,
+        auth=(DATA_BASIC_USER, DATA_BASIC_PASS) if DATA_BASIC_USER else None,
+        verify=False,
+        timeout=10,
+    )
+    return r.status_code == 200 and len(r.json()) > 0
+
+
+def upsert_batch(movies: list[dict]) -> bool:
+    """movies 리스트를 Supabase에 일괄 upsert. 성공 여부 반환."""
     """movies 리스트를 Supabase에 일괄 upsert.
 
     - apikey 헤더: Supabase PostgREST 인증 (service_role → RLS 무시)
@@ -189,10 +204,11 @@ def upsert_batch(movies: list[dict]) -> None:
         timeout=30,
         verify=False,   # Staging 인증서 → SSL 검증 생략 (운영 도메인 전환 시 제거)
     )
-    if r.status_code not in (200, 201):
+    if r.status_code not in (200, 201, 204):
         print(f"  [ERROR] upsert 실패 {r.status_code}: {r.text[:200]}")
-    else:
-        print(f"  → {len(movies)}개 저장")
+        return False
+    print(f"  → {len(movies)}개 저장 (status: {r.status_code})")
+    return True
 
 
 def main() -> None:
@@ -207,6 +223,26 @@ def main() -> None:
 
     total = len(targets)
     print(f"처리할 영화: {total}개 (전체 {len(TMDB_IDS)}개 중 {len(existing)}개 이미 저장됨)\n")
+
+    # ── 테스트: 첫 번째 영화 1개 insert 후 DB 확인 ──────────────
+    if targets:
+        print("=== 테스트 insert (1개) ===")
+        test_movie = fetch_movie(targets[0])
+        if test_movie:
+            ok = upsert_batch([test_movie])
+            if ok:
+                found = verify_insert(targets[0])
+                if found:
+                    print(f"  ✅ DB 확인 완료 — tmdb_id={targets[0]} 실제로 저장됨\n")
+                else:
+                    print(f"  ❌ DB 확인 실패 — tmdb_id={targets[0]} 가 DB에 없음. 중단합니다.")
+                    return
+            else:
+                print("  ❌ upsert 실패. 중단합니다.")
+                return
+        targets = targets[1:]  # 테스트한 1개 제외
+        total = len(targets)
+    # ────────────────────────────────────────────────────────────
 
     batch: list[dict] = []
     failed: list[int] = []
