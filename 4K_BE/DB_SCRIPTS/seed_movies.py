@@ -3,27 +3,30 @@
 TMDB 메타데이터를 가져와 Data Supabase(vm4) service.movies 테이블에 저장
 
 사용법:
-  export TMDB_API_KEY=<your_key>
-  pip install httpx
-  python scripts/seed_movies.py
+  pip install httpx python-dotenv
+  # 4K_BE/DB_SCRIPTS/.env에 키 설정 후:
+  python 4K_BE/DB_SCRIPTS/seed_movies.py
 """
 import os
 import time
 import httpx
+from dotenv import load_dotenv
+
+# 스크립트와 같은 디렉토리의 .env 파일을 환경변수로 로드
+load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 
 # ── 설정 ─────────────────────────────────────────────────────────
-DATA_URL = os.getenv("DATA_SUPABASE_URL", "https://data.4kakao.kro.kr")
-DATA_KEY = os.getenv(
-    "DATA_SUPABASE_KEY",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic2VydmljZV9yb2xlIiwiaXNzIjoic3VwYWJhc2UiLCJpYXQiOjE3Nzg1NjI5NzcsImV4cCI6MjA5MzkyMjk3N30.g3L9BYFvsz8iVcj6vMd3F66p8ZEU0sI5iE_oS6xQsJ8",
-)
-TMDB_KEY  = os.getenv("TMDB_API_KEY", "")
-TMDB_BASE = "https://api.themoviedb.org/3"
-BATCH_SIZE = 50
-# TMDB 무료 플랜: 40 req/10s → 0.26s 간격
-RATE_LIMIT_DELAY = 0.26
+DATA_URL        = os.getenv("DATA_SUPABASE_URL", "https://data.4kakao.kro.kr")
+DATA_KEY        = os.getenv("DATA_SUPABASE_KEY", "")   # Supabase service_role JWT
+DATA_BASIC_USER = os.getenv("DATA_BASIC_USER", "")     # nginx Basic Auth 유저
+DATA_BASIC_PASS = os.getenv("DATA_BASIC_PASS", "")     # nginx Basic Auth 비밀번호
+TMDB_KEY        = os.getenv("TMDB_API_KEY", "")
+TMDB_BASE       = "https://api.themoviedb.org/3"
+BATCH_SIZE      = 50    # 한 번에 Supabase에 upsert할 행 수
+RATE_LIMIT_DELAY = 0.26  # TMDB 무료 플랜 제한: 40 req/10s → 요청 사이 0.26s 대기
 # ─────────────────────────────────────────────────────────────────
 
+# 저장할 영화의 TMDB ID 목록
 TMDB_IDS = [
     58, 155, 285, 350, 559, 588, 591, 675, 752, 767, 810, 920, 950,
     1124, 1250, 1265, 1271, 1402, 1417, 1422, 1427, 1579, 1593, 1724,
@@ -72,6 +75,7 @@ TMDB_IDS = [
 
 
 def tmdb_get(path: str, params: dict = {}) -> dict:
+    """TMDB API GET 요청. language=ko-KR로 한국어 응답 우선."""
     r = httpx.get(
         f"{TMDB_BASE}/{path}",
         params={"api_key": TMDB_KEY, "language": "ko-KR", **params},
@@ -82,6 +86,9 @@ def tmdb_get(path: str, params: dict = {}) -> dict:
 
 
 def pick_trailer(videos: list[dict]) -> str | None:
+    """YouTube 트레일러 키를 우선순위대로 선택.
+    한국어 트레일러 → 영어 트레일러 → 티저 순으로 fallback.
+    """
     priority = [
         lambda v: v["site"] == "YouTube" and v["type"] == "Trailer" and v.get("iso_639_1") == "ko",
         lambda v: v["site"] == "YouTube" and v["type"] == "Trailer",
@@ -95,7 +102,11 @@ def pick_trailer(videos: list[dict]) -> str | None:
 
 
 def fetch_movie(tmdb_id: int) -> dict | None:
+    """TMDB에서 영화 1편의 메타데이터를 가져와 movies 테이블 형태로 반환.
+    404 등 오류 시 None 반환 (건너뜀).
+    """
     try:
+        # credits: 감독·배우 정보 / videos: 트레일러 정보를 한 번에 요청
         d = tmdb_get(f"movie/{tmdb_id}", {"append_to_response": "credits,videos"})
     except httpx.HTTPStatusError as e:
         print(f"  [SKIP] {tmdb_id}: HTTP {e.response.status_code}")
@@ -104,9 +115,13 @@ def fetch_movie(tmdb_id: int) -> dict | None:
         print(f"  [WARN] {tmdb_id}: {e}")
         return None
 
+    # crew 중 job이 "Director"인 첫 번째 사람
     crew = d.get("credits", {}).get("crew", [])
     director = next((c["name"] for c in crew if c["job"] == "Director"), None)
+
+    # cast 상위 5명을 쉼표로 연결
     actors = ", ".join(c["name"] for c in d.get("credits", {}).get("cast", [])[:5])
+
     trailer_key = pick_trailer(d.get("videos", {}).get("results", []))
 
     release_year = None
@@ -119,31 +134,60 @@ def fetch_movie(tmdb_id: int) -> dict | None:
     return {
         "tmdb_id":        tmdb_id,
         "imdb_id":        d.get("imdb_id"),
-        "title":          d.get("title"),
-        "original_title": d.get("original_title"),
-        "poster_path":    d.get("poster_path"),
+        "title":          d.get("title"),           # ko-KR 제목 (없으면 원제)
+        "original_title": d.get("original_title"),  # 원어 제목
+        "poster_path":    d.get("poster_path"),      # 포스터 경로 (TMDB CDN 상대경로)
         "director":       director,
         "release_year":   release_year,
         "runtime":        d.get("runtime") or None,
         "genre":          ", ".join(g["name"] for g in d.get("genres", [])),
         "actors":         actors or None,
         "overview":       d.get("overview") or None,
-        "youtube_key":    trailer_key,
+        "youtube_key":    trailer_key,               # YouTube 영상 ID
     }
 
 
+def get_existing_tmdb_ids() -> set[int]:
+    """Supabase에 이미 저장된 tmdb_id 목록을 조회.
+    중복 TMDB API 호출을 방지하기 위해 스크립트 시작 시 1회 실행.
+    """
+    headers = {"apikey": DATA_KEY}
+    r = httpx.get(
+        f"{DATA_URL}/rest/v1/movies",
+        params={"select": "tmdb_id", "limit": "10000"},
+        headers=headers,
+        auth=(DATA_BASIC_USER, DATA_BASIC_PASS) if DATA_BASIC_USER else None,
+        verify=False,
+        timeout=30,
+    )
+    if r.status_code != 200:
+        print(f"[WARN] 기존 데이터 조회 실패 ({r.status_code}), 전체 처리합니다")
+        return set()
+    ids = {row["tmdb_id"] for row in r.json()}
+    print(f"이미 저장된 영화: {len(ids)}개\n")
+    return ids
+
+
 def upsert_batch(movies: list[dict]) -> None:
+    """movies 리스트를 Supabase에 일괄 upsert.
+
+    - apikey 헤더: Supabase PostgREST 인증 (service_role → RLS 무시)
+    - auth=(user, pass): nginx Ingress Basic Auth 통과용
+    - Prefer: merge-duplicates → tmdb_id 중복 시 UPDATE로 처리
+    - verify=False: Let's Encrypt Staging 인증서라 SSL 검증 생략
+    """
     headers = {
-        "apikey":        DATA_KEY,
-        "Authorization": f"Bearer {DATA_KEY}",
-        "Content-Type":  "application/json",
-        "Prefer":        "resolution=merge-duplicates,return=minimal",
+        "apikey":       DATA_KEY,
+        "Content-Type": "application/json",
+        "Prefer":       "resolution=merge-duplicates,return=minimal",
     }
     r = httpx.post(
         f"{DATA_URL}/rest/v1/movies",
         json=movies,
         headers=headers,
+        auth=(DATA_BASIC_USER, DATA_BASIC_PASS),
         timeout=30,
+        verify=False,   # Staging 인증서 → SSL 검증 생략 (운영 도메인 전환 시 제거)
     )
     if r.status_code not in (200, 201):
         print(f"  [ERROR] upsert 실패 {r.status_code}: {r.text[:200]}")
@@ -153,38 +197,46 @@ def upsert_batch(movies: list[dict]) -> None:
 
 def main() -> None:
     if not TMDB_KEY:
-        raise SystemExit("TMDB_API_KEY 환경변수가 설정되지 않았습니다.\n  export TMDB_API_KEY=<your_key>")
+        raise SystemExit("TMDB_API_KEY 환경변수가 설정되지 않았습니다.\n  .env 파일에 TMDB_API_KEY=<your_key> 추가")
     if not DATA_KEY:
         raise SystemExit("DATA_SUPABASE_KEY 환경변수가 설정되지 않았습니다.")
 
-    total = len(TMDB_IDS)
-    print(f"총 {total}개 영화 처리 시작\n")
+    # 이미 저장된 tmdb_id는 건너뜀
+    existing = get_existing_tmdb_ids()
+    targets = [tid for tid in TMDB_IDS if tid not in existing]
+
+    total = len(targets)
+    print(f"처리할 영화: {total}개 (전체 {len(TMDB_IDS)}개 중 {len(existing)}개 이미 저장됨)\n")
 
     batch: list[dict] = []
     failed: list[int] = []
 
-    for i, tmdb_id in enumerate(TMDB_IDS, 1):
+    for i, tmdb_id in enumerate(targets, 1):
         print(f"[{i:>3}/{total}] tmdb_id={tmdb_id:<10}", end="")
         movie = fetch_movie(tmdb_id)
+
         if movie:
             batch.append(movie)
             print(f"✓ {movie['title']}")
         else:
             failed.append(tmdb_id)
 
+        # BATCH_SIZE(50)개 모이면 즉시 upsert 후 배치 초기화
         if len(batch) >= BATCH_SIZE:
             upsert_batch(batch)
             batch.clear()
 
         time.sleep(RATE_LIMIT_DELAY)
 
+    # 마지막 50개 미만 남은 배치 처리
     if batch:
         upsert_batch(batch)
 
     print(f"\n완료")
-    print(f"  성공: {total - len(failed)}개")
+    print(f"  신규 저장: {total - len(failed)}개")
+    print(f"  기존 스킵: {len(existing)}개")
     if failed:
-        print(f"  실패: {failed}")
+        print(f"  실패 목록: {failed}")
 
 
 if __name__ == "__main__":

@@ -28,6 +28,47 @@ spec:
                 port:
                   number: 3000
 ---
+# data Supabase REST API (Kong) — Basic Auth 없음, Supabase JWT로 인증
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: supabase-data-api
+  namespace: data
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - data.4kakao.kro.kr
+      secretName: data-supabase-tls
+  rules:
+    - host: data.4kakao.kro.kr
+      http:
+        paths:
+          - path: /rest/v1
+            pathType: Prefix
+            backend:
+              service:
+                name: supabase-data-supabase-kong
+                port:
+                  number: 8000
+          - path: /auth/v1
+            pathType: Prefix
+            backend:
+              service:
+                name: supabase-data-supabase-kong
+                port:
+                  number: 8000
+          - path: /storage/v1
+            pathType: Prefix
+            backend:
+              service:
+                name: supabase-data-supabase-kong
+                port:
+                  number: 8000
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
