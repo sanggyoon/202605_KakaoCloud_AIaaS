@@ -1,14 +1,11 @@
 'use client';
 
-import { useState } from 'react';
-import { Movie, MOVIES } from '@/app/lib/data';
-import ClimaxGraph from './ClimaxGraph';
-import MiniGraph from './MiniGraph';
-import Poster from './Poster';
-import PatternChip from './PatternChip';
+import { useMemo } from 'react';
+import { Movie, posterUrl, genreList, castList } from '@/app/lib/data';
 
 interface DetailOverlayProps {
   movie: Movie;
+  movies: Movie[];
   onClose: () => void;
   onSelectMovie: (m: Movie) => void;
 }
@@ -17,9 +14,18 @@ const sectionLabel: React.CSSProperties = {
   fontSize: 10, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.2em', fontWeight: 700, margin: 0,
 };
 
-export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailOverlayProps) {
-  const similar = movie.similar.map((id) => MOVIES.find((m) => m.id === id)).filter((m): m is Movie => Boolean(m));
-  const [hoverIdx, setHoverIdx] = useState<number | null>(null);
+export default function DetailOverlay({ movie, movies, onClose, onSelectMovie }: DetailOverlayProps) {
+  const imgUrl = posterUrl(movie.poster_path);
+  const genres = genreList(movie.genre);
+  const cast = castList(movie.actors);
+
+  const similar = useMemo(() => {
+    return movies
+      .filter((m) => m.tmdb_id !== movie.tmdb_id)
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 4);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [movie.tmdb_id]);
 
   return (
     <div style={{
@@ -40,102 +46,137 @@ export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailO
         </button>
 
         <div style={{ display: 'grid', gridTemplateColumns: '240px 1fr', gap: 32 }}>
-          <div>
-            <Poster movie={movie} size="xl" />
+          {/* Poster */}
+          <div style={{ position: 'relative', width: '100%', aspectRatio: '2 / 3', borderRadius: 10, overflow: 'hidden', background: '#111218', flexShrink: 0 }}>
+            {imgUrl ? (
+              <img src={imgUrl} alt={movie.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+            ) : (
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(155deg, #1a2840 0%, #0a1020 50%, #2a1810 100%)', display: 'grid', placeItems: 'center' }}>
+                <span style={{ fontSize: 48 }}>🎬</span>
+              </div>
+            )}
           </div>
 
           <div>
             <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.2em', fontWeight: 700, marginBottom: 8 }}>
-              {movie.year} · {movie.runtime}MIN
+              {movie.release_year}{movie.runtime ? ` · ${movie.runtime}MIN` : ''}
             </div>
-            <h1 style={{ fontFamily: 'var(--font-playfair), serif', fontSize: 56, fontWeight: 800, margin: 0, letterSpacing: '-0.03em', lineHeight: 0.95, color: 'var(--fg)' }}>
+            <h1 style={{ fontFamily: 'var(--font-playfair), serif', fontSize: 48, fontWeight: 800, margin: 0, letterSpacing: '-0.03em', lineHeight: 0.95, color: 'var(--fg)' }}>
               {movie.title}
             </h1>
-            <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.55)', marginTop: 6 }}>{movie.titleKo}</div>
+            {movie.original_title && movie.original_title !== movie.title && (
+              <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.55)', marginTop: 6 }}>{movie.original_title}</div>
+            )}
 
             <div style={{ display: 'flex', gap: 8, marginTop: 16, flexWrap: 'wrap', alignItems: 'center' }}>
-              <PatternChip pattern={movie.pattern} active />
-              {movie.genre.map((g) => (
+              {genres.map((g) => (
                 <span key={g} style={{ padding: '5px 10px', fontSize: 10, fontWeight: 600, letterSpacing: '0.06em', borderRadius: 4, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>{g}</span>
               ))}
             </div>
 
-            <section style={{ marginTop: 24 }}>
-              <h3 style={sectionLabel}>SYNOPSIS</h3>
-              <p style={{ fontSize: 14, lineHeight: 1.65, color: 'rgba(255,255,255,0.85)', margin: '10px 0 0' }}>{movie.synopsis}</p>
-            </section>
+            {movie.overview && (
+              <section style={{ marginTop: 24 }}>
+                <h3 style={sectionLabel}>SYNOPSIS</h3>
+                <p style={{ fontSize: 14, lineHeight: 1.65, color: 'rgba(255,255,255,0.85)', margin: '10px 0 0' }}>{movie.overview}</p>
+              </section>
+            )}
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginTop: 22 }}>
-              <section>
-                <h3 style={sectionLabel}>DIRECTOR</h3>
-                <div style={{ fontSize: 14, marginTop: 8 }}>{movie.director}</div>
-              </section>
-              <section>
-                <h3 style={sectionLabel}>CAST</h3>
-                <div style={{ fontSize: 14, marginTop: 8, color: 'rgba(255,255,255,0.85)' }}>{movie.cast.join(', ')}</div>
-              </section>
+              {movie.director && (
+                <section>
+                  <h3 style={sectionLabel}>DIRECTOR</h3>
+                  <div style={{ fontSize: 14, marginTop: 8 }}>{movie.director}</div>
+                </section>
+              )}
+              {cast.length > 0 && (
+                <section>
+                  <h3 style={sectionLabel}>CAST</h3>
+                  <div style={{ fontSize: 14, marginTop: 8, color: 'rgba(255,255,255,0.85)' }}>{cast.join(', ')}</div>
+                </section>
+              )}
             </div>
 
             <section style={{ marginTop: 24 }}>
               <h3 style={sectionLabel}>TRAILER</h3>
-              <div style={{
-                marginTop: 10, height: 220, borderRadius: 10,
-                background: movie.poster,
-                position: 'relative', overflow: 'hidden',
-                border: '1px solid rgba(255,255,255,0.08)',
-                cursor: 'pointer',
-              }}>
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.6))' }} />
-                <div style={{ position: 'absolute', inset: 0, display: 'grid', placeItems: 'center' }}>
-                  <div style={{ width: 64, height: 64, borderRadius: 999, background: 'rgba(255,255,255,0.95)', display: 'grid', placeItems: 'center', boxShadow: '0 0 40px rgba(255,255,255,0.4)' }}>
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z" /></svg>
+              <div style={{ marginTop: 10, position: 'relative', paddingBottom: '56.25%', borderRadius: 10, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.08)' }}>
+                {movie.youtube_key ? (
+                  <iframe
+                    src={`https://www.youtube.com/embed/${movie.youtube_key}`}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none' }}
+                  />
+                ) : (
+                  <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.02)', display: 'grid', placeItems: 'center' }}>
+                    <div style={{ textAlign: 'center' }}>
+                      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" style={{ display: 'block', margin: '0 auto 10px' }}>
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M10 8l6 4-6 4V8z" />
+                      </svg>
+                      <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.25)', letterSpacing: '0.1em' }}>준비중</span>
+                    </div>
                   </div>
-                </div>
-                <div style={{ position: 'absolute', left: 16, bottom: 12, fontSize: 11, color: 'rgba(255,255,255,0.7)', letterSpacing: '0.1em' }}>
-                  OFFICIAL TRAILER · 2:31
-                </div>
+                )}
               </div>
             </section>
 
             <section style={{ marginTop: 24 }}>
               <h3 style={sectionLabel}>CLIMAX GRAPH</h3>
-              <div style={{ height: 180, marginTop: 10, padding: 8, background: 'rgba(0,0,0,0.3)', borderRadius: 8 }}>
-                <ClimaxGraph data={movie.graph} onHover={setHoverIdx} color="var(--accent)" />
-              </div>
-              {hoverIdx !== null && (
-                <div style={{ marginTop: 8, fontSize: 11, color: 'var(--accent)', fontFamily: 'var(--font-mono), monospace' }}>
-                  {Math.floor((hoverIdx / 17) * movie.runtime)}분 · 긴장도 {movie.graph[hoverIdx]}/100
-                </div>
-              )}
-            </section>
-
-            <section style={{ marginTop: 24 }}>
-              <h3 style={sectionLabel}>비슷한 패턴 추천</h3>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginTop: 10 }}>
-                {similar.map((m) => (
-                  <button
-                    key={m.id}
-                    onClick={() => onSelectMovie(m)}
-                    style={{
-                      background: 'rgba(255,255,255,0.03)',
-                      border: '1px solid rgba(255,255,255,0.08)',
-                      borderRadius: 8, padding: 10,
-                      cursor: 'pointer', color: 'inherit', fontFamily: 'inherit', textAlign: 'left',
-                      display: 'flex', gap: 10,
-                    }}
-                  >
-                    <Poster movie={m} size="sm" />
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: 12, fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{m.title}</div>
-                      <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.5)', marginTop: 2 }}>{m.year}</div>
-                      <div style={{ height: 18, marginTop: 4 }}><MiniGraph data={m.graph} height={18} /></div>
-                    </div>
-                  </button>
-                ))}
+              <div style={{
+                marginTop: 10, height: 180, borderRadius: 8,
+                background: 'rgba(0,0,0,0.3)',
+                border: '1px solid rgba(255,255,255,0.06)',
+                display: 'grid', placeItems: 'center',
+              }}>
+                <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.2)', letterSpacing: '0.1em' }}>준비중</span>
               </div>
             </section>
           </div>
         </div>
+
+        {/* 비슷한 영화 추천 */}
+        {similar.length > 0 && (
+          <section style={{ marginTop: 48 }}>
+            <h3 style={{ ...sectionLabel, marginBottom: 16 }}>비슷한 패턴의 영화</h3>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
+              {similar.map((m) => {
+                const simImg = posterUrl(m.poster_path);
+                const simGenres = genreList(m.genre).slice(0, 2);
+                return (
+                  <button
+                    key={m.tmdb_id}
+                    onClick={() => onSelectMovie(m)}
+                    style={{
+                      background: 'rgba(255,255,255,0.03)',
+                      border: '1px solid rgba(255,255,255,0.08)',
+                      borderRadius: 10, padding: 10,
+                      cursor: 'pointer', color: 'inherit', fontFamily: 'inherit', textAlign: 'left',
+                      display: 'flex', gap: 12, alignItems: 'flex-start',
+                      transition: 'background 0.2s, border-color 0.2s',
+                    }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.06)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.14)'; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.03)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.08)'; }}
+                  >
+                    <div style={{ width: 56, flexShrink: 0, aspectRatio: '2/3', borderRadius: 6, overflow: 'hidden', background: '#111218', position: 'relative' }}>
+                      {simImg ? (
+                        <img src={simImg} alt={m.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+                      ) : (
+                        <div style={{ position: 'absolute', inset: 0, display: 'grid', placeItems: 'center' }}>
+                          <span style={{ fontSize: 18 }}>🎬</span>
+                        </div>
+                      )}
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: 12, fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', lineHeight: 1.3 }}>{m.title}</div>
+                      <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.45)', marginTop: 3 }}>{m.release_year}</div>
+                      <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', marginTop: 4 }}>{simGenres.join(' · ')}</div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </section>
+        )}
       </div>
     </div>
   );

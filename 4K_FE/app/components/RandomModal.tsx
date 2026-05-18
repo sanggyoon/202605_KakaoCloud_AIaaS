@@ -1,26 +1,24 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Movie, MOVIES } from '@/app/lib/data';
-import Poster from './Poster';
-import MiniGraph from './MiniGraph';
-import PatternChip from './PatternChip';
+import { Movie, posterUrl, genreList } from '@/app/lib/data';
 
 interface RandomModalProps {
+  movies: Movie[];
   onClose: () => void;
   onPick: (m: Movie) => void;
 }
 
-export default function RandomModal({ onClose, onPick }: RandomModalProps) {
+export default function RandomModal({ movies, onClose, onPick }: RandomModalProps) {
   const [picked, setPicked] = useState<Movie | null>(null);
   const [shuffling, setShuffling] = useState(true);
   const [rolls, setRolls] = useState(0);
 
   useEffect(() => {
-    if (!shuffling) return;
+    if (!shuffling || movies.length === 0) return;
     let count = 0;
     const id = setInterval(() => {
-      const random = MOVIES[Math.floor(Math.random() * MOVIES.length)];
+      const random = movies[Math.floor(Math.random() * movies.length)];
       setPicked(random);
       setRolls(count);
       count++;
@@ -30,7 +28,10 @@ export default function RandomModal({ onClose, onPick }: RandomModalProps) {
       }
     }, 80);
     return () => clearInterval(id);
-  }, [shuffling]);
+  }, [shuffling, movies]);
+
+  const imgUrl = picked ? posterUrl(picked.poster_path) : null;
+  const genres = picked ? genreList(picked.genre).slice(0, 2) : [];
 
   return (
     <div
@@ -65,18 +66,33 @@ export default function RandomModal({ onClose, onPick }: RandomModalProps) {
             transition: 'transform 0.2s ease',
             opacity: shuffling ? 0.6 : 1,
           }}>
-            <Poster movie={picked} size="md" />
+            <div style={{ aspectRatio: '2/3', borderRadius: 8, overflow: 'hidden', background: '#111218', position: 'relative' }}>
+              {imgUrl ? (
+                <img src={imgUrl} alt={picked.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+              ) : (
+                <div style={{ position: 'absolute', inset: 0, display: 'grid', placeItems: 'center' }}>
+                  <span style={{ fontSize: 32 }}>🎬</span>
+                </div>
+              )}
+            </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              <h3 style={{ fontFamily: 'var(--font-playfair), serif', fontSize: 22, fontWeight: 800, margin: 0, letterSpacing: '-0.02em', lineHeight: 1.1, color: 'var(--fg)' }}>
+              <h3 style={{ fontSize: 20, fontWeight: 800, margin: 0, letterSpacing: '-0.02em', lineHeight: 1.15, color: 'var(--fg)' }}>
                 {picked.title}
               </h3>
-              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.55)' }}>{picked.titleKo} · {picked.year}</div>
+              {picked.original_title && picked.original_title !== picked.title && (
+                <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)' }}>{picked.original_title}</div>
+              )}
+              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.55)' }}>
+                {picked.release_year}{picked.runtime ? ` · ${picked.runtime}분` : ''}
+              </div>
               <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                <PatternChip pattern={picked.pattern} active />
+                {genres.map((g) => (
+                  <span key={g} style={{ padding: '4px 9px', fontSize: 10, fontWeight: 600, borderRadius: 4, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.7)' }}>{g}</span>
+                ))}
               </div>
-              <div style={{ height: 40, marginTop: 4 }}>
-                <MiniGraph data={picked.graph} color="var(--accent)" height={40} />
-              </div>
+              {picked.director && (
+                <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)', marginTop: 2 }}>감독 {picked.director}</div>
+              )}
             </div>
           </div>
         )}

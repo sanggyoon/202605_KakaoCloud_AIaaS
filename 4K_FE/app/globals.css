@@ -30,3 +30,13 @@ button {
 input::placeholder {
   color: rgba(255, 255, 255, 0.35);
 }
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}

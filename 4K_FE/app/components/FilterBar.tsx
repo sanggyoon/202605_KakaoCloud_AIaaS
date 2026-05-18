@@ -1,19 +1,12 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { MOVIES, GENRES, SITUATIONS } from '@/app/lib/data';
-
-interface Filters {
-  yearRange: [number, number];
-  genre: string;
-  situation: string;
-  likes: string[];
-  dislikes: string[];
-}
+import { Filters, Movie, GENRES, SITUATIONS } from '@/app/lib/data';
 
 interface FilterBarProps {
   open: boolean;
   draft: Filters;
+  movies: Movie[];
   onChangeDraft: (f: Filters) => void;
   onSearch: () => void;
   onReset: () => void;
@@ -96,7 +89,7 @@ function YearRangeRow({ min, max, value, onChange }: {
         <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent)', fontFamily: 'var(--font-mono), monospace', minWidth: 36 }}>{from}</span>
         <div ref={trackRef} style={{ position: 'relative', flex: 1, height: 28, cursor: 'pointer' }}>
           <div style={{ position: 'absolute', left: 0, right: 0, top: '50%', height: 3, background: 'rgba(255,255,255,0.08)', borderRadius: 999, transform: 'translateY(-50%)' }} />
-          {Array.from({ length: max - min + 1 }, (_, i) => i + min).map((y) => {
+          {Array.from({ length: max - min + 1 }, (_, i) => i + min).filter((y) => y % 5 === 0).map((y) => {
             const p = ((y - min) / (max - min)) * 100;
             return (
               <div key={y} style={{ position: 'absolute', left: `${p}%`, top: '50%', width: 1, height: 6, background: 'rgba(255,255,255,0.15)', transform: 'translate(-50%, -50%)' }} />
@@ -129,10 +122,11 @@ function YearRangeRow({ min, max, value, onChange }: {
   );
 }
 
-function PrefRow({ label, ids, onRemove, accent }: {
+function PrefRow({ label, ids, movies, onRemove, accent }: {
   label: string;
-  ids: string[];
-  onRemove: (id: string) => void;
+  ids: number[];
+  movies: Movie[];
+  onRemove: (id: number) => void;
   accent?: boolean;
 }) {
   return (
@@ -145,7 +139,7 @@ function PrefRow({ label, ids, onRemove, accent }: {
           <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)' }}>등록된 영화가 없습니다</span>
         )}
         {ids.map((id) => {
-          const m = MOVIES.find((x) => x.id === id);
+          const m = movies.find((x) => x.tmdb_id === id);
           if (!m) return null;
           return (
             <span key={id} style={{
@@ -161,13 +155,9 @@ function PrefRow({ label, ids, onRemove, accent }: {
               <button
                 onClick={() => onRemove(id)}
                 style={{
-                  width: 16, height: 16, borderRadius: 999,
-                  border: 'none',
+                  width: 16, height: 16, borderRadius: 999, border: 'none',
                   background: accent ? 'color-mix(in oklch, var(--accent) 25%, transparent)' : 'rgba(255,255,255,0.1)',
-                  color: 'inherit',
-                  cursor: 'pointer',
-                  display: 'grid', placeItems: 'center',
-                  padding: 0,
+                  color: 'inherit', cursor: 'pointer', display: 'grid', placeItems: 'center', padding: 0,
                 }}
               >
                 <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
@@ -182,23 +172,24 @@ function PrefRow({ label, ids, onRemove, accent }: {
   );
 }
 
-export default function FilterBar({ open, draft, onChangeDraft, onSearch, onReset }: FilterBarProps) {
-  const removeLike = (id: string) => onChangeDraft({ ...draft, likes: draft.likes.filter((x) => x !== id) });
-  const removeDislike = (id: string) => onChangeDraft({ ...draft, dislikes: draft.dislikes.filter((x) => x !== id) });
+export default function FilterBar({ open, draft, movies, onChangeDraft, onSearch, onReset }: FilterBarProps) {
+  const removeLike = (id: number) => onChangeDraft({ ...draft, likes: draft.likes.filter((x) => x !== id) });
+  const removeDislike = (id: number) => onChangeDraft({ ...draft, dislikes: draft.dislikes.filter((x) => x !== id) });
 
   return (
     <div style={{
-      position: 'relative', zIndex: 4,
-      maxHeight: open ? 520 : 0,
+      position: 'sticky', top: 71, zIndex: 4,
+      maxHeight: open ? 400 : 0,
       overflow: 'hidden',
       transition: 'max-height 0.35s cubic-bezier(.2,.7,.2,1)',
       borderBottom: open ? '1px solid rgba(255,255,255,0.05)' : '1px solid transparent',
-      background: 'rgba(255,255,255,0.018)',
+      background: 'rgba(8,9,13,0.85)',
+      backdropFilter: 'blur(12px)',
     }}>
       <div style={{ padding: '20px 64px 22px', display: 'flex', flexDirection: 'column', gap: 12 }}>
         <YearRangeRow
-          min={2010}
-          max={2024}
+          min={1980}
+          max={2025}
           value={draft.yearRange}
           onChange={(v) => onChangeDraft({ ...draft, yearRange: v })}
         />
@@ -214,8 +205,8 @@ export default function FilterBar({ open, draft, onChangeDraft, onSearch, onRese
           value={draft.situation}
           onChange={(v) => onChangeDraft({ ...draft, situation: v })}
         />
-        <PrefRow label="선호" ids={draft.likes} onRemove={removeLike} accent />
-        <PrefRow label="비선호" ids={draft.dislikes} onRemove={removeDislike} />
+        <PrefRow label="선호" ids={draft.likes} movies={movies} onRemove={removeLike} accent />
+        <PrefRow label="비선호" ids={draft.dislikes} movies={movies} onRemove={removeDislike} />
 
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 8, paddingTop: 14, borderTop: '1px solid rgba(255,255,255,0.05)' }}>
           <button
