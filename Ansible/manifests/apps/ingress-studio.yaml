@@ -5,7 +5,7 @@ metadata:
   name: supabase-data-studio
   namespace: data
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-staging
+    cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/auth-type: basic
     nginx.ingress.kubernetes.io/auth-secret: supabase-dashboard-basic
     nginx.ingress.kubernetes.io/auth-realm: 'Supabase Data'
@@ -35,7 +35,7 @@ metadata:
   name: supabase-data-api
   namespace: data
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-staging
+    cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/ssl-redirect: 'true'
 spec:
   ingressClassName: nginx
@@ -75,7 +75,7 @@ metadata:
   name: supabase-ai-studio
   namespace: ai
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-staging
+    cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/auth-type: basic
     nginx.ingress.kubernetes.io/auth-secret: supabase-dashboard-basic
     nginx.ingress.kubernetes.io/auth-realm: 'Supabase AI'
@@ -104,7 +104,7 @@ metadata:
   name: grafana
   namespace: monitoring
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-staging
+    cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/ssl-redirect: 'true'
 spec:
   ingressClassName: nginx
@@ -131,7 +131,7 @@ metadata:
   name: argocd
   namespace: argocd
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-staging
+    cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/ssl-redirect: 'true'
     nginx.ingress.kubernetes.io/backend-protocol: 'HTTP'
 spec:
