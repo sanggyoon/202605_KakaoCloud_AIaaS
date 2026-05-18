@@ -1,5 +1,6 @@
 'use client';
 
+// 영화 상세 오버레이 — 포스터, 시놉시스, 트레일러, 클라이맥스 그래프, 유사 영화 추천
 import { useMemo } from 'react';
 import { Movie, posterUrl, genreList, castList } from '@/app/lib/data';
 
@@ -19,6 +20,7 @@ export default function DetailOverlay({ movie, movies, onClose, onSelectMovie }:
   const genres = genreList(movie.genre);
   const cast = castList(movie.actors);
 
+  // 현재 영화 제외 후 랜덤 4개 — movie.tmdb_id가 바뀔 때만 재계산
   const similar = useMemo(() => {
     return movies
       .filter((m) => m.tmdb_id !== movie.tmdb_id)
@@ -96,6 +98,7 @@ export default function DetailOverlay({ movie, movies, onClose, onSelectMovie }:
               )}
             </div>
 
+            {/* 트레일러 — youtube_key 없으면 준비중 플레이스홀더로 동일 영역 유지 */}
             <section style={{ marginTop: 24 }}>
               <h3 style={sectionLabel}>TRAILER</h3>
               <div style={{ marginTop: 10, position: 'relative', paddingBottom: '56.25%', borderRadius: 10, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.08)' }}>
@@ -120,6 +123,7 @@ export default function DetailOverlay({ movie, movies, onClose, onSelectMovie }:
               </div>
             </section>
 
+            {/* 클라이맥스 그래프 — 자막 분석 기반 긴장감 곡선 (추후 구현) */}
             <section style={{ marginTop: 24 }}>
               <h3 style={sectionLabel}>CLIMAX GRAPH</h3>
               <div style={{
@@ -134,7 +138,7 @@ export default function DetailOverlay({ movie, movies, onClose, onSelectMovie }:
           </div>
         </div>
 
-        {/* 비슷한 영화 추천 */}
+        {/* 비슷한 패턴의 영화 — 현재는 랜덤, 추후 클라이맥스 벡터 유사도로 교체 예정 */}
         {similar.length > 0 && (
           <section style={{ marginTop: 48 }}>
             <h3 style={{ ...sectionLabel, marginBottom: 16 }}>비슷한 패턴의 영화</h3>

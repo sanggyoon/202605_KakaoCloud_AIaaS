@@ -1,5 +1,6 @@
 'use client';
 
+// 튜토리얼 오버레이 — 4단계 가이드, step 1~2에서는 헤더를 spotlight로 강조
 import { useState } from 'react';
 import MiniGraph from './MiniGraph';
 
@@ -10,6 +11,7 @@ interface TutorialProps {
   onComplete: () => void;
 }
 
+// 클라이맥스 그래프 체험용 더미 데이터
 const DEMO_GRAPH = [8, 18, 12, 28, 22, 48, 42, 68, 58, 82, 78, 95, 72, 84, 62, 48, 36, 28];
 
 const STEPS = [
@@ -70,7 +72,7 @@ export default function Tutorial({ step, onNext, onSkip, onComplete }: TutorialP
 
   return (
     <>
-      {/* Backdrop */}
+      {/* Backdrop — 헤더 강조 step에서는 clipPath로 상단 73px(헤더 높이)를 잘라내 헤더만 노출 */}
       <div
         onClick={(e) => e.stopPropagation()}
         style={{
@@ -131,7 +133,7 @@ export default function Tutorial({ step, onNext, onSkip, onComplete }: TutorialP
           {current.desc}
         </p>
 
-        {/* Demo card for step 4 */}
+        {/* 마지막 step에서만 렌더링되는 클라이맥스 그래프 체험 카드 */}
         {step === 3 && (
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
             <div
@@ -151,7 +153,7 @@ export default function Tutorial({ step, onNext, onSkip, onComplete }: TutorialP
                 transition: 'box-shadow 0.3s',
               }}
             >
-              {/* Not hovered state */}
+              {/* hover 전 상태 */}
               <div style={{
                 position: 'absolute', inset: 0,
                 display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 10,
@@ -164,7 +166,7 @@ export default function Tutorial({ step, onNext, onSkip, onComplete }: TutorialP
                 <span style={{ color: 'white', fontWeight: 700, fontSize: 13 }}>Hover Me!</span>
               </div>
 
-              {/* Hovered state: climax graph */}
+              {/* hover 시 클라이맥스 그래프 표시 */}
               <div style={{
                 position: 'absolute', inset: 0,
                 background: 'linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.88) 55%)',

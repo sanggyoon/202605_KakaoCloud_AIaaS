@@ -1,5 +1,6 @@
 'use client';
 
+// 메인 대시보드 — 영화 목록, 검색/필터, 선호 설정, 최근 기록, 랜덤 추천을 통합 관리
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { INITIAL_FILTERS, Filters, Movie, SUPABASE_URL, SUPABASE_ANON_KEY, getRecentIds, addRecentId } from '@/app/lib/data';
@@ -9,6 +10,7 @@ import DetailOverlay from '@/app/components/DetailOverlay';
 import RandomModal from '@/app/components/RandomModal';
 import Tutorial from '@/app/components/Tutorial';
 
+// 한 번에 가져오는 영화 수 — 너무 크면 초기 로딩이 느려짐
 const PAGE_SIZE = 120;
 
 export default function Dashboard() {
@@ -17,24 +19,30 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  // ref 사용 이유: 렌더 사이클 밖에서 fetch 중복 방지 및 누적 offset 추적
   const offsetRef = useRef(0);
   const isFetchingRef = useRef(false);
+  // IntersectionObserver 감지 대상 — 목록 최하단에 위치
   const sentinelRef = useRef<HTMLDivElement>(null);
+  // localStorage에서 lazy 초기화 — SSR 환경(window 없음) 방어
   const [recentIds, setRecentIds] = useState<number[]>(() =>
     typeof window === 'undefined' ? [] : getRecentIds()
   );
   const [search, setSearch] = useState('');
   const [filterOpen, setFilterOpen] = useState(false);
+  // draft: 편집 중인 필터 상태 / applied: 실제 목록에 적용된 필터 상태
   const [draft, setDraft] = useState<Filters>(INITIAL_FILTERS);
   const [applied, setApplied] = useState<Filters>(INITIAL_FILTERS);
   const [hoveredKey, setHoveredKey] = useState<string | null>(null);
   const [detail, setDetail] = useState<Movie | null>(null);
   const [randomOpen, setRandomOpen] = useState(false);
+  // localStorage에서 lazy 초기화 — 완료 기록이 있으면 null(튜토리얼 숨김)
   const [tutorialStep, setTutorialStep] = useState<number | null>(() => {
     if (typeof window === 'undefined') return null;
     return localStorage.getItem('4k_tutorial_done') ? null : 0;
   });
 
+  // Supabase REST API에서 PAGE_SIZE 단위로 영화를 페이지네이션 fetch
   const fetchMovies = useCallback((offset: number) => {
     if (isFetchingRef.current) return;
     isFetchingRef.current = true;
@@ -46,8 +54,10 @@ export default function Dashboard() {
       .then((r) => r.json())
       .then((data: Movie[]) => {
         const arr = Array.isArray(data) ? data : [];
+        // offset=0이면 새 목록으로 교체, 이후엔 누적
         setMovies((prev) => offset === 0 ? arr : [...prev, ...arr]);
         offsetRef.current = offset + arr.length;
+        // 반환된 수가 PAGE_SIZE보다 적으면 마지막 페이지
         setHasMore(arr.length === PAGE_SIZE);
       })
       .catch(() => {})
@@ -63,6 +73,7 @@ export default function Dashboard() {
     fetchMovies(0);
   }, [fetchMovies]);
 
+  // sentinel 요소가 뷰포트에 진입하면 다음 페이지 fetch — rootMargin으로 300px 앞당겨 미리 로드
   useEffect(() => {
     const el = sentinelRef.current;
     if (!el) return;
@@ -89,6 +100,7 @@ export default function Dashboard() {
     setDetail(m);
   };
 
+  // 선호/비선호는 상호 배타적 — 같은 영화에 중복 선택 불가
   const togglePref = (id: number, kind: 'like' | 'dislike') => {
     setDraft((d) => {
       if (kind === 'like') {
@@ -101,6 +113,7 @@ export default function Dashboard() {
     });
   };
 
+  // 검색과 applied 필터를 클라이언트 사이드에서 조합 — 비선호 영화는 목록에서 완전히 제거
   const filtered = movies.filter((m) => {
     if (search) {
       const q = search.toLowerCase();
@@ -113,11 +126,13 @@ export default function Dashboard() {
     return true;
   });
 
+  // recentIds 순서(최신순)를 유지하면서 로드된 movies에서 매핑
   const recentMovies = recentIds
     .map((id) => movies.find((m) => m.tmdb_id === id))
     .filter((m): m is Movie => Boolean(m))
     .slice(0, 10);
 
+  // 튜토리얼 step 1~2에서는 헤더를 backdrop보다 위에 노출해 강조
   const isHeaderHighlighted = tutorialStep === 1 || tutorialStep === 2;
   const headerZIndex = isHeaderHighlighted ? 50 : 5;
 
@@ -255,7 +270,7 @@ export default function Dashboard() {
         </button>
       </header>
 
-      {/* FILTER BAR */}
+      {/* FILTER BAR — 헤더 바로 아래 sticky, 검색 버튼 누를 때만 applied에 반영 */}
       <FilterBar
         open={filterOpen}
         draft={draft}
@@ -269,7 +284,7 @@ export default function Dashboard() {
       <main style={{ flex: 1, position: 'relative', zIndex: 1 }}>
         <div style={{ padding: '28px 64px 60px' }}>
 
-          {/* 최근 살펴본 영화 — 가로 스크롤 */}
+          {/* 최근 살펴본 영화 — 가로 스크롤, 스크롤바 숨김 */}
           {recentMovies.length > 0 && (
             <div style={{ marginBottom: 44 }}>
               <h2 style={{ fontSize: 18, fontWeight: 700, letterSpacing: '-0.02em', margin: '0 0 20px' }}>최근 살펴본 영화</h2>
@@ -306,6 +321,7 @@ export default function Dashboard() {
             )}
           </div>
 
+          {/* 스켈레톤 UI — 초기 로딩 중 레이아웃 자리 유지 */}
           {loading ? (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 22 }}>
               {Array.from({ length: 12 }).map((_, i) => (
@@ -332,6 +348,7 @@ export default function Dashboard() {
             </div>
           )}
 
+          {/* sentinel — 뷰포트 진입 시 다음 페이지 fetch 트리거 */}
           <div ref={sentinelRef} style={{ height: 1 }} />
           {loadingMore && (
             <div style={{ display: 'flex', justifyContent: 'center', padding: '32px 0' }}>

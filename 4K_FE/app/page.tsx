@@ -1,5 +1,6 @@
 'use client';
 
+// 온보딩 랜딩 페이지 — 서비스 소개 후 /dashboard로 진입시키는 진입점
 import { useRouter } from 'next/navigation';
 
 const FEATURES = [

@@ -1,5 +1,6 @@
 'use client';
 
+// 랜덤 영화 추천 모달 — 80ms 간격으로 15번 셔플 애니메이션 후 최종 선택 확정
 import { useEffect, useState } from 'react';
 import { Movie, posterUrl, genreList } from '@/app/lib/data';
 
@@ -14,6 +15,7 @@ export default function RandomModal({ movies, onClose, onPick }: RandomModalProp
   const [shuffling, setShuffling] = useState(true);
   const [rolls, setRolls] = useState(0);
 
+  // 80ms마다 랜덤 영화로 교체 — 15회 후 멈춰 최종 결과 확정
   useEffect(() => {
     if (!shuffling || movies.length === 0) return;
     let count = 0;
@@ -34,6 +36,7 @@ export default function RandomModal({ movies, onClose, onPick }: RandomModalProp
   const genres = picked ? genreList(picked.genre).slice(0, 2) : [];
 
   return (
+    // 모달 외부 클릭 시 닫기
     <div
       onClick={onClose}
       style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(8px)', display: 'grid', placeItems: 'center', zIndex: 100, animation: 'fadeIn 0.2s ease' }}
@@ -60,6 +63,7 @@ export default function RandomModal({ movies, onClose, onPick }: RandomModalProp
         </div>
 
         {picked && (
+          // 셔플 중에는 좌우 흔들림 + 축소 — rolls 홀짝으로 방향 교대
           <div style={{
             display: 'grid', gridTemplateColumns: '120px 1fr', gap: 18,
             transform: shuffling ? `rotate(${rolls % 2 === 0 ? -2 : 2}deg) scale(0.96)` : 'rotate(0) scale(1)',
@@ -98,6 +102,7 @@ export default function RandomModal({ movies, onClose, onPick }: RandomModalProp
         )}
 
         <div style={{ display: 'flex', gap: 8, marginTop: 22 }}>
+          {/* 셔플 중에는 비활성화 */}
           <button
             onClick={() => { setPicked(null); setShuffling(true); }}
             disabled={shuffling}

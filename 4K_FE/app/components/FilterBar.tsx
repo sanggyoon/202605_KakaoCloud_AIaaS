@@ -1,5 +1,6 @@
 'use client';
 
+// 필터 패널 — 연도 범위 슬라이더, 장르/상황 선택, 선호/비선호 영화 관리
 import { useEffect, useRef, useState } from 'react';
 import { Filters, Movie, GENRES, SITUATIONS } from '@/app/lib/data';
 
@@ -12,6 +13,7 @@ interface FilterBarProps {
   onReset: () => void;
 }
 
+// 단일 선택 pill 행
 function FilterRow({ label, options, value, onChange }: {
   label: string;
   options: string[];
@@ -49,6 +51,7 @@ function FilterRow({ label, options, value, onChange }: {
   );
 }
 
+// 드래그 가능한 듀얼 핸들 연도 범위 슬라이더
 function YearRangeRow({ min, max, value, onChange }: {
   min: number;
   max: number;
@@ -59,9 +62,11 @@ function YearRangeRow({ min, max, value, onChange }: {
   const trackRef = useRef<HTMLDivElement>(null);
   const [dragging, setDragging] = useState<'from' | 'to' | null>(null);
 
+  // 퍼센트 위치 계산 — track 위 핸들과 활성 구간 렌더링에 사용
   const pctFrom = ((from - min) / (max - min)) * 100;
   const pctTo = ((to - min) / (max - min)) * 100;
 
+  // 드래그 중에만 window 이벤트 등록 — 마우스가 track 밖으로 나가도 추적 가능
   useEffect(() => {
     if (!dragging) return;
     const onMove = (e: MouseEvent) => {
@@ -88,14 +93,18 @@ function YearRangeRow({ min, max, value, onChange }: {
       <div style={{ display: 'flex', alignItems: 'center', gap: 14, flex: 1, maxWidth: 540 }}>
         <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent)', fontFamily: 'var(--font-mono), monospace', minWidth: 36 }}>{from}</span>
         <div ref={trackRef} style={{ position: 'relative', flex: 1, height: 28, cursor: 'pointer' }}>
+          {/* 배경 track */}
           <div style={{ position: 'absolute', left: 0, right: 0, top: '50%', height: 3, background: 'rgba(255,255,255,0.08)', borderRadius: 999, transform: 'translateY(-50%)' }} />
+          {/* 5년 단위 눈금 */}
           {Array.from({ length: max - min + 1 }, (_, i) => i + min).filter((y) => y % 5 === 0).map((y) => {
             const p = ((y - min) / (max - min)) * 100;
             return (
               <div key={y} style={{ position: 'absolute', left: `${p}%`, top: '50%', width: 1, height: 6, background: 'rgba(255,255,255,0.15)', transform: 'translate(-50%, -50%)' }} />
             );
           })}
+          {/* 선택 구간 강조 */}
           <div style={{ position: 'absolute', left: `${pctFrom}%`, right: `${100 - pctTo}%`, top: '50%', height: 3, background: 'var(--accent)', borderRadius: 999, transform: 'translateY(-50%)', boxShadow: '0 0 12px color-mix(in oklch, var(--accent) 50%, transparent)' }} />
+          {/* from / to 핸들 */}
           {(['from', 'to'] as const).map((key) => {
             const pct = key === 'from' ? pctFrom : pctTo;
             return (
@@ -122,6 +131,7 @@ function YearRangeRow({ min, max, value, onChange }: {
   );
 }
 
+// 선호/비선호 영화 chip 목록 — tmdb_id로 영화명 조회 후 X 버튼으로 제거
 function PrefRow({ label, ids, movies, onRemove, accent }: {
   label: string;
   ids: number[];
@@ -177,6 +187,7 @@ export default function FilterBar({ open, draft, movies, onChangeDraft, onSearch
   const removeDislike = (id: number) => onChangeDraft({ ...draft, dislikes: draft.dislikes.filter((x) => x !== id) });
 
   return (
+    // max-height 트랜지션으로 슬라이드 애니메이션 구현 — height 자체는 애니메이션 불가
     <div style={{
       position: 'sticky', top: 71, zIndex: 4,
       maxHeight: open ? 400 : 0,

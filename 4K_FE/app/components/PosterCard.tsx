@@ -1,5 +1,6 @@
 'use client';
 
+// 영화 포스터 카드 — 3D 틸트 효과, glare, 선호/비선호 토글 포함
 import { useState } from 'react';
 import { Movie, posterUrl, genreList } from '@/app/lib/data';
 
@@ -12,15 +13,18 @@ interface PosterCardProps {
   onTogglePref: (id: number, kind: 'like' | 'dislike') => void;
 }
 
+// 마우스 위치 기반 최대 회전각 (도)
 const MAX_TILT = 14;
 
 export default function PosterCard({ movie, isHovered, onHover, onClick, pref, onTogglePref }: PosterCardProps) {
   const [rot, setRot] = useState({ x: 0, y: 0 });
+  // glare 원의 중심점 — 마우스 위치에 따라 이동 (0~100%)
   const [glare, setGlare] = useState({ x: 50, y: 50 });
 
   const imgUrl = posterUrl(movie.poster_path);
   const genres = genreList(movie.genre);
 
+  // 마우스 위치를 -0.5~0.5로 정규화하여 회전각과 glare 위치 계산
   function handleMouseMove(e: React.MouseEvent<HTMLElement>) {
     const rect = e.currentTarget.getBoundingClientRect();
     const nx = (e.clientX - rect.left) / rect.width - 0.5;
@@ -45,6 +49,7 @@ export default function PosterCard({ movie, isHovered, onHover, onClick, pref, o
         cursor: 'pointer', display: 'flex', flexDirection: 'column', gap: 10,
         transform: `perspective(700px) rotateX(${rot.x}deg) rotateY(${rot.y}deg)`,
         transformStyle: 'preserve-3d',
+        // hover 중에는 즉각 반응, 벗어날 때는 천천히 복귀
         transition: isHovered ? 'transform 0.08s linear' : 'transform 0.55s cubic-bezier(.2,.7,.2,1)',
         willChange: 'transform',
       }}
@@ -79,14 +84,14 @@ export default function PosterCard({ movie, isHovered, onHover, onClick, pref, o
           </div>
         )}
 
-        {/* gradient overlay (가독성) */}
+        {/* 하단 텍스트 가독성을 위한 그라디언트 오버레이 */}
         <div style={{
           position: 'absolute', inset: 0,
           background: 'linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.7) 100%)',
           pointerEvents: 'none',
         }} />
 
-        {/* glare */}
+        {/* glare — 마우스 위치를 따라 이동하는 반사광 */}
         <div style={{
           position: 'absolute', inset: 0,
           background: `radial-gradient(circle at ${glare.x}% ${glare.y}%, rgba(255,255,255,0.13) 0%, transparent 60%)`,
@@ -144,7 +149,7 @@ export default function PosterCard({ movie, isHovered, onHover, onClick, pref, o
           ))}
         </div>
 
-        {/* 선호 / 비선호 버튼 */}
+        {/* 선호/비선호 버튼 — e.stopPropagation으로 카드 클릭 이벤트와 분리 */}
         <div style={{ display: 'flex', gap: 6, marginTop: 8 }}>
           <button
             onClick={(e) => { e.stopPropagation(); onTogglePref(movie.tmdb_id, 'like'); }}
