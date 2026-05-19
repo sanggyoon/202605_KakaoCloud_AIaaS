@@ -1,44 +1,41 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
-  namespace: fe
+  name: backend
+  namespace: be
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: frontend
+      app: backend
   template:
     metadata:
       labels:
-        app: frontend
+        app: backend
     spec:
       nodeSelector:
         workload: app
       containers:
-        - name: frontend
-          image: ghcr.io/sanggyoon/4k-cinema:latest
-          env:
-            - name: BE_INTERNAL_URL
-              value: "http://backend.be.svc.cluster.local:8000"
+        - name: backend
+          image: ghcr.io/sanggyoon/4k-be:latest
           ports:
-            - containerPort: 3000
+            - containerPort: 8000
           readinessProbe:
             httpGet:
-              path: /
-              port: 3000
+              path: /health
+              port: 8000
             initialDelaySeconds: 5
             periodSeconds: 10
           livenessProbe:
             httpGet:
-              path: /
-              port: 3000
+              path: /health
+              port: 8000
             initialDelaySeconds: 15
             periodSeconds: 20
           resources:
             requests:
               cpu: 100m
-              memory: 256Mi
+              memory: 128Mi
             limits:
-              cpu: 500m
-              memory: 512Mi
+              cpu: 300m
+              memory: 256Mi

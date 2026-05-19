@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: 4k-be
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/sanggyoon/202605_KakaoCloud_AIaaS.git
+    targetRevision: main
+    path: Ansible/manifests/4k-be
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: be
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
