@@ -38,9 +38,10 @@ export const SUPABASE_ANON_KEY =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzc4NTYyOTc3LCJleHAiOjIwOTM5MjI5Nzd9.QqZEZi5iPoq576IOc_Q1lLyk871_KbsIihBGyeFqm6M';
 
 export const GENRES = [
-  'Action', 'Adventure', 'Animation', 'Comedy', 'Crime',
-  'Drama', 'Fantasy', 'Horror', 'Mystery', 'Romance',
-  'Science Fiction', 'Thriller', 'War',
+  '액션', '모험', '애니메이션', '코미디', '범죄',
+  '드라마', '판타지', '공포', '미스터리', '로맨스',
+  'SF', '스릴러', '전쟁', '가족', '서부',
+  '역사', '음악', '다큐멘터리', 'TV 영화',
 ];
 
 export const SITUATIONS = ['혼자', '데이트', '가족', '친구', '주말 밤', '비 오는 날', '출근길', '여행'];
