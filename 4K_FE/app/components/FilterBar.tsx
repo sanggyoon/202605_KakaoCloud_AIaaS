@@ -11,6 +11,8 @@ interface FilterBarProps {
   onChangeDraft: (f: Filters) => void;
   onSearch: () => void;
   onReset: () => void;
+  search: string;
+  onSearchChange: (v: string) => void;
 }
 
 // 단일 선택 pill 행
@@ -307,7 +309,7 @@ function PrefRow({ label, ids, movies, onRemove, accent }: {
   );
 }
 
-export default function FilterBar({ open, draft, movies, onChangeDraft, onSearch, onReset }: FilterBarProps) {
+export default function FilterBar({ open, draft, movies, onChangeDraft, onSearch, onReset, search, onSearchChange }: FilterBarProps) {
   const removeLike    = (id: number) => onChangeDraft({ ...draft, likes:    draft.likes.filter((x) => x !== id) });
   const removeDislike = (id: number) => onChangeDraft({ ...draft, dislikes: draft.dislikes.filter((x) => x !== id) });
 
@@ -318,7 +320,6 @@ export default function FilterBar({ open, draft, movies, onChangeDraft, onSearch
   return (
     // max-height 트랜지션으로 슬라이드 애니메이션 구현 — height 자체는 애니메이션 불가
     <div style={{
-      position: 'sticky', top: 71, zIndex: 4,
       maxHeight: open ? 600 : 0,
       overflow: 'hidden',
       transition: 'max-height 0.35s cubic-bezier(.2,.7,.2,1)',
@@ -327,6 +328,17 @@ export default function FilterBar({ open, draft, movies, onChangeDraft, onSearch
       backdropFilter: 'blur(12px)',
     }}>
       <div className="filter-bar-inner" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        {/* 모바일 전용 검색바 — 헤더에서 숨겨진 검색 입력을 필터바 안에 표시 */}
+        <div className="filter-mobile-search">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="2">
+            <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
+          </svg>
+          <input
+            value={search}
+            onChange={(e) => onSearchChange(e.target.value)}
+            placeholder="영화 제목 검색..."
+          />
+        </div>
         <YearRangeRow
           min={dataMin}
           max={dataMax}

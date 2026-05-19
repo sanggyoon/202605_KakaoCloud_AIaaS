@@ -5,7 +5,7 @@ import "./globals.css";
 const interTight = Inter_Tight({
   variable: "--font-sans",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 const playfair = Playfair_Display({
@@ -21,8 +21,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "4K Cinema — Climax-based Movie Recommendation",
+  title: "Peakly — Climax-based Movie Recommendation",
   description: "클라이맥스 그래프를 분석해 비슷한 영화를 추천하는 서비스",
+  icons: { icon: "/peakly-black-bg.svg" },
 };
 
 export default function RootLayout({

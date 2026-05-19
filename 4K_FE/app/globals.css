@@ -53,15 +53,41 @@ input::placeholder {
 @media (max-width: 1023px) { .px-page { padding-left: 32px; padding-right: 32px; } }
 @media (max-width: 639px)  { .px-page { padding-left: 16px; padding-right: 16px; } }
 
-/* 대시보드 헤더 flex 레이아웃 */
-.dash-header { display: flex; align-items: center; gap: 20px; padding: 20px 64px; }
-@media (max-width: 1023px) { .dash-header { padding: 14px 32px; gap: 12px; } }
-@media (max-width: 639px)  { .dash-header { flex-wrap: wrap; padding: 12px 16px; gap: 8px; } }
+/* 대시보드 헤더 — 3열: 좌(로고) | 중(검색) | 우(필터+랜덤+튜토리얼) */
+.dash-header { display: flex; align-items: center; gap: 12px; padding: 14px 64px; }
+@media (max-width: 1023px) { .dash-header { padding: 12px 32px; gap: 10px; } }
+@media (max-width: 639px)  { .dash-header { padding: 10px 16px; gap: 8px; justify-content: space-between; } }
 
-/* 검색바 — 모바일에서 새 줄로 */
-.dash-search { flex: 1; max-width: 560px; position: relative; margin-left: 20px; }
-@media (max-width: 1023px) { .dash-search { margin-left: 8px; } }
-@media (max-width: 639px)  { .dash-search { order: 10; flex-basis: 100%; max-width: none; margin-left: 0; } }
+/* 좌측 그룹 — 로고만, 고정 크기 */
+.dash-left { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+
+/* 우측 그룹 — 필터 + 랜덤 + 튜토리얼, 고정 크기. margin-left:auto로 항상 오른쪽 끝에 붙음 */
+.dash-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; margin-left: auto; }
+
+/* 검색바 — 좌우 그룹 사이 남은 공간 전부 채움, 모바일에서 숨기고 필터바 안으로 이동 */
+.dash-search { flex: 1; min-width: 160px; position: relative; }
+@media (max-width: 639px)  { .dash-search { display: none !important; } }
+
+/* 필터바 내부 모바일 검색 — 모바일에서만 표시 */
+.filter-mobile-search { display: none; }
+@media (max-width: 639px) {
+  .filter-mobile-search {
+    display: flex; align-items: center; position: relative;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding-bottom: 12px; margin-bottom: 4px;
+  }
+  .filter-mobile-search input {
+    width: 100%; padding: 10px 14px 10px 36px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 9px; color: var(--fg);
+    font-size: 13px; font-family: inherit; outline: none; box-sizing: border-box;
+  }
+  .filter-mobile-search svg {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    pointer-events: none;
+  }
+}
 
 /* 버튼 텍스트 레이블 — 모바일에서 숨김 */
 @media (max-width: 639px) { .btn-label { display: none; } }
