@@ -2,6 +2,7 @@
 
 // 온보딩 랜딩 페이지 — 서비스 소개 후 /dashboard로 진입시키는 진입점
 import { useRouter } from 'next/navigation';
+import BackgroundThread from '@/app/components/BackgroundThread';
 
 const FEATURES = [
   {
@@ -86,6 +87,16 @@ export default function OnboardingPage() {
         overflow: 'hidden',
       }}
     >
+      {/* BackgroundThread — WebGL 실 애니메이션 배경 */}
+      <div style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
+        <BackgroundThread
+          color={[0.482, 0.38, 1]}
+          amplitude={1.5}
+          distance={0.3}
+          enableMouseInteraction
+        />
+      </div>
+
       {/* Ambient spotlight */}
       <div
         style={{
@@ -98,6 +109,7 @@ export default function OnboardingPage() {
           background:
             'radial-gradient(ellipse at top, color-mix(in oklch, var(--accent) 14%, transparent) 0%, transparent 65%)',
           pointerEvents: 'none',
+          zIndex: 0,
         }}
       />
 
