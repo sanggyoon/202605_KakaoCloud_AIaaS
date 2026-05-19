@@ -11,11 +11,20 @@
 | CI | GitHub Actions | 별도 서버 불필요, GHCR 통합, `GITHUB_TOKEN` 자동 제공 |
 | CD | ArgoCD | 이미 클러스터에 구축됨, GitOps 선언적 관리, 자동 복원 |
 | 이미지 레지스트리 | GHCR (`ghcr.io`) | GitHub Actions와 동일 생태계, 별도 인증 불필요 |
-| 매니페스트 형식 | Kustomize | Helm 불필요 수준의 단순 FE 앱, 이미지 태그 패치만 필요 |
+| 매니페스트 형식 | Kustomize | Helm 불필요 수준의 단순 앱, 이미지 태그 패치만 필요 |
+
+### 파이프라인 목록
+
+| 서비스 | 트리거 경로 | 이미지 | 매니페스트 경로 |
+|---|---|---|---|
+| 4K Cinema FE | `4K_FE/**` | `ghcr.io/sanggyoon/4k-cinema` | `Ansible/manifests/4k-cinema/` |
+| 4K Backend BE | `4K_BE/**` | `ghcr.io/sanggyoon/4k-be` | `Ansible/manifests/4k-be/` |
 
 ---
 
 ## 2. 파이프라인 전체 흐름
+
+### FE (4K Cinema)
 
 ```
 개발자 로컬
@@ -55,12 +64,54 @@ K3s 클러스터 (fe 네임스페이스)
        → 도메인: https://cinema.4kakao.kro.kr
 ```
 
+### BE (4K Backend)
+
+```
+개발자 로컬
+  │
+  │  git push (main, 4K_BE/** 경로 변경)
+  ▼
+GitHub (sanggyoon/202605_KakaoCloud_AIaaS)
+  │
+  │  .github/workflows/deploy-4k-be.yml 트리거
+  ▼
+GitHub Actions Runner (ubuntu-latest)
+  │
+  ├─ ① Docker 빌드 (python:3.11-slim)
+  │     context: ./4K_BE
+  │     cache: GitHub Actions Cache (BuildKit)
+  │
+  ├─ ② GHCR 푸시
+  │     ghcr.io/sanggyoon/4k-be:<sha>   ← 불변 태그
+  │     ghcr.io/sanggyoon/4k-be:latest  ← 가변 태그
+  │
+  ├─ ③ kustomization.yaml 태그 업데이트
+  │     Ansible/manifests/4k-be/kustomization.yaml
+  │     newTag: "abc1234" (git short SHA 7자)
+  │
+  └─ ④ git commit & push [skip ci]
+         "ci: update 4k-be image → abc1234 [skip ci]"
+
+ArgoCD (argocd.4kakao.kro.kr)
+  │
+  │  Git 폴링 (~3분 주기) → Ansible/manifests/4k-be/ 변경 감지
+  ▼
+K3s 클러스터 (be 네임스페이스)
+  │
+  └─ kubectl apply -k Ansible/manifests/4k-be/
+       → Deployment 롤링 업데이트
+       → Pod: vm2 또는 vm3 (workload=app)
+       → ClusterIP Service만 생성 (외부 노출 없음)
+       → FE Next.js → http://backend.be.svc.cluster.local:8000 내부 호출
+```
+
 ---
 
 ## 3. CI — GitHub Actions
 
 ### 트리거 조건
 
+FE (`deploy-4k-fe.yml`):
 ```yaml
 on:
   push:
@@ -70,9 +121,19 @@ on:
       - '.github/workflows/deploy-4k-fe.yml'
 ```
 
+BE (`deploy-4k-be.yml`):
+```yaml
+on:
+  push:
+    branches: [main]
+    paths:
+      - '4K_BE/**'
+      - '.github/workflows/deploy-4k-be.yml'
+```
+
 - `main` 브랜치에 push할 때만 실행
-- `4K_FE/` 또는 워크플로우 파일 자체가 변경된 경우에만 실행
-- `k8s/`, `Document/` 등 다른 경로 변경은 CI 미트리거
+- 해당 서비스 경로 또는 워크플로우 파일 자체가 변경된 경우에만 실행
+- `Ansible/`, `Documents/` 등 다른 경로 변경은 CI 미트리거
 
 ### 권한 모델
 
@@ -116,8 +177,8 @@ kustomization.yaml 업데이트 커밋에 `[skip ci]` 태그를 붙여 GitHub Ac
 
 ### Application 설정
 
+FE (`argocd-app-4k-cinema.yaml`):
 ```yaml
-# Ansible/manifests/argocd/argocd-app-4k-cinema.yaml
 spec:
   source:
     repoURL: https://github.com/sanggyoon/202605_KakaoCloud_AIaaS.git
@@ -131,8 +192,28 @@ spec:
       prune: true      # Git에서 삭제된 리소스는 클러스터에서도 삭제
       selfHeal: true   # 수동 변경 시 Git 상태로 자동 복원
     syncOptions:
-      - CreateNamespace=true     # fe 네임스페이스 없으면 자동 생성
+      - CreateNamespace=true
 ```
+
+BE (`argocd-app-4k-be.yaml`):
+```yaml
+spec:
+  source:
+    repoURL: https://github.com/sanggyoon/202605_KakaoCloud_AIaaS.git
+    targetRevision: main
+    path: Ansible/manifests/4k-be       # Kustomize 자동 인식
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: be
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+```
+
+> BE Application은 아직 클러스터에 미등록. `kubectl apply -f Ansible/manifests/argocd/argocd-app-4k-be.yaml` 필요.
 
 ### 이미지 태그 업데이트 경로
 
@@ -166,9 +247,14 @@ kubectl get application 4k-cinema -n argocd
 ```
 Ansible/manifests/4k-cinema/
 ├── kustomization.yaml   ← CI가 newTag 자동 업데이트
-├── deployment.yaml
+├── deployment.yaml      (BE_INTERNAL_URL 환경변수 포함)
 ├── service.yaml
-└── ingress.yaml
+└── ingress.yaml         (letsencrypt-prod, ssl-redirect: true)
+
+Ansible/manifests/4k-be/
+├── kustomization.yaml   ← CI가 newTag 자동 업데이트
+├── deployment.yaml      (ClusterIP only, /health probe)
+└── service.yaml
 ```
 
 ### kustomization.yaml 이미지 패치
@@ -183,11 +269,20 @@ images:
 
 ## 6. 배포 대상 리소스
 
+### FE (fe 네임스페이스)
+
 | 리소스 | 설정 |
 |--------|------|
-| Deployment | `replicas: 2`, `nodeSelector: workload=app` (vm2/vm3) |
+| Deployment | `replicas: 2`, `nodeSelector: workload=app` (vm2/vm3), `BE_INTERNAL_URL` 환경변수 |
 | Service | `ClusterIP`, port 80 → pod 3000 |
-| Ingress | `cinema.4kakao.kro.kr`, `ingressClassName: nginx`, TLS: `letsencrypt-staging` |
+| Ingress | `cinema.4kakao.kro.kr`, `ingressClassName: nginx`, TLS: `letsencrypt-prod`, `ssl-redirect: true` |
+
+### BE (be 네임스페이스)
+
+| 리소스 | 설정 |
+|--------|------|
+| Deployment | `replicas: 1`, `nodeSelector: workload=app` (vm2/vm3), `/health` readiness/liveness probe |
+| Service | `ClusterIP`, port 8000 → pod 8000. Ingress 없음 — 클러스터 내부에서만 접근 |
 
 ### 롤링 업데이트 기본 동작
 
@@ -264,29 +359,12 @@ spec:
 
 ---
 
-## 10. 향후 확장 계획
-
-### BE (FastAPI) CI/CD 추가 시
-
-동일 패턴 적용:
-
-```
-.github/workflows/deploy-be.yml
-Ansible/manifests/be/
-  ├── kustomization.yaml
-  ├── deployment.yaml
-  ├── service.yaml
-  └── ingress.yaml
-Ansible/manifests/argocd/argocd-app-be.yaml
-```
-
-paths 트리거만 `BE/**`로 변경.
-
-### 개선 가능 항목
+## 10. 향후 개선 가능 항목
 
 | 항목 | 방법 |
 |------|------|
-| Production TLS | `letsencrypt-staging` → `letsencrypt-prod` (개인 도메인 확보 후) |
+| BE ArgoCD 등록 | `kubectl apply -f Ansible/manifests/argocd/argocd-app-4k-be.yaml` (1회) |
+| 개인 도메인 | kro.kr → 개인 도메인 구매 시 rate limit 문제 근본 해결 |
 | 이미지 취약점 스캔 | GitHub Actions에 `aquasecurity/trivy-action` 추가 |
 | PR 환경 자동 생성 | ArgoCD ApplicationSet + PR 브랜치 연동 |
 | 롤백 자동화 | Argo Rollouts로 카나리/블루그린 배포 + 자동 롤백 |
