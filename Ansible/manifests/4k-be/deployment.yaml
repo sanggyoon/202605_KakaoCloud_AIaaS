@@ -20,6 +20,9 @@ spec:
           image: ghcr.io/sanggyoon/4k-be:latest
           ports:
             - containerPort: 8000
+          envFrom:
+            - secretRef:
+                name: 4k-be-secrets
           readinessProbe:
             httpGet:
               path: /health

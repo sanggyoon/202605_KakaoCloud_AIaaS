@@ -3,13 +3,9 @@
 TMDB 영화 목록 조회 + Supabase 추가/삭제
 """
 import os
-from pathlib import Path
-from dotenv import load_dotenv
 import httpx
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-
-load_dotenv(Path(__file__).parent.parent / "DB_SCRIPTS" / ".env")
 
 TMDB_KEY  = os.getenv("TMDB_API_KEY", "")
 DATA_URL  = os.getenv("DATA_SUPABASE_URL", "https://data.4kakao.kro.kr")
