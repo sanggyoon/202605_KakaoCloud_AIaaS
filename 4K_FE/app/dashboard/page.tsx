@@ -73,6 +73,21 @@ export default function Dashboard() {
     fetchMovies(0);
   }, [fetchMovies]);
 
+  // 첫 배치 로드 후 실제 데이터 연도 범위로 초기 필터 동기화
+  const didSyncYearRef = useRef(false);
+  useEffect(() => {
+    if (didSyncYearRef.current || movies.length === 0) return;
+    const years = movies.map((m) => m.release_year).filter((y): y is number => typeof y === 'number' && y > 0);
+    if (years.length === 0) return;
+    didSyncYearRef.current = true;
+    const dataMin = Math.min(...years);
+    const dataMax = new Date().getFullYear();
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setDraft((d) => ({ ...d, yearRange: [dataMin, dataMax] }));
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setApplied((d) => ({ ...d, yearRange: [dataMin, dataMax] }));
+  }, [movies]);
+
   // sentinel 요소가 뷰포트에 진입하면 다음 페이지 fetch — rootMargin으로 300px 앞당겨 미리 로드
   useEffect(() => {
     const el = sentinelRef.current;

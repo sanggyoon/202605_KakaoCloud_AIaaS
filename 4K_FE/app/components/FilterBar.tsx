@@ -51,6 +51,117 @@ function FilterRow({ label, options, value, onChange }: {
   );
 }
 
+// 좌우 화살표 버튼 + 클릭 직접 입력이 가능한 연도 스텝퍼
+function EditableYear({ value, min, max, onChange }: {
+  value: number;
+  min: number;
+  max: number;
+  onChange: (v: number) => void;
+}) {
+  const [editing, setEditing] = useState(false);
+  const [input, setInput] = useState(String(value));
+
+  useEffect(() => {
+    if (!editing) setInput(String(value));
+  }, [value, editing]);
+
+  const commit = () => {
+    const n = parseInt(input, 10);
+    if (!isNaN(n)) {
+      onChange(Math.max(min, Math.min(max, n)));
+    } else {
+      setInput(String(value));
+    }
+    setEditing(false);
+  };
+
+  const arrowBtn = (disabled: boolean): React.CSSProperties => ({
+    display: 'grid', placeItems: 'center',
+    width: 24, height: 28,
+    background: 'none', border: 'none',
+    color: disabled ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.55)',
+    cursor: disabled ? 'not-allowed' : 'pointer',
+    flexShrink: 0,
+    transition: 'color 0.15s',
+  });
+
+  return (
+    <div style={{
+      display: 'inline-flex', alignItems: 'center',
+      background: 'rgba(255,255,255,0.04)',
+      border: '1px solid rgba(255,255,255,0.1)',
+      borderRadius: 7,
+      overflow: 'hidden',
+      minWidth: 100,
+    }}>
+      {/* 감소 버튼 */}
+      <button
+        onClick={() => onChange(Math.max(min, value - 1))}
+        disabled={value <= min}
+        style={arrowBtn(value <= min)}
+        onMouseEnter={(e) => { if (value > min) (e.currentTarget as HTMLButtonElement).style.color = 'var(--accent)'; }}
+        onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.color = value <= min ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.55)'; }}
+      >
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+          <path d="m15 18-6-6 6-6" />
+        </svg>
+      </button>
+
+      {/* 연도 표시 / 직접 입력 */}
+      {editing ? (
+        <input
+          type="number"
+          value={input}
+          min={min}
+          max={max}
+          onChange={(e) => setInput(e.target.value)}
+          onBlur={commit}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') commit();
+            if (e.key === 'Escape') { setInput(String(value)); setEditing(false); }
+          }}
+          autoFocus
+          style={{
+            width: 48, padding: '0 4px', height: 28,
+            background: 'transparent', border: 'none',
+            color: 'var(--accent)', fontSize: 12, fontWeight: 700,
+            fontFamily: 'var(--font-mono), monospace',
+            outline: 'none', textAlign: 'center',
+          }}
+        />
+      ) : (
+        <span
+          onClick={() => { setInput(String(value)); setEditing(true); }}
+          title="클릭하여 직접 입력"
+          style={{
+            width: 48, height: 28, lineHeight: '28px',
+            textAlign: 'center', cursor: 'text',
+            fontSize: 12, fontWeight: 700,
+            color: 'var(--accent)',
+            fontFamily: 'var(--font-mono), monospace',
+            userSelect: 'none',
+          }}
+        >
+          {value}
+        </span>
+      )}
+
+      {/* 증가 버튼 */}
+      <button
+        onClick={() => onChange(Math.min(max, value + 1))}
+        disabled={value >= max}
+        style={arrowBtn(value >= max)}
+        onMouseEnter={(e) => { if (value < max) (e.currentTarget as HTMLButtonElement).style.color = 'var(--accent)'; }}
+        onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.color = value >= max ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.55)'; }}
+      >
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+          <path d="m9 18 6-6-6-6" />
+        </svg>
+      </button>
+    </div>
+  );
+}
+
 // 드래그 가능한 듀얼 핸들 연도 범위 슬라이더
 function YearRangeRow({ min, max, value, onChange }: {
   min: number;
@@ -58,13 +169,17 @@ function YearRangeRow({ min, max, value, onChange }: {
   value: [number, number];
   onChange: (v: [number, number]) => void;
 }) {
-  const [from, to] = value;
   const trackRef = useRef<HTMLDivElement>(null);
   const [dragging, setDragging] = useState<'from' | 'to' | null>(null);
 
+  // min/max 범위 안으로 현재 값을 클램프 — 데이터 범위가 바뀌어도 슬라이더가 깨지지 않음
+  const from = Math.max(min, Math.min(value[0], value[1]));
+  const to   = Math.min(max, Math.max(value[1], value[0]));
+
   // 퍼센트 위치 계산 — track 위 핸들과 활성 구간 렌더링에 사용
-  const pctFrom = ((from - min) / (max - min)) * 100;
-  const pctTo = ((to - min) / (max - min)) * 100;
+  const range   = max - min || 1; // 0 나누기 방지
+  const pctFrom = ((from - min) / range) * 100;
+  const pctTo   = ((to   - min) / range) * 100;
 
   // 드래그 중에만 window 이벤트 등록 — 마우스가 track 밖으로 나가도 추적 가능
   useEffect(() => {
@@ -74,9 +189,9 @@ function YearRangeRow({ min, max, value, onChange }: {
       if (!el) return;
       const r = el.getBoundingClientRect();
       const pct = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
-      const v = Math.round(min + pct * (max - min));
-      if (dragging === 'from') onChange([Math.min(v, to) as number, to]);
-      else onChange([from, Math.max(v, from) as number]);
+      const v = Math.round(min + pct * range);
+      if (dragging === 'from') onChange([Math.min(v, to), to]);
+      else onChange([from, Math.max(v, from)]);
     };
     const onUp = () => setDragging(null);
     window.addEventListener('mousemove', onMove);
@@ -85,19 +200,24 @@ function YearRangeRow({ min, max, value, onChange }: {
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('mouseup', onUp);
     };
-  }, [dragging, from, to, min, max, onChange]);
+  }, [dragging, from, to, min, max, range, onChange]);
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
       <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.16em', color: 'rgba(255,255,255,0.5)', width: 90, flexShrink: 0 }}>연도</span>
       <div style={{ display: 'flex', alignItems: 'center', gap: 14, flex: 1, maxWidth: 540 }}>
-        <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent)', fontFamily: 'var(--font-mono), monospace', minWidth: 36 }}>{from}</span>
+        <EditableYear
+          value={from}
+          min={min}
+          max={to} // from은 to를 초과할 수 없음
+          onChange={(v) => onChange([v, to])}
+        />
         <div ref={trackRef} style={{ position: 'relative', flex: 1, height: 28, cursor: 'pointer' }}>
           {/* 배경 track */}
           <div style={{ position: 'absolute', left: 0, right: 0, top: '50%', height: 3, background: 'rgba(255,255,255,0.08)', borderRadius: 999, transform: 'translateY(-50%)' }} />
           {/* 5년 단위 눈금 */}
           {Array.from({ length: max - min + 1 }, (_, i) => i + min).filter((y) => y % 5 === 0).map((y) => {
-            const p = ((y - min) / (max - min)) * 100;
+            const p = ((y - min) / range) * 100;
             return (
               <div key={y} style={{ position: 'absolute', left: `${p}%`, top: '50%', width: 1, height: 6, background: 'rgba(255,255,255,0.15)', transform: 'translate(-50%, -50%)' }} />
             );
@@ -125,7 +245,12 @@ function YearRangeRow({ min, max, value, onChange }: {
             );
           })}
         </div>
-        <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent)', fontFamily: 'var(--font-mono), monospace', minWidth: 36 }}>{to}</span>
+        <EditableYear
+          value={to}
+          min={from} // to는 from 미만이 될 수 없음
+          max={max}
+          onChange={(v) => onChange([from, v])}
+        />
       </div>
     </div>
   );
@@ -183,8 +308,13 @@ function PrefRow({ label, ids, movies, onRemove, accent }: {
 }
 
 export default function FilterBar({ open, draft, movies, onChangeDraft, onSearch, onReset }: FilterBarProps) {
-  const removeLike = (id: number) => onChangeDraft({ ...draft, likes: draft.likes.filter((x) => x !== id) });
+  const removeLike    = (id: number) => onChangeDraft({ ...draft, likes:    draft.likes.filter((x) => x !== id) });
   const removeDislike = (id: number) => onChangeDraft({ ...draft, dislikes: draft.dislikes.filter((x) => x !== id) });
+
+  // 최솟값은 데이터 기준, 최댓값은 현재 연도로 고정
+  const years   = movies.map((m) => m.release_year).filter((y): y is number => typeof y === 'number' && y > 0);
+  const dataMin = years.length > 0 ? Math.min(...years) : 1980;
+  const dataMax = new Date().getFullYear();
 
   return (
     // max-height 트랜지션으로 슬라이드 애니메이션 구현 — height 자체는 애니메이션 불가
@@ -199,8 +329,8 @@ export default function FilterBar({ open, draft, movies, onChangeDraft, onSearch
     }}>
       <div style={{ padding: '20px 64px 22px', display: 'flex', flexDirection: 'column', gap: 12 }}>
         <YearRangeRow
-          min={1980}
-          max={2025}
+          min={dataMin}
+          max={dataMax}
           value={draft.yearRange}
           onChange={(v) => onChangeDraft({ ...draft, yearRange: v })}
         />
@@ -216,8 +346,8 @@ export default function FilterBar({ open, draft, movies, onChangeDraft, onSearch
           value={draft.situation}
           onChange={(v) => onChangeDraft({ ...draft, situation: v })}
         />
-        <PrefRow label="선호" ids={draft.likes} movies={movies} onRemove={removeLike} accent />
-        <PrefRow label="비선호" ids={draft.dislikes} movies={movies} onRemove={removeDislike} />
+        <PrefRow label="선호"   ids={draft.likes}    movies={movies} onRemove={removeLike}    accent />
+        <PrefRow label="비선호" ids={draft.dislikes}  movies={movies} onRemove={removeDislike} />
 
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 8, paddingTop: 14, borderTop: '1px solid rgba(255,255,255,0.05)' }}>
           <button
