@@ -130,27 +130,26 @@ export default function PosterCard({ movie, isHovered, onHover, onClick, pref, o
         </div>
       </div>
 
-      {/* 포스터 하단 메타 */}
-      <div>
+      {/* 포스터 하단 메타 — flex:1로 남은 높이 채워 버튼을 바닥에 고정 */}
+      <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
         <h3 style={{ fontSize: 14, fontWeight: 700, margin: 0, letterSpacing: '-0.01em', lineHeight: 1.25, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
           {movie.title}
         </h3>
-        {movie.original_title && movie.original_title !== movie.title && (
-          <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', marginTop: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-            {movie.original_title}
-          </div>
-        )}
-        <div style={{ display: 'flex', gap: 6, marginTop: 5, flexWrap: 'wrap', alignItems: 'center' }}>
+        {/* 원제 없는 카드도 동일 높이를 유지하도록 빈 자리 확보 */}
+        <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', marginTop: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', minHeight: '1.4em' }}>
+          {movie.original_title && movie.original_title !== movie.title ? movie.original_title : ''}
+        </div>
+        <div style={{ display: 'flex', gap: 6, marginTop: 5, alignItems: 'center', overflow: 'hidden' }}>
           {genres.slice(0, 2).map((g, i) => (
-            <span key={g} style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+            <span key={g} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
               {i > 0 && <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.25)' }}>·</span>}
               <span style={{ fontSize: 10, fontWeight: 500, color: 'rgba(255,255,255,0.55)', letterSpacing: '0.04em' }}>{g}</span>
             </span>
           ))}
         </div>
 
-        {/* 선호/비선호 버튼 — e.stopPropagation으로 카드 클릭 이벤트와 분리 */}
-        <div style={{ display: 'flex', gap: 6, marginTop: 8 }}>
+        {/* 선호/비선호 버튼 — marginTop:auto로 항상 카드 바닥에 고정 */}
+        <div style={{ display: 'flex', gap: 6, marginTop: 'auto', paddingTop: 8 }}>
           <button
             onClick={(e) => { e.stopPropagation(); onTogglePref(movie.tmdb_id, 'like'); }}
             style={{
