@@ -319,14 +319,14 @@ export default function FilterBar({ open, draft, movies, onChangeDraft, onSearch
     // max-height 트랜지션으로 슬라이드 애니메이션 구현 — height 자체는 애니메이션 불가
     <div style={{
       position: 'sticky', top: 71, zIndex: 4,
-      maxHeight: open ? 400 : 0,
+      maxHeight: open ? 600 : 0,
       overflow: 'hidden',
       transition: 'max-height 0.35s cubic-bezier(.2,.7,.2,1)',
       borderBottom: open ? '1px solid rgba(255,255,255,0.05)' : '1px solid transparent',
       background: 'rgba(8,9,13,0.85)',
       backdropFilter: 'blur(12px)',
     }}>
-      <div style={{ padding: '20px 64px 22px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div className="filter-bar-inner" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         <YearRangeRow
           min={dataMin}
           max={dataMax}

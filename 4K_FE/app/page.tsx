@@ -72,7 +72,7 @@ export default function OnboardingPage() {
 
         {/* Title */}
         <h1 style={{
-          fontSize: 60, fontWeight: 800, margin: '0 0 10px',
+          fontSize: 'clamp(38px, 9vw, 60px)', fontWeight: 800, margin: '0 0 10px',
           letterSpacing: '-0.04em', lineHeight: 1,
         }}>
           4K Cinema
@@ -85,10 +85,7 @@ export default function OnboardingPage() {
         </p>
 
         {/* Feature cards */}
-        <div style={{
-          display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: 16, marginBottom: 52,
-        }}>
+        <div className="feature-grid">
           {FEATURES.map((card) => (
             <div key={card.title} style={{
               background: 'rgba(255,255,255,0.025)',

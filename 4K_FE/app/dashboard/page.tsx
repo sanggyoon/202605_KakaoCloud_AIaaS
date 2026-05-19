@@ -162,10 +162,8 @@ export default function Dashboard() {
       }} />
 
       {/* HEADER */}
-      <header style={{
+      <header className="dash-header" style={{
         position: 'sticky', top: 0, zIndex: headerZIndex,
-        display: 'flex', alignItems: 'center', gap: 20,
-        padding: '20px 64px',
         borderBottom: '1px solid rgba(255,255,255,0.05)',
         background: 'rgba(8,9,13,0.85)',
         backdropFilter: 'blur(12px)',
@@ -193,7 +191,7 @@ export default function Dashboard() {
         </div>
 
         {/* Search */}
-        <div style={{ flex: 1, maxWidth: 560, position: 'relative', marginLeft: 20 }}>
+        <div className="dash-search">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="2" style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)' }}>
             <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
           </svg>
@@ -230,7 +228,7 @@ export default function Dashboard() {
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
             <path d="M3 6h18M7 12h10M11 18h2" strokeLinecap="round" />
           </svg>
-          필터
+          <span className="btn-label">필터</span>
           <svg
             width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
             style={{ transform: filterOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.25s' }}
@@ -255,11 +253,12 @@ export default function Dashboard() {
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
             <path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          랜덤 추천
+          <span className="btn-label">랜덤 추천</span>
         </button>
 
-        {/* Tutorial */}
+        {/* Tutorial — 모바일에서 숨김 */}
         <button
+          className="hide-mobile"
           onClick={() => setTutorialStep(0)}
           style={{
             display: 'flex', alignItems: 'center', gap: 8,
@@ -292,7 +291,7 @@ export default function Dashboard() {
 
       {/* MAIN */}
       <main style={{ flex: 1, position: 'relative', zIndex: 1 }}>
-        <div style={{ padding: '28px 64px 60px' }}>
+        <div className="px-page" style={{ paddingTop: 28, paddingBottom: 60 }}>
 
           {/* 최근 살펴본 영화 — 가로 스크롤, 스크롤바 숨김 */}
           {recentMovies.length > 0 && (
@@ -333,13 +332,13 @@ export default function Dashboard() {
 
           {/* 스켈레톤 UI — 초기 로딩 중 레이아웃 자리 유지 */}
           {loading ? (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 22 }}>
+            <div className="movie-grid">
               {Array.from({ length: 12 }).map((_, i) => (
                 <div key={i} style={{ aspectRatio: '2 / 3', borderRadius: 8, background: 'rgba(255,255,255,0.05)' }} />
               ))}
             </div>
           ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 22 }}>
+            <div className="movie-grid">
               {filtered.map((m, i) => {
                 const key = `${m.tmdb_id}-${i}`;
                 const pref = draft.likes.includes(m.tmdb_id) ? 'like' as const : draft.dislikes.includes(m.tmdb_id) ? 'dislike' as const : null;

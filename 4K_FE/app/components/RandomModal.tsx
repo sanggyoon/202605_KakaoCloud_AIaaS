@@ -43,7 +43,8 @@ export default function RandomModal({ movies, onClose, onPick }: RandomModalProp
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        style={{ width: 440, padding: 28, background: 'linear-gradient(160deg, #14161c, #0a0b10)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 14, boxShadow: '0 30px 80px rgba(0,0,0,0.6)' }}
+        className="random-modal"
+        style={{ background: 'linear-gradient(160deg, #14161c, #0a0b10)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 14, boxShadow: '0 30px 80px rgba(0,0,0,0.6)' }}
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 }}>
           <div>

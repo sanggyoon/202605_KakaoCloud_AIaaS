@@ -36,7 +36,7 @@ export default function DetailOverlay({ movie, movies, onClose, onSelectMovie }:
       zIndex: 90, overflow: 'auto',
       animation: 'fadeIn 0.25s ease',
     }}>
-      <div style={{ maxWidth: 1100, margin: '40px auto', padding: 32 }}>
+      <div className="detail-container">
         <button
           onClick={onClose}
           style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 14px', background: 'rgba(255,255,255,0.04)', color: 'rgba(255,255,255,0.85)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 7, fontWeight: 600, fontSize: 12, cursor: 'pointer', marginBottom: 20, fontFamily: 'inherit' }}
@@ -47,7 +47,7 @@ export default function DetailOverlay({ movie, movies, onClose, onSelectMovie }:
           뒤로 가기
         </button>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '240px 1fr', gap: 32 }}>
+        <div className="detail-layout">
           {/* Poster */}
           <div style={{ position: 'relative', width: '100%', aspectRatio: '2 / 3', borderRadius: 10, overflow: 'hidden', background: '#111218', flexShrink: 0 }}>
             {imgUrl ? (
@@ -63,7 +63,7 @@ export default function DetailOverlay({ movie, movies, onClose, onSelectMovie }:
             <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.2em', fontWeight: 700, marginBottom: 8 }}>
               {movie.release_year}{movie.runtime ? ` · ${movie.runtime}MIN` : ''}
             </div>
-            <h1 style={{ fontFamily: 'var(--font-playfair), serif', fontSize: 48, fontWeight: 800, margin: 0, letterSpacing: '-0.03em', lineHeight: 0.95, color: 'var(--fg)' }}>
+            <h1 className="detail-title" style={{ fontFamily: 'var(--font-playfair), serif', fontWeight: 800, margin: 0, letterSpacing: '-0.03em', color: 'var(--fg)' }}>
               {movie.title}
             </h1>
             {movie.original_title && movie.original_title !== movie.title && (
@@ -142,7 +142,7 @@ export default function DetailOverlay({ movie, movies, onClose, onSelectMovie }:
         {similar.length > 0 && (
           <section style={{ marginTop: 48 }}>
             <h3 style={{ ...sectionLabel, marginBottom: 16 }}>비슷한 패턴의 영화</h3>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
+            <div className="similar-grid">
               {similar.map((m) => {
                 const simImg = posterUrl(m.poster_path);
                 const simGenres = genreList(m.genre).slice(0, 2);
