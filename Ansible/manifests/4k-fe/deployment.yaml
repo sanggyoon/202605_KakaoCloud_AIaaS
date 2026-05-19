@@ -17,7 +17,7 @@ spec:
         workload: app
       containers:
         - name: frontend
-          image: ghcr.io/sanggyoon/4k-cinema:latest
+          image: ghcr.io/sanggyoon/4k-fe:latest
           env:
             - name: BE_INTERNAL_URL
               value: "http://backend.be.svc.cluster.local:8000"

@@ -9,5 +9,5 @@ resources:
   - ingress.yaml
 
 images:
-  - name: ghcr.io/sanggyoon/4k-cinema
-    newTag: "a84eb87"
+  - name: ghcr.io/sanggyoon/4k-fe
+    newTag: "latest"

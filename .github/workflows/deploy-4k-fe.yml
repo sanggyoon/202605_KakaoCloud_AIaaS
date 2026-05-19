@@ -1,4 +1,4 @@
-name: Deploy 4K Cinema FE
+name: Deploy 4K FE
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - '.github/workflows/deploy-4k-fe.yml'
 
 env:
-  IMAGE: ghcr.io/sanggyoon/4k-cinema
+  IMAGE: ghcr.io/sanggyoon/4k-fe
 
 jobs:
   build-and-deploy:
@@ -52,12 +52,12 @@ jobs:
       - name: Update image tag in kustomization.yaml
         run: |
           sed -i 's|newTag:.*|newTag: "${{ steps.vars.outputs.sha }}"|' \
-            Ansible/manifests/4k-cinema/kustomization.yaml
+            Ansible/manifests/4k-fe/kustomization.yaml
 
       - name: Commit and push manifest update
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add Ansible/manifests/4k-cinema/kustomization.yaml
-          git commit -m "ci: update 4k-cinema image → ${{ steps.vars.outputs.sha }} [skip ci]"
+          git add Ansible/manifests/4k-fe/kustomization.yaml
+          git commit -m "ci: update 4k-fe image → ${{ steps.vars.outputs.sha }} [skip ci]"
           git push
