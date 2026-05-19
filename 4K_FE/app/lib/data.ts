@@ -54,7 +54,7 @@ export interface Filters {
 }
 
 export const INITIAL_FILTERS: Filters = {
-  yearRange: [1980, 2025],
+  yearRange: [1900, new Date().getFullYear()],
   genre: 'All',
   situation: 'All',
   likes: [],

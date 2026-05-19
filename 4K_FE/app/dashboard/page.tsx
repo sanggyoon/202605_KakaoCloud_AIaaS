@@ -10,7 +10,7 @@ import DetailOverlay from '@/app/components/DetailOverlay';
 import RandomModal from '@/app/components/RandomModal';
 import Tutorial from '@/app/components/Tutorial';
 
-// 한 번에 가져오는 영화 수 — 너무 크면 초기 로딩이 느려짐
+// 한 번에 가져올 영화 수 — 서버사이드 필터링으로 Supabase가 조건 적용 후 이 단위로 반환
 const PAGE_SIZE = 120;
 
 export default function Dashboard() {
@@ -42,15 +42,23 @@ export default function Dashboard() {
     return localStorage.getItem('4k_tutorial_done') ? null : 0;
   });
 
-  // Supabase REST API에서 PAGE_SIZE 단위로 영화를 페이지네이션 fetch
-  const fetchMovies = useCallback((offset: number) => {
+  // Supabase REST API에서 서버사이드 필터 조건을 포함해 PAGE_SIZE 단위로 fetch
+  const fetchMovies = useCallback((offset: number, filters: Filters) => {
     if (isFetchingRef.current) return;
     isFetchingRef.current = true;
     if (offset > 0) setLoadingMore(true);
 
-    fetch(`${SUPABASE_URL}/rest/v1/movies?select=*&limit=${PAGE_SIZE}&offset=${offset}&order=id.asc`, {
-      headers: { apikey: SUPABASE_ANON_KEY },
-    })
+    // 연도·장르·비선호 조건을 쿼리 파라미터로 서버에 전달
+    let url = `${SUPABASE_URL}/rest/v1/movies?select=*&limit=${PAGE_SIZE}&offset=${offset}&order=release_year.desc,id.desc`;
+    url += `&release_year=gte.${filters.yearRange[0]}&release_year=lte.${filters.yearRange[1]}`;
+    if (filters.genre !== 'All') {
+      url += `&genre=ilike.*${encodeURIComponent(filters.genre)}*`;
+    }
+    if (filters.dislikes.length > 0) {
+      url += `&tmdb_id=not.in.(${filters.dislikes.join(',')})`;
+    }
+
+    fetch(url, { headers: { apikey: SUPABASE_ANON_KEY } })
       .then((r) => r.json())
       .then((data: Movie[]) => {
         const arr = Array.isArray(data) ? data : [];
@@ -68,34 +76,27 @@ export default function Dashboard() {
       });
   }, []);
 
+  // applied 필터가 바뀌면 항상 처음부터 다시 fetch — 필터 변경 시 stale 요청 취소 후 재시작
+  const appliedRef = useRef<Filters>(INITIAL_FILTERS);
   useEffect(() => {
+    appliedRef.current = applied;
+    isFetchingRef.current = false; // 진행 중인 fetch가 있어도 새 조건으로 덮어씀
+    setMovies([]);
+    offsetRef.current = 0;
+    setHasMore(true);
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    fetchMovies(0);
-  }, [fetchMovies]);
+    setLoading(true);
+    fetchMovies(0, applied);
+  }, [applied, fetchMovies]);
 
-  // 첫 배치 로드 후 실제 데이터 연도 범위로 초기 필터 동기화
-  const didSyncYearRef = useRef(false);
-  useEffect(() => {
-    if (didSyncYearRef.current || movies.length === 0) return;
-    const years = movies.map((m) => m.release_year).filter((y): y is number => typeof y === 'number' && y > 0);
-    if (years.length === 0) return;
-    didSyncYearRef.current = true;
-    const dataMin = Math.min(...years);
-    const dataMax = new Date().getFullYear();
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setDraft((d) => ({ ...d, yearRange: [dataMin, dataMax] }));
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setApplied((d) => ({ ...d, yearRange: [dataMin, dataMax] }));
-  }, [movies]);
-
-  // sentinel 요소가 뷰포트에 진입하면 다음 페이지 fetch — rootMargin으로 300px 앞당겨 미리 로드
+  // sentinel 요소가 뷰포트에 진입하면 다음 페이지 fetch — appliedRef로 현재 필터 참조
   useEffect(() => {
     const el = sentinelRef.current;
     if (!el) return;
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasMore && !isFetchingRef.current) {
-          fetchMovies(offsetRef.current);
+          fetchMovies(offsetRef.current, appliedRef.current);
         }
       },
       { rootMargin: '300px' }
@@ -128,17 +129,11 @@ export default function Dashboard() {
     });
   };
 
-  // 검색과 applied 필터를 클라이언트 사이드에서 조합 — 비선호 영화는 목록에서 완전히 제거
+  // 연도·장르·비선호는 서버(Supabase)가 이미 필터링 — 클라이언트는 제목 검색만 처리
   const filtered = movies.filter((m) => {
-    if (search) {
-      const q = search.toLowerCase();
-      if (!m.title.toLowerCase().includes(q) && !(m.original_title?.toLowerCase().includes(q))) return false;
-    }
-    if (applied.genre !== 'All' && !m.genre?.includes(applied.genre)) return false;
-    const year = m.release_year ?? 0;
-    if (year < applied.yearRange[0] || year > applied.yearRange[1]) return false;
-    if (applied.dislikes.includes(m.tmdb_id)) return false;
-    return true;
+    if (!search) return true;
+    const q = search.toLowerCase();
+    return m.title.toLowerCase().includes(q) || Boolean(m.original_title?.toLowerCase().includes(q));
   });
 
   // recentIds 순서(최신순)를 유지하면서 로드된 movies에서 매핑

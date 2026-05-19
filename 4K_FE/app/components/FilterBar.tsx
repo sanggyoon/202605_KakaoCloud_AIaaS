@@ -311,9 +311,8 @@ export default function FilterBar({ open, draft, movies, onChangeDraft, onSearch
   const removeLike    = (id: number) => onChangeDraft({ ...draft, likes:    draft.likes.filter((x) => x !== id) });
   const removeDislike = (id: number) => onChangeDraft({ ...draft, dislikes: draft.dislikes.filter((x) => x !== id) });
 
-  // 최솟값은 데이터 기준, 최댓값은 현재 연도로 고정
-  const years   = movies.map((m) => m.release_year).filter((y): y is number => typeof y === 'number' && y > 0);
-  const dataMin = years.length > 0 ? Math.min(...years) : 1980;
+  // 서버사이드 필터링 전환 후 movies는 현재 페이지 일부만 담음 — 고정 범위로 슬라이더 안정화
+  const dataMin = 1900;
   const dataMax = new Date().getFullYear();
 
   return (
