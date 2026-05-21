@@ -144,6 +144,11 @@ input::placeholder {
 .random-modal { width: 440px; padding: 28px; }
 @media (max-width: 639px) { .random-modal { width: calc(100vw - 32px); padding: 20px; } }
 
+/* 최근 살펴본 영화 — 카드 너비 고정(부모에서 설정), 포스터 2:3 비율 유지 */
+.recent-card-wrap { overflow: hidden; }
+.recent-card-wrap > article { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+.recent-card-wrap > article > div:first-child { flex-shrink: 0; width: 100%; aspect-ratio: 2 / 3; }
+
 /* 필터바 내부 패딩 */
 .filter-bar-inner { padding: 20px 64px 22px; }
 @media (max-width: 1023px) { .filter-bar-inner { padding: 16px 32px 18px; } }

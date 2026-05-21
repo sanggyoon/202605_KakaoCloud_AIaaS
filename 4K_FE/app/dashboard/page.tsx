@@ -449,7 +449,7 @@ export default function Dashboard() {
                       ? ('dislike' as const)
                       : null;
                   return (
-                    <div key={key} style={{ flex: '0 0 180px' }}>
+                    <div key={key} className="recent-card-wrap" style={{ flex: '0 0 180px', minWidth: 0 }}>
                       <PosterCard
                         movie={m}
                         isHovered={hoveredKey === key}
