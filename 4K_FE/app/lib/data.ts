@@ -62,6 +62,45 @@ export const INITIAL_FILTERS: Filters = {
   dislikes: [],
 };
 
+// pgvector 코사인 유사도로 비슷한 패턴의 영화 4개를 반환
+// vm4 Supabase RPC(find_similar_movies) 호출 — movie.id 기준
+export async function fetchSimilarMovies(movieId: number, count = 4): Promise<Movie[]> {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/find_similar_movies`, {
+      method: 'POST',
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ query_movie_id: movieId, match_count: count }),
+    });
+    if (!res.ok) return [];
+    return await res.json() as Movie[];
+  } catch {
+    return [];
+  }
+}
+
+// movie_vectors 테이블에서 해당 영화의 클라이맥스 벡터를 lazy fetch
+// pgvector는 REST API에서 문자열 "[0.1,0.2,...]" 또는 배열로 반환
+export async function fetchVector(movieId: number): Promise<number[] | null> {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/movie_vectors?movies_id=eq.${movieId}&select=vector&limit=1`,
+      { headers: { apikey: SUPABASE_ANON_KEY } },
+    );
+    if (!res.ok) return null;
+    const rows = await res.json();
+    if (!rows.length) return null;
+    const raw = rows[0].vector;
+    if (Array.isArray(raw)) return raw as number[];
+    if (typeof raw === 'string') return JSON.parse(raw) as number[];
+    return null;
+  } catch {
+    return null;
+  }
+}
+
 // 최근 본 영화 tmdb_id 관리 (localStorage)
 const RECENT_KEY = '4k_recent_ids';
 

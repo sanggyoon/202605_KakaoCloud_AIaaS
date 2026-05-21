@@ -1,8 +1,9 @@
 'use client';
 
 // 영화 상세 오버레이 — 포스터, 시놉시스, 트레일러, 클라이맥스 그래프, 유사 영화 추천
-import { useMemo } from 'react';
-import { Movie, posterUrl, genreList, castList } from '@/app/lib/data';
+import { useRef, useState, useEffect } from 'react';
+import { Movie, posterUrl, genreList, castList, fetchVector, fetchSimilarMovies } from '@/app/lib/data';
+import ClimaxGraph from '@/app/components/ClimaxGraph';
 
 interface DetailOverlayProps {
   movie: Movie;
@@ -20,14 +21,42 @@ export default function DetailOverlay({ movie, movies, onClose, onSelectMovie }:
   const genres = genreList(movie.genre);
   const cast = castList(movie.actors);
 
-  // 현재 영화 제외 후 랜덤 4개 — movie.tmdb_id가 바뀔 때만 재계산
-  const similar = useMemo(() => {
-    return movies
-      .filter((m) => m.tmdb_id !== movie.tmdb_id)
-      .sort(() => Math.random() - 0.5)
-      .slice(0, 4);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [movie.tmdb_id]);
+  const [vector, setVector] = useState<number[] | null>(null);
+  const [vectorLoading, setVectorLoading] = useState(true);
+  const [similar, setSimilar] = useState<Movie[]>([]);
+  const [similarLoading, setSimilarLoading] = useState(true);
+
+  // 최신 movies를 ref에 유지 — useEffect 내 랜덤 폴백에서 stale closure 방지
+  const moviesRef = useRef(movies);
+  useEffect(() => { moviesRef.current = movies; }, [movies]);
+
+  // 영화가 바뀔 때마다 벡터 + 유사 영화 동시 fetch
+  useEffect(() => {
+    setVector(null);
+    setVectorLoading(true);
+    setSimilar([]);
+    setSimilarLoading(true);
+
+    fetchVector(movie.id).then((v) => {
+      setVector(v);
+      setVectorLoading(false);
+    });
+
+    fetchSimilarMovies(movie.id).then((results) => {
+      if (results.length > 0) {
+        setSimilar(results);
+      } else {
+        // 벡터 없는 영화는 랜덤 폴백
+        setSimilar(
+          moviesRef.current
+            .filter((m) => m.tmdb_id !== movie.tmdb_id)
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 4),
+        );
+      }
+      setSimilarLoading(false);
+    });
+  }, [movie.id]);
 
   return (
     <div style={{
@@ -123,27 +152,46 @@ export default function DetailOverlay({ movie, movies, onClose, onSelectMovie }:
               </div>
             </section>
 
-            {/* 클라이맥스 그래프 — 자막 분석 기반 긴장감 곡선 (추후 구현) */}
+            {/* 클라이맥스 그래프 — 자막 분석 기반 긴장감 곡선 */}
             <section style={{ marginTop: 24 }}>
               <h3 style={sectionLabel}>CLIMAX GRAPH</h3>
               <div style={{
                 marginTop: 10, height: 180, borderRadius: 8,
                 background: 'rgba(0,0,0,0.3)',
                 border: '1px solid rgba(255,255,255,0.06)',
-                display: 'grid', placeItems: 'center',
+                overflow: 'hidden',
+                display: vectorLoading || !vector ? 'grid' : 'block',
+                placeItems: 'center',
               }}>
-                <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.2)', letterSpacing: '0.1em' }}>준비중</span>
+                {vectorLoading ? (
+                  <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.2)', letterSpacing: '0.1em' }}>로딩 중...</span>
+                ) : vector ? (
+                  <ClimaxGraph data={vector} height={180} />
+                ) : (
+                  <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.2)', letterSpacing: '0.1em' }}>준비중</span>
+                )}
               </div>
             </section>
           </div>
         </div>
 
-        {/* 비슷한 패턴의 영화 — 현재는 랜덤, 추후 클라이맥스 벡터 유사도로 교체 예정 */}
-        {similar.length > 0 && (
+        {/* 비슷한 패턴의 영화 — pgvector 코사인 유사도 기반 (벡터 없으면 랜덤 폴백) */}
+        {(similarLoading || similar.length > 0) && (
           <section style={{ marginTop: 48 }}>
-            <h3 style={{ ...sectionLabel, marginBottom: 16 }}>비슷한 패턴의 영화</h3>
+            <h3 style={{ ...sectionLabel, marginBottom: 16 }}>
+              비슷한 패턴의 영화
+              {!similarLoading && similar.length > 0 && vector && (
+                <span style={{ marginLeft: 8, fontSize: 9, color: 'rgba(255,255,255,0.25)', fontWeight: 500, letterSpacing: '0.1em' }}>
+                  · 클라이맥스 유사도 기반
+                </span>
+              )}
+            </h3>
             <div className="similar-grid">
-              {similar.map((m) => {
+              {similarLoading
+                ? Array.from({ length: 4 }).map((_, i) => (
+                    <div key={i} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 10, padding: 10, height: 88, opacity: 0.5 }} />
+                  ))
+                : similar.map((m) => {
                 const simImg = posterUrl(m.poster_path);
                 const simGenres = genreList(m.genre).slice(0, 2);
                 return (
@@ -178,7 +226,7 @@ export default function DetailOverlay({ movie, movies, onClose, onSelectMovie }:
                   </button>
                 );
               })}
-            </div>
+            </div>  {/* similar-grid */}
           </section>
         )}
       </div>
