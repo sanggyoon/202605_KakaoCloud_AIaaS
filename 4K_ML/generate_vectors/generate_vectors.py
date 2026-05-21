@@ -5,8 +5,8 @@ training.scene_scores → 시계열 처리 → service.movie_vectors 생성
 [사전 조건]
   1. vm4 Supabase Studio SQL Editor에서 unique constraint 추가:
        ALTER TABLE movie_vectors
-       ADD CONSTRAINT movie_vectors_movies_id_version_key
-       UNIQUE (movies_id, vector_version);
+       ADD CONSTRAINT movie_vectors_tmdb_id_version_key
+       UNIQUE (tmdb_id, vector_version);
   2. 4K_ML/.env에 EXT_SUPABASE_URL, EXT_SUPABASE_KEY 추가
 
 [사용법]
@@ -68,29 +68,6 @@ def ext_fetch(table: str, params: dict = {}) -> list[dict]:
             break
         offset += PAGE_SIZE
     print()
-    return result
-
-
-def vm4_fetch(table: str, params: dict = {}) -> list[dict]:
-    """vm4 Supabase — public 스키마 페이지네이션 fetch."""
-    headers = {"apikey": DATA_KEY}
-    result = []
-    offset = 0
-    while True:
-        r = httpx.get(
-            f"{DATA_URL}/rest/v1/{table}",
-            params={**params, "limit": PAGE_SIZE, "offset": offset},
-            headers=headers,
-            auth=(DATA_BASIC_USER, DATA_BASIC_PASS) if DATA_BASIC_USER else None,
-            timeout=30,
-            verify=False,
-        )
-        r.raise_for_status()
-        batch = r.json()
-        result.extend(batch)
-        if len(batch) < PAGE_SIZE:
-            break
-        offset += PAGE_SIZE
     return result
 
 
@@ -193,34 +170,20 @@ def main() -> None:
 
     print(f"  → 조인 완료: {len(movie_points)}개 영화")
 
-    # ── 3. vm4 movies 조회 (tmdb_id → id 매핑) ───────────────
-    print("\n=== 3. vm4 movies 조회 ===")
-
-    movies_rows = vm4_fetch("movies", {"select": "id,tmdb_id"})
-    tmdb_to_id  = {row["tmdb_id"]: row["id"] for row in movies_rows}
-    print(f"  → vm4 movies: {len(tmdb_to_id)}개")
-
-    overlap = len(set(movie_points.keys()) & set(tmdb_to_id.keys()))
-    print(f"  → 양쪽 겹침 (처리 대상): {overlap}개")
-
-    # ── 4. 시계열 처리 ───────────────────────────────────────
-    print("\n=== 4. 시계열 처리 ===")
+    # ── 3. 시계열 처리 ───────────────────────────────────────
+    print("\n=== 3. 시계열 처리 ===")
 
     vectors = []
     skipped = 0
 
     for tmdb_id, points in movie_points.items():
-        movie_id = tmdb_to_id.get(tmdb_id)
-        if not movie_id:
-            continue
-
         vec = process(points)
         if vec is None:
             skipped += 1
             continue
 
         vectors.append({
-            "movies_id":        movie_id,
+            "tmdb_id":          tmdb_id,
             "vector":           vec.tolist(),
             "vector_version":   MODEL_VERSION,
             "normalization":    "zscore",
@@ -230,10 +193,10 @@ def main() -> None:
     print(f"  → 처리 완료: {len(vectors)}개")
     print(f"  → 스킵: {skipped}개 (씬 부족 또는 평탄 시계열)")
 
-    # ── 5. vm4 movie_vectors upsert ─────────────────────────
-    print(f"\n=== 5. vm4 movie_vectors upsert ({len(vectors)}개) ===")
+    # ── 4. vm4 movie_vectors upsert ─────────────────────────
+    print(f"\n=== 4. vm4 movie_vectors upsert ({len(vectors)}개) ===")
 
-    vm4_upsert("movie_vectors", vectors, on_conflict="movies_id,vector_version")
+    vm4_upsert("movie_vectors", vectors, on_conflict="tmdb_id,vector_version")
 
     print("\n✅ 완료")
 

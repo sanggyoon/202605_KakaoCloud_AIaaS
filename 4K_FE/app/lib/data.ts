@@ -13,6 +13,7 @@ export interface Movie {
   actors?: string | null;   // DB 저장 형식: "Actor1, Actor2"
   overview?: string | null;
   youtube_key?: string | null;
+  has_vector?: boolean | null;
 }
 
 // poster_path → TMDB CDN URL 변환
@@ -83,10 +84,10 @@ export async function fetchSimilarMovies(movieId: number, count = 4): Promise<Mo
 
 // movie_vectors 테이블에서 해당 영화의 클라이맥스 벡터를 lazy fetch
 // pgvector는 REST API에서 문자열 "[0.1,0.2,...]" 또는 배열로 반환
-export async function fetchVector(movieId: number): Promise<number[] | null> {
+export async function fetchVector(tmdbId: number): Promise<number[] | null> {
   try {
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/movie_vectors?movies_id=eq.${movieId}&select=vector&limit=1`,
+      `${SUPABASE_URL}/rest/v1/movie_vectors?tmdb_id=eq.${tmdbId}&select=vector&limit=1`,
       { headers: { apikey: SUPABASE_ANON_KEY } },
     );
     if (!res.ok) return null;

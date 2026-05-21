@@ -37,7 +37,7 @@ export default function DetailOverlay({ movie, movies, onClose, onSelectMovie }:
     setSimilar([]);
     setSimilarLoading(true);
 
-    fetchVector(movie.id).then((v) => {
+    fetchVector(movie.tmdb_id).then((v) => {
       setVector(v);
       setVectorLoading(false);
     });
