@@ -32,6 +32,9 @@
 |---|---|---|---|
 | 4K Cinema FE | `4K_FE/**` | `ghcr.io/sanggyoon/4k-cinema` | `Ansible/manifests/4k-cinema/` |
 | 4K Backend BE | `4K_BE/**` | `ghcr.io/sanggyoon/4k-be` | `Ansible/manifests/4k-be/` |
+| 4K ML | 없음 (수동 실행) | — | — |
+
+> **4K_ML**은 CI/CD 대상이 아님. 로컬에서 `python generate_vectors/generate_vectors.py`를 직접 실행해 vm4 Supabase `movie_vectors` 테이블을 갱신한다.
 
 ---
 
