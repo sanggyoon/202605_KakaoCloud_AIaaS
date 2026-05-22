@@ -45,12 +45,10 @@ export const GENRES = [
   '역사', '음악', '다큐멘터리', 'TV 영화',
 ];
 
-export const SITUATIONS = ['혼자', '데이트', '가족', '친구', '주말 밤', '비 오는 날', '출근길', '여행'];
-
 export interface Filters {
   yearRange: [number, number];
   genre: string;
-  situation: string;
+  dislikeGenres: string[];
   likes: number[];     // tmdb_id 목록
   dislikes: number[];  // tmdb_id 목록
 }
@@ -58,7 +56,7 @@ export interface Filters {
 export const INITIAL_FILTERS: Filters = {
   yearRange: [1900, new Date().getFullYear()],
   genre: 'All',
-  situation: 'All',
+  dislikeGenres: [],
   likes: [],
   dislikes: [],
 };

@@ -1,8 +1,8 @@
 'use client';
 
-// 필터 패널 — 연도 범위 슬라이더, 장르/상황 선택, 선호/비선호 영화 관리
+// 필터 패널 — 연도 범위 슬라이더, 선호/비선호 장르 선택, 선호/비선호 영화 관리
 import { useEffect, useRef, useState } from 'react';
-import { Filters, Movie, GENRES, SITUATIONS } from '@/app/lib/data';
+import { Filters, Movie, GENRES } from '@/app/lib/data';
 
 interface FilterBarProps {
   open: boolean;
@@ -40,6 +40,44 @@ function FilterRow({ label, options, value, onChange }: {
                 border: `1px solid ${active ? 'color-mix(in oklch, var(--accent) 40%, transparent)' : 'rgba(255,255,255,0.08)'}`,
                 borderRadius: 999,
                 color: active ? 'var(--accent)' : 'rgba(255,255,255,0.75)',
+                fontSize: 11, fontWeight: 600, fontFamily: 'inherit',
+                cursor: 'pointer',
+              }}
+            >
+              {opt}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// 다중 선택 pill 행 (비선호 장르용)
+function MultiFilterRow({ label, options, values, onChange }: {
+  label: string;
+  options: string[];
+  values: string[];
+  onChange: (v: string[]) => void;
+}) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+      <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.16em', color: 'rgba(255,255,255,0.5)', width: 90, flexShrink: 0 }}>
+        {label.toUpperCase()}
+      </span>
+      <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+        {options.map((opt) => {
+          const active = values.includes(opt);
+          return (
+            <button
+              key={opt}
+              onClick={() => onChange(active ? values.filter((v) => v !== opt) : [...values, opt])}
+              style={{
+                padding: '5px 11px',
+                background: active ? 'rgba(255,80,80,0.15)' : 'rgba(255,255,255,0.04)',
+                border: `1px solid ${active ? 'rgba(255,100,100,0.45)' : 'rgba(255,255,255,0.08)'}`,
+                borderRadius: 999,
+                color: active ? '#ff7070' : 'rgba(255,255,255,0.75)',
                 fontSize: 11, fontWeight: 600, fontFamily: 'inherit',
                 cursor: 'pointer',
               }}
@@ -346,16 +384,24 @@ export default function FilterBar({ open, draft, movies, onChangeDraft, onSearch
           onChange={(v) => onChangeDraft({ ...draft, yearRange: v })}
         />
         <FilterRow
-          label="장르"
+          label="선호 장르"
           options={['All', ...GENRES]}
           value={draft.genre}
-          onChange={(v) => onChangeDraft({ ...draft, genre: v })}
+          onChange={(v) => onChangeDraft({
+            ...draft,
+            genre: v,
+            dislikeGenres: draft.dislikeGenres.filter((g) => g !== v),
+          })}
         />
-        <FilterRow
-          label="상황"
-          options={['All', ...SITUATIONS]}
-          value={draft.situation}
-          onChange={(v) => onChangeDraft({ ...draft, situation: v })}
+        <MultiFilterRow
+          label="비선호 장르"
+          options={GENRES}
+          values={draft.dislikeGenres}
+          onChange={(v) => onChangeDraft({
+            ...draft,
+            dislikeGenres: v,
+            genre: v.includes(draft.genre) ? 'All' : draft.genre,
+          })}
         />
         <PrefRow label="선호"   ids={draft.likes}    movies={movies} onRemove={removeLike}    accent />
         <PrefRow label="비선호" ids={draft.dislikes}  movies={movies} onRemove={removeDislike} />

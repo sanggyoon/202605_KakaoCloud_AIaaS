@@ -66,6 +66,9 @@ export default function Dashboard() {
     if (filters.dislikes.length > 0) {
       url += `&tmdb_id=not.in.(${filters.dislikes.join(',')})`;
     }
+    for (const g of filters.dislikeGenres) {
+      url += `&genre=not.ilike.*${encodeURIComponent(g)}*`;
+    }
 
     fetch(url, { headers: { apikey: SUPABASE_ANON_KEY } })
       .then((r) => r.json())
