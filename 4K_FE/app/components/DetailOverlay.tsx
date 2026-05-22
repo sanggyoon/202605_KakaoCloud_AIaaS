@@ -2,7 +2,7 @@
 
 // 영화 상세 오버레이 — 포스터, 시놉시스, 트레일러, 클라이맥스 그래프, 유사 영화 추천
 import { useState, useEffect } from 'react';
-import { Movie, posterUrl, genreList, castList, fetchVector, fetchSimilarMovies, fetchMovieVectors } from '@/app/lib/data';
+import { Movie, posterUrl, genreList, castList, fetchVector, fetchPreferredMovies, fetchMovieVectors } from '@/app/lib/data';
 
 // DTW distance: Float64Array 플랫 배열로 메모리 효율화, O(n*m) 시간
 function dtwDistance(a: number[], b: number[]): number {
@@ -54,10 +54,13 @@ export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailO
 
     Promise.all([
       fetchVector(movie.tmdb_id),
-      fetchSimilarMovies(movie.id, 50),
-    ]).then(async ([queryVec, candidates]) => {
+      fetchPreferredMovies([movie.tmdb_id], [], 50),
+    ]).then(async ([queryVec, rawCandidates]) => {
       setVector(queryVec);
       setVectorLoading(false);
+
+      // 현재 영화 자신은 후보에서 제외
+      const candidates = rawCandidates.filter((m: Movie) => m.tmdb_id !== movie.tmdb_id);
 
       if (candidates.length === 0) {
         setSimilarLoading(false);
@@ -65,21 +68,21 @@ export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailO
       }
 
       if (!queryVec) {
-        setSimilar(candidates.slice(0, 4));
+        setSimilar([]);
         setSimilarLoading(false);
         return;
       }
 
       // 후보 벡터 일괄 fetch → DTW 정렬 (벡터 없는 후보는 Infinity로 후순위)
-      const vecMap = await fetchMovieVectors(candidates.map((m) => m.tmdb_id));
+      const vecMap = await fetchMovieVectors(candidates.map((m: Movie) => m.tmdb_id));
       const ranked = candidates
-        .map((m) => ({
+        .map((m: Movie) => ({
           movie: m,
           dist: vecMap.has(m.tmdb_id) ? dtwDistance(queryVec, vecMap.get(m.tmdb_id)!) : Infinity,
         }))
-        .sort((a, b) => a.dist - b.dist)
+        .sort((a: { dist: number }, b: { dist: number }) => a.dist - b.dist)
         .slice(0, 4)
-        .map((x) => x.movie);
+        .map((x: { movie: Movie }) => x.movie);
 
       setSimilar(ranked);
       setSimilarLoading(false);
@@ -203,8 +206,8 @@ export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailO
           </div>
         </div>
 
-        {/* 비슷한 패턴의 영화 — 벡터 없는 영화는 섹션 미표시 */}
-        {movie.has_vector !== false && (similarLoading || similar.length > 0) && (
+        {/* 비슷한 패턴의 영화 — 그래프(벡터)가 있는 영화만 표시 */}
+        {!vectorLoading && vector !== null && (similarLoading || similar.length > 0) && (
           <section style={{ marginTop: 48 }}>
             <h3 style={{ ...sectionLabel, marginBottom: 16 }}>
               비슷한 패턴의 영화
