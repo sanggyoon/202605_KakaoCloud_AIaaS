@@ -1,42 +1,108 @@
 'use client';
 
-// 랜덤 영화 추천 모달 — 80ms 간격으로 15번 셔플 애니메이션 후 최종 선택 확정
-import { useEffect, useState } from 'react';
-import { Movie, posterUrl, genreList } from '@/app/lib/data';
+// 랜덤 영화 추천 모달 — 서버 전체 DB에서 random offset으로 1개 fetch, 80ms 셔플 애니메이션 병렬 진행
+import { useEffect, useRef, useState, useCallback } from 'react';
+import { Movie, posterUrl, genreList, SUPABASE_URL, SUPABASE_ANON_KEY } from '@/app/lib/data';
 
 interface RandomModalProps {
-  movies: Movie[];
+  movies: Movie[]; // 셔플 애니메이션 시각 효과용
   onClose: () => void;
   onPick: (m: Movie) => void;
 }
 
+async function fetchRandomFromServer(): Promise<Movie | null> {
+  try {
+    // total count 획득
+    const countRes = await fetch(`${SUPABASE_URL}/rest/v1/movies?select=id`, {
+      headers: { apikey: SUPABASE_ANON_KEY, 'Prefer': 'count=exact', 'Range': '0-0' },
+    });
+    const range = countRes.headers.get('Content-Range'); // "0-0/1234"
+    const total = range ? parseInt(range.split('/')[1], 10) : 0;
+    if (!total) return null;
+
+    const offset = Math.floor(Math.random() * total);
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/movies?select=*&limit=1&offset=${offset}&order=id.asc`,
+      { headers: { apikey: SUPABASE_ANON_KEY } },
+    );
+    const data: unknown = await res.json();
+    return Array.isArray(data) && data.length > 0 ? (data[0] as Movie) : null;
+  } catch {
+    return null;
+  }
+}
+
 export default function RandomModal({ movies, onClose, onPick }: RandomModalProps) {
-  const [picked, setPicked] = useState<Movie | null>(null);
+  const [picked, setPicked] = useState<Movie | null>(movies[0] ?? null);
   const [shuffling, setShuffling] = useState(true);
   const [rolls, setRolls] = useState(0);
 
-  // 80ms마다 랜덤 영화로 교체 — 15회 후 멈춰 최종 결과 확정
-  useEffect(() => {
-    if (!shuffling || movies.length === 0) return;
-    let count = 0;
-    const id = setInterval(() => {
-      const random = movies[Math.floor(Math.random() * movies.length)];
-      setPicked(random);
-      setRolls(count);
-      count++;
-      if (count > 14) {
-        clearInterval(id);
+  // fetch 결과와 애니메이션 완료 여부를 ref로 공유 — 둘 다 준비되면 결과 확정
+  const serverMovieRef = useRef<Movie | null>(null);
+  const animDoneRef = useRef(false);
+
+  const startFetch = useCallback(() => {
+    serverMovieRef.current = null;
+    animDoneRef.current = false;
+    fetchRandomFromServer().then((movie) => {
+      serverMovieRef.current = movie;
+      if (animDoneRef.current) {
+        if (movie) setPicked(movie);
         setShuffling(false);
       }
+    });
+  }, []);
+
+  // 최초 마운트 시 서버 fetch 시작
+  useEffect(() => {
+    startFetch();
+  }, [startFetch]);
+
+  // 셔플 애니메이션 — 15회 후 fetch 완료 대기, 완료되면 결과 확정
+  useEffect(() => {
+    if (!shuffling) return;
+    // movies 없으면 애니메이션 없이 fetch 완료만 기다림
+    if (movies.length === 0) {
+      animDoneRef.current = true;
+      return;
+    }
+    let count = 0;
+    let active = true;
+
+    const id = setInterval(() => {
+      if (!active) return;
+      setPicked(movies[Math.floor(Math.random() * movies.length)]);
+      setRolls(count);
+      count++;
+
+      if (count > 14) {
+        animDoneRef.current = true;
+        if (serverMovieRef.current) {
+          active = false;
+          clearInterval(id);
+          setPicked(serverMovieRef.current);
+          setShuffling(false);
+        }
+        // fetch 아직 진행 중이면 interval 계속 — fetch 완료 시 위 then() 콜백이 멈춤
+      }
     }, 80);
-    return () => clearInterval(id);
+
+    return () => {
+      active = false;
+      clearInterval(id);
+    };
   }, [shuffling, movies]);
+
+  const handleReroll = () => {
+    setRolls(0);
+    setShuffling(true);
+    startFetch();
+  };
 
   const imgUrl = picked ? posterUrl(picked.poster_path) : null;
   const genres = picked ? genreList(picked.genre).slice(0, 2) : [];
 
   return (
-    // 모달 외부 클릭 시 닫기
     <div
       onClick={onClose}
       style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(8px)', display: 'grid', placeItems: 'center', zIndex: 100, animation: 'fadeIn 0.2s ease' }}
@@ -64,7 +130,6 @@ export default function RandomModal({ movies, onClose, onPick }: RandomModalProp
         </div>
 
         {picked && (
-          // 셔플 중에는 좌우 흔들림 + 축소 — rolls 홀짝으로 방향 교대
           <div style={{
             display: 'grid', gridTemplateColumns: '120px 1fr', gap: 18,
             transform: shuffling ? `rotate(${rolls % 2 === 0 ? -2 : 2}deg) scale(0.96)` : 'rotate(0) scale(1)',
@@ -103,9 +168,8 @@ export default function RandomModal({ movies, onClose, onPick }: RandomModalProp
         )}
 
         <div style={{ display: 'flex', gap: 8, marginTop: 22 }}>
-          {/* 셔플 중에는 비활성화 */}
           <button
-            onClick={() => { setPicked(null); setShuffling(true); }}
+            onClick={handleReroll}
             disabled={shuffling}
             style={{ flex: 1, justifyContent: 'center', display: 'flex', alignItems: 'center', gap: 6, padding: '9px 14px', background: 'rgba(255,255,255,0.04)', color: 'rgba(255,255,255,0.85)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 7, fontWeight: 600, fontSize: 12, fontFamily: 'inherit', cursor: 'pointer', opacity: shuffling ? 0.5 : 1 }}
           >
