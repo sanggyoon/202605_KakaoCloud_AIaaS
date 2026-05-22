@@ -1,13 +1,31 @@
 'use client';
 
 // 영화 상세 오버레이 — 포스터, 시놉시스, 트레일러, 클라이맥스 그래프, 유사 영화 추천
-import { useRef, useState, useEffect } from 'react';
-import { Movie, posterUrl, genreList, castList, fetchVector, fetchSimilarMovies } from '@/app/lib/data';
+import { useState, useEffect } from 'react';
+import { Movie, posterUrl, genreList, castList, fetchVector, fetchSimilarMovies, fetchMovieVectors } from '@/app/lib/data';
+
+// DTW distance: Float64Array 플랫 배열로 메모리 효율화, O(n*m) 시간
+function dtwDistance(a: number[], b: number[]): number {
+  const n = a.length, m = b.length;
+  const INF = Infinity;
+  const dp = new Float64Array((n + 1) * (m + 1)).fill(INF);
+  dp[0] = 0;
+  for (let i = 1; i <= n; i++) {
+    for (let j = 1; j <= m; j++) {
+      const cost = (a[i - 1] - b[j - 1]) ** 2;
+      dp[i * (m + 1) + j] = cost + Math.min(
+        dp[(i - 1) * (m + 1) + j],
+        dp[i * (m + 1) + (j - 1)],
+        dp[(i - 1) * (m + 1) + (j - 1)],
+      );
+    }
+  }
+  return Math.sqrt(dp[n * (m + 1) + m]);
+}
 import ClimaxGraph from '@/app/components/ClimaxGraph';
 
 interface DetailOverlayProps {
   movie: Movie;
-  movies: Movie[];
   onClose: () => void;
   onSelectMovie: (m: Movie) => void;
 }
@@ -16,7 +34,7 @@ const sectionLabel: React.CSSProperties = {
   fontSize: 10, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.2em', fontWeight: 700, margin: 0,
 };
 
-export default function DetailOverlay({ movie, movies, onClose, onSelectMovie }: DetailOverlayProps) {
+export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailOverlayProps) {
   const imgUrl = posterUrl(movie.poster_path);
   const genres = genreList(movie.genre);
   const cast = castList(movie.actors);
@@ -26,34 +44,44 @@ export default function DetailOverlay({ movie, movies, onClose, onSelectMovie }:
   const [similar, setSimilar] = useState<Movie[]>([]);
   const [similarLoading, setSimilarLoading] = useState(true);
 
-  // 최신 movies를 ref에 유지 — useEffect 내 랜덤 폴백에서 stale closure 방지
-  const moviesRef = useRef(movies);
-  useEffect(() => { moviesRef.current = movies; }, [movies]);
-
-  // 영화가 바뀔 때마다 벡터 + 유사 영화 동시 fetch
+  // 영화가 바뀔 때마다 벡터 + 유사 영화 fetch
+  // pgvector 50개 후보 → 벡터 일괄 fetch → DTW 정밀 비교 → 상위 4개
   useEffect(() => {
     setVector(null);
     setVectorLoading(true);
     setSimilar([]);
     setSimilarLoading(true);
 
-    fetchVector(movie.tmdb_id).then((v) => {
-      setVector(v);
+    Promise.all([
+      fetchVector(movie.tmdb_id),
+      fetchSimilarMovies(movie.id, 50),
+    ]).then(async ([queryVec, candidates]) => {
+      setVector(queryVec);
       setVectorLoading(false);
-    });
 
-    fetchSimilarMovies(movie.id).then((results) => {
-      if (results.length > 0) {
-        setSimilar(results);
-      } else {
-        // 벡터 없는 영화는 랜덤 폴백
-        setSimilar(
-          moviesRef.current
-            .filter((m) => m.tmdb_id !== movie.tmdb_id)
-            .sort(() => Math.random() - 0.5)
-            .slice(0, 4),
-        );
+      if (candidates.length === 0) {
+        setSimilarLoading(false);
+        return;
       }
+
+      if (!queryVec) {
+        setSimilar(candidates.slice(0, 4));
+        setSimilarLoading(false);
+        return;
+      }
+
+      // 후보 벡터 일괄 fetch → DTW 정렬 (벡터 없는 후보는 Infinity로 후순위)
+      const vecMap = await fetchMovieVectors(candidates.map((m) => m.tmdb_id));
+      const ranked = candidates
+        .map((m) => ({
+          movie: m,
+          dist: vecMap.has(m.tmdb_id) ? dtwDistance(queryVec, vecMap.get(m.tmdb_id)!) : Infinity,
+        }))
+        .sort((a, b) => a.dist - b.dist)
+        .slice(0, 4)
+        .map((x) => x.movie);
+
+      setSimilar(ranked);
       setSimilarLoading(false);
     });
   }, [movie.id]);
@@ -175,8 +203,8 @@ export default function DetailOverlay({ movie, movies, onClose, onSelectMovie }:
           </div>
         </div>
 
-        {/* 비슷한 패턴의 영화 — pgvector 코사인 유사도 기반 (벡터 없으면 랜덤 폴백) */}
-        {(similarLoading || similar.length > 0) && (
+        {/* 비슷한 패턴의 영화 — 벡터 없는 영화는 섹션 미표시 */}
+        {movie.has_vector !== false && (similarLoading || similar.length > 0) && (
           <section style={{ marginTop: 48 }}>
             <h3 style={{ ...sectionLabel, marginBottom: 16 }}>
               비슷한 패턴의 영화

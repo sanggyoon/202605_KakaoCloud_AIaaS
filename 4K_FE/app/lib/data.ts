@@ -61,6 +61,25 @@ export const INITIAL_FILTERS: Filters = {
   dislikes: [],
 };
 
+// like/dislike tmdb_id 기반으로 벡터 centroid를 계산해 유사도 순으로 영화 반환
+export async function fetchPreferredMovies(
+  likeIds: number[],
+  dislikeIds: number[],
+  matchCount = 400,
+): Promise<Movie[]> {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/find_preferred_movies`, {
+      method: 'POST',
+      headers: { apikey: SUPABASE_ANON_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ like_ids: likeIds, dislike_ids: dislikeIds, match_count: matchCount }),
+    });
+    if (!res.ok) return [];
+    return (await res.json()) as Movie[];
+  } catch {
+    return [];
+  }
+}
+
 // pgvector 코사인 유사도로 비슷한 패턴의 영화 4개를 반환
 // vm4 Supabase RPC(find_similar_movies) 호출 — movie.id 기준
 export async function fetchSimilarMovies(movieId: number, count = 4): Promise<Movie[]> {
@@ -78,6 +97,25 @@ export async function fetchSimilarMovies(movieId: number, count = 4): Promise<Mo
   } catch {
     return [];
   }
+}
+
+// 여러 tmdb_id의 벡터를 한 번에 fetch — Map<tmdb_id, number[]> 반환
+export async function fetchMovieVectors(tmdbIds: number[]): Promise<Map<number, number[]>> {
+  const map = new Map<number, number[]>();
+  if (tmdbIds.length === 0) return map;
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/movie_vectors?tmdb_id=in.(${tmdbIds.join(',')})&select=tmdb_id,vector`,
+      { headers: { apikey: SUPABASE_ANON_KEY } },
+    );
+    if (!res.ok) return map;
+    const rows = await res.json() as { tmdb_id: number; vector: string | number[] }[];
+    for (const row of rows) {
+      const v = Array.isArray(row.vector) ? row.vector : JSON.parse(row.vector as string);
+      map.set(row.tmdb_id, v as number[]);
+    }
+  } catch { /* empty */ }
+  return map;
 }
 
 // movie_vectors 테이블에서 해당 영화의 클라이맥스 벡터를 lazy fetch

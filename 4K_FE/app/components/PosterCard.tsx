@@ -215,86 +215,113 @@ export default function PosterCard({
           ))}
         </div>
 
-        {/* 선호/비선호 버튼 — marginTop:auto로 항상 카드 바닥에 고정 */}
+        {/* 선호/비선호 버튼 or 분석중 — marginTop:auto로 항상 카드 바닥에 고정 */}
         <div
           style={{ display: 'flex', gap: 6, marginTop: 'auto', paddingTop: 8 }}
         >
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onTogglePref(movie.tmdb_id, 'like');
-            }}
-            style={{
-              flex: 1,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 4,
-              padding: '6px 0',
-              background:
-                pref === 'like'
-                  ? 'color-mix(in oklch, var(--accent) 18%, transparent)'
-                  : 'rgba(255,255,255,0.04)',
-              border: `1px solid ${pref === 'like' ? 'color-mix(in oklch, var(--accent) 40%, transparent)' : 'rgba(255,255,255,0.08)'}`,
-              borderRadius: 6,
-              color:
-                pref === 'like' ? 'var(--accent)' : 'rgba(255,255,255,0.5)',
-              fontSize: 10,
-              fontWeight: 600,
-              cursor: 'pointer',
-            }}
-          >
-            <svg
-              width="11"
-              height="11"
-              viewBox="0 0 24 24"
-              fill={pref === 'like' ? 'currentColor' : 'none'}
-              stroke="currentColor"
-              strokeWidth="2"
+          {movie.has_vector === false ? (
+            <div
+              style={{
+                flex: 1,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 4,
+                padding: '6px 0',
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(255,255,255,0.08)',
+                borderRadius: 6,
+                color: 'rgba(255,255,255,0.3)',
+                fontSize: 10,
+                fontWeight: 600,
+              }}
             >
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-            </svg>
-            선호
-          </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onTogglePref(movie.tmdb_id, 'dislike');
-            }}
-            style={{
-              flex: 1,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 4,
-              padding: '6px 0',
-              background:
-                pref === 'dislike'
-                  ? 'rgba(255,90,40,0.12)'
-                  : 'rgba(255,255,255,0.04)',
-              border: `1px solid ${pref === 'dislike' ? 'rgba(255,110,60,0.35)' : 'rgba(255,255,255,0.08)'}`,
-              borderRadius: 6,
-              color:
-                pref === 'dislike'
-                  ? 'rgb(255,130,80)'
-                  : 'rgba(255,255,255,0.5)',
-              fontSize: 10,
-              fontWeight: 600,
-              cursor: 'pointer',
-            }}
-          >
-            <svg
-              width="11"
-              height="11"
-              viewBox="0 0 24 24"
-              fill={pref === 'dislike' ? 'currentColor' : 'none'}
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3z" />
-            </svg>
-            비선호
-          </button>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="3" />
+                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+              </svg>
+              분석중
+            </div>
+          ) : (
+            <>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onTogglePref(movie.tmdb_id, 'like');
+                }}
+                style={{
+                  flex: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 4,
+                  padding: '6px 0',
+                  background:
+                    pref === 'like'
+                      ? 'color-mix(in oklch, var(--accent) 18%, transparent)'
+                      : 'rgba(255,255,255,0.04)',
+                  border: `1px solid ${pref === 'like' ? 'color-mix(in oklch, var(--accent) 40%, transparent)' : 'rgba(255,255,255,0.08)'}`,
+                  borderRadius: 6,
+                  color:
+                    pref === 'like' ? 'var(--accent)' : 'rgba(255,255,255,0.5)',
+                  fontSize: 10,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                }}
+              >
+                <svg
+                  width="11"
+                  height="11"
+                  viewBox="0 0 24 24"
+                  fill={pref === 'like' ? 'currentColor' : 'none'}
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                </svg>
+                선호
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onTogglePref(movie.tmdb_id, 'dislike');
+                }}
+                style={{
+                  flex: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 4,
+                  padding: '6px 0',
+                  background:
+                    pref === 'dislike'
+                      ? 'rgba(255,90,40,0.12)'
+                      : 'rgba(255,255,255,0.04)',
+                  border: `1px solid ${pref === 'dislike' ? 'rgba(255,110,60,0.35)' : 'rgba(255,255,255,0.08)'}`,
+                  borderRadius: 6,
+                  color:
+                    pref === 'dislike'
+                      ? 'rgb(255,130,80)'
+                      : 'rgba(255,255,255,0.5)',
+                  fontSize: 10,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                }}
+              >
+                <svg
+                  width="11"
+                  height="11"
+                  viewBox="0 0 24 24"
+                  fill={pref === 'dislike' ? 'currentColor' : 'none'}
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3z" />
+                </svg>
+                비선호
+              </button>
+            </>
+          )}
         </div>
       </div>
     </article>

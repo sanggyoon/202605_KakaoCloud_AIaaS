@@ -11,6 +11,7 @@ import {
   SUPABASE_ANON_KEY,
   getRecentIds,
   addRecentId,
+  fetchPreferredMovies,
 } from '@/app/lib/data';
 import Image from 'next/image';
 import PosterCard from '@/app/components/PosterCard';
@@ -43,6 +44,8 @@ export default function Dashboard() {
   const [draft, setDraft] = useState<Filters>(INITIAL_FILTERS);
   const [applied, setApplied] = useState<Filters>(INITIAL_FILTERS);
   const [hoveredKey, setHoveredKey] = useState<string | null>(null);
+  // 선호/비선호 영화 제목 조회용 캐시 — 검색 후 movies 목록이 교체돼도 타이틀 표시 유지
+  const [prefMovieCache, setPrefMovieCache] = useState<Map<number, Movie>>(new Map());
   const [detail, setDetail] = useState<Movie | null>(null);
   const [randomOpen, setRandomOpen] = useState(false);
   // localStorage에서 lazy 초기화 — 완료 기록이 있으면 null(튜토리얼 숨김)
@@ -88,17 +91,26 @@ export default function Dashboard() {
       });
   }, []);
 
-  // applied 필터가 바뀌면 항상 처음부터 다시 fetch — 필터 변경 시 stale 요청 취소 후 재시작
+  // applied 필터가 바뀌면 항상 처음부터 다시 fetch
+  // likes 있으면 벡터 RPC, 없으면 일반 최신순 목록
   const appliedRef = useRef<Filters>(INITIAL_FILTERS);
   useEffect(() => {
     appliedRef.current = applied;
-    isFetchingRef.current = false; // 진행 중인 fetch가 있어도 새 조건으로 덮어씀
+    isFetchingRef.current = false;
     setMovies([]);
     offsetRef.current = 0;
-    setHasMore(true);
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
-    fetchMovies(0, applied);
+
+    if (applied.likes.length > 0 || applied.dislikes.length > 0) {
+      setHasMore(false);
+      fetchPreferredMovies(applied.likes, applied.dislikes).then((data) => {
+        setMovies(data);
+        setLoading(false);
+      });
+    } else {
+      setHasMore(true);
+      fetchMovies(0, applied);
+    }
   }, [applied, fetchMovies]);
 
   // sentinel 요소가 뷰포트에 진입하면 다음 페이지 fetch — appliedRef로 현재 필터 참조
@@ -130,6 +142,8 @@ export default function Dashboard() {
 
   // 선호/비선호는 상호 배타적 — 같은 영화에 중복 선택 불가
   const togglePref = (id: number, kind: 'like' | 'dislike') => {
+    const found = movies.find((m) => m.tmdb_id === id);
+    if (found) setPrefMovieCache((prev) => new Map(prev).set(id, found));
     setDraft((d) => {
       if (kind === 'like') {
         const inLikes = d.likes.includes(id);
@@ -151,8 +165,16 @@ export default function Dashboard() {
     });
   };
 
-  // 연도·장르·비선호는 서버(Supabase)가 이미 필터링 — 클라이언트는 제목 검색만 처리
+  // 벡터 모드: RPC 결과를 클라이언트에서 연도·장르 필터링
+  // 일반 모드: 서버가 이미 필터링 — 클라이언트는 제목 검색만
+  const isVectorMode = applied.likes.length > 0 || applied.dislikes.length > 0;
   const filtered = movies.filter((m) => {
+    if (isVectorMode) {
+      const yr = m.release_year ?? 0;
+      if (yr < applied.yearRange[0] || yr > applied.yearRange[1]) return false;
+      if (applied.genre !== 'All' && !m.genre?.toLowerCase().includes(applied.genre.toLowerCase())) return false;
+      if (applied.dislikeGenres.some((g) => m.genre?.toLowerCase().includes(g.toLowerCase()))) return false;
+    }
     if (!search) return true;
     const q = search.toLowerCase();
     return (
@@ -414,10 +436,10 @@ export default function Dashboard() {
           <FilterBar
             open={filterOpen}
             draft={draft}
-            movies={movies}
+            movies={Array.from(prefMovieCache.values())}
             onChangeDraft={setDraft}
             onSearch={() => { setApplied(draft); setFilterOpen(false); }}
-            onReset={() => setDraft(INITIAL_FILTERS)}
+            onReset={() => { setDraft(INITIAL_FILTERS); setPrefMovieCache(new Map()); }}
             search={search}
             onSearchChange={setSearch}
           />
@@ -559,7 +581,6 @@ export default function Dashboard() {
       {detail && (
         <DetailOverlay
           movie={detail}
-          movies={movies}
           onClose={() => setDetail(null)}
           onSelectMovie={(m) => {
             setDetail(m);
