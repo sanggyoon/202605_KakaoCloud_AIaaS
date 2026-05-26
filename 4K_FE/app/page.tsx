@@ -162,8 +162,17 @@ export default function OnboardingPage() {
           CLIMAX-BASED RECOMMENDATION
         </p>
 
-        {/* Feature cards */}
-        <div className="feature-grid">
+        {/* 🛠️ 전체화면 격자 배치 충돌 현상을 완벽하게 수정한 반응형 구역 */}
+        <div
+          style={{
+            display: 'grid',
+            // 최소 크기 제한을 180px로 조절하여 maxWidth: 720 안에서도 한 줄에 3개가 정상 배치되도록 수정
+            gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+            gap: '16px',
+            width: '100%',
+            marginBottom: '56px',
+          }}
+        >
           {FEATURES.map((card) => (
             <div
               key={card.title}
