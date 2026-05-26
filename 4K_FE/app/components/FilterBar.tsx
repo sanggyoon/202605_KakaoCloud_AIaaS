@@ -516,22 +516,12 @@ export default function FilterBar({
   const dataMin = 1900;
   const dataMax = new Date().getFullYear();
 
-  // ✨ [핵심 해결] 필터바가 열리면 뒤에 있는 포스터 배경의 스크롤을 완전히 잠가버립니다!
-  useEffect(() => {
-    if (open) {
-      document.body.style.overflow = 'hidden'; 
-    } else {
-      document.body.style.overflow = ''; 
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [open]);
+  // 💡 핫픽스: 전체 화면 스크롤을 먹통으로 만들던 useEffect를 깔끔히 지웠습니다.
 
   return (
     <div
       style={{
-        maxHeight: open ? 3000 : 0, 
+        maxHeight: open ? 1200 : 0, // 💡 핫픽스: 높이를 넉넉하게 줘서 검색/초기화 버튼이 절대 안 잘리게 방어했습니다.
         overflow: 'hidden',
         transition: 'max-height 0.35s cubic-bezier(.2,.7,.2,1)',
         borderBottom: open
@@ -547,10 +537,7 @@ export default function FilterBar({
           display: 'flex', 
           flexDirection: 'column', 
           gap: 16, 
-          // ✨ 뒷배경이 멈췄으니, 이제 필터 안에서만 스크롤 되도록 다시 세팅합니다!
-          maxHeight: 'calc(100vh - 80px)', // 헤더 크기만큼 빼서 버튼이 화면 안에 무조건 들어오게 방어
-          overflowY: 'auto', 
-          paddingBottom: '40px' // 버튼 아래 여유 공간 넉넉히!
+          paddingBottom: '24px' // 💡 핫픽스: 스크롤 막던 요소들 다 지우고, 버튼이 편하게 렌더링되게 뒀습니다.
         }}
       >
         <div className="filter-mobile-search">

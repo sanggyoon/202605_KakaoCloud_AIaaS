@@ -47,7 +47,7 @@ export const GENRES = [
 
 export interface Filters {
   yearRange: [number, number];
-  genre: string;
+  genre: string; 
   dislikeGenres: string[];
   likes: number[];     // tmdb_id 목록
   dislikes: number[];  // tmdb_id 목록
@@ -55,8 +55,8 @@ export interface Filters {
 
 export const INITIAL_FILTERS: Filters = {
   yearRange: [1900, new Date().getFullYear()],
-  genre: 'All',
-  dislikeGenres: [],
+  genre: 'All', 
+  dislikeGenres: [], 
   likes: [],
   dislikes: [],
 };
@@ -81,7 +81,6 @@ export async function fetchPreferredMovies(
 }
 
 // pgvector 코사인 유사도로 비슷한 패턴의 영화 4개를 반환
-// vm4 Supabase RPC(find_similar_movies) 호출 — movie.id 기준
 export async function fetchSimilarMovies(movieId: number, count = 4): Promise<Movie[]> {
   try {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/find_similar_movies`, {
@@ -119,7 +118,6 @@ export async function fetchMovieVectors(tmdbIds: number[]): Promise<Map<number, 
 }
 
 // movie_vectors 테이블에서 해당 영화의 클라이맥스 벡터를 lazy fetch
-// pgvector는 REST API에서 문자열 "[0.1,0.2,...]" 또는 배열로 반환
 export async function fetchVector(tmdbId: number): Promise<number[] | null> {
   try {
     const res = await fetch(
