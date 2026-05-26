@@ -2,6 +2,7 @@
 
 // 영화 관리 페이지 — TMDB 최신 영화 목록, Supabase DB 존재 여부 확인, 추가/삭제
 import { useState, useEffect, useCallback } from 'react';
+import type { CSSProperties } from 'react';
 import { useRouter } from 'next/navigation';
 import { posterUrl } from '@/app/lib/data';
 
@@ -21,14 +22,17 @@ export default function MovieListPage() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
+
   // 요청 중인 tmdb_id 집합 — 버튼 중복 클릭 방지
   const [pending, setPending] = useState<Set<number>>(new Set());
 
   const fetchMovies = useCallback(async (p: number) => {
     setLoading(true);
+
     try {
       const res = await fetch(`/api/manager/movies?page=${p}`);
       const data = await res.json();
+
       setMovies(data.movies ?? []);
       setTotalPages(data.total_pages ?? 1);
     } catch {
@@ -44,71 +48,124 @@ export default function MovieListPage() {
 
   const handleAdd = async (tmdb_id: number) => {
     setPending((s) => new Set(s).add(tmdb_id));
+
     try {
       await fetch('/api/manager/movies', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ tmdb_id }),
       });
-      // 해당 영화만 in_db 상태 업데이트
-      setMovies((prev) => prev.map((m) => m.tmdb_id === tmdb_id ? { ...m, in_db: true } : m));
+
+      setMovies((prev) =>
+        prev.map((m) =>
+          m.tmdb_id === tmdb_id ? { ...m, in_db: true } : m,
+        ),
+      );
     } finally {
-      setPending((s) => { const n = new Set(s); n.delete(tmdb_id); return n; });
+      setPending((s) => {
+        const n = new Set(s);
+        n.delete(tmdb_id);
+        return n;
+      });
     }
   };
 
   const handleDelete = async (tmdb_id: number) => {
     setPending((s) => new Set(s).add(tmdb_id));
+
     try {
-      await fetch(`/api/manager/movies/${tmdb_id}`, { method: 'DELETE' });
-      setMovies((prev) => prev.map((m) => m.tmdb_id === tmdb_id ? { ...m, in_db: false } : m));
+      await fetch(`/api/manager/movies/${tmdb_id}`, {
+        method: 'DELETE',
+      });
+
+      setMovies((prev) =>
+        prev.map((m) =>
+          m.tmdb_id === tmdb_id ? { ...m, in_db: false } : m,
+        ),
+      );
     } finally {
-      setPending((s) => { const n = new Set(s); n.delete(tmdb_id); return n; });
+      setPending((s) => {
+        const n = new Set(s);
+        n.delete(tmdb_id);
+        return n;
+      });
     }
   };
 
   return (
-    <div style={{
-      width: '100%', minHeight: '100vh',
-      background: 'var(--bg)', color: 'var(--fg)',
-      fontFamily: 'var(--font-sans), "Inter Tight", sans-serif',
-    }}>
+    <div
+      className="min-h-screen w-full bg-[var(--bg)] text-[var(--fg)]"
+      style={{
+        fontFamily: 'var(--font-sans), "Inter Tight", sans-serif',
+      }}
+    >
       {/* Header */}
-      <header style={{
-        position: 'sticky', top: 0, zIndex: 10,
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '18px 64px',
-        background: 'rgba(8,9,13,0.9)', backdropFilter: 'blur(12px)',
-        borderBottom: '1px solid rgba(255,255,255,0.06)',
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+      <header
+        className="
+          sticky top-0 z-10
+          flex flex-col gap-3
+          border-b border-white/[0.06]
+          bg-[rgba(8,9,13,0.9)]
+          px-4 py-3
+          backdrop-blur-xl
+          sm:px-8
+          md:flex-row md:items-center md:justify-between
+          lg:px-16
+        "
+      >
+        <div className="flex flex-wrap items-center gap-3 md:gap-4">
           <button
             onClick={() => router.push('/dashboard')}
-            style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.5)', cursor: 'pointer', fontSize: 13, fontFamily: 'inherit', padding: 0 }}
+            className="
+              cursor-pointer border-none bg-transparent p-0
+              text-[13px] text-white/50
+              transition-colors hover:text-white/80
+            "
           >
             ← 대시보드
           </button>
-          <div style={{ width: 1, height: 16, background: 'rgba(255,255,255,0.1)' }} />
-          <h1 style={{ margin: 0, fontSize: 18, fontWeight: 700, letterSpacing: '-0.02em' }}>영화 관리</h1>
-          <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.15em', color: 'var(--accent)', background: 'color-mix(in oklch, var(--accent) 14%, transparent)', padding: '3px 8px', borderRadius: 4 }}>MANAGER</span>
+
+          <div className="hidden h-4 w-px bg-white/10 sm:block" />
+
+          <h1 className="m-0 text-lg font-bold tracking-[-0.02em]">
+            영화 관리
+          </h1>
+
+          <span
+            className="
+              rounded px-2 py-[3px]
+              text-[10px] font-bold tracking-[0.15em]
+              text-[var(--accent)]
+            "
+            style={{
+              background:
+                'color-mix(in oklch, var(--accent) 14%, transparent)',
+            }}
+          >
+            MANAGER
+          </span>
         </div>
 
         {/* Pagination */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div className="flex w-full items-center gap-2 sm:w-auto sm:gap-3">
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1 || loading}
             style={paginationBtn(page === 1 || loading)}
+            className="flex-1 sm:flex-none"
           >
             ← 이전
           </button>
-          <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', minWidth: 80, textAlign: 'center' }}>
+
+          <span className="min-w-16 text-center text-xs text-white/50 sm:min-w-20">
             {page} / {totalPages}
           </span>
+
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page === totalPages || loading}
             style={paginationBtn(page === totalPages || loading)}
+            className="flex-1 sm:flex-none"
           >
             다음 →
           </button>
@@ -116,71 +173,117 @@ export default function MovieListPage() {
       </header>
 
       {/* Movie Grid */}
-      <main style={{ padding: '32px 64px 60px' }}>
+      <main className="px-4 py-8 pb-16 sm:px-8 lg:px-16">
         {loading ? (
-          // 스켈레톤
-          <div style={gridStyle}>
+          <div className="movie-grid">
             {Array.from({ length: 20 }).map((_, i) => (
-              <div key={i} style={{ aspectRatio: '2/3', borderRadius: 8, background: 'rgba(255,255,255,0.05)' }} />
+              <div
+                key={i}
+                className="aspect-[2/3] rounded-lg bg-white/[0.05]"
+              />
             ))}
           </div>
         ) : (
-          <div style={gridStyle}>
+          <div className="movie-grid">
             {movies.map((m) => {
               const img = posterUrl(m.poster_path);
               const isPending = pending.has(m.tmdb_id);
               const year = m.release_date?.slice(0, 4) ?? '';
 
               return (
-                <div key={m.tmdb_id} style={{
-                  display: 'flex', flexDirection: 'column', gap: 8,
-                  background: 'rgba(255,255,255,0.02)',
-                  border: `1px solid ${m.in_db ? 'rgba(123,97,255,0.25)' : 'rgba(255,255,255,0.06)'}`,
-                  borderRadius: 10, overflow: 'hidden',
-                }}>
+                <div
+                  key={m.tmdb_id}
+                  className="
+                    flex flex-col gap-2 overflow-hidden rounded-[10px]
+                    bg-white/[0.02]
+                  "
+                  style={{
+                    border: `1px solid ${
+                      m.in_db
+                        ? 'rgba(123,97,255,0.25)'
+                        : 'rgba(255,255,255,0.06)'
+                    }`,
+                  }}
+                >
                   {/* 포스터 */}
-                  <div style={{ position: 'relative', aspectRatio: '2/3', background: '#111218', flexShrink: 0 }}>
+                  <div className="relative aspect-[2/3] shrink-0 bg-[#111218]">
                     {img ? (
-                      <img src={img} alt={m.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+                      <img
+                        src={img}
+                        alt={m.title}
+                        className="absolute inset-0 h-full w-full object-cover"
+                      />
                     ) : (
-                      <div style={{ position: 'absolute', inset: 0, display: 'grid', placeItems: 'center' }}>
-                        <span style={{ fontSize: 32 }}>🎬</span>
+                      <div className="absolute inset-0 grid place-items-center">
+                        <span className="text-3xl">🎬</span>
                       </div>
                     )}
+
                     {/* DB 상태 badge */}
-                    <div style={{
-                      position: 'absolute', top: 8, right: 8,
-                      fontSize: 9, fontWeight: 700, letterSpacing: '0.1em',
-                      padding: '3px 7px', borderRadius: 4,
-                      background: m.in_db ? 'rgba(34,197,94,0.85)' : 'rgba(0,0,0,0.6)',
-                      color: m.in_db ? 'black' : 'rgba(255,255,255,0.5)',
-                    }}>
+                    <div
+                      className="
+                        absolute right-2 top-2 rounded px-[7px] py-[3px]
+                        text-[9px] font-bold tracking-[0.1em]
+                      "
+                      style={{
+                        background: m.in_db
+                          ? 'rgba(34,197,94,0.85)'
+                          : 'rgba(0,0,0,0.6)',
+                        color: m.in_db ? 'black' : 'rgba(255,255,255,0.5)',
+                      }}
+                    >
                       {m.in_db ? 'DB ✓' : 'DB —'}
                     </div>
                   </div>
 
                   {/* 메타 + 버튼 */}
-                  <div style={{ padding: '0 10px 10px', display: 'flex', flexDirection: 'column', gap: 6 }}>
-                    <div style={{ fontSize: 12, fontWeight: 700, lineHeight: 1.3, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+                  <div className="flex flex-col gap-1.5 px-2.5 pb-2.5">
+                    <div
+                      className="
+                        line-clamp-2 text-xs font-bold leading-[1.3]
+                      "
+                    >
                       {m.title}
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)' }}>{year}</span>
-                      <span style={{ fontSize: 9, color: 'rgba(255,255,255,0.25)', fontFamily: 'var(--font-mono), monospace' }}>#{m.tmdb_id}</span>
+
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-[10px] text-white/40">
+                        {year}
+                      </span>
+
+                      <span
+                        className="
+                          truncate text-[9px] text-white/25
+                        "
+                        style={{
+                          fontFamily: 'var(--font-mono), monospace',
+                        }}
+                      >
+                        #{m.tmdb_id}
+                      </span>
                     </div>
+
                     <button
-                      onClick={() => m.in_db ? handleDelete(m.tmdb_id) : handleAdd(m.tmdb_id)}
+                      onClick={() =>
+                        m.in_db
+                          ? handleDelete(m.tmdb_id)
+                          : handleAdd(m.tmdb_id)
+                      }
                       disabled={isPending}
+                      className="
+                        mt-0.5 rounded-md border-none py-[7px]
+                        text-[11px] font-bold
+                        transition-opacity
+                      "
                       style={{
-                        marginTop: 2,
-                        padding: '7px 0',
-                        border: 'none', borderRadius: 6,
-                        fontSize: 11, fontWeight: 700, fontFamily: 'inherit',
                         cursor: isPending ? 'not-allowed' : 'pointer',
                         opacity: isPending ? 0.5 : 1,
-                        background: m.in_db ? 'rgba(239,68,68,0.15)' : 'color-mix(in oklch, var(--accent) 18%, transparent)',
-                        color: m.in_db ? 'rgb(239,100,100)' : 'var(--accent)',
-                        transition: 'opacity 0.15s',
+                        background: m.in_db
+                          ? 'rgba(239,68,68,0.15)'
+                          : 'color-mix(in oklch, var(--accent) 18%, transparent)',
+                        color: m.in_db
+                          ? 'rgb(239,100,100)'
+                          : 'var(--accent)',
                       }}
                     >
                       {isPending ? '처리중...' : m.in_db ? '삭제' : '추가'}
@@ -196,20 +299,16 @@ export default function MovieListPage() {
   );
 }
 
-const gridStyle: React.CSSProperties = {
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
-  gap: 16,
-};
-
-function paginationBtn(disabled: boolean): React.CSSProperties {
+function paginationBtn(disabled: boolean): CSSProperties {
   return {
     padding: '8px 14px',
     background: 'rgba(255,255,255,0.04)',
     border: '1px solid rgba(255,255,255,0.08)',
     borderRadius: 7,
     color: disabled ? 'rgba(255,255,255,0.25)' : 'rgba(255,255,255,0.8)',
-    fontSize: 12, fontWeight: 600, fontFamily: 'inherit',
+    fontSize: 12,
+    fontWeight: 600,
+    fontFamily: 'inherit',
     cursor: disabled ? 'not-allowed' : 'pointer',
   };
 }

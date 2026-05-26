@@ -596,8 +596,9 @@ export default function FilterBar({
     // max-height 트랜지션으로 슬라이드 애니메이션 구현 — height 자체는 애니메이션 불가
     <div
       style={{
-        maxHeight: open ? 600 : 0,
-        overflow: 'hidden',
+        maxHeight: open ? 'calc(100vh - 82px)' : 0,
+        overflowY: open ? 'auto' : 'hidden',
+        overflowX: 'hidden',
         transition: 'max-height 0.35s cubic-bezier(.2,.7,.2,1)',
         borderBottom: open
           ? '1px solid rgba(255,255,255,0.05)'
@@ -606,10 +607,15 @@ export default function FilterBar({
         backdropFilter: 'blur(12px)',
       }}
     >
-      <div
-        className="filter-bar-inner"
-        style={{ display: 'flex', flexDirection: 'column', gap: 12 }}
-      >
+        <div
+          className="filter-bar-inner"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 12,
+            paddingBottom: 96,
+          }}
+        >
         {/* 모바일 전용 검색바 — 헤더에서 숨겨진 검색 입력을 필터바 안에 표시 */}
         <div className="filter-mobile-search">
           <svg

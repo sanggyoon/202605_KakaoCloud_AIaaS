@@ -217,10 +217,10 @@ export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailO
                 </span>
               )}
             </h3>
-            <div className="similar-grid">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-[18px]">
               {similarLoading
                 ? Array.from({ length: 4 }).map((_, i) => (
-                    <div key={i} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 10, padding: 10, height: 88, opacity: 0.5 }} />
+                    <div key={i} className="min-h-[124px] rounded-[18px] border border-white/[0.06] bg-white/[0.03] p-[clamp(14px,2vw,20px)] opacity-50"/>
                   ))
                 : similar.map((m) => {
                 const simImg = posterUrl(m.poster_path);
@@ -229,35 +229,49 @@ export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailO
                   <button
                     key={m.tmdb_id}
                     onClick={() => onSelectMovie(m)}
-                    style={{
-                      background: 'rgba(255,255,255,0.03)',
-                      border: '1px solid rgba(255,255,255,0.08)',
-                      borderRadius: 10, padding: 10,
-                      cursor: 'pointer', color: 'inherit', fontFamily: 'inherit', textAlign: 'left',
-                      display: 'flex', gap: 12, alignItems: 'flex-start',
-                      transition: 'background 0.2s, border-color 0.2s',
-                    }}
-                    onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.06)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.14)'; }}
-                    onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.03)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.08)'; }}
+                    className="
+                      grid min-h-[124px]
+                      grid-cols-[clamp(72px,18vw,100px)_minmax(0,1fr)]
+                      items-center gap-[clamp(12px,2vw,22px)]
+                      rounded-[18px] border border-white/[0.08]
+                      bg-white/[0.03]
+                      p-[clamp(14px,2vw,20px)]
+                      text-left font-[inherit] text-inherit
+                      transition-colors duration-200
+                      hover:border-white/[0.14] hover:bg-white/[0.06]
+                    "
                   >
-                    <div style={{ width: 56, flexShrink: 0, aspectRatio: '2/3', borderRadius: 6, overflow: 'hidden', background: '#111218', position: 'relative' }}>
+                    <div className="relative aspect-[2/3] w-full overflow-hidden rounded-[10px] bg-[#111218]">
                       {simImg ? (
-                        <img src={simImg} alt={m.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+                        <img
+                          src={simImg}
+                          alt={m.title}
+                          className="absolute inset-0 h-full w-full object-cover"
+                        />
                       ) : (
-                        <div style={{ position: 'absolute', inset: 0, display: 'grid', placeItems: 'center' }}>
-                          <span style={{ fontSize: 18 }}>🎬</span>
+                        <div className="absolute inset-0 grid place-items-center">
+                          <span className="text-lg">🎬</span>
                         </div>
                       )}
                     </div>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: 12, fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', lineHeight: 1.3 }}>{m.title}</div>
-                      <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.45)', marginTop: 3 }}>{m.release_year}</div>
-                      <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', marginTop: 4 }}>{simGenres.join(' · ')}</div>
+
+                    <div className="min-w-0">
+                      <div className="line-clamp-2 break-keep text-[clamp(16px,2vw,22px)] font-extrabold leading-[1.25]">
+                        {m.title}
+                      </div>
+
+                      <div className="mt-1.5 truncate text-[clamp(13px,1.5vw,16px)] leading-[1.4] text-white/45">
+                        {m.release_year}
+                      </div>
+
+                      <div className="mt-1.5 truncate text-[clamp(13px,1.5vw,16px)] leading-[1.4] text-white/40">
+                        {simGenres.join(' · ')}
+                      </div>
                     </div>
                   </button>
                 );
               })}
-            </div>  {/* similar-grid */}
+            </div>  {/* similar movies grid */}
           </section>
         )}
       </div>

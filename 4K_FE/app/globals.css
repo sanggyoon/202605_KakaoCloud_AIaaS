@@ -153,3 +153,33 @@ input::placeholder {
 .filter-bar-inner { padding: 20px 64px 22px; }
 @media (max-width: 1023px) { .filter-bar-inner { padding: 16px 32px 18px; } }
 @media (max-width: 639px)  { .filter-bar-inner { padding: 14px 16px 16px; } }
+
+/* ========================================
+   반응형 보정
+   ======================================== */
+
+/* 아주 작은 모바일에서는 상세 모달을 1열로 전환 */
+@media (max-width: 480px) {
+  .detail-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 튜토리얼 모달 모바일 대응 */
+.tutorial-modal {
+  width: calc(100vw - 32px);
+  max-width: 360px;
+}
+
+/* 랜덤 모달 내부 버튼 모바일 대응 */
+.random-modal-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+@media (max-width: 480px) {
+  .random-modal-actions {
+    flex-direction: column;
+  }
+}
