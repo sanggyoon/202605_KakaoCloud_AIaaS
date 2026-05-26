@@ -34,10 +34,26 @@ export default function Dashboard() {
   const isFetchingRef = useRef(false);
   // IntersectionObserver 감지 대상 — 목록 최하단에 위치
   const sentinelRef = useRef<HTMLDivElement>(null);
-  // localStorage에서 lazy 초기화 — SSR 환경(window 없음) 방어
-  const [recentIds, setRecentIds] = useState<number[]>(() =>
-    typeof window === 'undefined' ? [] : getRecentIds(),
-  );
+  
+  // 1. 하이드레이션 에러 방지를 위해 초기 상태는 빈 배열로 할당하고 컴포넌트 마운트 여부를 추적합니다.
+  const [recentIds, setRecentIds] = useState<number[]>([]);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // 2. 컴포넌트 최초 구동(클라이언트 브라우저 안착) 시 스토리지를 안전하게 불러옵니다.
+  useEffect(() => {
+    setIsMounted(true);
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('recent_movies');
+      if (saved) {
+        try {
+          setRecentIds(JSON.parse(saved));
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
+  }, []);
+
   const [search, setSearch] = useState('');
   const [filterOpen, setFilterOpen] = useState(false);
   // draft: 편집 중인 필터 상태 / applied: 실제 목록에 적용된 필터 상태
@@ -134,10 +150,23 @@ export default function Dashboard() {
     localStorage.setItem('4k_tutorial_done', '1');
   };
 
+  // 영화 상세 보기 클릭 시 최근 본 영화 등록 핸들러 (중복 정리 및 슬라이싱 최적화)
   const handleOpenDetail = (m: Movie) => {
-    addRecentId(m.tmdb_id);
-    setRecentIds(getRecentIds());
+    if (!m || !m.tmdb_id) return;
+
     setDetail(m);
+    addRecentId(m.tmdb_id);
+    
+    setRecentIds((prev) => {
+      // 이미 목록에 존재한다면 필터링하여 순위를 최상단으로 올릴 준비를 합니다.
+      const filtered = prev.filter((id) => id !== m.tmdb_id);
+      const updated = [m.tmdb_id, ...filtered].slice(0, 10);
+      
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('recent_movies', JSON.stringify(updated));
+      }
+      return updated;
+    });
   };
 
   // 선호/비선호는 상호 배타적 — 같은 영화에 중복 선택 불가
@@ -165,6 +194,20 @@ export default function Dashboard() {
     });
   };
 
+  // 최근 히스토리 개별 삭제 [X] 버튼 핸들러 (선택한 단일 영화만 엄격히 격리 삭제 및 영구 보존)
+  const handleDeleteRecent = (id: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    setRecentIds((prev) => {
+      const nextIds = prev.filter((recentId) => recentId !== id);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('recent_movies', JSON.stringify(nextIds));
+      }
+      return nextIds;
+    });
+  };
+
   // 벡터 모드: RPC 결과를 클라이언트에서 연도·장르 필터링
   // 일반 모드: 서버가 이미 필터링 — 클라이언트는 제목 검색만
   const isVectorMode = applied.likes.length > 0 || applied.dislikes.length > 0;
@@ -183,11 +226,16 @@ export default function Dashboard() {
     );
   });
 
-  // recentIds 순서(최신순)를 유지하면서 로드된 movies에서 매핑
-  const recentMovies = recentIds
-    .map((id) => movies.find((m) => m.tmdb_id === id))
-    .filter((m): m is Movie => Boolean(m))
-    .slice(0, 10);
+  // 상태값 매핑 오류 및 간섭을 차단하기 위해 마운트 완료 시에만 정상 동작 보장
+  const recentMovies = isMounted 
+    ? recentIds
+        .map((id) => {
+          const found = movies.find((m) => m.tmdb_id === id);
+          return found || ({ tmdb_id: id, title: '', genre: '' } as unknown as Movie);
+        })
+        .filter((m) => Boolean(m.tmdb_id))
+        .slice(0, 10)
+    : [];
 
   // 튜토리얼 step 1~2에서는 헤더를 backdrop보다 위에 노출해 강조
   const isHeaderHighlighted = tutorialStep === 1 || tutorialStep === 2;
@@ -203,6 +251,7 @@ export default function Dashboard() {
 
   return (
     <div
+      suppressHydrationWarning={true}
       style={{
         width: '100%',
         minHeight: '100vh',
@@ -450,7 +499,7 @@ export default function Dashboard() {
       <main style={{ flex: 1, position: 'relative', zIndex: 1 }}>
         <div className="px-page" style={{ paddingTop: 28, paddingBottom: 60 }}>
           {/* 최근 살펴본 영화 — 가로 스크롤, 스크롤바 숨김 */}
-          {recentMovies.length > 0 && (
+          {isMounted && recentMovies.length > 0 && (
             <div style={{ marginBottom: 44 }}>
               <h2
                 style={{
@@ -474,7 +523,37 @@ export default function Dashboard() {
                       ? ('dislike' as const)
                       : null;
                   return (
-                    <div key={key} className="recent-card-wrap" style={{ flex: '0 0 180px', minWidth: 0 }}>
+                    <div key={key} className="recent-card-wrap group" style={{ flex: '0 0 180px', minWidth: 0, position: 'relative' }}>
+                      
+                      {/* 최근 히스토리 카드 우상단 개별 삭제 X 버튼 */}
+                      <button
+                        onClick={(e) => handleDeleteRecent(m.tmdb_id, e)}
+                        style={{
+                          position: 'absolute',
+                          top: '8px',
+                          right: '8px',
+                          zIndex: 30,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: '24px',
+                          height: '24px',
+                          borderRadius: '50%',
+                          background: 'rgba(0, 0, 0, 0.65)',
+                          border: '1px solid rgba(255, 255, 255, 0.15)',
+                          color: '#ffffff',
+                          cursor: 'pointer',
+                          transition: 'opacity 0.2s ease, background 0.15s',
+                        }}
+                        className="opacity-100 md:opacity-0 md:group-hover:opacity-100 hover:!bg-red-500/90"
+                        title="기록에서 삭제"
+                      >
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                          <line x1="18" y1="6" x2="6" y2="18"></line>
+                          <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                      </button>
+
                       <PosterCard
                         movie={m}
                         isHovered={hoveredKey === key}
@@ -508,11 +587,6 @@ export default function Dashboard() {
             >
               {loading ? '불러오는 중...' : '영화 목록'}
             </h2>
-            {/* {!loading && (
-              <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)' }}>
-                {filtered.length}편
-              </span>
-            )} */}
           </div>
 
           {/* 스켈레톤 UI — 초기 로딩 중 레이아웃 자리 유지 */}
