@@ -89,6 +89,17 @@ export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailO
     });
   }, [movie.id]);
 
+  // ✨ [스크롤 먹통 완벽 해결] 상세창이 켜질 때 배경 스크롤을 잠그고, 꺼질 때 무조건 해제합니다!
+  useEffect(() => {
+    // 1. 창이 열리면 전체 브라우저 스크롤을 잠금
+    document.body.style.overflow = 'hidden'; 
+    
+    // 2. 사용자가 뒤로가기를 누르거나 창이 파괴될 때 자물쇠 원상복구
+    return () => {
+      document.body.style.overflow = ''; 
+    };
+  }, []);
+
   return (
     <div style={{
       position: 'fixed', inset: 0,
@@ -96,7 +107,8 @@ export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailO
       zIndex: 90, overflow: 'auto',
       animation: 'fadeIn 0.25s ease',
     }}>
-      <div className="detail-container">
+      {/* ✨ 모바일 여백(p-4), PC 여백(md:p-10) 적용 및 최대 넓이 제한으로 팝업 느낌 살리기 */}
+      <div className="w-full max-w-5xl mx-auto p-4 md:p-10 my-0 md:my-10 bg-[#08090d] md:rounded-2xl md:border md:border-white/10 relative">
         <button
           onClick={onClose}
           style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 14px', background: 'rgba(255,255,255,0.04)', color: 'rgba(255,255,255,0.85)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 7, fontWeight: 600, fontSize: 12, cursor: 'pointer', marginBottom: 20, fontFamily: 'inherit' }}
@@ -107,23 +119,28 @@ export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailO
           뒤로 가기
         </button>
 
-        <div className="detail-layout">
-          {/* Poster */}
-          <div style={{ position: 'relative', width: '100%', aspectRatio: '2 / 3', borderRadius: 10, overflow: 'hidden', background: '#111218', flexShrink: 0 }}>
-            {imgUrl ? (
-              <img src={imgUrl} alt={movie.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
-            ) : (
-              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(155deg, #1a2840 0%, #0a1020 50%, #2a1810 100%)', display: 'grid', placeItems: 'center' }}>
-                <span style={{ fontSize: 48 }}>🎬</span>
-              </div>
-            )}
+        {/* ✨ 핵심 수정: 모바일은 세로 배치(flex-col), PC는 가로 배치(md:flex-row) */}
+        <div className="flex flex-col md:flex-row gap-6 md:gap-10">
+          
+          {/* ✨ 포스터 영역: 모바일에서는 화면 절반 폭으로 가운데 정렬, PC에서는 기존 넓이 유지 */}
+          <div className="w-1/2 md:w-[320px] mx-auto md:mx-0 flex-shrink-0">
+            <div style={{ position: 'relative', width: '100%', aspectRatio: '2 / 3', borderRadius: 10, overflow: 'hidden', background: '#111218' }}>
+              {imgUrl ? (
+                <img src={imgUrl} alt={movie.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+              ) : (
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(155deg, #1a2840 0%, #0a1020 50%, #2a1810 100%)', display: 'grid', placeItems: 'center' }}>
+                  <span style={{ fontSize: 48 }}>🎬</span>
+                </div>
+              )}
+            </div>
           </div>
 
-          <div>
+          <div className="flex-1 min-w-0">
+            {/* ✨ 제목: 모바일 폰트 약간 축소(text-2xl), PC 폰트 유지(md:text-4xl) */}
             <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.2em', fontWeight: 700, marginBottom: 8 }}>
               {movie.release_year}{movie.runtime ? ` · ${movie.runtime}MIN` : ''}
             </div>
-            <h1 className="detail-title" style={{ fontFamily: 'var(--font-playfair), serif', fontWeight: 800, margin: 0, letterSpacing: '-0.03em', color: 'var(--fg)' }}>
+            <h1 className="text-2xl md:text-4xl" style={{ fontFamily: 'var(--font-playfair), serif', fontWeight: 800, margin: 0, letterSpacing: '-0.03em', color: 'var(--fg)' }}>
               {movie.title}
             </h1>
             {movie.original_title && movie.original_title !== movie.title && (
@@ -143,7 +160,8 @@ export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailO
               </section>
             )}
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginTop: 22 }}>
+            {/* ✨ 감독/출연진: 모바일에서는 세로 1줄(grid-cols-1), PC에서는 가로 2줄(md:grid-cols-2) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
               {movie.director && (
                 <section>
                   <h3 style={sectionLabel}>DIRECTOR</h3>
@@ -158,7 +176,7 @@ export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailO
               )}
             </div>
 
-            {/* 트레일러 — youtube_key 없으면 준비중 플레이스홀더로 동일 영역 유지 */}
+            {/* 트레일러 */}
             <section style={{ marginTop: 24 }}>
               <h3 style={sectionLabel}>TRAILER</h3>
               <div style={{ marginTop: 10, position: 'relative', paddingBottom: '56.25%', borderRadius: 10, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.08)' }}>
@@ -183,7 +201,7 @@ export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailO
               </div>
             </section>
 
-            {/* 클라이맥스 그래프 — 자막 분석 기반 긴장감 곡선 */}
+            {/* 클라이맥스 그래프 */}
             <section style={{ marginTop: 24 }}>
               <h3 style={sectionLabel}>CLIMAX GRAPH</h3>
               <div style={{
@@ -206,7 +224,7 @@ export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailO
           </div>
         </div>
 
-        {/* 비슷한 패턴의 영화 — 그래프(벡터)가 있는 영화만 표시 */}
+        {/* 비슷한 패턴의 영화 */}
         {!vectorLoading && vector !== null && (similarLoading || similar.length > 0) && (
           <section style={{ marginTop: 48 }}>
             <h3 style={{ ...sectionLabel, marginBottom: 16 }}>
@@ -217,7 +235,8 @@ export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailO
                 </span>
               )}
             </h3>
-            <div className="similar-grid">
+            {/* ✨ 추천 영화 목록: 모바일 세로 1줄(grid-cols-1), PC 가로 2줄(md:grid-cols-2) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {similarLoading
                 ? Array.from({ length: 4 }).map((_, i) => (
                     <div key={i} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 10, padding: 10, height: 88, opacity: 0.5 }} />
@@ -257,7 +276,7 @@ export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailO
                   </button>
                 );
               })}
-            </div>  {/* similar-grid */}
+            </div>
           </section>
         )}
       </div>
