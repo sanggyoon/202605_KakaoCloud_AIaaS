@@ -15,7 +15,7 @@ interface FilterBarProps {
   onSearchChange: (v: string) => void;
 }
 
-// 단일 선택 pill 행
+// 💡 선호 장르 (단일 선택 원형 보존)
 function FilterRow({
   label,
   options,
@@ -71,7 +71,7 @@ function FilterRow({
   );
 }
 
-// 다중 선택 pill 행 (비선호 장르용)
+// 💡 비선호 장르 (제한 없는 다중 선택 유지)
 function MultiFilterRow({
   label,
   options,
@@ -163,8 +163,8 @@ function EditableYear({
   const arrowBtn = (disabled: boolean): React.CSSProperties => ({
     display: 'grid',
     placeItems: 'center',
-    width: 32, 
-    height: 36, 
+    width: 32,
+    height: 36,
     background: 'none',
     border: 'none',
     color: disabled ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.55)',
@@ -182,7 +182,7 @@ function EditableYear({
         border: '1px solid rgba(255,255,255,0.1)',
         borderRadius: 7,
         overflow: 'hidden',
-        minWidth: 106, 
+        minWidth: 106,
       }}
     >
       <button
@@ -191,7 +191,7 @@ function EditableYear({
         style={arrowBtn(value <= min)}
       >
         <svg
-          width="14" 
+          width="14"
           height="14"
           viewBox="0 0 24 24"
           fill="none"
@@ -220,13 +220,13 @@ function EditableYear({
           }}
           autoFocus
           style={{
-            width: 50, 
+            width: 50,
             padding: '0 4px',
-            height: 36, 
+            height: 36,
             background: 'transparent',
             border: 'none',
             color: 'var(--accent)',
-            fontSize: 14, 
+            fontSize: 14,
             fontWeight: 700,
             fontFamily: 'var(--font-mono), monospace',
             outline: 'none',
@@ -241,12 +241,12 @@ function EditableYear({
           }}
           title="클릭하여 직접 입력"
           style={{
-            width: 50, 
-            height: 36, 
-            lineHeight: '36px', 
+            width: 50,
+            height: 36,
+            lineHeight: '36px',
             textAlign: 'center',
             cursor: 'text',
-            fontSize: 14, 
+            fontSize: 14,
             fontWeight: 700,
             color: 'var(--accent)',
             fontFamily: 'var(--font-mono), monospace',
@@ -263,7 +263,7 @@ function EditableYear({
         style={arrowBtn(value >= max)}
       >
         <svg
-          width="14" 
+          width="14"
           height="14"
           viewBox="0 0 24 24"
           fill="none"
@@ -295,7 +295,7 @@ function YearRangeRow({
 
   const from = Math.max(min, Math.min(value[0], value[1]));
   const to = Math.min(max, Math.max(value[1], value[0]));
-  const range = max - min || 1; 
+  const range = max - min || 1;
   const pctFrom = ((from - min) / range) * 100;
   const pctTo = ((to - min) / range) * 100;
 
@@ -312,12 +312,12 @@ function YearRangeRow({
       else onChange([from, Math.max(v, from)]);
     };
     const onUp = () => setDragging(null);
-    
+
     window.addEventListener('mousemove', onMove);
     window.addEventListener('mouseup', onUp);
     window.addEventListener('touchmove', onMove, { passive: false });
     window.addEventListener('touchend', onUp);
-    
+
     return () => {
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('mouseup', onUp);
@@ -344,7 +344,7 @@ function YearRangeRow({
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: 8, 
+          gap: 8,
           flex: 1,
           width: '100%',
           maxWidth: 540,
@@ -356,18 +356,22 @@ function YearRangeRow({
           style={{
             position: 'relative',
             flex: 1,
-            height: 36, 
+            height: 36,
             cursor: 'pointer',
-            minWidth: 50, 
+            minWidth: 50,
             touchAction: 'none',
           }}
         >
           <div
             style={{
               position: 'absolute',
-              left: 0, right: 0, top: '50%', height: 3,
+              left: 0,
+              right: 0,
+              top: '50%',
+              height: 3,
               background: 'rgba(255,255,255,0.08)',
-              borderRadius: 999, transform: 'translateY(-50%)',
+              borderRadius: 999,
+              transform: 'translateY(-50%)',
             }}
           />
           {Array.from({ length: max - min + 1 }, (_, i) => i + min)
@@ -378,8 +382,12 @@ function YearRangeRow({
                 <div
                   key={y}
                   style={{
-                    position: 'absolute', left: `${p}%`, top: '50%',
-                    width: 1, height: 6, background: 'rgba(255,255,255,0.15)',
+                    position: 'absolute',
+                    left: `${p}%`,
+                    top: '50%',
+                    width: 1,
+                    height: 6,
+                    background: 'rgba(255,255,255,0.15)',
                     transform: 'translate(-50%, -50%)',
                   }}
                 />
@@ -387,9 +395,14 @@ function YearRangeRow({
             })}
           <div
             style={{
-              position: 'absolute', left: `${pctFrom}%`, right: `${100 - pctTo}%`,
-              top: '50%', height: 3, background: 'var(--accent)',
-              borderRadius: 999, transform: 'translateY(-50%)',
+              position: 'absolute',
+              left: `${pctFrom}%`,
+              right: `${100 - pctTo}%`,
+              top: '50%',
+              height: 3,
+              background: 'var(--accent)',
+              borderRadius: 999,
+              transform: 'translateY(-50%)',
               boxShadow: '0 0 12px color-mix(in oklch, var(--accent) 50%, transparent)',
             }}
           />
@@ -401,13 +414,19 @@ function YearRangeRow({
                 onMouseDown={() => setDragging(key)}
                 onTouchStart={() => setDragging(key)}
                 style={{
-                  position: 'absolute', left: `${pct}%`, top: '50%',
-                  width: 16, height: 16, borderRadius: 999,
-                  background: 'var(--accent)', border: '2px solid #08090d',
-                  transform: 'translate(-50%, -50%)', cursor: 'grab',
+                  position: 'absolute',
+                  left: `${pct}%`,
+                  top: '50%',
+                  width: 16,
+                  height: 16,
+                  borderRadius: 999,
+                  background: 'var(--accent)',
+                  border: '2px solid #08090d',
+                  transform: 'translate(-50%, -50%)',
+                  cursor: 'grab',
                   boxShadow: dragging === key
-                      ? '0 0 0 6px color-mix(in oklch, var(--accent) 25%, transparent)'
-                      : '0 2px 6px rgba(0,0,0,0.5)',
+                    ? '0 0 0 6px color-mix(in oklch, var(--accent) 25%, transparent)'
+                    : '0 2px 6px rgba(0,0,0,0.5)',
                   transition: 'box-shadow 0.15s',
                 }}
               />
@@ -450,8 +469,12 @@ function PrefRow({
       </span>
       <div
         style={{
-          display: 'flex', gap: 6, flexWrap: 'wrap',
-          flex: 1, minHeight: 26, alignItems: 'center',
+          display: 'flex',
+          gap: 6,
+          flexWrap: 'wrap',
+          flex: 1,
+          minHeight: 26,
+          alignItems: 'center',
         }}
       >
         {ids.length === 0 && (
@@ -466,11 +489,15 @@ function PrefRow({
             <span
               key={id}
               style={{
-                display: 'inline-flex', alignItems: 'center', gap: 6,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
                 padding: '5px 6px 5px 11px',
                 background: accent ? 'color-mix(in oklch, var(--accent) 14%, transparent)' : 'rgba(255,255,255,0.06)',
                 border: `1px solid ${accent ? 'color-mix(in oklch, var(--accent) 35%, transparent)' : 'rgba(255,255,255,0.12)'}`,
-                borderRadius: 999, fontSize: 11, fontWeight: 600,
+                borderRadius: 999,
+                fontSize: 11,
+                fontWeight: 600,
                 color: accent ? 'var(--accent)' : 'rgba(255,255,255,0.85)',
               }}
             >
@@ -478,9 +505,16 @@ function PrefRow({
               <button
                 onClick={() => onRemove(id)}
                 style={{
-                  width: 16, height: 16, borderRadius: 999, border: 'none',
+                  width: 16,
+                  height: 16,
+                  borderRadius: 999,
+                  border: 'none',
                   background: accent ? 'color-mix(in oklch, var(--accent) 25%, transparent)' : 'rgba(255,255,255,0.1)',
-                  color: 'inherit', cursor: 'pointer', display: 'grid', placeItems: 'center', padding: 0,
+                  color: 'inherit',
+                  cursor: 'pointer',
+                  display: 'grid',
+                  placeItems: 'center',
+                  padding: 0,
                 }}
               >
                 <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
@@ -516,28 +550,30 @@ export default function FilterBar({
   const dataMin = 1900;
   const dataMax = new Date().getFullYear();
 
-  // 💡 핫픽스: 전체 화면 스크롤을 먹통으로 만들던 useEffect를 깔끔히 지웠습니다.
-
   return (
     <div
       style={{
-        maxHeight: open ? 1200 : 0, // 💡 핫픽스: 높이를 넉넉하게 줘서 검색/초기화 버튼이 절대 안 잘리게 방어했습니다.
+        maxHeight: open ? 2000 : 0, 
         overflow: 'hidden',
         transition: 'max-height 0.35s cubic-bezier(.2,.7,.2,1)',
-        borderBottom: open
-          ? '1px solid rgba(255,255,255,0.05)'
-          : '1px solid transparent',
+        borderBottom: open ? '1px solid rgba(255,255,255,0.05)' : '1px solid transparent',
         background: 'rgba(8,9,13,0.85)',
         backdropFilter: 'blur(12px)',
       }}
     >
       <div
         className="filter-bar-inner"
-        style={{ 
-          display: 'flex', 
-          flexDirection: 'column', 
-          gap: 16, 
-          paddingBottom: '24px' // 💡 핫픽스: 스크롤 막던 요소들 다 지우고, 버튼이 편하게 렌더링되게 뒀습니다.
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 16,
+          // 💡 절대 방어선 적용: 어떤 기종이든 화면 높이의 75%까지만 차지하도록 강제 제한!
+          maxHeight: '75vh', 
+          overflowY: 'auto',
+          // 💡 스크롤 격리: 필터창 안에서만 스크롤되고 바깥 화면은 절대 안 움직임
+          overscrollBehavior: 'contain',
+          padding: '16px',
+          paddingBottom: '40px', // 버튼 아래쪽 여유 공간
         }}
       >
         <div className="filter-mobile-search">
@@ -557,30 +593,35 @@ export default function FilterBar({
           value={draft.yearRange}
           onChange={(v) => onChangeDraft({ ...draft, yearRange: v })}
         />
+        
+        {/* 선호 장르 */}
         <FilterRow
           label="선호 장르"
           options={['All', ...GENRES]}
           value={draft.genre}
-          onChange={(v) =>
+          onChange={(v) => {
             onChangeDraft({
               ...draft,
               genre: v,
               dislikeGenres: draft.dislikeGenres.filter((g) => g !== v),
-            })
-          }
+            });
+          }}
         />
+
+        {/* 비선호 장르 */}
         <MultiFilterRow
           label="비선호 장르"
           options={GENRES}
           values={draft.dislikeGenres}
-          onChange={(v) =>
+          onChange={(v) => {
             onChangeDraft({
               ...draft,
               dislikeGenres: v,
               genre: v.includes(draft.genre) ? 'All' : draft.genre,
-            })
-          }
+            });
+          }}
         />
+
         <PrefRow label="선호 영화" ids={draft.likes} movies={movies} onRemove={removeLike} accent />
         <PrefRow label="비선호 영화" ids={draft.dislikes} movies={movies} onRemove={removeDislike} />
 
