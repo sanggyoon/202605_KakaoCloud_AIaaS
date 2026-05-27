@@ -39,21 +39,39 @@ export default function Dashboard() {
   const [recentIds, setRecentIds] = useState<number[]>([]);
   const [isMounted, setIsMounted] = useState(false);
 
-  // 2. 컴포넌트 최초 구동(클라이언트 브라우저 안착) 시 스토리지를 안전하게 불러옵니다.
-  useEffect(() => {
+useEffect(() => {
     setIsMounted(true);
+
     if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('recent_movies');
-      if (saved) {
-        try {
-          setRecentIds(JSON.parse(saved));
-        } catch (e) {
-          console.error(e);
+      const keysToRemove = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        
+        // 삭제 조건 1: 파편화된 데이터들
+        if (key && key.startsWith('recent_deleted_')) {
+          keysToRemove.push(key);
         }
+        // 삭제 조건 2: 이제 안 쓰는 통합 키
+        if (key === '4k_recent_ids') {
+          keysToRemove.push(key);
+        }
+      }
+      
+      // 발견된 키들을 하나씩 삭제합니다.
+      keysToRemove.forEach((key) => localStorage.removeItem(key));
+    }
+
+    // 기존 최근 본 영화 데이터 로드
+    const saved = localStorage.getItem('recent_movies');
+    if (saved) {
+      try {
+        setRecentIds(JSON.parse(saved));
+      } catch (e) {
+        console.error(e);
       }
     }
   }, []);
-
+  
   const [search, setSearch] = useState('');
   const [filterOpen, setFilterOpen] = useState(false);
   // draft: 편집 중인 필터 상태 / applied: 실제 목록에 적용된 필터 상태
@@ -151,23 +169,23 @@ export default function Dashboard() {
   };
 
   // 영화 상세 보기 클릭 시 최근 본 영화 등록 핸들러 (중복 정리 및 슬라이싱 최적화)
-  const handleOpenDetail = (m: Movie) => {
-    if (!m || !m.tmdb_id) return;
+const handleOpenDetail = (m: Movie) => {
+  if (!m || !m.tmdb_id) return;
 
-    setDetail(m);
-    addRecentId(m.tmdb_id);
+  setDetail(m);
+  
+  // 158번째 줄(addRecentId)이 삭제되어 아래 setRecentIds로 바로 연결됩니다.
+  setRecentIds((prev) => {
+    // 이미 목록에 존재한다면 필터링하여 순위를 최상단으로 올릴 준비를 합니다.
+    const filtered = prev.filter((id) => id !== m.tmdb_id);
+    const updated = [m.tmdb_id, ...filtered].slice(0, 10);
     
-    setRecentIds((prev) => {
-      // 이미 목록에 존재한다면 필터링하여 순위를 최상단으로 올릴 준비를 합니다.
-      const filtered = prev.filter((id) => id !== m.tmdb_id);
-      const updated = [m.tmdb_id, ...filtered].slice(0, 10);
-      
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('recent_movies', JSON.stringify(updated));
-      }
-      return updated;
-    });
-  };
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('recent_movies', JSON.stringify(updated));
+    }
+    return updated;
+  });
+};
 
   // 선호/비선호는 상호 배타적 — 같은 영화에 중복 선택 불가
   const togglePref = (id: number, kind: 'like' | 'dislike') => {
