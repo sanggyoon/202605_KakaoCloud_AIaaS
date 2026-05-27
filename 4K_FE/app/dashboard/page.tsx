@@ -508,11 +508,6 @@ export default function Dashboard() {
             >
               {loading ? '불러오는 중...' : '영화 목록'}
             </h2>
-            {/* {!loading && (
-              <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)' }}>
-                {filtered.length}편
-              </span>
-            )} */}
           </div>
 
           {/* 스켈레톤 UI — 초기 로딩 중 레이아웃 자리 유지 */}

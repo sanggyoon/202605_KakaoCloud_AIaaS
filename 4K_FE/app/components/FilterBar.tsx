@@ -15,7 +15,7 @@ interface FilterBarProps {
   onSearchChange: (v: string) => void;
 }
 
-// 단일 선택 pill 행
+// 💡 선호 장르 (단일 선택 원형 보존)
 function FilterRow({
   label,
   options,
@@ -28,7 +28,7 @@ function FilterRow({
   onChange: (v: string) => void;
 }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+    <div className="flex flex-col md:flex-row md:items-center items-start gap-2 md:gap-[14px]">
       <span
         style={{
           fontSize: 10,
@@ -71,7 +71,7 @@ function FilterRow({
   );
 }
 
-// 다중 선택 pill 행 (비선호 장르용)
+// 💡 비선호 장르 (제한 없는 다중 선택 유지)
 function MultiFilterRow({
   label,
   options,
@@ -84,7 +84,7 @@ function MultiFilterRow({
   onChange: (v: string[]) => void;
 }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+    <div className="flex flex-col md:flex-row md:items-center items-start gap-2 md:gap-[14px]">
       <span
         style={{
           fontSize: 10,
@@ -163,8 +163,8 @@ function EditableYear({
   const arrowBtn = (disabled: boolean): React.CSSProperties => ({
     display: 'grid',
     placeItems: 'center',
-    width: 24,
-    height: 28,
+    width: 32,
+    height: 36,
     background: 'none',
     border: 'none',
     color: disabled ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.55)',
@@ -182,27 +182,17 @@ function EditableYear({
         border: '1px solid rgba(255,255,255,0.1)',
         borderRadius: 7,
         overflow: 'hidden',
-        minWidth: 100,
+        minWidth: 106,
       }}
     >
-      {/* 감소 버튼 */}
       <button
         onClick={() => onChange(Math.max(min, value - 1))}
         disabled={value <= min}
         style={arrowBtn(value <= min)}
-        onMouseEnter={(e) => {
-          if (value > min)
-            (e.currentTarget as HTMLButtonElement).style.color =
-              'var(--accent)';
-        }}
-        onMouseLeave={(e) => {
-          (e.currentTarget as HTMLButtonElement).style.color =
-            value <= min ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.55)';
-        }}
       >
         <svg
-          width="11"
-          height="11"
+          width="14"
+          height="14"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -213,7 +203,6 @@ function EditableYear({
         </svg>
       </button>
 
-      {/* 연도 표시 / 직접 입력 */}
       {editing ? (
         <input
           type="number"
@@ -231,13 +220,13 @@ function EditableYear({
           }}
           autoFocus
           style={{
-            width: 48,
+            width: 50,
             padding: '0 4px',
-            height: 28,
+            height: 36,
             background: 'transparent',
             border: 'none',
             color: 'var(--accent)',
-            fontSize: 12,
+            fontSize: 14,
             fontWeight: 700,
             fontFamily: 'var(--font-mono), monospace',
             outline: 'none',
@@ -252,12 +241,12 @@ function EditableYear({
           }}
           title="클릭하여 직접 입력"
           style={{
-            width: 48,
-            height: 28,
-            lineHeight: '28px',
+            width: 50,
+            height: 36,
+            lineHeight: '36px',
             textAlign: 'center',
             cursor: 'text',
-            fontSize: 12,
+            fontSize: 14,
             fontWeight: 700,
             color: 'var(--accent)',
             fontFamily: 'var(--font-mono), monospace',
@@ -268,24 +257,14 @@ function EditableYear({
         </span>
       )}
 
-      {/* 증가 버튼 */}
       <button
         onClick={() => onChange(Math.min(max, value + 1))}
         disabled={value >= max}
         style={arrowBtn(value >= max)}
-        onMouseEnter={(e) => {
-          if (value < max)
-            (e.currentTarget as HTMLButtonElement).style.color =
-              'var(--accent)';
-        }}
-        onMouseLeave={(e) => {
-          (e.currentTarget as HTMLButtonElement).style.color =
-            value >= max ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.55)';
-        }}
       >
         <svg
-          width="11"
-          height="11"
+          width="14"
+          height="14"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -314,38 +293,41 @@ function YearRangeRow({
   const trackRef = useRef<HTMLDivElement>(null);
   const [dragging, setDragging] = useState<'from' | 'to' | null>(null);
 
-  // min/max 범위 안으로 현재 값을 클램프 — 데이터 범위가 바뀌어도 슬라이더가 깨지지 않음
   const from = Math.max(min, Math.min(value[0], value[1]));
   const to = Math.min(max, Math.max(value[1], value[0]));
-
-  // 퍼센트 위치 계산 — track 위 핸들과 활성 구간 렌더링에 사용
-  const range = max - min || 1; // 0 나누기 방지
+  const range = max - min || 1;
   const pctFrom = ((from - min) / range) * 100;
   const pctTo = ((to - min) / range) * 100;
 
-  // 드래그 중에만 window 이벤트 등록 — 마우스가 track 밖으로 나가도 추적 가능
   useEffect(() => {
     if (!dragging) return;
-    const onMove = (e: MouseEvent) => {
+    const onMove = (e: MouseEvent | TouchEvent) => {
       const el = trackRef.current;
       if (!el) return;
       const r = el.getBoundingClientRect();
-      const pct = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
+      const clientX = 'touches' in e ? e.touches[0].clientX : (e as MouseEvent).clientX;
+      const pct = Math.max(0, Math.min(1, (clientX - r.left) / r.width));
       const v = Math.round(min + pct * range);
       if (dragging === 'from') onChange([Math.min(v, to), to]);
       else onChange([from, Math.max(v, from)]);
     };
     const onUp = () => setDragging(null);
+
     window.addEventListener('mousemove', onMove);
     window.addEventListener('mouseup', onUp);
+    window.addEventListener('touchmove', onMove, { passive: false });
+    window.addEventListener('touchend', onUp);
+
     return () => {
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('mouseup', onUp);
+      window.removeEventListener('touchmove', onMove);
+      window.removeEventListener('touchend', onUp);
     };
   }, [dragging, from, to, min, max, range, onChange]);
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+    <div className="flex flex-col md:flex-row md:items-center items-start gap-2 md:gap-[14px] w-full">
       <span
         style={{
           fontSize: 10,
@@ -362,27 +344,24 @@ function YearRangeRow({
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: 14,
+          gap: 8,
           flex: 1,
+          width: '100%',
           maxWidth: 540,
         }}
       >
-        <EditableYear
-          value={from}
-          min={min}
-          max={to} // from은 to를 초과할 수 없음
-          onChange={(v) => onChange([v, to])}
-        />
+        <EditableYear value={from} min={min} max={to} onChange={(v) => onChange([v, to])} />
         <div
           ref={trackRef}
           style={{
             position: 'relative',
             flex: 1,
-            height: 28,
+            height: 36,
             cursor: 'pointer',
+            minWidth: 50,
+            touchAction: 'none',
           }}
         >
-          {/* 배경 track */}
           <div
             style={{
               position: 'absolute',
@@ -395,7 +374,6 @@ function YearRangeRow({
               transform: 'translateY(-50%)',
             }}
           />
-          {/* 5년 단위 눈금 */}
           {Array.from({ length: max - min + 1 }, (_, i) => i + min)
             .filter((y) => y % 5 === 0)
             .map((y) => {
@@ -415,7 +393,6 @@ function YearRangeRow({
                 />
               );
             })}
-          {/* 선택 구간 강조 */}
           <div
             style={{
               position: 'absolute',
@@ -426,17 +403,16 @@ function YearRangeRow({
               background: 'var(--accent)',
               borderRadius: 999,
               transform: 'translateY(-50%)',
-              boxShadow:
-                '0 0 12px color-mix(in oklch, var(--accent) 50%, transparent)',
+              boxShadow: '0 0 12px color-mix(in oklch, var(--accent) 50%, transparent)',
             }}
           />
-          {/* from / to 핸들 */}
           {(['from', 'to'] as const).map((key) => {
             const pct = key === 'from' ? pctFrom : pctTo;
             return (
               <div
                 key={key}
                 onMouseDown={() => setDragging(key)}
+                onTouchStart={() => setDragging(key)}
                 style={{
                   position: 'absolute',
                   left: `${pct}%`,
@@ -448,28 +424,22 @@ function YearRangeRow({
                   border: '2px solid #08090d',
                   transform: 'translate(-50%, -50%)',
                   cursor: 'grab',
-                  boxShadow:
-                    dragging === key
-                      ? '0 0 0 6px color-mix(in oklch, var(--accent) 25%, transparent)'
-                      : '0 2px 6px rgba(0,0,0,0.5)',
+                  boxShadow: dragging === key
+                    ? '0 0 0 6px color-mix(in oklch, var(--accent) 25%, transparent)'
+                    : '0 2px 6px rgba(0,0,0,0.5)',
                   transition: 'box-shadow 0.15s',
                 }}
               />
             );
           })}
         </div>
-        <EditableYear
-          value={to}
-          min={from} // to는 from 미만이 될 수 없음
-          max={max}
-          onChange={(v) => onChange([from, v])}
-        />
+        <EditableYear value={to} min={from} max={max} onChange={(v) => onChange([from, v])} />
       </div>
     </div>
   );
 }
 
-// 선호/비선호 영화 chip 목록 — tmdb_id로 영화명 조회 후 X 버튼으로 제거
+// 선호/비선호 영화 chip 목록
 function PrefRow({
   label,
   ids,
@@ -484,7 +454,7 @@ function PrefRow({
   accent?: boolean;
 }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+    <div className="flex flex-col md:flex-row md:items-center items-start gap-2 md:gap-[14px]">
       <span
         style={{
           fontSize: 10,
@@ -523,9 +493,7 @@ function PrefRow({
                 alignItems: 'center',
                 gap: 6,
                 padding: '5px 6px 5px 11px',
-                background: accent
-                  ? 'color-mix(in oklch, var(--accent) 14%, transparent)'
-                  : 'rgba(255,255,255,0.06)',
+                background: accent ? 'color-mix(in oklch, var(--accent) 14%, transparent)' : 'rgba(255,255,255,0.06)',
                 border: `1px solid ${accent ? 'color-mix(in oklch, var(--accent) 35%, transparent)' : 'rgba(255,255,255,0.12)'}`,
                 borderRadius: 999,
                 fontSize: 11,
@@ -541,9 +509,7 @@ function PrefRow({
                   height: 16,
                   borderRadius: 999,
                   border: 'none',
-                  background: accent
-                    ? 'color-mix(in oklch, var(--accent) 25%, transparent)'
-                    : 'rgba(255,255,255,0.1)',
+                  background: accent ? 'color-mix(in oklch, var(--accent) 25%, transparent)' : 'rgba(255,255,255,0.1)',
                   color: 'inherit',
                   cursor: 'pointer',
                   display: 'grid',
@@ -551,14 +517,7 @@ function PrefRow({
                   padding: 0,
                 }}
               >
-                <svg
-                  width="8"
-                  height="8"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                >
+                <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
                   <path d="M18 6 6 18M6 6l12 12" />
                 </svg>
               </button>
@@ -588,44 +547,37 @@ export default function FilterBar({
       dislikes: draft.dislikes.filter((x) => x !== id),
     });
 
-  // 서버사이드 필터링 전환 후 movies는 현재 페이지 일부만 담음 — 고정 범위로 슬라이더 안정화
   const dataMin = 1900;
   const dataMax = new Date().getFullYear();
 
   return (
-    // max-height 트랜지션으로 슬라이드 애니메이션 구현 — height 자체는 애니메이션 불가
     <div
       style={{
-        maxHeight: open ? 'calc(100vh - 82px)' : 0,
-        overflowY: open ? 'auto' : 'hidden',
-        overflowX: 'hidden',
+        maxHeight: open ? 2000 : 0, 
+        overflow: 'hidden',
         transition: 'max-height 0.35s cubic-bezier(.2,.7,.2,1)',
-        borderBottom: open
-          ? '1px solid rgba(255,255,255,0.05)'
-          : '1px solid transparent',
+        borderBottom: open ? '1px solid rgba(255,255,255,0.05)' : '1px solid transparent',
         background: 'rgba(8,9,13,0.85)',
         backdropFilter: 'blur(12px)',
       }}
     >
-        <div
-          className="filter-bar-inner"
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 12,
-            paddingBottom: 96,
-          }}
-        >
-        {/* 모바일 전용 검색바 — 헤더에서 숨겨진 검색 입력을 필터바 안에 표시 */}
+      <div
+        className="filter-bar-inner"
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 16,
+          // 💡 절대 방어선 적용: 어떤 기종이든 화면 높이의 75%까지만 차지하도록 강제 제한!
+          maxHeight: '75vh', 
+          overflowY: 'auto',
+          // 💡 스크롤 격리: 필터창 안에서만 스크롤되고 바깥 화면은 절대 안 움직임
+          overscrollBehavior: 'contain',
+          padding: '16px',
+          paddingBottom: '40px', // 버튼 아래쪽 여유 공간
+        }}
+      >
         <div className="filter-mobile-search">
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="rgba(255,255,255,0.5)"
-            strokeWidth="2"
-          >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="2">
             <circle cx="11" cy="11" r="8" />
             <path d="m21 21-4.3-4.3" />
           </svg>
@@ -641,43 +593,37 @@ export default function FilterBar({
           value={draft.yearRange}
           onChange={(v) => onChangeDraft({ ...draft, yearRange: v })}
         />
+        
+        {/* 선호 장르 */}
         <FilterRow
           label="선호 장르"
           options={['All', ...GENRES]}
           value={draft.genre}
-          onChange={(v) =>
+          onChange={(v) => {
             onChangeDraft({
               ...draft,
               genre: v,
               dislikeGenres: draft.dislikeGenres.filter((g) => g !== v),
-            })
-          }
+            });
+          }}
         />
+
+        {/* 비선호 장르 */}
         <MultiFilterRow
           label="비선호 장르"
           options={GENRES}
           values={draft.dislikeGenres}
-          onChange={(v) =>
+          onChange={(v) => {
             onChangeDraft({
               ...draft,
               dislikeGenres: v,
               genre: v.includes(draft.genre) ? 'All' : draft.genre,
-            })
-          }
+            });
+          }}
         />
-        <PrefRow
-          label="선호 영화"
-          ids={draft.likes}
-          movies={movies}
-          onRemove={removeLike}
-          accent
-        />
-        <PrefRow
-          label="비선호 영화"
-          ids={draft.dislikes}
-          movies={movies}
-          onRemove={removeDislike}
-        />
+
+        <PrefRow label="선호 영화" ids={draft.likes} movies={movies} onRemove={removeLike} accent />
+        <PrefRow label="비선호 영화" ids={draft.dislikes} movies={movies} onRemove={removeDislike} />
 
         <div
           style={{
@@ -720,18 +666,10 @@ export default function FilterBar({
               fontWeight: 700,
               fontFamily: 'inherit',
               cursor: 'pointer',
-              boxShadow:
-                '0 0 24px color-mix(in oklch, var(--accent) 30%, transparent)',
+              boxShadow: '0 0 24px color-mix(in oklch, var(--accent) 30%, transparent)',
             }}
           >
-            <svg
-              width="13"
-              height="13"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.4"
-            >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
               <circle cx="11" cy="11" r="8" />
               <path d="m21 21-4.3-4.3" />
             </svg>
