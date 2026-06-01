@@ -52,7 +52,7 @@ export default function Dashboard() {
   // localStorage에서 lazy 초기화 — 완료 기록이 있으면 null(튜토리얼 숨김)
   const [tutorialStep, setTutorialStep] = useState<number | null>(() => {
     if (typeof window === 'undefined') return null;
-    return localStorage.getItem('4k_tutorial_done') ? null : 0;
+    return localStorage.getItem('4k_tutorial_done') === '1' ? null : 0;
   });
 
   // Supabase REST API에서 서버사이드 필터 조건을 포함해 PAGE_SIZE 단위로 fetch
