@@ -11,6 +11,7 @@ import {
   SUPABASE_ANON_KEY,
   getRecentIds,
   addRecentId,
+  removeRecentId,
   fetchPreferredMovies,
 } from '@/app/lib/data';
 import Image from 'next/image';
@@ -138,6 +139,12 @@ export default function Dashboard() {
     addRecentId(m.tmdb_id);
     setRecentIds(getRecentIds());
     setDetail(m);
+  };
+
+  const handleDeleteRecent = (tmdbId: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    removeRecentId(tmdbId);
+    setRecentIds(getRecentIds());
   };
 
   // 선호/비선호는 상호 배타적 — 같은 영화에 중복 선택 불가
@@ -474,7 +481,7 @@ export default function Dashboard() {
                       ? ('dislike' as const)
                       : null;
                   return (
-                    <div key={key} className="recent-card-wrap" style={{ flex: '0 0 180px', minWidth: 0 }}>
+                    <div key={key} className="recent-card-wrap" style={{ flex: '0 0 180px', minWidth: 0, position: 'relative' }}>
                       <PosterCard
                         movie={m}
                         isHovered={hoveredKey === key}
@@ -483,6 +490,23 @@ export default function Dashboard() {
                         pref={pref}
                         onTogglePref={togglePref}
                       />
+                      <button
+                        onClick={(e) => handleDeleteRecent(m.tmdb_id, e)}
+                        style={{
+                          position: 'absolute', top: 6, right: 6,
+                          width: 22, height: 22, borderRadius: 999,
+                          background: 'rgba(0,0,0,0.65)',
+                          border: '1px solid rgba(255,255,255,0.18)',
+                          color: 'rgba(255,255,255,0.85)',
+                          cursor: 'pointer', display: 'grid', placeItems: 'center',
+                          zIndex: 10, padding: 0,
+                          opacity: 1,
+                        }}
+                      >
+                        <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                          <path d="M18 6 6 18M6 6l12 12" />
+                        </svg>
+                      </button>
                     </div>
                   );
                 })}

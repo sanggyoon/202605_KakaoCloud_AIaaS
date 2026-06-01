@@ -153,3 +153,7 @@ export function addRecentId(tmdbId: number): void {
   const ids = getRecentIds().filter((id) => id !== tmdbId);
   localStorage.setItem(RECENT_KEY, JSON.stringify([tmdbId, ...ids].slice(0, 10)));
 }
+
+export function removeRecentId(tmdbId: number): void {
+  localStorage.setItem(RECENT_KEY, JSON.stringify(getRecentIds().filter((id) => id !== tmdbId)));
+}
