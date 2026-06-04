@@ -4,6 +4,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { posterUrl } from '@/app/lib/data';
+import MovieDetailModal from '@/app/components/MovieDetailModal';
 
 interface ManagerMovie {
   tmdb_id: number;
@@ -23,11 +24,19 @@ export default function MovieListPage() {
   const [loading, setLoading] = useState(true);
   // 요청 중인 tmdb_id 집합 — 버튼 중복 클릭 방지
   const [pending, setPending] = useState<Set<number>>(new Set());
+  // 검색어 입력값(query)과 실제 적용된 검색어(activeQuery)를 분리
+  const [query, setQuery] = useState('');
+  const [activeQuery, setActiveQuery] = useState('');
+  // 상세/편집 모달 대상
+  const [detail, setDetail] = useState<{ tmdb_id: number; title: string } | null>(null);
 
-  const fetchMovies = useCallback(async (p: number) => {
+  const fetchMovies = useCallback(async (p: number, q: string) => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/manager/movies?page=${p}`);
+      const url = q.trim()
+        ? `/api/manager/movies/search?q=${encodeURIComponent(q)}&page=${p}`
+        : `/api/manager/movies?page=${p}`;
+      const res = await fetch(url);
       const data = await res.json();
       setMovies(data.movies ?? []);
       setTotalPages(data.total_pages ?? 1);
@@ -39,8 +48,14 @@ export default function MovieListPage() {
   }, []);
 
   useEffect(() => {
-    fetchMovies(page);
-  }, [page, fetchMovies]);
+    fetchMovies(page, activeQuery);
+  }, [page, activeQuery, fetchMovies]);
+
+  // 검색 실행 — 1페이지로 리셋하며 activeQuery 갱신
+  const runSearch = (q: string) => {
+    setPage(1);
+    setActiveQuery(q.trim());
+  };
 
   const handleAdd = async (tmdb_id: number) => {
     setPending((s) => new Set(s).add(tmdb_id));
@@ -93,6 +108,51 @@ export default function MovieListPage() {
           <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.15em', color: 'var(--accent)', background: 'color-mix(in oklch, var(--accent) 14%, transparent)', padding: '3px 8px', borderRadius: 4 }}>MANAGER</span>
         </div>
 
+        {/* 검색바 */}
+        <form
+          onSubmit={(e) => { e.preventDefault(); runSearch(query); }}
+          style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1, maxWidth: 420, margin: '0 24px' }}
+        >
+          <div style={{ position: 'relative', flex: 1 }}>
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="영화 이름으로 검색 (TMDB)"
+              style={{
+                width: '100%', boxSizing: 'border-box',
+                padding: '8px 30px 8px 12px',
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: 8, color: 'var(--fg)',
+                fontSize: 12, fontFamily: 'inherit', outline: 'none',
+              }}
+            />
+            {activeQuery && (
+              <button
+                type="button"
+                onClick={() => { setQuery(''); runSearch(''); }}
+                title="검색 초기화"
+                style={{
+                  position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)',
+                  background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)',
+                  cursor: 'pointer', fontSize: 14, lineHeight: 1, padding: 0,
+                }}
+              >×</button>
+            )}
+          </div>
+          <button
+            type="submit"
+            style={{
+              padding: '8px 14px', border: 'none', borderRadius: 8,
+              background: 'color-mix(in oklch, var(--accent) 20%, transparent)',
+              color: 'var(--accent)', fontSize: 12, fontWeight: 700,
+              fontFamily: 'inherit', cursor: 'pointer', whiteSpace: 'nowrap',
+            }}
+          >
+            검색
+          </button>
+        </form>
+
         {/* Pagination */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <button
@@ -124,6 +184,13 @@ export default function MovieListPage() {
               <div key={i} style={{ aspectRatio: '2/3', borderRadius: 8, background: 'rgba(255,255,255,0.05)' }} />
             ))}
           </div>
+        ) : movies.length === 0 ? (
+          <div style={{ padding: '80px 0', textAlign: 'center', color: 'rgba(255,255,255,0.4)' }}>
+            <div style={{ fontSize: 36, marginBottom: 14 }}>🔍</div>
+            <div style={{ fontSize: 14 }}>
+              {activeQuery ? `"${activeQuery}" 검색 결과가 없습니다.` : '표시할 영화가 없습니다.'}
+            </div>
+          </div>
         ) : (
           <div style={gridStyle}>
             {movies.map((m) => {
@@ -138,8 +205,12 @@ export default function MovieListPage() {
                   border: `1px solid ${m.in_db ? 'rgba(123,97,255,0.25)' : 'rgba(255,255,255,0.06)'}`,
                   borderRadius: 10, overflow: 'hidden',
                 }}>
-                  {/* 포스터 */}
-                  <div style={{ position: 'relative', aspectRatio: '2/3', background: '#111218', flexShrink: 0 }}>
+                  {/* 포스터 — 클릭 시 상세/편집 모달 */}
+                  <div
+                    onClick={() => setDetail({ tmdb_id: m.tmdb_id, title: m.title })}
+                    title={m.in_db ? '클릭하여 상세 정보 보기/수정' : 'DB에 추가 후 상세 정보를 수정할 수 있습니다'}
+                    style={{ position: 'relative', aspectRatio: '2/3', background: '#111218', flexShrink: 0, cursor: 'pointer' }}
+                  >
                     {img ? (
                       <img src={img} alt={m.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
                     ) : (
@@ -192,6 +263,15 @@ export default function MovieListPage() {
           </div>
         )}
       </main>
+
+      {/* 상세/편집 모달 */}
+      {detail && (
+        <MovieDetailModal
+          tmdbId={detail.tmdb_id}
+          fallbackTitle={detail.title}
+          onClose={() => setDetail(null)}
+        />
+      )}
     </div>
   );
 }
