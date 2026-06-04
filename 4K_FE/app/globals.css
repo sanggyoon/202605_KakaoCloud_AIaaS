@@ -23,6 +23,21 @@ html, body {
   to { opacity: 1; }
 }
 
+/* 클라이맥스 그래프 — 실루엣이 바닥에서 위로 자라나며 차오르는 효과 */
+@keyframes climaxGrow {
+  from { transform: scaleY(0); opacity: 0.4; }
+  to   { transform: scaleY(1); opacity: 1; }
+}
+.climax-grow {
+  transform-box: fill-box;
+  transform-origin: bottom;
+  /* back-ease-out — 끝에서 살짝 튕겨 차오르는 탄성감 */
+  animation: climaxGrow 0.85s cubic-bezier(0.34, 1.4, 0.5, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .climax-grow { animation: none !important; }
+}
+
 button {
   font-family: inherit;
 }

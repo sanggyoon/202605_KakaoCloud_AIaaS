@@ -131,8 +131,8 @@ function MultiFilterRow({
   );
 }
 
-// 좌우 화살표 버튼 + 클릭 직접 입력이 가능한 연도 스텝퍼
-function EditableYear({
+// 좌우 화살표 버튼으로만 조정하는 연도 스텝퍼 (직접 입력 없음)
+function YearStepper({
   value,
   min,
   max,
@@ -143,23 +143,6 @@ function EditableYear({
   max: number;
   onChange: (v: number) => void;
 }) {
-  const [editing, setEditing] = useState(false);
-  const [input, setInput] = useState(String(value));
-
-  useEffect(() => {
-    if (!editing) setInput(String(value));
-  }, [value, editing]);
-
-  const commit = () => {
-    const n = parseInt(input, 10);
-    if (!isNaN(n)) {
-      onChange(Math.max(min, Math.min(max, n)));
-    } else {
-      setInput(String(value));
-    }
-    setEditing(false);
-  };
-
   const arrowBtn = (disabled: boolean): React.CSSProperties => ({
     display: 'grid',
     placeItems: 'center',
@@ -213,60 +196,22 @@ function EditableYear({
         </svg>
       </button>
 
-      {/* 연도 표시 / 직접 입력 */}
-      {editing ? (
-        <input
-          type="number"
-          value={input}
-          min={min}
-          max={max}
-          onChange={(e) => setInput(e.target.value)}
-          onBlur={commit}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') commit();
-            if (e.key === 'Escape') {
-              setInput(String(value));
-              setEditing(false);
-            }
-          }}
-          autoFocus
-          style={{
-            width: 48,
-            padding: '0 4px',
-            height: 28,
-            background: 'transparent',
-            border: 'none',
-            color: 'var(--accent)',
-            fontSize: 12,
-            fontWeight: 700,
-            fontFamily: 'var(--font-mono), monospace',
-            outline: 'none',
-            textAlign: 'center',
-          }}
-        />
-      ) : (
-        <span
-          onClick={() => {
-            setInput(String(value));
-            setEditing(true);
-          }}
-          title="클릭하여 직접 입력"
-          style={{
-            width: 48,
-            height: 28,
-            lineHeight: '28px',
-            textAlign: 'center',
-            cursor: 'text',
-            fontSize: 12,
-            fontWeight: 700,
-            color: 'var(--accent)',
-            fontFamily: 'var(--font-mono), monospace',
-            userSelect: 'none',
-          }}
-        >
-          {value}
-        </span>
-      )}
+      {/* 연도 표시 (읽기 전용) */}
+      <span
+        style={{
+          width: 48,
+          height: 28,
+          lineHeight: '28px',
+          textAlign: 'center',
+          fontSize: 12,
+          fontWeight: 700,
+          color: 'var(--accent)',
+          fontFamily: 'var(--font-mono), monospace',
+          userSelect: 'none',
+        }}
+      >
+        {value}
+      </span>
 
       {/* 증가 버튼 */}
       <button
@@ -367,7 +312,7 @@ function YearRangeRow({
           maxWidth: 540,
         }}
       >
-        <EditableYear
+        <YearStepper
           value={from}
           min={min}
           max={to} // from은 to를 초과할 수 없음
@@ -458,7 +403,7 @@ function YearRangeRow({
             );
           })}
         </div>
-        <EditableYear
+        <YearStepper
           value={to}
           min={from} // to는 from 미만이 될 수 없음
           max={max}

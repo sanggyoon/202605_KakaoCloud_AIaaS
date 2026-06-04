@@ -43,6 +43,13 @@ export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailO
   const [similar, setSimilar] = useState<Movie[]>([]);
   const [similarLoading, setSimilarLoading] = useState(true);
 
+  // ESC 키 → 오버레이 닫고 대시보드로 복귀
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
+
   // 영화가 바뀔 때마다 벡터 + 유사 영화 fetch
   // pgvector 50개 후보 → 벡터 일괄 fetch → DTW 정밀 비교 → 상위 4개
   useEffect(() => {

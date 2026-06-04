@@ -41,7 +41,7 @@ export default function ClimaxGraph({ data, height = 160 }: ClimaxGraphProps) {
       <svg
         viewBox={`0 0 ${W} ${H}`}
         preserveAspectRatio="none"
-        style={{ width: '100%', height: '100%', display: 'block' }}
+        style={{ width: '100%', height: '100%', display: 'block', overflow: 'visible' }}
       >
         <defs>
           <linearGradient id="cgFill" x1="0" y1="0" x2="0" y2="1">
@@ -59,11 +59,11 @@ export default function ClimaxGraph({ data, height = 160 }: ClimaxGraphProps) {
           strokeDasharray="5 5"
         />
 
-        {/* 채움 */}
-        <path d={fillD} fill="url(#cgFill)" />
-
-        {/* 곡선 */}
-        <path d={d} fill="none" stroke="var(--accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        {/* 채움 + 곡선 — 바닥에서 위로 자라나며 차오르는 그룹 */}
+        <g className="climax-grow">
+          <path d={fillD} fill="url(#cgFill)" />
+          <path d={d} fill="none" stroke="var(--accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </g>
       </svg>
 
       {/* 시작 / 결말 레이블 */}
