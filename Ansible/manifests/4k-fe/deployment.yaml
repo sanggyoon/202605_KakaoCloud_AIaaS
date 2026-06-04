@@ -21,6 +21,14 @@ spec:
           env:
             - name: BE_INTERNAL_URL
               value: "http://backend.be.svc.cluster.local:8000"
+            # 매니저 페이지 로그인 자격증명 — 값만 바꾸면 ID/비밀번호 변경 가능
+            - name: MANAGER_ID
+              value: "admin"
+            - name: MANAGER_PASSWORD
+              value: "admin"
+            # 세션 서명 시크릿 — 운영에서는 Secret으로 분리 권장 (openssl rand -hex 32)
+            - name: MANAGER_SESSION_SECRET
+              value: "change-me-to-a-random-secret"
           ports:
             - containerPort: 3000
           readinessProbe:

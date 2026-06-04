@@ -57,6 +57,13 @@ export default function MovieListPage() {
     setActiveQuery(q.trim());
   };
 
+  // 로그아웃 — 세션 쿠키 삭제 후 로그인 페이지로
+  const handleLogout = async () => {
+    await fetch('/api/manager/auth/logout', { method: 'POST' });
+    router.replace('/login');
+    router.refresh();
+  };
+
   const handleAdd = async (tmdb_id: number) => {
     setPending((s) => new Set(s).add(tmdb_id));
     try {
@@ -171,6 +178,21 @@ export default function MovieListPage() {
             style={paginationBtn(page === totalPages || loading)}
           >
             다음 →
+          </button>
+          <div style={{ width: 1, height: 16, background: 'rgba(255,255,255,0.1)', margin: '0 4px' }} />
+          <button
+            onClick={handleLogout}
+            title="로그아웃"
+            style={{
+              padding: '8px 14px',
+              background: 'rgba(239,68,68,0.12)',
+              border: '1px solid rgba(239,68,68,0.25)',
+              borderRadius: 7,
+              color: 'rgb(239,120,120)',
+              fontSize: 12, fontWeight: 600, fontFamily: 'inherit', cursor: 'pointer',
+            }}
+          >
+            로그아웃
           </button>
         </div>
       </header>
