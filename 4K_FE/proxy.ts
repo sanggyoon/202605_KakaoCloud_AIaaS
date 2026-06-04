@@ -24,5 +24,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/movie_list', '/movie_list/:path*', '/api/manager/movies/:path*'],
+  matcher: ['/movie_list', '/movie_list/:path*', '/api/manager/movies', '/api/manager/movies/:path*'],
 };

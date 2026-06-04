@@ -84,6 +84,7 @@ export default function MovieDetailModal({
 
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState<string | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -192,6 +193,34 @@ export default function MovieDetailModal({
       setSaveMsg('저장 중 오류가 발생했습니다.');
     } finally {
       setSaving(false);
+    }
+  };
+
+  // TMDB에서 메타데이터를 다시 가져와 DB를 갱신(upsert)한 뒤 화면을 새로고침.
+  // 기존 add/upsert 엔드포인트(POST /api/manager/movies)가 TMDB 재수집을 수행한다.
+  const handleRefresh = async () => {
+    if (!window.confirm('TMDB의 최신 메타데이터로 현재 DB 값을 덮어씁니다.\n수정 중인 내용이 있으면 사라집니다. 계속할까요?')) {
+      return;
+    }
+    setRefreshing(true);
+    setSaveMsg(null);
+    try {
+      const res = await fetch('/api/manager/movies', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tmdb_id: tmdbId }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setSaveMsg(data.detail ?? 'TMDB 갱신에 실패했습니다.');
+        return;
+      }
+      await load();
+      setSaveMsg('TMDB에서 갱신되었습니다 ✓');
+    } catch {
+      setSaveMsg('갱신 중 오류가 발생했습니다.');
+    } finally {
+      setRefreshing(false);
     }
   };
 
@@ -337,20 +366,35 @@ export default function MovieDetailModal({
         {!loading && !error && (
           <div style={{
             position: 'sticky', bottom: 0,
-            display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 14,
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 14,
             padding: '14px 22px',
             background: 'rgba(13,14,19,0.95)', backdropFilter: 'blur(8px)',
             borderTop: '1px solid rgba(255,255,255,0.07)',
           }}>
-            {saveMsg && (
-              <span style={{
-                fontSize: 12,
-                color: saveMsg.includes('✓') ? 'rgb(74,222,128)' : 'rgb(248,113,113)',
-              }}>
-                {saveMsg}
-              </span>
-            )}
-            <button onClick={onClose} style={{
+            {/* TMDB 메타데이터 자동 갱신 */}
+            <button onClick={handleRefresh} disabled={refreshing || saving} style={{
+              display: 'flex', alignItems: 'center', gap: 6,
+              padding: '8px 14px', borderRadius: 7,
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.12)',
+              color: 'rgba(255,255,255,0.8)', fontSize: 12, fontWeight: 600,
+              fontFamily: 'inherit', cursor: (refreshing || saving) ? 'not-allowed' : 'pointer',
+              opacity: (refreshing || saving) ? 0.5 : 1,
+            }}>
+              <span style={{ fontSize: 13 }}>↻</span>
+              {refreshing ? 'TMDB 갱신 중...' : 'TMDB에서 갱신'}
+            </button>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+              {saveMsg && (
+                <span style={{
+                  fontSize: 12,
+                  color: saveMsg.includes('✓') ? 'rgb(74,222,128)' : 'rgb(248,113,113)',
+                }}>
+                  {saveMsg}
+                </span>
+              )}
+              <button onClick={onClose} style={{
               padding: '8px 16px', background: 'rgba(255,255,255,0.04)',
               border: '1px solid rgba(255,255,255,0.08)', borderRadius: 7,
               color: 'rgba(255,255,255,0.7)', fontSize: 12, fontWeight: 600,
@@ -367,6 +411,7 @@ export default function MovieDetailModal({
             }}>
               {saving ? '저장 중...' : '저장 (DB 업데이트)'}
             </button>
+            </div>
           </div>
         )}
       </div>

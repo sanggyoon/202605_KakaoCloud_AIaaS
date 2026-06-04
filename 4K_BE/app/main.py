@@ -286,8 +286,11 @@ async def add_movie(tmdb_id: int):
             "youtube_key":    trailer,
         }
 
+        # on_conflict=tmdb_id 지정 — 이미 존재하는 영화면 PK가 아닌 tmdb_id
+        # 유니크 제약 기준으로 merge(갱신)되도록 한다. (없으면 23505 중복키 오류)
         sb_r = await client.post(
             f"{DATA_URL}/rest/v1/movies",
+            params={"on_conflict": "tmdb_id"},
             json=[movie],
             headers=_sb_headers(),
         )
