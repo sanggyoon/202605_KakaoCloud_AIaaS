@@ -118,15 +118,6 @@ input::placeholder {
 @media (max-width: 1023px) { .detail-container { padding: 24px; margin: 24px auto; } }
 @media (max-width: 639px)  { .detail-container { padding: 16px; margin: 0; } }
 
-/* 상세 오버레이 포스터+정보 2열 레이아웃 */
-.detail-layout {
-  display: grid;
-  grid-template-columns: 240px 1fr;
-  gap: 32px;
-}
-@media (max-width: 1023px) { .detail-layout { grid-template-columns: 200px 1fr; gap: 24px; } }
-@media (max-width: 639px)  { .detail-layout { grid-template-columns: 120px 1fr; gap: 14px; } }
-
 /* 상세 오버레이 제목 폰트 크기 */
 .detail-title { font-size: 48px; line-height: 0.95; }
 @media (max-width: 1023px) { .detail-title { font-size: 36px; } }
