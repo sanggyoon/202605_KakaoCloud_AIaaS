@@ -1,0 +1,48 @@
+#!/bin/bash
+# 앱 EC2 부트스트랩 — docker + compose 설치 후, SSM에서 시크릿을 받아
+# aws/docker-compose.yml(=FE+BE)을 기동한다. (콜드 ASG가 0→N 확장 시 매번 실행)
+set -euxo pipefail
+
+# ── docker ───────────────────────────────────────────────────────────
+dnf install -y docker
+systemctl enable --now docker
+
+# ── docker compose 플러그인 ─────────────────────────────────────────
+mkdir -p /usr/local/lib/docker/cli-plugins
+curl -SL "https://github.com/docker/compose/releases/download/${compose_version}/docker-compose-linux-x86_64" \
+  -o /usr/local/lib/docker/cli-plugins/docker-compose
+chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+
+# ── aws cli (없으면 설치) ───────────────────────────────────────────
+if ! command -v aws >/dev/null 2>&1; then
+  dnf install -y unzip
+  curl -SL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o /tmp/awscliv2.zip
+  unzip -q /tmp/awscliv2.zip -d /tmp
+  /tmp/aws/install
+fi
+
+# ── 앱 디렉터리 + compose 파일 (Terraform이 base64로 주입 → drift 없음) ─
+mkdir -p /opt/peakly && cd /opt/peakly
+echo "${compose_b64}" | base64 -d > docker-compose.yml
+
+# ── .env : SSM Parameter Store에서 시크릿 로드 (카카오와 패리티) ──────
+REGION="${region}"
+PREFIX="${ssm_prefix}"
+get() { aws ssm get-parameter --region "$REGION" --name "$PREFIX/$1" --with-decryption --query 'Parameter.Value' --output text; }
+umask 077
+cat > .env <<EOF
+TMDB_API_KEY=$(get TMDB_API_KEY)
+DATA_SUPABASE_URL=$(get DATA_SUPABASE_URL)
+DATA_SUPABASE_KEY=$(get DATA_SUPABASE_KEY)
+MANAGER_ID=$(get MANAGER_ID)
+MANAGER_PASSWORD=$(get MANAGER_PASSWORD)
+MANAGER_SESSION_SECRET=$(get MANAGER_SESSION_SECRET)
+EOF
+
+# GHCR 이미지는 Public이라 로그인 불필요.
+# (private 전환 시: SSM에 GHCR_TOKEN 넣고 아래 주석 해제)
+# get GHCR_TOKEN | docker login ghcr.io -u sanggyoon --password-stdin
+
+# ── 기동 ─────────────────────────────────────────────────────────────
+docker compose pull
+docker compose up -d

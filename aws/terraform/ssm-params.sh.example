@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# 앱 시크릿을 SSM Parameter Store(SecureString)에 등록한다.
+# 시크릿을 Terraform state에 넣지 않으려고 일부러 TF 밖에서 관리한다.
+# ⚠️ 값은 카카오(K3s) 시크릿과 "동일"해야 failover 후 세션/키가 유효하다.
+#
+# 사용: 이 파일을 복사해 값 채운 뒤 실행 (cp ssm-params.sh.example ssm-params.sh)
+set -euo pipefail
+
+REGION="ap-northeast-2"
+PREFIX="/peakly/dr"
+
+put() { aws ssm put-parameter --region "$REGION" --name "$PREFIX/$1" --type SecureString --value "$2" --overwrite >/dev/null && echo "  put $PREFIX/$1"; }
+
+put TMDB_API_KEY           "여기에-TMDB-키"
+put DATA_SUPABASE_URL      "https://data.peakly.art"
+put DATA_SUPABASE_KEY      "여기에-service_role-JWT"
+put MANAGER_ID             "admin"
+put MANAGER_PASSWORD       "admin"
+put MANAGER_SESSION_SECRET "카카오와-동일한-시크릿"
+
+echo "완료. 확인: aws ssm get-parameters-by-path --region $REGION --path $PREFIX --with-decryption"

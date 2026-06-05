@@ -1,0 +1,18 @@
+# cp terraform.tfvars.example terraform.tfvars 후 필요 시 수정.
+# 모든 값에 기본값이 있어, 그대로 두면 서울 리전 10.20.0.0/16 으로 생성된다.
+
+region   = "ap-northeast-2"
+project  = "peakly"
+vpc_cidr = "10.20.0.0/16"
+
+azs                  = ["ap-northeast-2a", "ap-northeast-2c"]
+public_subnet_cidrs  = ["10.20.0.0/24", "10.20.1.0/24"]
+private_subnet_cidrs = ["10.20.10.0/24", "10.20.11.0/24"]
+
+# 워밍스탠바이 비용 절감(NAT 1개). 운영 HA면 false.
+single_nat_gateway = true
+
+domain_name = "peakly.art"
+
+# ⚠️ Bastion SSH 허용 IP — 본인 공인 IP/32로 좁히세요 (curl ifconfig.me 로 확인)
+admin_cidrs = ["0.0.0.0/0"]

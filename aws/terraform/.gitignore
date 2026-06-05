@@ -1,0 +1,20 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+
+# 실제 변수 값(시크릿 가능) — 예시는 추적
+*.tfvars
+!*.tfvars.example
+
+override.tf
+override.tf.json
+.terraformrc
+terraform.rc
+
+# 실제 시크릿을 담는 SSM 등록 스크립트 — 예시만 추적
+ssm-params.sh
+
+# Lambda zip 빌드 산출물
+build/
