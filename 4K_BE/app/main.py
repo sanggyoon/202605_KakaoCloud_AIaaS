@@ -16,7 +16,7 @@ load_dotenv(os.path.join(_BASE_DIR, ".env"))
 load_dotenv(os.path.join(_BASE_DIR, "DB_SCRIPTS", ".env"))
 
 TMDB_KEY  = os.getenv("TMDB_API_KEY", "")
-DATA_URL  = os.getenv("DATA_SUPABASE_URL", "https://data.4kakao.kro.kr")
+DATA_URL  = os.getenv("DATA_SUPABASE_URL", "https://data.peakly.art")
 DATA_KEY  = os.getenv("DATA_SUPABASE_KEY", "")
 TMDB_BASE = "https://api.themoviedb.org/3"
 

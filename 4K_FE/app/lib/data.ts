@@ -33,9 +33,15 @@ export function castList(actors: string | null | undefined): string[] {
   return actors.split(',').map((a) => a.trim()).filter(Boolean);
 }
 
-// Supabase Data 접속 정보 (anon key는 공개 가능)
-export const SUPABASE_URL = 'https://data.4kakao.kro.kr';
+// Supabase Data 접속 정보 (anon key는 공개 가능 — JWT라 브라우저 노출 무방).
+// 브라우저에서 직접 호출하므로 NEXT_PUBLIC_* 로 노출하며, 빌드 시점에 번들로 inline된다.
+// Burst/DR: 이 URL(data.peakly.art)은 Route53 failover 호스트네임이므로 카카오↔AWS 전환을 DNS가 처리한다.
+// env 미설정 시 기본값(data.peakly.art)을 사용한다.
+// (빌드 arg 미전달로 빈 문자열이 들어올 수 있어 ?? 가 아닌 || 로 폴백)
+export const SUPABASE_URL =
+  process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://data.peakly.art';
 export const SUPABASE_ANON_KEY =
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzc4NTYyOTc3LCJleHAiOjIwOTM5MjI5Nzd9.QqZEZi5iPoq576IOc_Q1lLyk871_KbsIihBGyeFqm6M';
 
 export const GENRES = [

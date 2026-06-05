@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 
 # ── 설정 ─────────────────────────────────────────────────────────
-DATA_URL        = os.getenv("DATA_SUPABASE_URL", "https://data.4kakao.kro.kr")
+DATA_URL        = os.getenv("DATA_SUPABASE_URL", "https://data.peakly.art")
 DATA_KEY        = os.getenv("DATA_SUPABASE_KEY", "")   # Supabase service_role JWT
 DATA_BASIC_USER = os.getenv("DATA_BASIC_USER", "")     # nginx Basic Auth 유저
 DATA_BASIC_PASS = os.getenv("DATA_BASIC_PASS", "")     # nginx Basic Auth 비밀번호
