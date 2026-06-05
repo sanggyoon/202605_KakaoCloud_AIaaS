@@ -8,11 +8,11 @@ KakaoCloud 기반 K3s 클러스터 위에 구축한 **4K Cinema** 영화 추천 
 
 | 서비스 | URL | 인증 |
 |---|---|---|
-| 4K Cinema (FE) | https://cinema.4kakao.kro.kr | 없음 (공개) |
-| Supabase data Studio | https://data.4kakao.kro.kr | Basic Auth |
-| Supabase ai Studio | https://ai.4kakao.kro.kr | Basic Auth |
-| Grafana | https://grafana.4kakao.kro.kr | Grafana 자체 인증 |
-| ArgoCD | https://argocd.4kakao.kro.kr | ArgoCD 자체 인증 |
+| 4K Cinema (FE) | https://peakly.art | 없음 (공개) |
+| Supabase data Studio | https://data.peakly.art | Basic Auth |
+| Supabase ai Studio | https://ai.peakly.art | Basic Auth |
+| Grafana | https://grafana.peakly.art | Grafana 자체 인증 |
+| ArgoCD | https://argocd.peakly.art | ArgoCD 자체 인증 |
 
 ---
 

@@ -68,7 +68,7 @@ GitHub Actions Runner (ubuntu-latest)
   └─ ④ git commit & push [skip ci]
          "ci: update 4k-fe image → abc1234 [skip ci]"
 
-ArgoCD (argocd.4kakao.kro.kr)
+ArgoCD (argocd.peakly.art)
   │
   │  Git 폴링 (~3분 주기) → Ansible/manifests/4k-fe/ 변경 감지
   ▼
@@ -77,7 +77,7 @@ K3s 클러스터 (fe 네임스페이스)
   └─ kubectl apply -k Ansible/manifests/4k-fe/
        → Deployment 롤링 업데이트 (2 replica)
        → Pod: vm2 또는 vm3 (workload=app)
-       → 도메인: https://cinema.4kakao.kro.kr
+       → 도메인: https://peakly.art
 ```
 
 ### BE (4K Backend)
@@ -108,7 +108,7 @@ GitHub Actions Runner (ubuntu-latest)
   └─ ④ git commit & push [skip ci]
          "ci: update 4k-be image → abc1234 [skip ci]"
 
-ArgoCD (argocd.4kakao.kro.kr)
+ArgoCD (argocd.peakly.art)
   │
   │  Git 폴링 (~3분 주기) → Ansible/manifests/4k-be/ 변경 감지
   ▼
@@ -247,7 +247,7 @@ Kustomize `images` 패치 방식이므로 `deployment.yaml`의 이미지 필드�
 
 ```bash
 kubectl get application 4k-fe -n argocd
-# 또는 ArgoCD UI: https://argocd.4kakao.kro.kr
+# 또는 ArgoCD UI: https://argocd.peakly.art
 ```
 
 | 상태 | 의미 |
@@ -291,7 +291,7 @@ images:
 |--------|------|
 | Deployment | `replicas: 2`, `nodeSelector: workload=app` (vm2/vm3), `BE_INTERNAL_URL` 환경변수 |
 | Service | `ClusterIP`, port 80 → pod 3000 |
-| Ingress | `cinema.4kakao.kro.kr`, `ingressClassName: nginx`, TLS: `letsencrypt-prod`, `ssl-redirect: true` |
+| Ingress | `peakly.art`, `ingressClassName: nginx`, TLS: `letsencrypt-prod`, `ssl-redirect: true` |
 
 ### BE (be 네임스페이스)
 
