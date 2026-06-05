@@ -45,3 +45,38 @@ resource "aws_route53_record" "app_secondary" {
     evaluate_target_health = true
   }
 }
+
+# ── data.peakly.art failover (primary 카카오 Kong / secondary AWS PostgREST) ──
+# 순수 DR: 같은 카카오 헬스체크를 공유해 전체 사이트가 함께 전환된다.
+# ⚠️ 적용 전: 도메인 마이그레이션 때 만든 수동 simple A 레코드(data.peakly.art→210.109.83.10) 삭제.
+resource "aws_route53_record" "data_primary" {
+  zone_id = data.aws_route53_zone.main.zone_id
+  name    = "data.${var.domain_name}"
+  type    = "A"
+  ttl     = 60
+  records = [var.kakao_ip]
+
+  set_identifier = "primary-kakao"
+  failover_routing_policy {
+    type = "PRIMARY"
+  }
+  health_check_id = aws_route53_health_check.kakao.id
+}
+
+# Secondary → AWS ALB. ALB가 host=data.peakly.art를 PostgREST TG로 라우팅(postgrest.tf).
+resource "aws_route53_record" "data_secondary" {
+  zone_id = data.aws_route53_zone.main.zone_id
+  name    = "data.${var.domain_name}"
+  type    = "A"
+
+  set_identifier = "secondary-aws"
+  failover_routing_policy {
+    type = "SECONDARY"
+  }
+
+  alias {
+    name                   = aws_lb.app.dns_name
+    zone_id                = aws_lb.app.zone_id
+    evaluate_target_health = true
+  }
+}

@@ -114,3 +114,15 @@ variable "asg_dr_capacity" {
   type        = number
   default     = 2
 }
+
+variable "db_instance_type" {
+  description = "DB 레플리카 EC2 타입 (Postgres+PostgREST)"
+  type        = string
+  default     = "t3.medium"
+}
+
+variable "db_data_volume_size" {
+  description = "Postgres 데이터용 EBS(gp3) 크기(GB)"
+  type        = number
+  default     = 30
+}

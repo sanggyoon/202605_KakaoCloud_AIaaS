@@ -16,5 +16,6 @@ terraform.rc
 # 실제 시크릿을 담는 SSM 등록 스크립트 — 예시만 추적
 ssm-params.sh
 
-# Lambda zip 빌드 산출물
+# Lambda zip 빌드 산출물 / 파이썬 캐시
 build/
+**/__pycache__/

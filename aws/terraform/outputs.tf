@@ -57,3 +57,13 @@ output "dr_controller_function" {
   description = "DR 컨트롤러 Lambda 이름 (로그/수동 테스트용)"
   value       = aws_lambda_function.dr_controller.function_name
 }
+
+output "db_instance_id" {
+  description = "DB 레플리카 EC2 인스턴스 ID (SSM 접속/런북용)"
+  value       = aws_instance.db.id
+}
+
+output "db_private_ip" {
+  description = "DB 레플리카 사설 IP (PostgREST 타깃/WireGuard 라우팅용)"
+  value       = aws_instance.db.private_ip
+}

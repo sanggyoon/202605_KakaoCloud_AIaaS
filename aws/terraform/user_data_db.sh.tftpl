@@ -1,0 +1,38 @@
+#!/bin/bash
+# DB 레플리카 EC2 부트스트랩 — docker + WireGuard + 데이터 EBS 마운트까지만.
+# Postgres/PostgREST/논리복제 설정은 aws/DR-DB-RUNBOOK.md 절차로 진행한다.
+set -euxo pipefail
+
+dnf install -y docker wireguard-tools
+systemctl enable --now docker
+
+# aws cli (없으면 설치)
+if ! command -v aws >/dev/null 2>&1; then
+  dnf install -y unzip
+  curl -SL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o /tmp/awscliv2.zip
+  unzip -q /tmp/awscliv2.zip -d /tmp
+  /tmp/aws/install
+fi
+
+# docker compose 플러그인
+mkdir -p /usr/local/lib/docker/cli-plugins
+curl -SL "https://github.com/docker/compose/releases/download/v2.29.7/docker-compose-linux-x86_64" \
+  -o /usr/local/lib/docker/cli-plugins/docker-compose
+chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+
+# 데이터 EBS 포맷+마운트 (최초 1회). Nitro라 device 이름이 바뀌므로 자동 탐지:
+# 루트(nvme0n1)가 아니면서 마운트 안 된 디스크를 찾는다.
+DEV=$(lsblk -dpno NAME,MOUNTPOINT | awk '$1 !~ /nvme0n1|xvda/ && $2=="" {print $1}' | head -1)
+if [ -n "$DEV" ]; then
+  blkid "$DEV" || mkfs.xfs "$DEV"
+  mkdir -p /data
+  grep -q "/data" /etc/fstab || echo "$(blkid -s UUID -o value "$DEV") /data xfs defaults,nofail 0 2" >> /etc/fstab
+  mount -a
+  mkdir -p /data/pgdata
+fi
+
+cat > /opt/README.txt <<'EOF'
+DB 레플리카 호스트 준비 완료 (docker + wireguard + /data 마운트).
+다음 절차: aws/DR-DB-RUNBOOK.md (WireGuard 터널 → 논리복제 → PostgREST).
+접속: SSM Session Manager (aws ssm start-session --target <instance-id>)
+EOF

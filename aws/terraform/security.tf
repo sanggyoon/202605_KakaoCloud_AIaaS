@@ -25,7 +25,7 @@ resource "aws_security_group" "alb" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags       = { Name = "${var.project}-alb-sg" }
+  tags = { Name = "${var.project}-alb-sg" }
   lifecycle { create_before_destroy = true }
 }
 
@@ -57,7 +57,7 @@ resource "aws_security_group" "app" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags       = { Name = "${var.project}-app-sg" }
+  tags = { Name = "${var.project}-app-sg" }
   lifecycle { create_before_destroy = true }
 }
 
@@ -81,6 +81,6 @@ resource "aws_security_group" "bastion" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags       = { Name = "${var.project}-bastion-sg" }
+  tags = { Name = "${var.project}-bastion-sg" }
   lifecycle { create_before_destroy = true }
 }
