@@ -6,6 +6,7 @@ namespace: be
 resources:
   - deployment.yaml
   - service.yaml
+  - backfill-cronjob.yaml
 
 images:
   - name: ghcr.io/sanggyoon/4k-be

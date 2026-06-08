@@ -1,0 +1,35 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: movie-backfill
+  namespace: be
+spec:
+  schedule: "0 18 * * *"          # UTC 18:00 = KST 03:00
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      template:
+        spec:
+          restartPolicy: OnFailure
+          nodeSelector:
+            workload: app
+          containers:
+            - name: movie-backfill
+              image: ghcr.io/sanggyoon/4k-be:latest
+              command: ["python", "-m", "app.backfill_popular"]
+              envFrom:
+                - secretRef:
+                    name: 4k-be-secrets
+              env:
+                - name: BACKFILL_MAX_NEW
+                  value: "100"
+              resources:
+                requests:
+                  cpu: 100m
+                  memory: 128Mi
+                limits:
+                  cpu: 300m
+                  memory: 256Mi

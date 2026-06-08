@@ -21,3 +21,9 @@ yarn-error.log*
 
 # SSH key pair
 *.pem
+
+# claude plugin - UnderstandAnything
+.understand-anything
+
+# claude plugin - superpowers
+docs

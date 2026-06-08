@@ -8,6 +8,8 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
+from app import tmdb_common as tc
+
 # 로컬 개발 편의: .env 자동 로드.
 # 실제 운영(쿠버네티스)에서는 환경변수가 직접 주입되며, load_dotenv는
 # 기본적으로 기존 환경변수를 덮어쓰지 않으므로(override=False) 안전하다.
@@ -17,7 +19,6 @@ load_dotenv(os.path.join(_BASE_DIR, "DB_SCRIPTS", ".env"))
 
 TMDB_KEY  = os.getenv("TMDB_API_KEY", "")
 DATA_URL  = os.getenv("DATA_SUPABASE_URL", "https://data.peakly.art")
-DATA_KEY  = os.getenv("DATA_SUPABASE_KEY", "")
 TMDB_BASE = "https://api.themoviedb.org/3"
 
 app = FastAPI(title="4K Cinema Manager API")
@@ -28,29 +29,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-def _sb_headers() -> dict:
-    return {
-        "apikey": DATA_KEY,
-        "Authorization": f"Bearer {DATA_KEY}",
-        "Content-Type": "application/json",
-        "Prefer": "resolution=merge-duplicates,return=minimal",
-    }
-
-
-def _pick_trailer(videos: list[dict]) -> str | None:
-    """YouTube 트레일러 키 우선순위 선택: 한국어 트레일러 → 영어 트레일러 → 티저"""
-    priority = [
-        lambda v: v["site"] == "YouTube" and v["type"] == "Trailer" and v.get("iso_639_1") == "ko",
-        lambda v: v["site"] == "YouTube" and v["type"] == "Trailer",
-        lambda v: v["site"] == "YouTube" and v["type"] == "Teaser",
-    ]
-    for pred in priority:
-        match = next((v for v in videos if pred(v)), None)
-        if match:
-            return match["key"]
-    return None
 
 
 @app.get("/health")
@@ -92,7 +70,7 @@ async def list_movies(page: int = 1):
             sb_r = await client.get(
                 f"{DATA_URL}/rest/v1/movies",
                 params={"select": "tmdb_id", "tmdb_id": f"in.({ids_str})"},
-                headers=_sb_headers(),
+                headers=tc.sb_headers(),
             )
             if sb_r.status_code == 200:
                 in_db_ids = {row["tmdb_id"] for row in sb_r.json()}
@@ -148,7 +126,7 @@ async def search_movies(q: str = "", page: int = 1):
             sb_r = await client.get(
                 f"{DATA_URL}/rest/v1/movies",
                 params={"select": "tmdb_id", "tmdb_id": f"in.({ids_str})"},
-                headers=_sb_headers(),
+                headers=tc.sb_headers(),
             )
             if sb_r.status_code == 200:
                 in_db_ids = {row["tmdb_id"] for row in sb_r.json()}
@@ -171,6 +149,25 @@ async def search_movies(q: str = "", page: int = 1):
         }
 
 
+@app.get("/api/movies/recent")
+async def recent_movies(limit: int = 50):
+    """최근 추가된 영화를 created_at 내림차순으로 반환 (매니저 '최근 추가 데이터' 화면용)."""
+    limit = max(1, min(limit, 200))
+    async with httpx.AsyncClient(timeout=15, verify=False) as client:
+        r = await client.get(
+            f"{tc.data_url()}/rest/v1/movies",
+            params={
+                "select": "tmdb_id,title,poster_path,release_year,has_vector,created_at",
+                "order": "created_at.desc",
+                "limit": str(limit),
+            },
+            headers=tc.sb_headers(),
+        )
+        if r.status_code != 200:
+            raise HTTPException(status_code=502, detail=f"Supabase 조회 실패: {r.text[:200]}")
+        return {"movies": r.json()}
+
+
 @app.get("/api/movies/{tmdb_id}/detail")
 async def movie_detail(tmdb_id: int):
     """Supabase에서 영화 메타데이터(movies) + 클라이맥스 벡터(movie_vectors)를 조회."""
@@ -178,7 +175,7 @@ async def movie_detail(tmdb_id: int):
         m_r = await client.get(
             f"{DATA_URL}/rest/v1/movies",
             params={"select": "*", "tmdb_id": f"eq.{tmdb_id}", "limit": "1"},
-            headers=_sb_headers(),
+            headers=tc.sb_headers(),
         )
         if m_r.status_code != 200:
             raise HTTPException(status_code=502, detail=f"Supabase 조회 실패: {m_r.text[:200]}")
@@ -189,7 +186,7 @@ async def movie_detail(tmdb_id: int):
         v_r = await client.get(
             f"{DATA_URL}/rest/v1/movie_vectors",
             params={"select": "*", "tmdb_id": f"eq.{tmdb_id}", "limit": "1"},
-            headers=_sb_headers(),
+            headers=tc.sb_headers(),
         )
         vector_row = v_r.json()[0] if v_r.status_code == 200 and v_r.json() else None
 
@@ -221,7 +218,7 @@ async def update_movie(tmdb_id: int, payload: dict):
                 f"{DATA_URL}/rest/v1/movies",
                 params={"tmdb_id": f"eq.{tmdb_id}"},
                 json=movie_update,
-                headers=_sb_headers(),
+                headers=tc.sb_headers(),
             )
             if r.status_code not in (200, 204):
                 raise HTTPException(status_code=500, detail=f"메타데이터 수정 실패: {r.text[:200]}")
@@ -233,7 +230,7 @@ async def update_movie(tmdb_id: int, payload: dict):
                 f"{DATA_URL}/rest/v1/movie_vectors",
                 params={"tmdb_id": f"eq.{tmdb_id}"},
                 json={"vector": vector},
-                headers=_sb_headers(),
+                headers=tc.sb_headers(),
             )
             if r.status_code not in (200, 204):
                 raise HTTPException(status_code=500, detail=f"벡터 수정 실패: {r.text[:200]}")
@@ -259,32 +256,7 @@ async def add_movie(tmdb_id: int):
             raise HTTPException(status_code=502, detail=f"TMDB 오류: {r.status_code}")
         d = r.json()
 
-        crew     = d.get("credits", {}).get("crew", [])
-        director = next((c["name"] for c in crew if c["job"] == "Director"), None)
-        actors   = ", ".join(c["name"] for c in d.get("credits", {}).get("cast", [])[:5])
-        trailer  = _pick_trailer(d.get("videos", {}).get("results", []))
-
-        release_year = None
-        if d.get("release_date"):
-            try:
-                release_year = int(d["release_date"][:4])
-            except ValueError:
-                pass
-
-        movie = {
-            "tmdb_id":        tmdb_id,
-            "imdb_id":        d.get("imdb_id"),
-            "title":          d.get("title"),
-            "original_title": d.get("original_title"),
-            "poster_path":    d.get("poster_path"),
-            "director":       director,
-            "release_year":   release_year,
-            "runtime":        d.get("runtime") or None,
-            "genre":          ", ".join(g["name"] for g in d.get("genres", [])),
-            "actors":         actors or None,
-            "overview":       d.get("overview") or None,
-            "youtube_key":    trailer,
-        }
+        movie = tc.build_movie(d, tmdb_id)
 
         # on_conflict=tmdb_id 지정 — 이미 존재하는 영화면 PK가 아닌 tmdb_id
         # 유니크 제약 기준으로 merge(갱신)되도록 한다. (없으면 23505 중복키 오류)
@@ -292,7 +264,7 @@ async def add_movie(tmdb_id: int):
             f"{DATA_URL}/rest/v1/movies",
             params={"on_conflict": "tmdb_id"},
             json=[movie],
-            headers=_sb_headers(),
+            headers=tc.sb_headers(),
         )
         if sb_r.status_code not in (200, 201, 204):
             raise HTTPException(status_code=500, detail=f"Supabase 저장 실패: {sb_r.text[:200]}")
@@ -307,7 +279,7 @@ async def delete_movie(tmdb_id: int):
         sb_r = await client.delete(
             f"{DATA_URL}/rest/v1/movies",
             params={"tmdb_id": f"eq.{tmdb_id}"},
-            headers=_sb_headers(),
+            headers=tc.sb_headers(),
         )
         if sb_r.status_code not in (200, 204):
             raise HTTPException(status_code=500, detail=f"Supabase 삭제 실패: {sb_r.text[:200]}")
