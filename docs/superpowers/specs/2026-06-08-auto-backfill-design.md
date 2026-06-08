@@ -40,19 +40,23 @@
 
 ## 4. 컴포넌트
 
-### 4.1 공통 모듈 추출 — `4K_BE/DB_SCRIPTS/tmdb_common.py` (신규)
+> **배치 위치 주의**: `4K_BE/Dockerfile`은 `app/`만 복사한다(`COPY app/ ./app/`). CronJob은 이 이미지로 돌므로 backfill 코드는 반드시 `app/` 아래에 둔다 → Dockerfile 변경 불필요, `main.py`와도 DRY하게 공유. `DB_SCRIPTS/seed_movies.py`(로컬 수동 1회성)는 이미지에 없고 본 작업 범위 밖(미수정).
 
-`seed_movies.py`와 `backfill_popular.py`가 공유하는 순수/IO 함수를 한곳으로 모아 중복 제거:
+### 4.1 공통 모듈 — `4K_BE/app/tmdb_common.py` (신규)
 
+`main.py`와 `backfill_popular.py`가 공유하는 순수/IO 함수를 한곳으로 모아 중복 제거:
+
+- `sb_headers(resolution: str = "merge-duplicates") -> dict`
 - `pick_trailer(videos) -> str | None`
-- `build_movie(tmdb_detail, tmdb_id) -> dict` (TMDB 상세 → movies row dict)
+- `build_movie(tmdb_detail: dict, tmdb_id: int) -> dict` (TMDB 상세 → movies row dict)
 - `fetch_movie(client, tmdb_id) -> dict | None`
 - `get_existing_tmdb_ids(client) -> set[int]`
+- `tmdb_discover(client, sort_by, page) -> list[dict]`
 - `upsert_movies(client, rows, resolution) -> bool` (`resolution`로 merge/ignore 선택)
 
-`seed_movies.py`는 이 모듈을 import하도록 리팩터링(동작 동일, 하드코딩 ID 리스트 유지). `main.py`의 `add_movie`도 `build_movie`를 재사용하도록 정리(선택).
+`main.py`는 `_pick_trailer`/`_sb_headers`/movie dict 빌드 로직을 이 모듈 호출로 교체(동작 동일).
 
-### 4.2 Backfill 스크립트 — `4K_BE/DB_SCRIPTS/backfill_popular.py` (신규)
+### 4.2 Backfill 스크립트 — `4K_BE/app/backfill_popular.py` (신규)
 
 환경변수:
 
@@ -96,7 +100,7 @@ log(f"backfill 완료: 신규 {added}개, 마지막 page {page}")
 - `schedule: "0 18 * * *"` (UTC 18:00 = KST 03:00).
 - `concurrencyPolicy: Forbid` (이전 실행 미완료 시 중복 방지).
 - `restartPolicy: OnFailure`, `backoffLimit: 2`, `successfulJobsHistoryLimit: 3`, `failedJobsHistoryLimit: 3`.
-- `command: ["python", "-m", "DB_SCRIPTS.backfill_popular"]`.
+- `command: ["python", "-m", "app.backfill_popular"]` (WORKDIR `/app`이므로 `app` 패키지로 실행).
 - `Ansible/manifests/4k-be/kustomization.yaml`의 `resources`에 등록.
 
 ### 4.4 BE 최근 추가 엔드포인트 — `4K_BE/app/main.py` (추가)
@@ -161,11 +165,14 @@ async def recent_movies(limit: int = 50):
 
 | 종류 | 경로 |
 |---|---|
-| 신규 | `4K_BE/DB_SCRIPTS/tmdb_common.py` |
-| 신규 | `4K_BE/DB_SCRIPTS/backfill_popular.py` |
-| 수정 | `4K_BE/DB_SCRIPTS/seed_movies.py` (공통 모듈 사용) |
-| 수정 | `4K_BE/app/main.py` (`/api/movies/recent` 추가, build_movie 재사용) |
+| 신규 | `4K_BE/app/tmdb_common.py` |
+| 신규 | `4K_BE/app/backfill_popular.py` |
+| 수정 | `4K_BE/app/main.py` (`/api/movies/recent` 추가, tmdb_common 재사용) |
+| 신규 | `4K_BE/requirements-dev.txt` (pytest) |
+| 신규 | `4K_BE/tests/` (단위 테스트) |
 | 신규 | `Ansible/manifests/4k-be/backfill-cronjob.yaml` |
 | 수정 | `Ansible/manifests/4k-be/kustomization.yaml` (resources 등록) |
 | 신규 | `4K_FE/app/api/manager/movies/recent/route.ts` |
 | 신규 | `4K_FE/app/movie_list/recent/page.tsx` |
+
+> `DB_SCRIPTS/seed_movies.py`는 미수정(범위 밖). 공통화는 `app/` 쪽만 적용.
