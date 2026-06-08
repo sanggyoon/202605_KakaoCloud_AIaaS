@@ -50,17 +50,18 @@ def test_build_movie_handles_missing_fields():
 
 
 import httpx
-from app import tmdb_common as tc
 
 
 def _client(handler):
     return httpx.AsyncClient(transport=httpx.MockTransport(handler))
 
 
-async def test_tmdb_discover_returns_results():
+async def test_tmdb_discover_returns_results(monkeypatch):
+    monkeypatch.setenv("TMDB_API_KEY", "testkey")
     def handler(req: httpx.Request) -> httpx.Response:
         assert "/discover/movie" in str(req.url)
         assert req.url.params["sort_by"] == "popularity.desc"
+        assert req.url.params["api_key"] == "testkey"
         return httpx.Response(200, json={"results": [{"id": 1}, {"id": 2}]})
     async with _client(handler) as c:
         out = await tc.tmdb_discover(c, sort_by="popularity.desc", page=1)
@@ -83,9 +84,11 @@ async def test_fetch_movie_returns_none_on_error():
         assert await tc.fetch_movie(c, 99) is None
 
 
-async def test_get_existing_tmdb_ids_parses_rows():
+async def test_get_existing_tmdb_ids_parses_rows(monkeypatch):
+    monkeypatch.setenv("DATA_SUPABASE_KEY", "testkey")
     def handler(req: httpx.Request) -> httpx.Response:
         assert "/rest/v1/movies" in str(req.url)
+        assert req.headers.get("apikey") == "testkey"
         return httpx.Response(200, json=[{"tmdb_id": 1}, {"tmdb_id": 5}])
     async with _client(handler) as c:
         ids = await tc.get_existing_tmdb_ids(c)
