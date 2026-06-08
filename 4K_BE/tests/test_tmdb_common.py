@@ -47,3 +47,59 @@ def test_build_movie_handles_missing_fields():
     assert row["release_year"] is None
     assert row["actors"] is None
     assert row["youtube_key"] is None
+
+
+import httpx
+from app import tmdb_common as tc
+
+
+def _client(handler):
+    return httpx.AsyncClient(transport=httpx.MockTransport(handler))
+
+
+async def test_tmdb_discover_returns_results():
+    def handler(req: httpx.Request) -> httpx.Response:
+        assert "/discover/movie" in str(req.url)
+        assert req.url.params["sort_by"] == "popularity.desc"
+        return httpx.Response(200, json={"results": [{"id": 1}, {"id": 2}]})
+    async with _client(handler) as c:
+        out = await tc.tmdb_discover(c, sort_by="popularity.desc", page=1)
+    assert [m["id"] for m in out] == [1, 2]
+
+
+async def test_fetch_movie_builds_row():
+    def handler(req: httpx.Request) -> httpx.Response:
+        assert "/movie/99" in str(req.url)
+        return httpx.Response(200, json={"title": "T", "credits": {}, "videos": {}})
+    async with _client(handler) as c:
+        row = await tc.fetch_movie(c, 99)
+    assert row["tmdb_id"] == 99 and row["title"] == "T"
+
+
+async def test_fetch_movie_returns_none_on_error():
+    def handler(req: httpx.Request) -> httpx.Response:
+        return httpx.Response(404, json={})
+    async with _client(handler) as c:
+        assert await tc.fetch_movie(c, 99) is None
+
+
+async def test_get_existing_tmdb_ids_parses_rows():
+    def handler(req: httpx.Request) -> httpx.Response:
+        assert "/rest/v1/movies" in str(req.url)
+        return httpx.Response(200, json=[{"tmdb_id": 1}, {"tmdb_id": 5}])
+    async with _client(handler) as c:
+        ids = await tc.get_existing_tmdb_ids(c)
+    assert ids == {1, 5}
+
+
+async def test_upsert_movies_sends_ignore_duplicates():
+    seen = {}
+    def handler(req: httpx.Request) -> httpx.Response:
+        seen["prefer"] = req.headers.get("Prefer", "")
+        seen["conflict"] = req.url.params.get("on_conflict")
+        return httpx.Response(201, json=[])
+    async with _client(handler) as c:
+        ok = await tc.upsert_movies(c, [{"tmdb_id": 1}], resolution="ignore-duplicates")
+    assert ok is True
+    assert "ignore-duplicates" in seen["prefer"]
+    assert seen["conflict"] == "tmdb_id"
