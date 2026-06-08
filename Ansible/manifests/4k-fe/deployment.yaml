@@ -20,15 +20,15 @@ spec:
           image: ghcr.io/sanggyoon/4k-fe:latest
           env:
             - name: BE_INTERNAL_URL
-              value: "http://backend.be.svc.cluster.local:8000"
+              value: 'http://backend.be.svc.cluster.local:8000'
             # 매니저 페이지 로그인 자격증명 — 값만 바꾸면 ID/비밀번호 변경 가능
             - name: MANAGER_ID
-              value: "admin"
+              value: 'admin'
             - name: MANAGER_PASSWORD
-              value: "admin"
+              value: 'admin'
             # 세션 서명 시크릿 — 운영에서는 Secret으로 분리 권장 (openssl rand -hex 32)
             - name: MANAGER_SESSION_SECRET
-              value: "change-me-to-a-random-secret"
+              value: '7e21bb198957970f12bccb5584b4a2ef8a409a2971357f51af7073c6620b402a'
           ports:
             - containerPort: 3000
           readinessProbe:
