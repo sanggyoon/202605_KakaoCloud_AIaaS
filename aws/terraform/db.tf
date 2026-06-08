@@ -22,7 +22,7 @@ resource "aws_security_group" "db" {
     cidr_blocks = ["${var.kakao_ip}/32"]
   }
   ingress {
-    description     = "Postgres(5432) from app SG (직접 접근 옵션)"
+    description     = "Postgres(5432) from app SG (optional direct)"
     from_port       = 5432
     to_port         = 5432
     protocol        = "tcp"
