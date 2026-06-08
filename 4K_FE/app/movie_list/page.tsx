@@ -113,6 +113,13 @@ export default function MovieListPage() {
           <div style={{ width: 1, height: 16, background: 'rgba(255,255,255,0.1)' }} />
           <h1 style={{ margin: 0, fontSize: 18, fontWeight: 700, letterSpacing: '-0.02em' }}>영화 관리</h1>
           <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.15em', color: 'var(--accent)', background: 'color-mix(in oklch, var(--accent) 14%, transparent)', padding: '3px 8px', borderRadius: 4 }}>MANAGER</span>
+          <div style={{ width: 1, height: 16, background: 'rgba(255,255,255,0.1)' }} />
+          <button
+            onClick={() => router.push('/movie_list/recent')}
+            style={{ background: 'none', border: 'none', color: 'var(--accent)', cursor: 'pointer', fontSize: 13, fontFamily: 'inherit', padding: 0 }}
+          >
+            최근 추가 데이터
+          </button>
         </div>
 
         {/* 검색바 */}
