@@ -56,3 +56,34 @@ async def test_stops_when_discover_empty():
     handler = _make_handler(existing_ids=set(), discover_pages={1: [{"id": 10}]})
     result = await _run(handler, max_new=100, max_pages=10)
     assert result["added"] == 1
+
+
+async def test_records_failed_fetches():
+    def handler(req: httpx.Request) -> httpx.Response:
+        url = str(req.url)
+        if "/rest/v1/movies" in url and req.method == "GET":
+            return httpx.Response(200, json=[])
+        if "/discover/movie" in url:
+            page = int(req.url.params.get("page", "1"))
+            results = [{"id": 20}, {"id": 21}] if page == 1 else []
+            return httpx.Response(200, json={"results": results})
+        if "/movie/20" in url and req.method == "GET":
+            return httpx.Response(404, json={})
+        if "/movie/" in url and req.method == "GET":
+            tid = int(url.split("/movie/")[1].split("?")[0])
+            return httpx.Response(200, json={"title": f"M{tid}", "credits": {}, "videos": {}})
+        if "/rest/v1/movies" in url and req.method == "POST":
+            return httpx.Response(201, json=[])
+        return httpx.Response(404, json={})
+    result = await _run(handler, max_new=100)
+    assert result["added"] == 1       # 21만 성공
+    assert result["failed"] == [20]   # 20은 fetch 404
+
+
+async def test_respects_max_pages():
+    handler = _make_handler(
+        existing_ids=set(),
+        discover_pages={1: [{"id": 10}, {"id": 11}], 2: [{"id": 12}]},
+    )
+    result = await _run(handler, max_new=100, max_pages=1)
+    assert result["added"] == 2       # page 1만 처리
