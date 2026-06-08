@@ -13,7 +13,13 @@ resource "aws_launch_template" "app" {
     arn = aws_iam_instance_profile.app.arn
   }
 
-  vpc_security_group_ids = [aws_security_group.app.id]
+  # NAT 제거 → public 서브넷 + 공인 IP로 아웃바운드(GHCR/SSM/TMDB).
+  # SG는 network_interfaces에 지정(vpc_security_group_ids와 병행 불가).
+  network_interfaces {
+    associate_public_ip_address = true
+    security_groups             = [aws_security_group.app.id]
+    delete_on_termination       = true
+  }
 
   # compose 파일을 base64로 주입 → aws/docker-compose.yml 단일 소스 유지(drift 없음)
   user_data = base64encode(templatefile("${path.module}/user_data.sh.tftpl", {

@@ -37,14 +37,8 @@ variable "private_subnet_cidrs" {
   default     = ["10.20.10.0/24", "10.20.11.0/24"]
 }
 
-variable "single_nat_gateway" {
-  description = <<-EOT
-    true면 NAT 게이트웨이 1개만 생성(워밍스탠바이 비용 절감, 단일 AZ 의존).
-    운영 HA가 필요하면 false로 AZ별 NAT 생성.
-  EOT
-  type        = bool
-  default     = true
-}
+# (NAT 게이트웨이는 비용 절감을 위해 제거됨 — 앱/DB는 public 서브넷 + 공인 IP.
+#  자세한 내용: aws/COST-OPTIMIZATION.md)
 
 variable "domain_name" {
   description = "Route53에 위임된 루트 도메인 (ACM 인증서 + failover 대상)"
@@ -116,9 +110,9 @@ variable "asg_dr_capacity" {
 }
 
 variable "db_instance_type" {
-  description = "DB 레플리카 EC2 타입 (Postgres+PostgREST)"
+  description = "DB 레플리카 EC2 타입 (Postgres+PostgREST). 테이블 2개라 t3.small로 충분(비용 절감)"
   type        = string
-  default     = "t3.medium"
+  default     = "t3.small"
 }
 
 variable "db_data_volume_size" {

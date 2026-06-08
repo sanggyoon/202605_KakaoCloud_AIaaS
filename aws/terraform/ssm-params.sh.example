@@ -11,6 +11,7 @@ PREFIX="/peakly/dr"
 
 put() { aws ssm put-parameter --region "$REGION" --name "$PREFIX/$1" --type SecureString --value "$2" --overwrite >/dev/null && echo "  put $PREFIX/$1"; }
 
+# ── 앱(FE/BE)용 — Step 2~4에서 사용 ─────────────────────────────────
 put TMDB_API_KEY           "여기에-TMDB-키"
 put DATA_SUPABASE_URL      "https://data.peakly.art"
 put DATA_SUPABASE_KEY      "여기에-service_role-JWT"
@@ -18,4 +19,8 @@ put MANAGER_ID             "admin"
 put MANAGER_PASSWORD       "admin"
 put MANAGER_SESSION_SECRET "카카오와-동일한-시크릿"
 
-echo "완료. 확인: aws ssm get-parameters-by-path --region $REGION --path $PREFIX --with-decryption"
+# ── DB 레플리카(PostgREST)용 — Step 5에서 사용 ──────────────────────
+# 카카오 Supabase의 JWT secret (anon/service 키가 이걸로 서명됨 → 동일해야 검증됨)
+put db/JWT_SECRET          "카카오-Supabase-JWT-secret"
+
+echo "완료. 확인: aws ssm get-parameters-by-path --region $REGION --path $PREFIX --recursive --with-decryption"

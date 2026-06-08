@@ -71,12 +71,14 @@ resource "aws_ebs_volume" "db_data" {
 }
 
 resource "aws_instance" "db" {
-  ami                    = data.aws_ssm_parameter.al2023.value
-  instance_type          = var.db_instance_type
-  subnet_id              = aws_subnet.private[0].id
-  availability_zone      = var.azs[0]
-  vpc_security_group_ids = [aws_security_group.db.id]
-  iam_instance_profile   = aws_iam_instance_profile.db.name
+  ami           = data.aws_ssm_parameter.al2023.value
+  instance_type = var.db_instance_type
+  # NAT 제거 → public 서브넷 + 공인 IP. 인바운드는 db SG로 최소 노출(아웃바운드는 WireGuard/SSM).
+  subnet_id                   = aws_subnet.public[0].id
+  availability_zone           = var.azs[0]
+  associate_public_ip_address = true
+  vpc_security_group_ids      = [aws_security_group.db.id]
+  iam_instance_profile        = aws_iam_instance_profile.db.name
 
   # 정적 부트스트랩(설치+마운트만) — 템플릿 변수 불필요. aws cli는 IMDS로 리전 자동 인식.
   user_data = file("${path.module}/user_data_db.sh.tftpl")

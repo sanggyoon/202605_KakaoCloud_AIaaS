@@ -26,6 +26,9 @@ resource "aws_subnet" "public" {
   }
 }
 
+# 비용 절감을 위해 NAT 게이트웨이를 제거했다(아래 참고). 그래서 앱 ASG·DB EC2는
+# public 서브넷에 공인 IP로 배치되고, private 서브넷은 현재 미사용(격리)로 남겨둔다.
+# (자세한 트레이드오프: aws/COST-OPTIMIZATION.md)
 resource "aws_subnet" "private" {
   count             = length(var.azs)
   vpc_id            = aws_vpc.main.id
@@ -34,24 +37,8 @@ resource "aws_subnet" "private" {
 
   tags = {
     Name = "${var.project}-private-${var.azs[count.index]}"
-    Tier = "private"
+    Tier = "private-unused"
   }
-}
-
-# ── NAT 게이트웨이 (프라이빗 서브넷 아웃바운드: GHCR pull, TMDB 등) ────
-resource "aws_eip" "nat" {
-  count  = var.single_nat_gateway ? 1 : length(var.azs)
-  domain = "vpc"
-  tags   = { Name = "${var.project}-nat-eip-${count.index}" }
-}
-
-resource "aws_nat_gateway" "main" {
-  count         = var.single_nat_gateway ? 1 : length(var.azs)
-  allocation_id = aws_eip.nat[count.index].id
-  subnet_id     = aws_subnet.public[count.index].id
-  tags          = { Name = "${var.project}-nat-${count.index}" }
-
-  depends_on = [aws_internet_gateway.main]
 }
 
 # ── 라우팅: public → IGW ─────────────────────────────────────────────
@@ -72,22 +59,5 @@ resource "aws_route_table_association" "public" {
   route_table_id = aws_route_table.public.id
 }
 
-# ── 라우팅: private → NAT ────────────────────────────────────────────
-# single_nat_gateway=true면 RT 1개를 모든 private 서브넷이 공유.
-resource "aws_route_table" "private" {
-  count  = var.single_nat_gateway ? 1 : length(var.azs)
-  vpc_id = aws_vpc.main.id
-
-  route {
-    cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.main[count.index].id
-  }
-
-  tags = { Name = "${var.project}-private-rt-${count.index}" }
-}
-
-resource "aws_route_table_association" "private" {
-  count          = length(var.azs)
-  subnet_id      = aws_subnet.private[count.index].id
-  route_table_id = var.single_nat_gateway ? aws_route_table.private[0].id : aws_route_table.private[count.index].id
-}
+# private 서브넷은 라우트 테이블 미연결 → VPC main RT(local 전용)만 적용 = 인터넷 격리.
+# NAT를 다시 도입하려면 여기에 private RT(→NAT)와 association을 복원하면 된다.

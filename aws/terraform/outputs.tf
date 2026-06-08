@@ -18,9 +18,10 @@ output "private_subnet_ids" {
   value       = aws_subnet.private[*].id
 }
 
-output "nat_public_ips" {
-  description = "NAT 게이트웨이 공인 IP — 카카오 측 방화벽에서 이 IP를 허용(복제/접근 제어)"
-  value       = aws_eip.nat[*].public_ip
+# (NAT 제거됨) DB EC2 공인 IP — 카카오 측 방화벽/SG에서 WireGuard(51820/udp) 허용 대상.
+output "db_public_ip" {
+  description = "DB 레플리카 공인 IP — 카카오 방화벽에서 이 IP의 WireGuard를 허용"
+  value       = aws_instance.db.public_ip
 }
 
 output "alb_dns_name" {

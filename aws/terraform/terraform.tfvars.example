@@ -9,8 +9,10 @@ azs                  = ["ap-northeast-2a", "ap-northeast-2c"]
 public_subnet_cidrs  = ["10.20.0.0/24", "10.20.1.0/24"]
 private_subnet_cidrs = ["10.20.10.0/24", "10.20.11.0/24"]
 
-# 워밍스탠바이 비용 절감(NAT 1개). 운영 HA면 false.
-single_nat_gateway = true
+# NAT 게이트웨이는 비용 절감을 위해 제거됨(앱/DB는 public 서브넷). COST-OPTIMIZATION.md 참고.
+
+# DB 레플리카 인스턴스 타입 (기본 t3.small)
+db_instance_type = "t3.small"
 
 domain_name = "peakly.art"
 

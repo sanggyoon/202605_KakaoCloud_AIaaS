@@ -5,8 +5,8 @@ resource "aws_autoscaling_group" "app" {
   max_size         = var.asg_max
   desired_capacity = var.asg_desired
 
-  # 2개 private 서브넷에 분산 (DR 발동 시 AZ 분산)
-  vpc_zone_identifier = aws_subnet.private[*].id
+  # 2개 public 서브넷에 분산 (NAT 제거 → 공인 IP로 아웃바운드). DR 발동 시 AZ 분산.
+  vpc_zone_identifier = aws_subnet.public[*].id
 
   # ALB 타깃 그룹에 자동 등록 + ELB 헬스체크로 불량 인스턴스 교체
   target_group_arns         = [aws_lb_target_group.app.arn]
