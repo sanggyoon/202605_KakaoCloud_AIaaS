@@ -1,0 +1,1177 @@
+{
+  "schemaVersion": 1,
+  "algorithm": "louvain",
+  "totalFiles": 107,
+  "totalBatches": 17,
+  "exportsByPath": {
+    "4K_BE/.python-version": [],
+    "4K_BE/app/main.py": [
+      "_sb_headers",
+      "_pick_trailer",
+      "health",
+      "list_movies",
+      "search_movies",
+      "movie_detail",
+      "update_movie",
+      "add_movie",
+      "delete_movie"
+    ],
+    "4K_BE/DB_SCRIPTS/seed_movies.py": [
+      "tmdb_get",
+      "pick_trailer",
+      "fetch_movie",
+      "get_existing_tmdb_ids",
+      "verify_insert",
+      "upsert_batch",
+      "main"
+    ],
+    "4K_FE/app/api/manager/auth/login/route.ts": [
+      "POST"
+    ],
+    "4K_FE/app/api/manager/auth/logout/route.ts": [
+      "POST"
+    ],
+    "4K_FE/app/api/manager/movies/[tmdb_id]/route.ts": [
+      "GET",
+      "PATCH",
+      "DELETE"
+    ],
+    "4K_FE/app/api/manager/movies/route.ts": [
+      "GET",
+      "POST"
+    ],
+    "4K_FE/app/api/manager/movies/search/route.ts": [
+      "GET"
+    ],
+    "4K_FE/app/components/BackgroundThread.tsx": [],
+    "4K_FE/app/components/ClimaxGraph.tsx": [
+      "ClimaxGraph"
+    ],
+    "4K_FE/app/components/DetailOverlay.tsx": [
+      "DetailOverlay"
+    ],
+    "4K_FE/app/components/FilterBar.tsx": [
+      "FilterBar"
+    ],
+    "4K_FE/app/components/MiniGraph.tsx": [
+      "MiniGraph"
+    ],
+    "4K_FE/app/components/MovieDetailModal.tsx": [
+      "MovieDetailModal"
+    ],
+    "4K_FE/app/components/PosterCard.tsx": [
+      "PosterCard"
+    ],
+    "4K_FE/app/components/RandomModal.tsx": [
+      "RandomModal"
+    ],
+    "4K_FE/app/components/Tutorial.tsx": [
+      "Tutorial"
+    ],
+    "4K_FE/app/dashboard/page.tsx": [
+      "Dashboard"
+    ],
+    "4K_FE/app/layout.tsx": [
+      "metadata",
+      "RootLayout"
+    ],
+    "4K_FE/app/lib/auth.ts": [
+      "SESSION_COOKIE",
+      "SESSION_MAX_AGE",
+      "verifyCredentials",
+      "sessionToken",
+      "isValidSession"
+    ],
+    "4K_FE/app/lib/data.ts": [
+      "posterUrl",
+      "genreList",
+      "castList",
+      "SUPABASE_URL",
+      "SUPABASE_ANON_KEY",
+      "GENRES",
+      "INITIAL_FILTERS",
+      "fetchPreferredMovies",
+      "fetchSimilarMovies",
+      "fetchMovieVectors",
+      "fetchVector",
+      "getRecentIds",
+      "addRecentId",
+      "removeRecentId"
+    ],
+    "4K_FE/app/login/page.tsx": [
+      "LoginPage"
+    ],
+    "4K_FE/app/movie_list/page.tsx": [
+      "MovieListPage"
+    ],
+    "4K_FE/app/page.tsx": [
+      "OnboardingPage"
+    ],
+    "4K_FE/eslint.config.mjs": [],
+    "4K_FE/next.config.ts": [],
+    "4K_FE/postcss.config.mjs": [],
+    "4K_FE/proxy.ts": [
+      "proxy",
+      "config"
+    ],
+    "4K_ML/.python-version": [],
+    "4K_ML/generate_vectors/generate_vectors.py": [
+      "ext_fetch",
+      "vm4_upsert",
+      "process",
+      "main"
+    ],
+    "aws/terraform/.terraform.lock.hcl": [],
+    "aws/terraform/lambda/dr_controller.py": [
+      "_kakao_healthy",
+      "handler"
+    ],
+    "aws/terraform/ssm-params.sh.example": [],
+    "aws/terraform/terraform.tfvars.example": [],
+    "aws/terraform/user_data_db.sh.tftpl": [],
+    "aws/terraform/user_data.sh.tftpl": []
+  },
+  "batches": [
+    {
+      "batchIndex": 1,
+      "files": [
+        {
+          "path": "4K_FE/app/components/FilterBar.tsx",
+          "language": "typescript",
+          "sizeLines": 683,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/components/PosterCard.tsx",
+          "language": "typescript",
+          "sizeLines": 329,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/components/RandomModal.tsx",
+          "language": "typescript",
+          "sizeLines": 192,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/dashboard/page.tsx",
+          "language": "typescript",
+          "sizeLines": 658,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/lib/data.ts",
+          "language": "typescript",
+          "sizeLines": 165,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "4K_FE/app/components/FilterBar.tsx": [
+          "4K_FE/app/lib/data.ts"
+        ],
+        "4K_FE/app/components/PosterCard.tsx": [
+          "4K_FE/app/lib/data.ts"
+        ],
+        "4K_FE/app/components/RandomModal.tsx": [
+          "4K_FE/app/lib/data.ts"
+        ],
+        "4K_FE/app/dashboard/page.tsx": [
+          "4K_FE/app/components/DetailOverlay.tsx",
+          "4K_FE/app/components/FilterBar.tsx",
+          "4K_FE/app/components/PosterCard.tsx",
+          "4K_FE/app/components/RandomModal.tsx",
+          "4K_FE/app/components/Tutorial.tsx",
+          "4K_FE/app/lib/data.ts"
+        ],
+        "4K_FE/app/lib/data.ts": []
+      },
+      "neighborMap": {
+        "4K_FE/app/dashboard/page.tsx": [
+          {
+            "path": "4K_FE/app/components/DetailOverlay.tsx",
+            "batchIndex": 16,
+            "symbols": [
+              "DetailOverlay"
+            ]
+          },
+          {
+            "path": "4K_FE/app/components/Tutorial.tsx",
+            "batchIndex": 16,
+            "symbols": [
+              "Tutorial"
+            ]
+          }
+        ],
+        "4K_FE/app/lib/data.ts": [
+          {
+            "path": "4K_FE/app/components/DetailOverlay.tsx",
+            "batchIndex": 16,
+            "symbols": [
+              "DetailOverlay"
+            ]
+          },
+          {
+            "path": "4K_FE/app/components/MovieDetailModal.tsx",
+            "batchIndex": 16,
+            "symbols": [
+              "MovieDetailModal"
+            ]
+          },
+          {
+            "path": "4K_FE/app/movie_list/page.tsx",
+            "batchIndex": 16,
+            "symbols": [
+              "MovieListPage"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "batchIndex": 2,
+      "files": [
+        {
+          "path": "4K_FE/app/api/manager/auth/login/route.ts",
+          "language": "typescript",
+          "sizeLines": 26,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/api/manager/auth/logout/route.ts",
+          "language": "typescript",
+          "sizeLines": 8,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/lib/auth.ts",
+          "language": "typescript",
+          "sizeLines": 32,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/proxy.ts",
+          "language": "typescript",
+          "sizeLines": 28,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "4K_FE/app/api/manager/auth/login/route.ts": [
+          "4K_FE/app/lib/auth.ts"
+        ],
+        "4K_FE/app/api/manager/auth/logout/route.ts": [
+          "4K_FE/app/lib/auth.ts"
+        ],
+        "4K_FE/app/lib/auth.ts": [],
+        "4K_FE/proxy.ts": [
+          "4K_FE/app/lib/auth.ts"
+        ]
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 3,
+      "files": [
+        {
+          "path": "4K_BE/Dockerfile",
+          "language": "dockerfile",
+          "sizeLines": 12,
+          "fileCategory": "infra"
+        }
+      ],
+      "batchImportData": {
+        "4K_BE/Dockerfile": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 4,
+      "files": [
+        {
+          "path": "4K_FE/.dockerignore",
+          "language": "unknown",
+          "sizeLines": 6,
+          "fileCategory": "infra"
+        },
+        {
+          "path": "4K_FE/Dockerfile",
+          "language": "dockerfile",
+          "sizeLines": 36,
+          "fileCategory": "infra"
+        }
+      ],
+      "batchImportData": {
+        "4K_FE/.dockerignore": [],
+        "4K_FE/Dockerfile": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 5,
+      "files": [
+        {
+          "path": ".github/workflows/deploy-4k-be.yml",
+          "language": "yaml",
+          "sizeLines": 64,
+          "fileCategory": "infra"
+        },
+        {
+          "path": ".github/workflows/deploy-4k-fe.yml",
+          "language": "yaml",
+          "sizeLines": 64,
+          "fileCategory": "infra"
+        }
+      ],
+      "batchImportData": {
+        ".github/workflows/deploy-4k-be.yml": [],
+        ".github/workflows/deploy-4k-fe.yml": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 6,
+      "files": [
+        {
+          "path": "4K_FE/.env.example",
+          "language": "config",
+          "sizeLines": 19,
+          "fileCategory": "config"
+        },
+        {
+          "path": "4K_FE/AGENTS.md",
+          "language": "markdown",
+          "sizeLines": 5,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "4K_FE/CLAUDE.md",
+          "language": "markdown",
+          "sizeLines": 1,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "4K_FE/README.md",
+          "language": "markdown",
+          "sizeLines": 36,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "4K_FE/package.json",
+          "language": "json",
+          "sizeLines": 27,
+          "fileCategory": "config"
+        },
+        {
+          "path": "4K_FE/tsconfig.json",
+          "language": "json",
+          "sizeLines": 34,
+          "fileCategory": "config"
+        }
+      ],
+      "batchImportData": {
+        "4K_FE/.env.example": [],
+        "4K_FE/AGENTS.md": [],
+        "4K_FE/CLAUDE.md": [],
+        "4K_FE/README.md": [],
+        "4K_FE/package.json": [],
+        "4K_FE/tsconfig.json": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 7,
+      "files": [
+        {
+          "path": "Ansible/manifests/4k-be/deployment.yaml",
+          "language": "yaml",
+          "sizeLines": 44,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/4k-be/kustomization.yaml",
+          "language": "yaml",
+          "sizeLines": 12,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/4k-be/service.yaml",
+          "language": "yaml",
+          "sizeLines": 11,
+          "fileCategory": "config"
+        }
+      ],
+      "batchImportData": {
+        "Ansible/manifests/4k-be/deployment.yaml": [],
+        "Ansible/manifests/4k-be/kustomization.yaml": [],
+        "Ansible/manifests/4k-be/service.yaml": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 8,
+      "files": [
+        {
+          "path": "Ansible/manifests/4k-fe/deployment.yaml",
+          "language": "yaml",
+          "sizeLines": 52,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/4k-fe/ingress.yaml",
+          "language": "yaml",
+          "sizeLines": 53,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/4k-fe/kustomization.yaml",
+          "language": "yaml",
+          "sizeLines": 13,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/4k-fe/service.yaml",
+          "language": "yaml",
+          "sizeLines": 11,
+          "fileCategory": "config"
+        }
+      ],
+      "batchImportData": {
+        "Ansible/manifests/4k-fe/deployment.yaml": [],
+        "Ansible/manifests/4k-fe/ingress.yaml": [],
+        "Ansible/manifests/4k-fe/kustomization.yaml": [],
+        "Ansible/manifests/4k-fe/service.yaml": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 9,
+      "files": [
+        {
+          "path": "Ansible/manifests/apps/cluster-issuer.yaml",
+          "language": "yaml",
+          "sizeLines": 31,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/apps/ingress-nginx-config.yaml",
+          "language": "yaml",
+          "sizeLines": 12,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/apps/ingress-studio.yaml",
+          "language": "yaml",
+          "sizeLines": 233,
+          "fileCategory": "config"
+        }
+      ],
+      "batchImportData": {
+        "Ansible/manifests/apps/cluster-issuer.yaml": [],
+        "Ansible/manifests/apps/ingress-nginx-config.yaml": [],
+        "Ansible/manifests/apps/ingress-studio.yaml": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 10,
+      "files": [
+        {
+          "path": "Ansible/manifests/argocd/argocd-app-4k-be.yaml",
+          "language": "yaml",
+          "sizeLines": 20,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/argocd/argocd-app-4k-fe.yaml",
+          "language": "yaml",
+          "sizeLines": 20,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/argocd/argocd-app-infra.yaml",
+          "language": "yaml",
+          "sizeLines": 20,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/argocd/argocd-app-supabase-ai.yaml",
+          "language": "yaml",
+          "sizeLines": 26,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/argocd/argocd-app-supabase-data.yaml",
+          "language": "yaml",
+          "sizeLines": 26,
+          "fileCategory": "config"
+        }
+      ],
+      "batchImportData": {
+        "Ansible/manifests/argocd/argocd-app-4k-be.yaml": [],
+        "Ansible/manifests/argocd/argocd-app-4k-fe.yaml": [],
+        "Ansible/manifests/argocd/argocd-app-infra.yaml": [],
+        "Ansible/manifests/argocd/argocd-app-supabase-ai.yaml": [],
+        "Ansible/manifests/argocd/argocd-app-supabase-data.yaml": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 11,
+      "files": [
+        {
+          "path": "Ansible/playbooks/00-ping.yml",
+          "language": "yaml",
+          "sizeLines": 4,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/playbooks/01-common.yml",
+          "language": "yaml",
+          "sizeLines": 68,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/playbooks/02-k3s-server.yml",
+          "language": "yaml",
+          "sizeLines": 52,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/playbooks/03-k3s-agent.yml",
+          "language": "yaml",
+          "sizeLines": 31,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/playbooks/04-longhorn-prereq.yml",
+          "language": "yaml",
+          "sizeLines": 29,
+          "fileCategory": "config"
+        }
+      ],
+      "batchImportData": {
+        "Ansible/playbooks/00-ping.yml": [],
+        "Ansible/playbooks/01-common.yml": [],
+        "Ansible/playbooks/02-k3s-server.yml": [],
+        "Ansible/playbooks/03-k3s-agent.yml": [],
+        "Ansible/playbooks/04-longhorn-prereq.yml": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 12,
+      "files": [
+        {
+          "path": "Ansible/values/values-ai.yaml",
+          "language": "yaml",
+          "sizeLines": 107,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/values/values-argocd.yaml",
+          "language": "yaml",
+          "sizeLines": 38,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/values/values-data.yaml",
+          "language": "yaml",
+          "sizeLines": 104,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/values/values-loki.yaml",
+          "language": "yaml",
+          "sizeLines": 93,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/values/values-prometheus.yaml",
+          "language": "yaml",
+          "sizeLines": 74,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/values/values-promtail.yaml",
+          "language": "yaml",
+          "sizeLines": 16,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/values/values-redis.yaml",
+          "language": "yaml",
+          "sizeLines": 33,
+          "fileCategory": "config"
+        }
+      ],
+      "batchImportData": {
+        "Ansible/values/values-ai.yaml": [],
+        "Ansible/values/values-argocd.yaml": [],
+        "Ansible/values/values-data.yaml": [],
+        "Ansible/values/values-loki.yaml": [],
+        "Ansible/values/values-prometheus.yaml": [],
+        "Ansible/values/values-promtail.yaml": [],
+        "Ansible/values/values-redis.yaml": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 13,
+      "files": [
+        {
+          "path": "Documents/CICD 전략.md",
+          "language": "markdown",
+          "sizeLines": 387,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "Documents/서비스 개요.md",
+          "language": "markdown",
+          "sizeLines": 212,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "Documents/인프라 구축 기록.md",
+          "language": "markdown",
+          "sizeLines": 528,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "Documents/인프라 구축 방법(명령어).md",
+          "language": "markdown",
+          "sizeLines": 507,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "Documents/프로젝트 디렉토리 구조.md",
+          "language": "markdown",
+          "sizeLines": 302,
+          "fileCategory": "docs"
+        }
+      ],
+      "batchImportData": {
+        "Documents/CICD 전략.md": [],
+        "Documents/서비스 개요.md": [],
+        "Documents/인프라 구축 기록.md": [],
+        "Documents/인프라 구축 방법(명령어).md": [],
+        "Documents/프로젝트 디렉토리 구조.md": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 14,
+      "files": [
+        {
+          "path": "aws/.env.example",
+          "language": "config",
+          "sizeLines": 24,
+          "fileCategory": "config"
+        },
+        {
+          "path": "aws/COST-OPTIMIZATION.md",
+          "language": "markdown",
+          "sizeLines": 118,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "aws/DR-DB-RUNBOOK.md",
+          "language": "markdown",
+          "sizeLines": 184,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "aws/docker-compose.yml",
+          "language": "yaml",
+          "sizeLines": 53,
+          "fileCategory": "infra"
+        }
+      ],
+      "batchImportData": {
+        "aws/.env.example": [],
+        "aws/COST-OPTIMIZATION.md": [],
+        "aws/DR-DB-RUNBOOK.md": [],
+        "aws/docker-compose.yml": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 15,
+      "files": [
+        {
+          "path": "aws/terraform/alb.tf",
+          "language": "terraform",
+          "sizeLines": 100,
+          "fileCategory": "infra"
+        },
+        {
+          "path": "aws/terraform/asg.tf",
+          "language": "terraform",
+          "sizeLines": 32,
+          "fileCategory": "infra"
+        },
+        {
+          "path": "aws/terraform/compute.tf",
+          "language": "terraform",
+          "sizeLines": 43,
+          "fileCategory": "infra"
+        },
+        {
+          "path": "aws/terraform/db.tf",
+          "language": "terraform",
+          "sizeLines": 98,
+          "fileCategory": "infra"
+        },
+        {
+          "path": "aws/terraform/dns.tf",
+          "language": "terraform",
+          "sizeLines": 82,
+          "fileCategory": "infra"
+        },
+        {
+          "path": "aws/terraform/dr_trigger.tf",
+          "language": "terraform",
+          "sizeLines": 102,
+          "fileCategory": "infra"
+        },
+        {
+          "path": "aws/terraform/iam.tf",
+          "language": "terraform",
+          "sizeLines": 47,
+          "fileCategory": "infra"
+        },
+        {
+          "path": "aws/terraform/network.tf",
+          "language": "terraform",
+          "sizeLines": 63,
+          "fileCategory": "infra"
+        },
+        {
+          "path": "aws/terraform/outputs.tf",
+          "language": "terraform",
+          "sizeLines": 70,
+          "fileCategory": "infra"
+        },
+        {
+          "path": "aws/terraform/postgrest.tf",
+          "language": "terraform",
+          "sizeLines": 47,
+          "fileCategory": "infra"
+        },
+        {
+          "path": "aws/terraform/providers.tf",
+          "language": "terraform",
+          "sizeLines": 12,
+          "fileCategory": "infra"
+        },
+        {
+          "path": "aws/terraform/security.tf",
+          "language": "terraform",
+          "sizeLines": 86,
+          "fileCategory": "infra"
+        },
+        {
+          "path": "aws/terraform/variables.tf",
+          "language": "terraform",
+          "sizeLines": 122,
+          "fileCategory": "infra"
+        },
+        {
+          "path": "aws/terraform/versions.tf",
+          "language": "terraform",
+          "sizeLines": 24,
+          "fileCategory": "infra"
+        }
+      ],
+      "batchImportData": {
+        "aws/terraform/alb.tf": [],
+        "aws/terraform/asg.tf": [],
+        "aws/terraform/compute.tf": [],
+        "aws/terraform/db.tf": [],
+        "aws/terraform/dns.tf": [],
+        "aws/terraform/dr_trigger.tf": [],
+        "aws/terraform/iam.tf": [],
+        "aws/terraform/network.tf": [],
+        "aws/terraform/outputs.tf": [],
+        "aws/terraform/postgrest.tf": [],
+        "aws/terraform/providers.tf": [],
+        "aws/terraform/security.tf": [],
+        "aws/terraform/variables.tf": [],
+        "aws/terraform/versions.tf": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 16,
+      "files": [
+        {
+          "path": "4K_BE/.python-version",
+          "language": "unknown",
+          "sizeLines": 1,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_BE/app/main.py",
+          "language": "python",
+          "sizeLines": 315,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_BE/DB_SCRIPTS/seed_movies.py",
+          "language": "python",
+          "sizeLines": 279,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_BE/requirements.txt",
+          "language": "txt",
+          "sizeLines": 4,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "4K_FE/app/api/manager/movies/[tmdb_id]/route.ts",
+          "language": "typescript",
+          "sizeLines": 36,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/api/manager/movies/route.ts",
+          "language": "typescript",
+          "sizeLines": 18,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/api/manager/movies/search/route.ts",
+          "language": "typescript",
+          "sizeLines": 15,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/components/BackgroundThread.tsx",
+          "language": "typescript",
+          "sizeLines": 235,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/components/ClimaxGraph.tsx",
+          "language": "typescript",
+          "sizeLines": 81,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/components/DetailOverlay.tsx",
+          "language": "typescript",
+          "sizeLines": 263,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/components/MiniGraph.tsx",
+          "language": "typescript",
+          "sizeLines": 39,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/components/MovieDetailModal.tsx",
+          "language": "typescript",
+          "sizeLines": 476,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/components/Tutorial.tsx",
+          "language": "typescript",
+          "sizeLines": 225,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/globals.css",
+          "language": "css",
+          "sizeLines": 161,
+          "fileCategory": "markup"
+        },
+        {
+          "path": "4K_FE/app/layout.tsx",
+          "language": "typescript",
+          "sizeLines": 42,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/login/page.tsx",
+          "language": "typescript",
+          "sizeLines": 116,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/movie_list/page.tsx",
+          "language": "typescript",
+          "sizeLines": 317,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/page.tsx",
+          "language": "typescript",
+          "sizeLines": 256,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/eslint.config.mjs",
+          "language": "javascript",
+          "sizeLines": 18,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/next.config.ts",
+          "language": "typescript",
+          "sizeLines": 7,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/postcss.config.mjs",
+          "language": "javascript",
+          "sizeLines": 7,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/.python-version",
+          "language": "unknown",
+          "sizeLines": 1,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/generate_vectors/generate_vectors.py",
+          "language": "python",
+          "sizeLines": 205,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/requirements.txt",
+          "language": "txt",
+          "sizeLines": 10,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "Ansible/ansible.cfg",
+          "language": "config",
+          "sizeLines": 10,
+          "fileCategory": "config"
+        }
+      ],
+      "batchImportData": {
+        "4K_BE/.python-version": [],
+        "4K_BE/app/main.py": [],
+        "4K_BE/DB_SCRIPTS/seed_movies.py": [],
+        "4K_BE/requirements.txt": [],
+        "4K_FE/app/api/manager/movies/[tmdb_id]/route.ts": [],
+        "4K_FE/app/api/manager/movies/route.ts": [],
+        "4K_FE/app/api/manager/movies/search/route.ts": [],
+        "4K_FE/app/components/BackgroundThread.tsx": [],
+        "4K_FE/app/components/ClimaxGraph.tsx": [],
+        "4K_FE/app/components/DetailOverlay.tsx": [
+          "4K_FE/app/components/ClimaxGraph.tsx",
+          "4K_FE/app/lib/data.ts"
+        ],
+        "4K_FE/app/components/MiniGraph.tsx": [],
+        "4K_FE/app/components/MovieDetailModal.tsx": [
+          "4K_FE/app/lib/data.ts"
+        ],
+        "4K_FE/app/components/Tutorial.tsx": [
+          "4K_FE/app/components/MiniGraph.tsx"
+        ],
+        "4K_FE/app/globals.css": [],
+        "4K_FE/app/layout.tsx": [
+          "4K_FE/app/globals.css"
+        ],
+        "4K_FE/app/login/page.tsx": [],
+        "4K_FE/app/movie_list/page.tsx": [
+          "4K_FE/app/components/MovieDetailModal.tsx",
+          "4K_FE/app/lib/data.ts"
+        ],
+        "4K_FE/app/page.tsx": [
+          "4K_FE/app/components/BackgroundThread.tsx"
+        ],
+        "4K_FE/eslint.config.mjs": [],
+        "4K_FE/next.config.ts": [],
+        "4K_FE/postcss.config.mjs": [],
+        "4K_ML/.python-version": [],
+        "4K_ML/generate_vectors/generate_vectors.py": [],
+        "4K_ML/requirements.txt": [],
+        "Ansible/ansible.cfg": []
+      },
+      "neighborMap": {
+        "4K_FE/app/components/DetailOverlay.tsx": [
+          {
+            "path": "4K_FE/app/lib/data.ts",
+            "batchIndex": 1,
+            "symbols": [
+              "posterUrl",
+              "genreList",
+              "castList",
+              "SUPABASE_URL",
+              "SUPABASE_ANON_KEY",
+              "GENRES",
+              "INITIAL_FILTERS",
+              "fetchPreferredMovies",
+              "fetchSimilarMovies",
+              "fetchMovieVectors",
+              "fetchVector",
+              "getRecentIds",
+              "addRecentId",
+              "removeRecentId"
+            ]
+          },
+          {
+            "path": "4K_FE/app/dashboard/page.tsx",
+            "batchIndex": 1,
+            "symbols": [
+              "Dashboard"
+            ]
+          }
+        ],
+        "4K_FE/app/components/MovieDetailModal.tsx": [
+          {
+            "path": "4K_FE/app/lib/data.ts",
+            "batchIndex": 1,
+            "symbols": [
+              "posterUrl",
+              "genreList",
+              "castList",
+              "SUPABASE_URL",
+              "SUPABASE_ANON_KEY",
+              "GENRES",
+              "INITIAL_FILTERS",
+              "fetchPreferredMovies",
+              "fetchSimilarMovies",
+              "fetchMovieVectors",
+              "fetchVector",
+              "getRecentIds",
+              "addRecentId",
+              "removeRecentId"
+            ]
+          }
+        ],
+        "4K_FE/app/components/Tutorial.tsx": [
+          {
+            "path": "4K_FE/app/dashboard/page.tsx",
+            "batchIndex": 1,
+            "symbols": [
+              "Dashboard"
+            ]
+          }
+        ],
+        "4K_FE/app/movie_list/page.tsx": [
+          {
+            "path": "4K_FE/app/lib/data.ts",
+            "batchIndex": 1,
+            "symbols": [
+              "posterUrl",
+              "genreList",
+              "castList",
+              "SUPABASE_URL",
+              "SUPABASE_ANON_KEY",
+              "GENRES",
+              "INITIAL_FILTERS",
+              "fetchPreferredMovies",
+              "fetchSimilarMovies",
+              "fetchMovieVectors",
+              "fetchVector",
+              "getRecentIds",
+              "addRecentId",
+              "removeRecentId"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "batchIndex": 17,
+      "files": [
+        {
+          "path": "Ansible/group_vars/all.yaml",
+          "language": "yaml",
+          "sizeLines": 0,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/helm-values/ingress-nginx.yaml",
+          "language": "yaml",
+          "sizeLines": 11,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/helm-values/longhorn.yaml",
+          "language": "yaml",
+          "sizeLines": 21,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/test/gpu-test.yaml",
+          "language": "yaml",
+          "sizeLines": 15,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/test/test-nginx.yaml",
+          "language": "yaml",
+          "sizeLines": 52,
+          "fileCategory": "config"
+        },
+        {
+          "path": "aws/terraform/.terraform.lock.hcl",
+          "language": "hcl",
+          "sizeLines": 46,
+          "fileCategory": "code"
+        },
+        {
+          "path": "aws/terraform/lambda/dr_controller.py",
+          "language": "python",
+          "sizeLines": 56,
+          "fileCategory": "code"
+        },
+        {
+          "path": "aws/terraform/ssm-params.sh.example",
+          "language": "example",
+          "sizeLines": 26,
+          "fileCategory": "code"
+        },
+        {
+          "path": "aws/terraform/terraform.tfvars.example",
+          "language": "example",
+          "sizeLines": 20,
+          "fileCategory": "code"
+        },
+        {
+          "path": "aws/terraform/user_data_db.sh.tftpl",
+          "language": "tftpl",
+          "sizeLines": 38,
+          "fileCategory": "code"
+        },
+        {
+          "path": "aws/terraform/user_data.sh.tftpl",
+          "language": "tftpl",
+          "sizeLines": 48,
+          "fileCategory": "code"
+        },
+        {
+          "path": "readme.md",
+          "language": "markdown",
+          "sizeLines": 107,
+          "fileCategory": "docs"
+        }
+      ],
+      "batchImportData": {
+        "Ansible/group_vars/all.yaml": [],
+        "Ansible/helm-values/ingress-nginx.yaml": [],
+        "Ansible/helm-values/longhorn.yaml": [],
+        "Ansible/manifests/test/gpu-test.yaml": [],
+        "Ansible/manifests/test/test-nginx.yaml": [],
+        "aws/terraform/.terraform.lock.hcl": [],
+        "aws/terraform/lambda/dr_controller.py": [],
+        "aws/terraform/ssm-params.sh.example": [],
+        "aws/terraform/terraform.tfvars.example": [],
+        "aws/terraform/user_data_db.sh.tftpl": [],
+        "aws/terraform/user_data.sh.tftpl": [],
+        "readme.md": []
+      },
+      "neighborMap": {}
+    }
+  ]
+}

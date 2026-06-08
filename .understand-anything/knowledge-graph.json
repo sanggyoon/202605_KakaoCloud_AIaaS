@@ -1,0 +1,4349 @@
+{
+  "version": "1.0.0",
+  "project": {
+    "name": "KakaoCloud_Project",
+    "languages": [
+      "typescript",
+      "python",
+      "yaml",
+      "terraform",
+      "dockerfile",
+      "markdown",
+      "css",
+      "javascript",
+      "json",
+      "hcl"
+    ],
+    "frameworks": [
+      "React",
+      "Next.js",
+      "Tailwind CSS",
+      "FastAPI",
+      "Uvicorn",
+      "Docker",
+      "Docker Compose",
+      "Terraform",
+      "GitHub Actions"
+    ],
+    "description": "KakaoCloud K3s 클러스터 기반 4K Cinema 영화 추천 서비스 모노레포 (FE/BE/ML + 인프라)",
+    "analyzedAt": "2026-06-08T05:24:05.021Z",
+    "gitCommitHash": "e52435473e04f9d75df5586f550960da94c429b1"
+  },
+  "nodes": [
+    {
+      "id": "file:4K_FE/app/components/FilterBar.tsx",
+      "type": "file",
+      "name": "FilterBar.tsx",
+      "filePath": "4K_FE/app/components/FilterBar.tsx",
+      "summary": "영화 추천 대시보드의 필터 패널 컴포넌트로, 장르/연도 범위/선호(좋아요·싫어요) 영화 같은 다양한 필터 UI 행과 검색 입력을 묶어 제공한다. 슬라이더 드래그, 연도 스테퍼 등 인터랙티브한 필터 컨트롤을 포함한다.",
+      "tags": [
+        "component",
+        "filter",
+        "ui",
+        "form",
+        "react"
+      ],
+      "complexity": "complex",
+      "languageNotes": "여러 개의 보조 함수 컴포넌트(FilterRow, MultiFilterRow, YearStepper, YearRangeRow, PrefRow)를 한 파일에 모아 FilterBar를 구성하는 패턴."
+    },
+    {
+      "id": "function:4K_FE/app/components/FilterBar.tsx:FilterBar",
+      "type": "function",
+      "name": "FilterBar",
+      "filePath": "4K_FE/app/components/FilterBar.tsx",
+      "lineRange": [
+        518,
+        683
+      ],
+      "summary": "필터 패널 전체를 렌더링하는 메인 컴포넌트로, 검색어·장르·연도 범위·선호 영화 등의 draft 필터 상태를 받아 변경/검색/초기화 콜백을 통해 상위 대시보드와 연동한다.",
+      "tags": [
+        "component",
+        "filter",
+        "ui",
+        "react"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:4K_FE/app/components/FilterBar.tsx:YearRangeRow",
+      "type": "function",
+      "name": "YearRangeRow",
+      "filePath": "4K_FE/app/components/FilterBar.tsx",
+      "lineRange": [
+        248,
+        415
+      ],
+      "summary": "마우스 드래그로 시작/끝 연도를 조절하는 듀얼 핸들 연도 범위 슬라이더 컴포넌트로, window 이벤트 리스너와 ref를 사용해 드래그 위치를 연도 값으로 변환한다.",
+      "tags": [
+        "component",
+        "slider",
+        "event-handler",
+        "ui"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:4K_FE/app/components/FilterBar.tsx:YearStepper",
+      "type": "function",
+      "name": "YearStepper",
+      "filePath": "4K_FE/app/components/FilterBar.tsx",
+      "lineRange": [
+        135,
+        245
+      ],
+      "summary": "증감 화살표 버튼으로 연도 값을 min/max 범위 내에서 조정하는 스테퍼 컴포넌트.",
+      "tags": [
+        "component",
+        "ui",
+        "input"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/components/FilterBar.tsx:PrefRow",
+      "type": "function",
+      "name": "PrefRow",
+      "filePath": "4K_FE/app/components/FilterBar.tsx",
+      "lineRange": [
+        418,
+        516
+      ],
+      "summary": "선택된 선호(좋아요/싫어요) 영화 ID 목록을 영화 정보와 매칭해 칩 형태로 표시하고 개별 제거를 지원하는 행 컴포넌트.",
+      "tags": [
+        "component",
+        "ui",
+        "preference"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/components/FilterBar.tsx:MultiFilterRow",
+      "type": "function",
+      "name": "MultiFilterRow",
+      "filePath": "4K_FE/app/components/FilterBar.tsx",
+      "lineRange": [
+        75,
+        132
+      ],
+      "summary": "여러 개를 동시에 선택/해제할 수 있는 다중 선택 필터 행 컴포넌트로, 선택 토글 시 값 배열을 갱신한다.",
+      "tags": [
+        "component",
+        "filter",
+        "ui"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/components/FilterBar.tsx:FilterRow",
+      "type": "function",
+      "name": "FilterRow",
+      "filePath": "4K_FE/app/components/FilterBar.tsx",
+      "lineRange": [
+        19,
+        72
+      ],
+      "summary": "단일 선택 옵션 버튼 그룹을 렌더링하는 기본 필터 행 컴포넌트.",
+      "tags": [
+        "component",
+        "filter",
+        "ui"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_FE/app/components/PosterCard.tsx",
+      "type": "file",
+      "name": "PosterCard.tsx",
+      "filePath": "4K_FE/app/components/PosterCard.tsx",
+      "summary": "영화 포스터를 3D 틸트 효과와 글레어 하이라이트로 표시하는 카드 컴포넌트로, 호버 상태·클릭·선호도 토글을 지원하며 그리드에서 개별 영화를 표현한다.",
+      "tags": [
+        "component",
+        "card",
+        "ui",
+        "event-handler",
+        "react"
+      ],
+      "complexity": "complex",
+      "languageNotes": "마우스 위치 기반 transform/glare 계산으로 3D 틸트 인터랙션을 구현."
+    },
+    {
+      "id": "function:4K_FE/app/components/PosterCard.tsx:PosterCard",
+      "type": "function",
+      "name": "PosterCard",
+      "filePath": "4K_FE/app/components/PosterCard.tsx",
+      "lineRange": [
+        19,
+        329
+      ],
+      "summary": "영화 객체를 받아 포스터 이미지, 장르 태그, 선호도 토글 버튼을 렌더링하고 마우스 이동에 따른 3D 회전·글레어 효과를 처리하는 카드 컴포넌트.",
+      "tags": [
+        "component",
+        "card",
+        "ui",
+        "event-handler"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:4K_FE/app/components/RandomModal.tsx",
+      "type": "file",
+      "name": "RandomModal.tsx",
+      "filePath": "4K_FE/app/components/RandomModal.tsx",
+      "summary": "슬롯머신 스타일 셔플 애니메이션과 함께 무작위 영화를 추천하는 모달 컴포넌트로, Supabase 서버에서 랜덤 영화를 페치한 뒤 선택 결과를 상위로 전달한다.",
+      "tags": [
+        "component",
+        "modal",
+        "ui",
+        "service",
+        "react"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/components/RandomModal.tsx:RandomModal",
+      "type": "function",
+      "name": "RandomModal",
+      "filePath": "4K_FE/app/components/RandomModal.tsx",
+      "lineRange": [
+        35,
+        192
+      ],
+      "summary": "랜덤 영화 페치, 셔플 인터벌 애니메이션, 리롤 및 선택 처리를 담당하는 모달 본체 컴포넌트.",
+      "tags": [
+        "component",
+        "modal",
+        "ui",
+        "event-handler"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:4K_FE/app/components/RandomModal.tsx:fetchRandomFromServer",
+      "type": "function",
+      "name": "fetchRandomFromServer",
+      "filePath": "4K_FE/app/components/RandomModal.tsx",
+      "lineRange": [
+        13,
+        33
+      ],
+      "summary": "Supabase REST API에 Content-Range 헤더로 전체 개수를 조회한 뒤 무작위 offset으로 영화 한 건을 가져오는 데이터 페치 함수.",
+      "tags": [
+        "service",
+        "fetch",
+        "data-access"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_FE/app/dashboard/page.tsx",
+      "type": "file",
+      "name": "page.tsx",
+      "filePath": "4K_FE/app/dashboard/page.tsx",
+      "summary": "영화 추천 서비스의 메인 대시보드 페이지로, 영화 목록 무한 스크롤 페치, 필터·검색·선호도 적용, 최근 본 영화, 상세/랜덤/튜토리얼 모달을 통합 관리한다.",
+      "tags": [
+        "entry-point",
+        "page",
+        "component",
+        "data-fetching",
+        "react"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Next.js App Router 클라이언트 페이지로 IntersectionObserver 기반 무한 스크롤과 Supabase REST 페이지네이션을 사용."
+    },
+    {
+      "id": "function:4K_FE/app/dashboard/page.tsx:Dashboard",
+      "type": "function",
+      "name": "Dashboard",
+      "filePath": "4K_FE/app/dashboard/page.tsx",
+      "lineRange": [
+        27,
+        658
+      ],
+      "summary": "대시보드 전체 상태(영화 목록, 필터 draft/applied, 선호도, 모달, 페이지네이션)를 관리하고 FilterBar·PosterCard·RandomModal·DetailOverlay·Tutorial을 조합해 렌더링하는 메인 페이지 컴포넌트.",
+      "tags": [
+        "entry-point",
+        "page",
+        "component",
+        "data-fetching"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:4K_FE/app/lib/data.ts",
+      "type": "file",
+      "name": "data.ts",
+      "filePath": "4K_FE/app/lib/data.ts",
+      "summary": "프론트엔드 전반에서 사용하는 데이터 유틸리티 모듈로, 포스터 URL·장르·배우 파싱 헬퍼, Supabase 상수와 필터 초기값, 추천/유사도/벡터 페치 함수, 최근 본 영화 localStorage 관리 함수를 제공한다.",
+      "tags": [
+        "utility",
+        "service",
+        "data-access",
+        "data-model",
+        "barrel"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Supabase REST 및 RPC 엔드포인트 호출을 캡슐화하고 localStorage 기반 최근 기록을 함께 관리."
+    },
+    {
+      "id": "function:4K_FE/app/lib/data.ts:fetchPreferredMovies",
+      "type": "function",
+      "name": "fetchPreferredMovies",
+      "filePath": "4K_FE/app/lib/data.ts",
+      "lineRange": [
+        71,
+        87
+      ],
+      "summary": "좋아요/싫어요 영화 ID와 매칭 개수를 받아 Supabase RPC를 호출해 선호 기반 추천 영화 목록을 반환하는 함수.",
+      "tags": [
+        "service",
+        "fetch",
+        "recommendation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/lib/data.ts:fetchSimilarMovies",
+      "type": "function",
+      "name": "fetchSimilarMovies",
+      "filePath": "4K_FE/app/lib/data.ts",
+      "lineRange": [
+        91,
+        106
+      ],
+      "summary": "특정 영화 ID에 대해 벡터 유사도 기반 유사 영화 목록을 Supabase RPC로 조회하는 함수.",
+      "tags": [
+        "service",
+        "fetch",
+        "recommendation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/lib/data.ts:fetchMovieVectors",
+      "type": "function",
+      "name": "fetchMovieVectors",
+      "filePath": "4K_FE/app/lib/data.ts",
+      "lineRange": [
+        109,
+        125
+      ],
+      "summary": "여러 TMDB ID에 대한 임베딩 벡터를 일괄 조회해 ID-벡터 Map으로 반환하는 함수.",
+      "tags": [
+        "service",
+        "fetch",
+        "data-access"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/lib/data.ts:fetchVector",
+      "type": "function",
+      "name": "fetchVector",
+      "filePath": "4K_FE/app/lib/data.ts",
+      "lineRange": [
+        129,
+        145
+      ],
+      "summary": "단일 TMDB ID의 임베딩 벡터를 Supabase에서 조회해 파싱된 숫자 배열로 반환하는 함수.",
+      "tags": [
+        "service",
+        "fetch",
+        "data-access"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/lib/data.ts:getRecentIds",
+      "type": "function",
+      "name": "getRecentIds",
+      "filePath": "4K_FE/app/lib/data.ts",
+      "lineRange": [
+        150,
+        156
+      ],
+      "summary": "localStorage에서 최근 본 영화 ID 목록을 안전하게 파싱해 반환하는 헬퍼 함수.",
+      "tags": [
+        "utility",
+        "storage",
+        "data-access"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_FE/app/lib/data.ts:posterUrl",
+      "type": "function",
+      "name": "posterUrl",
+      "filePath": "4K_FE/app/lib/data.ts",
+      "lineRange": [
+        20,
+        23
+      ],
+      "summary": "포스터 경로를 받아 TMDB 이미지(w500) 절대 URL로 변환하며, 경로가 없으면 null을 반환하는 헬퍼 함수.",
+      "tags": [
+        "utility",
+        "data-access"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/api/manager/auth/login/route.ts",
+      "type": "file",
+      "name": "route.ts",
+      "filePath": "4K_FE/app/api/manager/auth/login/route.ts",
+      "summary": "매니저 로그인 API 라우트로, 자격 증명을 검증한 뒤 HMAC 세션 토큰을 HttpOnly 쿠키로 발급한다.",
+      "tags": [
+        "api-handler",
+        "authentication",
+        "entry-point",
+        "validation"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Next.js App Router의 route handler로, POST 함수를 export하고 next/headers의 cookies()로 쿠키를 설정한다."
+    },
+    {
+      "id": "function:4K_FE/app/api/manager/auth/login/route.ts:POST",
+      "type": "function",
+      "name": "POST",
+      "filePath": "4K_FE/app/api/manager/auth/login/route.ts",
+      "lineRange": [
+        4,
+        26
+      ],
+      "summary": "요청 본문의 id/password를 검증하고 성공 시 세션 토큰 쿠키를 설정하며, 실패 시 401 응답을 반환한다.",
+      "tags": [
+        "api-handler",
+        "authentication",
+        "validation",
+        "event-handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/api/manager/auth/logout/route.ts",
+      "type": "file",
+      "name": "route.ts",
+      "filePath": "4K_FE/app/api/manager/auth/logout/route.ts",
+      "summary": "매니저 로그아웃 API 라우트로, 세션 쿠키를 삭제하여 로그인 상태를 해제한다.",
+      "tags": [
+        "api-handler",
+        "authentication",
+        "session-management"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Next.js App Router route handler로, cookies().delete()를 통해 세션 쿠키를 제거한다."
+    },
+    {
+      "id": "function:4K_FE/app/api/manager/auth/logout/route.ts:POST",
+      "type": "function",
+      "name": "POST",
+      "filePath": "4K_FE/app/api/manager/auth/logout/route.ts",
+      "lineRange": [
+        4,
+        8
+      ],
+      "summary": "세션 쿠키를 삭제하고 성공 응답을 반환하는 로그아웃 핸들러이다.",
+      "tags": [
+        "api-handler",
+        "authentication",
+        "event-handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/lib/auth.ts",
+      "type": "file",
+      "name": "auth.ts",
+      "filePath": "4K_FE/app/lib/auth.ts",
+      "summary": "매니저 인증의 핵심 로직 모듈로, 자격 증명 검증, HMAC 기반 세션 토큰 생성, 타이밍 안전 세션 검증 및 쿠키 상수를 제공한다.",
+      "tags": [
+        "authentication",
+        "utility",
+        "security",
+        "service"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Node.js crypto의 createHmac와 timingSafeEqual을 사용해 타이밍 공격에 안전한 세션 토큰 검증을 구현한다."
+    },
+    {
+      "id": "function:4K_FE/app/lib/auth.ts:verifyCredentials",
+      "type": "function",
+      "name": "verifyCredentials",
+      "filePath": "4K_FE/app/lib/auth.ts",
+      "lineRange": [
+        16,
+        18
+      ],
+      "summary": "입력된 id와 password를 설정된 매니저 자격 증명과 비교하여 일치 여부를 반환한다.",
+      "tags": [
+        "authentication",
+        "validation",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_FE/app/lib/auth.ts:sessionToken",
+      "type": "function",
+      "name": "sessionToken",
+      "filePath": "4K_FE/app/lib/auth.ts",
+      "lineRange": [
+        21,
+        23
+      ],
+      "summary": "SESSION_SECRET을 키로 사용해 매니저 식별자에 대한 HMAC-SHA256 세션 토큰을 생성한다.",
+      "tags": [
+        "authentication",
+        "security",
+        "serialization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_FE/app/lib/auth.ts:isValidSession",
+      "type": "function",
+      "name": "isValidSession",
+      "filePath": "4K_FE/app/lib/auth.ts",
+      "lineRange": [
+        26,
+        32
+      ],
+      "summary": "전달된 토큰을 기대 세션 토큰과 timingSafeEqual로 비교하여 세션 유효성을 안전하게 검증한다.",
+      "tags": [
+        "authentication",
+        "validation",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/proxy.ts",
+      "type": "file",
+      "name": "proxy.ts",
+      "filePath": "4K_FE/proxy.ts",
+      "summary": "Next.js 미들웨어 프록시로, 보호된 매니저 경로 접근 시 세션 쿠키를 검증하고 미인증 요청을 차단하거나 로그인 페이지로 리다이렉트한다.",
+      "tags": [
+        "middleware",
+        "authentication",
+        "security",
+        "routing"
+      ],
+      "complexity": "simple",
+      "languageNotes": "NextResponse를 사용한 Next.js 미들웨어로, config의 matcher로 적용 경로를 한정한다."
+    },
+    {
+      "id": "function:4K_FE/proxy.ts:proxy",
+      "type": "function",
+      "name": "proxy",
+      "filePath": "4K_FE/proxy.ts",
+      "lineRange": [
+        7,
+        24
+      ],
+      "summary": "요청 쿠키의 세션 토큰을 검증하여 유효하면 통과시키고, 무효 시 API 경로는 401을, 그 외에는 로그인 페이지로 리다이렉트한다.",
+      "tags": [
+        "middleware",
+        "authentication",
+        "routing",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:4K_BE/Dockerfile",
+      "type": "service",
+      "name": "Dockerfile",
+      "filePath": "4K_BE/Dockerfile",
+      "summary": "4K Cinema 백엔드 FastAPI 애플리케이션을 컨테이너화하는 단일 스테이지 Dockerfile로, python:3.11-slim 기반에서 의존성을 설치하고 uvicorn으로 8000 포트에서 앱을 구동한다.",
+      "tags": [
+        "containerization",
+        "infrastructure",
+        "deployment",
+        "python",
+        "fastapi"
+      ],
+      "complexity": "simple",
+      "languageNotes": "slim 베이스 이미지와 pip --no-cache-dir 옵션으로 이미지 크기를 줄이고, requirements.txt를 앱 코드보다 먼저 COPY해 의존성 레이어 캐싱을 활용한다."
+    },
+    {
+      "id": "service:4K_BE/Dockerfile:python",
+      "type": "service",
+      "name": "python",
+      "filePath": "4K_BE/Dockerfile",
+      "summary": "python:3.11-slim 이미지를 기반으로 /app 작업 디렉터리에서 의존성을 설치하고 앱 코드를 복사한 뒤 8000 포트로 uvicorn 서버를 실행하는 빌드 스테이지.",
+      "tags": [
+        "containerization",
+        "build-stage",
+        "python",
+        "uvicorn"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:4K_FE/Dockerfile",
+      "type": "service",
+      "name": "Dockerfile",
+      "filePath": "4K_FE/Dockerfile",
+      "summary": "4K Cinema 프론트엔드(Next.js)를 위한 멀티 스테이지 Docker 빌드 정의로, deps/builder/runner 3단계를 거쳐 node:22-alpine 기반의 경량 프로덕션 이미지를 생성하고 3000 포트로 standalone 서버를 실행한다.",
+      "tags": [
+        "containerization",
+        "infrastructure",
+        "deployment",
+        "nextjs"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "멀티 스테이지 빌드로 의존성 설치(deps)와 빌드(builder)를 런타임 이미지(runner)와 분리하고, Next.js standalone 출력과 비루트(nextjs) 사용자로 이미지 크기·보안을 최적화한다."
+    },
+    {
+      "id": "service:4K_FE/Dockerfile:deps",
+      "type": "service",
+      "name": "deps",
+      "filePath": "4K_FE/Dockerfile",
+      "summary": "package*.json만 복사해 npm ci로 의존성을 설치하는 빌드 캐시 전용 스테이지로, 소스 변경 시에도 의존성 레이어 재사용을 가능하게 한다.",
+      "tags": [
+        "containerization",
+        "build-stage",
+        "dependencies"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:4K_FE/Dockerfile:builder",
+      "type": "service",
+      "name": "builder",
+      "filePath": "4K_FE/Dockerfile",
+      "summary": "deps 스테이지의 node_modules와 전체 소스를 가져와 Supabase 환경변수(ARG/ENV)를 주입한 뒤 npm run build로 Next.js 애플리케이션을 빌드하는 스테이지.",
+      "tags": [
+        "containerization",
+        "build-stage",
+        "nextjs"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:4K_FE/Dockerfile:runner",
+      "type": "service",
+      "name": "runner",
+      "filePath": "4K_FE/Dockerfile",
+      "summary": "builder의 standalone 빌드 산출물(.next/standalone, static, public)만 복사해 비루트 nextjs 사용자로 3000 포트에서 node server.js를 실행하는 최종 프로덕션 런타임 스테이지.",
+      "tags": [
+        "containerization",
+        "runtime",
+        "deployment",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:4K_FE/.dockerignore",
+      "type": "config",
+      "name": ".dockerignore",
+      "filePath": "4K_FE/.dockerignore",
+      "summary": "Docker 빌드 컨텍스트에서 node_modules, 빌드 산출물 등 불필요한 파일을 제외해 빌드 속도와 이미지 효율을 높이는 무시 규칙 파일.",
+      "tags": [
+        "configuration",
+        "containerization",
+        "infrastructure"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "pipeline:.github/workflows/deploy-4k-be.yml",
+      "type": "pipeline",
+      "name": "deploy-4k-be.yml",
+      "filePath": ".github/workflows/deploy-4k-be.yml",
+      "summary": "4K Cinema 백엔드 배포용 GitHub Actions 워크플로우로, main 브랜치의 4K_BE 변경 시 Docker 이미지를 빌드해 GHCR에 푸시하고 kustomization.yaml의 이미지 태그를 커밋하는 GitOps 파이프라인이다.",
+      "tags": [
+        "ci-cd",
+        "deployment",
+        "containerization",
+        "gitops",
+        "infrastructure"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "GitOps 패턴: 이미지 빌드 후 매니페스트의 newTag를 sed로 치환하고 [skip ci] 커밋으로 푸시해 ArgoCD/Flux 동기화를 유도한다. GHA cache(type=gha)로 빌드 캐시를 활용한다."
+    },
+    {
+      "id": "pipeline:.github/workflows/deploy-4k-fe.yml",
+      "type": "pipeline",
+      "name": "deploy-4k-fe.yml",
+      "filePath": ".github/workflows/deploy-4k-fe.yml",
+      "summary": "4K Cinema 프론트엔드 배포용 GitHub Actions 워크플로우로, main 브랜치의 4K_FE 변경 시 Docker 이미지를 빌드해 GHCR에 푸시하고 kustomization.yaml의 이미지 태그를 커밋하는 GitOps 파이프라인이다.",
+      "tags": [
+        "ci-cd",
+        "deployment",
+        "containerization",
+        "gitops",
+        "infrastructure"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "GitOps 패턴: 이미지 빌드 후 매니페스트의 newTag를 sed로 치환하고 [skip ci] 커밋으로 푸시해 ArgoCD/Flux 동기화를 유도한다. GHA cache(type=gha)로 빌드 캐시를 활용한다."
+    },
+    {
+      "id": "step:.github/workflows/deploy-4k-be.yml:Build and push Docker image",
+      "type": "step",
+      "name": "Build and push Docker image",
+      "filePath": ".github/workflows/deploy-4k-be.yml",
+      "summary": "4K_BE 컨텍스트로 Docker 이미지를 빌드하여 SHA 및 latest 태그로 GHCR(ghcr.io/sanggyoon/4k-be)에 푸시한다.",
+      "tags": [
+        "ci-cd",
+        "containerization",
+        "deployment",
+        "docker-build"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "step:.github/workflows/deploy-4k-be.yml:Update image tag in kustomization.yaml",
+      "type": "step",
+      "name": "Update image tag in kustomization.yaml",
+      "filePath": ".github/workflows/deploy-4k-be.yml",
+      "summary": "sed로 Ansible/manifests/4k-be/kustomization.yaml의 newTag를 새 SHA로 치환해 GitOps 배포 매니페스트를 갱신한다.",
+      "tags": [
+        "ci-cd",
+        "gitops",
+        "deployment",
+        "kustomize"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "step:.github/workflows/deploy-4k-be.yml:Commit and push manifest update",
+      "type": "step",
+      "name": "Commit and push manifest update",
+      "filePath": ".github/workflows/deploy-4k-be.yml",
+      "summary": "갱신된 kustomization.yaml을 github-actions bot 계정으로 커밋하고 rebase 후 push하여 배포를 트리거한다.",
+      "tags": [
+        "ci-cd",
+        "gitops",
+        "deployment",
+        "automation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "step:.github/workflows/deploy-4k-fe.yml:Build and push Docker image",
+      "type": "step",
+      "name": "Build and push Docker image",
+      "filePath": ".github/workflows/deploy-4k-fe.yml",
+      "summary": "4K_FE 컨텍스트로 Docker 이미지를 빌드하여 SHA 및 latest 태그로 GHCR(ghcr.io/sanggyoon/4k-fe)에 푸시한다.",
+      "tags": [
+        "ci-cd",
+        "containerization",
+        "deployment",
+        "docker-build"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "step:.github/workflows/deploy-4k-fe.yml:Update image tag in kustomization.yaml",
+      "type": "step",
+      "name": "Update image tag in kustomization.yaml",
+      "filePath": ".github/workflows/deploy-4k-fe.yml",
+      "summary": "sed로 Ansible/manifests/4k-fe/kustomization.yaml의 newTag를 새 SHA로 치환해 GitOps 배포 매니페스트를 갱신한다.",
+      "tags": [
+        "ci-cd",
+        "gitops",
+        "deployment",
+        "kustomize"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "step:.github/workflows/deploy-4k-fe.yml:Commit and push manifest update",
+      "type": "step",
+      "name": "Commit and push manifest update",
+      "filePath": ".github/workflows/deploy-4k-fe.yml",
+      "summary": "갱신된 kustomization.yaml을 github-actions bot 계정으로 커밋하고 rebase 후 push하여 배포를 트리거한다.",
+      "tags": [
+        "ci-cd",
+        "gitops",
+        "deployment",
+        "automation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:4K_FE/.env.example",
+      "type": "config",
+      "name": ".env.example",
+      "filePath": "4K_FE/.env.example",
+      "summary": "4K Cinema 프론트엔드의 환경 변수 템플릿으로, 관리자 로그인 자격증명(MANAGER_ID, MANAGER_PASSWORD)과 세션 시크릿(MANAGER_SESSION_SECRET)을 정의한다.",
+      "tags": [
+        "configuration",
+        "security",
+        "environment",
+        "frontend"
+      ],
+      "complexity": "simple",
+      "languageNotes": "민감한 자격증명을 담는 .env 템플릿으로, 실제 값은 배포 시 주입된다."
+    },
+    {
+      "id": "document:4K_FE/AGENTS.md",
+      "type": "document",
+      "name": "AGENTS.md",
+      "filePath": "4K_FE/AGENTS.md",
+      "summary": "코드 작성 전 node_modules/next/dist/docs/의 가이드를 참고하라고 안내하는 AI 에이전트용 지침 문서로, 이 프로젝트의 Next.js 버전이 기존 관례와 다름을 경고한다.",
+      "tags": [
+        "documentation",
+        "development",
+        "ai-agent",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:4K_FE/CLAUDE.md",
+      "type": "document",
+      "name": "CLAUDE.md",
+      "filePath": "4K_FE/CLAUDE.md",
+      "summary": "Claude Code용 프로젝트 지침 파일로, AGENTS.md의 내용을 참조(@AGENTS.md)하여 동일한 에이전트 가이드를 적용한다.",
+      "tags": [
+        "documentation",
+        "development",
+        "ai-agent",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:4K_FE/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "4K_FE/README.md",
+      "summary": "create-next-app으로 생성된 프론트엔드 기본 README로, 개발 서버 실행 방법(Getting Started), Next.js 학습 자료, Vercel 배포 안내를 담고 있다.",
+      "tags": [
+        "documentation",
+        "entry-point",
+        "overview",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:4K_FE/package.json",
+      "type": "config",
+      "name": "package.json",
+      "filePath": "4K_FE/package.json",
+      "summary": "4K Cinema 프론트엔드의 패키지 매니페스트로, Next.js 16/React 19 기반 의존성과 dev/build/start/lint 스크립트를 정의한다. ogl(WebGL)과 Tailwind CSS 4를 사용한다.",
+      "tags": [
+        "configuration",
+        "build-system",
+        "frontend",
+        "dependencies"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Next.js 16.2.5 + React 19.2.4 + Tailwind CSS 4 조합으로, ogl 라이브러리로 WebGL 렌더링을 지원한다."
+    },
+    {
+      "id": "config:4K_FE/tsconfig.json",
+      "type": "config",
+      "name": "tsconfig.json",
+      "filePath": "4K_FE/tsconfig.json",
+      "summary": "프론트엔드 TypeScript 컴파일러 설정으로, strict 모드와 Next.js 플러그인, 경로 별칭을 활성화하여 .ts/.tsx 소스의 타입 검사를 구성한다.",
+      "tags": [
+        "configuration",
+        "typescript",
+        "build-system",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:Ansible/manifests/4k-be/deployment.yaml",
+      "type": "service",
+      "name": "deployment.yaml",
+      "filePath": "Ansible/manifests/4k-be/deployment.yaml",
+      "summary": "백엔드(4k-be) 컨테이너를 be 네임스페이스에 배포하는 Kubernetes Deployment 매니페스트. ghcr.io의 4k-be 이미지를 8000 포트로 단일 레플리카로 실행하며, /health 기반 readiness/liveness 프로브와 CPU/메모리 리소스 제한을 정의한다.",
+      "tags": [
+        "orchestration",
+        "infrastructure",
+        "deployment",
+        "kubernetes",
+        "backend"
+      ],
+      "complexity": "simple",
+      "languageNotes": "nodeSelector(workload: app)로 앱 워크로드 노드에 스케줄링하고 envFrom secretRef(4k-be-secrets)로 환경 변수를 시크릿에서 주입한다."
+    },
+    {
+      "id": "service:Ansible/manifests/4k-be/service.yaml",
+      "type": "service",
+      "name": "service.yaml",
+      "filePath": "Ansible/manifests/4k-be/service.yaml",
+      "summary": "백엔드 Pod를 클러스터 내부에 노출하는 Kubernetes Service 매니페스트. app=backend 셀렉터로 Pod를 선택하여 8000 포트를 동일 포트로 전달한다.",
+      "tags": [
+        "orchestration",
+        "infrastructure",
+        "kubernetes",
+        "networking",
+        "backend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/manifests/4k-be/kustomization.yaml",
+      "type": "config",
+      "name": "kustomization.yaml",
+      "filePath": "Ansible/manifests/4k-be/kustomization.yaml",
+      "summary": "백엔드 매니페스트를 묶는 Kustomize 설정. be 네임스페이스에 deployment.yaml과 service.yaml을 배포하고 4k-be 이미지 태그를 특정 커밋 해시(3f64704)로 고정한다.",
+      "tags": [
+        "configuration",
+        "orchestration",
+        "kubernetes",
+        "kustomize",
+        "deployment"
+      ],
+      "complexity": "simple",
+      "languageNotes": "images 오버레이로 이미지 태그를 GitOps 방식으로 고정하여 배포 버전을 관리한다."
+    },
+    {
+      "id": "service:Ansible/manifests/4k-fe/deployment.yaml",
+      "type": "service",
+      "name": "deployment.yaml",
+      "filePath": "Ansible/manifests/4k-fe/deployment.yaml",
+      "summary": "4K Cinema 프론트엔드(Next.js)를 fe 네임스페이스에 replicas 2로 배포하는 K8s Deployment. ghcr.io/sanggyoon/4k-fe 이미지를 3000 포트로 실행하며 백엔드 내부 URL과 매니저 로그인 자격증명을 환경변수로 주입하고 readiness/liveness probe와 리소스 제한을 설정한다.",
+      "tags": [
+        "infrastructure",
+        "deployment",
+        "kubernetes",
+        "frontend",
+        "orchestration"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "환경변수에 MANAGER_PASSWORD, MANAGER_SESSION_SECRET 등 민감 정보가 평문으로 포함되어 있어 운영에서는 K8s Secret으로 분리 권장."
+    },
+    {
+      "id": "service:Ansible/manifests/4k-fe/ingress.yaml",
+      "type": "service",
+      "name": "ingress.yaml",
+      "filePath": "Ansible/manifests/4k-fe/ingress.yaml",
+      "summary": "nginx ingress 컨트롤러를 통해 외부 트래픽을 frontend 서비스(80 포트)로 라우팅하는 K8s Ingress. cert-manager(letsencrypt-prod)로 TLS를 발급하며 신규 도메인(peakly.art, www.peakly.art)과 구 도메인(cinema.4kakao.kro.kr)을 호스트 규칙으로 처리한다.",
+      "tags": [
+        "infrastructure",
+        "kubernetes",
+        "ingress",
+        "tls",
+        "routing"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "도메인 전환 중으로 구/신규 도메인이 별도 TLS secret으로 분리되어 공존한다."
+    },
+    {
+      "id": "config:Ansible/manifests/4k-fe/kustomization.yaml",
+      "type": "config",
+      "name": "kustomization.yaml",
+      "filePath": "Ansible/manifests/4k-fe/kustomization.yaml",
+      "summary": "4k-fe 매니페스트(deployment, service, ingress)를 fe 네임스페이스로 묶는 Kustomize 설정. 프론트엔드 이미지 태그를 특정 커밋 해시(3f64704)로 고정해 배포 버전을 관리한다.",
+      "tags": [
+        "configuration",
+        "kubernetes",
+        "kustomize",
+        "deployment",
+        "orchestration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:Ansible/manifests/4k-fe/service.yaml",
+      "type": "service",
+      "name": "service.yaml",
+      "filePath": "Ansible/manifests/4k-fe/service.yaml",
+      "summary": "frontend Deployment의 Pod(app=frontend)를 클러스터 내부에 노출하는 K8s Service. 80 포트로 들어온 트래픽을 컨테이너의 3000 포트로 전달한다.",
+      "tags": [
+        "infrastructure",
+        "kubernetes",
+        "service",
+        "frontend",
+        "networking"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/manifests/apps/cluster-issuer.yaml",
+      "type": "config",
+      "name": "cluster-issuer.yaml",
+      "filePath": "Ansible/manifests/apps/cluster-issuer.yaml",
+      "summary": "cert-manager ClusterIssuer 매니페스트로, Let's Encrypt staging 및 production ACME 발급자를 정의하여 nginx ingress 기반 HTTP-01 챌린지로 TLS 인증서를 자동 발급한다.",
+      "tags": [
+        "configuration",
+        "kubernetes",
+        "tls",
+        "cert-manager",
+        "security"
+      ],
+      "complexity": "simple",
+      "languageNotes": "단일 파일 내 '---' 구분자로 staging/prod 두 ClusterIssuer를 멀티 도큐먼트로 정의한다."
+    },
+    {
+      "id": "config:Ansible/manifests/apps/ingress-nginx-config.yaml",
+      "type": "config",
+      "name": "ingress-nginx-config.yaml",
+      "filePath": "Ansible/manifests/apps/ingress-nginx-config.yaml",
+      "summary": "ingress-nginx 컨트롤러용 ConfigMap으로, 접근 로그를 JSON 포맷으로 출력하도록 log-format-upstream과 escape 설정을 지정한다.",
+      "tags": [
+        "configuration",
+        "kubernetes",
+        "ingress",
+        "logging",
+        "monitoring"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/manifests/apps/ingress-studio.yaml",
+      "type": "config",
+      "name": "ingress-studio.yaml",
+      "filePath": "Ansible/manifests/apps/ingress-studio.yaml",
+      "summary": "data/ai/monitoring/argocd 네임스페이스의 주요 서비스(Supabase Studio·REST API, Grafana, ArgoCD)를 외부 도메인으로 노출하는 5개의 nginx Ingress 매니페스트로, cert-manager TLS와 Basic Auth를 적용한다.",
+      "tags": [
+        "configuration",
+        "kubernetes",
+        "ingress",
+        "routing",
+        "tls"
+      ],
+      "complexity": "complex",
+      "languageNotes": "각 Ingress가 .4kakao.kro.kr(전환용)과 .peakly.art 두 호스트를 병행 라우팅하며 도메인 전환을 진행 중이다."
+    },
+    {
+      "id": "endpoint:Ansible/manifests/apps/ingress-studio.yaml:supabase-data-studio",
+      "type": "endpoint",
+      "name": "data.peakly.art/ (supabase-data-studio)",
+      "filePath": "Ansible/manifests/apps/ingress-studio.yaml",
+      "summary": "data 네임스페이스의 Supabase Studio 대시보드(포트 3000)를 data.peakly.art 도메인으로 노출하며 Basic Auth로 보호하는 Ingress.",
+      "tags": [
+        "ingress",
+        "endpoint",
+        "supabase",
+        "basic-auth"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "endpoint:Ansible/manifests/apps/ingress-studio.yaml:supabase-data-api",
+      "type": "endpoint",
+      "name": "data.peakly.art/rest,/auth,/storage (supabase-data-api)",
+      "filePath": "Ansible/manifests/apps/ingress-studio.yaml",
+      "summary": "Supabase Kong 게이트웨이(포트 8000)로 /rest/v1·/auth/v1·/storage/v1 경로를 라우팅하는 REST API Ingress로, Basic Auth 없이 Supabase JWT로 인증한다.",
+      "tags": [
+        "ingress",
+        "endpoint",
+        "supabase",
+        "api-schema"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "endpoint:Ansible/manifests/apps/ingress-studio.yaml:supabase-ai-studio",
+      "type": "endpoint",
+      "name": "ai.peakly.art/ (supabase-ai-studio)",
+      "filePath": "Ansible/manifests/apps/ingress-studio.yaml",
+      "summary": "ai 네임스페이스의 Supabase Studio 대시보드(포트 3000)를 ai.peakly.art 도메인으로 노출하며 Basic Auth로 보호하는 Ingress.",
+      "tags": [
+        "ingress",
+        "endpoint",
+        "supabase",
+        "basic-auth"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "endpoint:Ansible/manifests/apps/ingress-studio.yaml:grafana",
+      "type": "endpoint",
+      "name": "grafana.peakly.art/ (grafana)",
+      "filePath": "Ansible/manifests/apps/ingress-studio.yaml",
+      "summary": "monitoring 네임스페이스의 kube-prometheus-stack Grafana(포트 80)를 grafana.peakly.art 도메인으로 노출하는 Ingress.",
+      "tags": [
+        "ingress",
+        "endpoint",
+        "grafana",
+        "monitoring"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "endpoint:Ansible/manifests/apps/ingress-studio.yaml:argocd",
+      "type": "endpoint",
+      "name": "argocd.peakly.art/ (argocd)",
+      "filePath": "Ansible/manifests/apps/ingress-studio.yaml",
+      "summary": "argocd 네임스페이스의 argocd-server(포트 80, HTTP backend-protocol)를 argocd.peakly.art 도메인으로 노출하는 GitOps 대시보드 Ingress.",
+      "tags": [
+        "ingress",
+        "endpoint",
+        "argocd",
+        "ci-cd"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/manifests/argocd/argocd-app-4k-be.yaml",
+      "type": "config",
+      "name": "argocd-app-4k-be.yaml",
+      "filePath": "Ansible/manifests/argocd/argocd-app-4k-be.yaml",
+      "summary": "백엔드(4k-be) 배포를 위한 ArgoCD Application 매니페스트로, Git 저장소의 Ansible/manifests/4k-be 경로를 be 네임스페이스에 GitOps 방식으로 동기화한다. prune와 selfHeal이 활성화된 자동 동기화 정책을 사용한다.",
+      "tags": [
+        "argocd",
+        "gitops",
+        "deployment",
+        "infrastructure",
+        "ci-cd"
+      ],
+      "complexity": "simple",
+      "languageNotes": "ArgoCD Application CRD(argoproj.io/v1alpha1)로, automated syncPolicy를 통해 선언적 GitOps 배포를 구성한다."
+    },
+    {
+      "id": "config:Ansible/manifests/argocd/argocd-app-4k-fe.yaml",
+      "type": "config",
+      "name": "argocd-app-4k-fe.yaml",
+      "filePath": "Ansible/manifests/argocd/argocd-app-4k-fe.yaml",
+      "summary": "프론트엔드(4k-fe) 배포를 위한 ArgoCD Application 매니페스트로, Git 저장소의 Ansible/manifests/4k-fe 경로를 fe 네임스페이스에 자동 동기화한다. prune와 selfHeal이 활성화되어 있다.",
+      "tags": [
+        "argocd",
+        "gitops",
+        "deployment",
+        "infrastructure",
+        "ci-cd"
+      ],
+      "complexity": "simple",
+      "languageNotes": "ArgoCD Application CRD로 단일 source(Git path) 기반 GitOps 배포를 정의한다."
+    },
+    {
+      "id": "config:Ansible/manifests/argocd/argocd-app-infra.yaml",
+      "type": "config",
+      "name": "argocd-app-infra.yaml",
+      "filePath": "Ansible/manifests/argocd/argocd-app-infra.yaml",
+      "summary": "공통 인프라 매니페스트(infra-manifests) 배포를 위한 ArgoCD Application으로, Ansible/manifests/apps 경로를 default 네임스페이스에 동기화한다. prune를 비활성화하고 selfHeal만 활성화한 보수적 동기화 정책을 사용한다.",
+      "tags": [
+        "argocd",
+        "gitops",
+        "infrastructure",
+        "deployment",
+        "ci-cd"
+      ],
+      "complexity": "simple",
+      "languageNotes": "prune:false로 설정하여 자동 리소스 삭제를 막아 공유 인프라 리소스를 보호한다."
+    },
+    {
+      "id": "config:Ansible/manifests/argocd/argocd-app-supabase-ai.yaml",
+      "type": "config",
+      "name": "argocd-app-supabase-ai.yaml",
+      "filePath": "Ansible/manifests/argocd/argocd-app-supabase-ai.yaml",
+      "summary": "AI용 Supabase 인스턴스 배포를 위한 ArgoCD Application으로, supabase-community Helm 차트(0.5.6)와 Ansible/values/values-ai.yaml 값 파일을 결합한 multi-source 구성으로 ai 네임스페이스에 배포한다.",
+      "tags": [
+        "argocd",
+        "gitops",
+        "supabase",
+        "helm",
+        "database"
+      ],
+      "complexity": "simple",
+      "languageNotes": "ArgoCD multi-source 패턴($values 참조)으로 외부 Helm 차트와 Git 저장소의 values 파일을 함께 사용한다."
+    },
+    {
+      "id": "config:Ansible/manifests/argocd/argocd-app-supabase-data.yaml",
+      "type": "config",
+      "name": "argocd-app-supabase-data.yaml",
+      "filePath": "Ansible/manifests/argocd/argocd-app-supabase-data.yaml",
+      "summary": "데이터용 Supabase 인스턴스 배포를 위한 ArgoCD Application으로, supabase Helm 차트(0.5.6)와 Ansible/values/values-data.yaml 값 파일을 결합한 multi-source 구성으로 data 네임스페이스에 배포한다.",
+      "tags": [
+        "argocd",
+        "gitops",
+        "supabase",
+        "helm",
+        "database"
+      ],
+      "complexity": "simple",
+      "languageNotes": "ArgoCD multi-source 패턴으로 supabase-kubernetes Helm 차트와 별도 values 파일($values ref)을 조합한다."
+    },
+    {
+      "id": "config:Ansible/playbooks/00-ping.yml",
+      "type": "config",
+      "name": "00-ping.yml",
+      "filePath": "Ansible/playbooks/00-ping.yml",
+      "summary": "모든 클러스터 노드에 대한 연결성을 확인하는 Ansible ping 플레이북으로, 프로비저닝 전 SSH 도달 가능 여부를 점검한다.",
+      "tags": [
+        "configuration",
+        "infrastructure",
+        "ansible",
+        "connectivity-check"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Ansible 플레이북: 본격적인 프로비저닝 전 인벤토리 노드의 도달성을 검증하는 헬스체크 단계."
+    },
+    {
+      "id": "config:Ansible/playbooks/01-common.yml",
+      "type": "config",
+      "name": "01-common.yml",
+      "filePath": "Ansible/playbooks/01-common.yml",
+      "summary": "k3s_cluster 그룹 전체에 공통 기본 설정을 적용하는 플레이북으로, 타임존 설정, swap 비활성화, 커널 모듈(overlay/br_netfilter) 로드, sysctl 파라미터, 기본 패키지 설치를 수행한다.",
+      "tags": [
+        "configuration",
+        "infrastructure",
+        "ansible",
+        "kubernetes",
+        "base-setup"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "K8s 노드 부트스트랩 표준 절차: swapoff, br_netfilter/overlay modprobe, net.bridge sysctl 활성화를 멱등적으로 구성."
+    },
+    {
+      "id": "config:Ansible/playbooks/02-k3s-server.yml",
+      "type": "config",
+      "name": "02-k3s-server.yml",
+      "filePath": "Ansible/playbooks/02-k3s-server.yml",
+      "summary": "마스터 노드에 K3s 서버를 설치하는 플레이북으로, Traefik 비활성화 및 TLS-SAN 설정으로 K3s를 부트스트랩하고 node-token과 kubeconfig를 로컬로 가져와 서버 주소를 패치한다.",
+      "tags": [
+        "configuration",
+        "infrastructure",
+        "ansible",
+        "kubernetes",
+        "deployment"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "K3s 컨트롤 플레인 설치: node-token을 슬러프하여 로컬에 저장하고 kubeconfig의 127.0.0.1을 퍼블릭 IP로 치환해 외부 접근을 가능하게 한다."
+    },
+    {
+      "id": "config:Ansible/playbooks/03-k3s-agent.yml",
+      "type": "config",
+      "name": "03-k3s-agent.yml",
+      "filePath": "Ansible/playbooks/03-k3s-agent.yml",
+      "summary": "워커 및 GPU 노드에 K3s 에이전트를 설치해 클러스터에 조인시키는 플레이북으로, 서버 플레이북이 저장한 node-token을 읽어 K3S_URL로 서버에 연결한다.",
+      "tags": [
+        "configuration",
+        "infrastructure",
+        "ansible",
+        "kubernetes",
+        "deployment"
+      ],
+      "complexity": "simple",
+      "languageNotes": "에이전트 조인: 로컬에 저장된 node-token 파일을 lookup하여 K3S_TOKEN으로 전달하므로 서버 설치 플레이북에 선행 의존한다."
+    },
+    {
+      "id": "config:Ansible/playbooks/04-longhorn-prereq.yml",
+      "type": "config",
+      "name": "04-longhorn-prereq.yml",
+      "filePath": "Ansible/playbooks/04-longhorn-prereq.yml",
+      "summary": "Longhorn 분산 스토리지를 위한 사전 요건을 vm4 노드에 설치하는 플레이북으로, open-iscsi/nfs-common 패키지 설치, iscsid 서비스 활성화, iscsi_tcp 커널 모듈 로드를 수행한다.",
+      "tags": [
+        "configuration",
+        "infrastructure",
+        "ansible",
+        "storage",
+        "longhorn"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Longhorn 요구사항: iSCSI 데몬과 iscsi_tcp 모듈을 영속화하여 분산 블록 스토리지의 볼륨 마운트를 준비한다."
+    },
+    {
+      "id": "config:Ansible/values/values-ai.yaml",
+      "type": "config",
+      "name": "values-ai.yaml",
+      "filePath": "Ansible/values/values-ai.yaml",
+      "summary": "ML/AI 추천 서비스의 Helm 배포 values 파일로, secret, deployment, environment, persistence, ingress 설정을 정의하여 K3s 클러스터에 AI 워크로드를 배포한다.",
+      "tags": [
+        "configuration",
+        "helm",
+        "kubernetes",
+        "deployment",
+        "infrastructure"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Helm chart values 형식으로 persistence와 ingress를 포함한 풀 애플리케이션 배포 스펙."
+    },
+    {
+      "id": "config:Ansible/values/values-argocd.yaml",
+      "type": "config",
+      "name": "values-argocd.yaml",
+      "filePath": "Ansible/values/values-argocd.yaml",
+      "summary": "ArgoCD GitOps 컨트롤러의 Helm values 파일로, server, repoServer, controller, redis, dex, applicationSet, notifications 등 ArgoCD 컴포넌트별 배포 설정을 정의한다.",
+      "tags": [
+        "configuration",
+        "helm",
+        "gitops",
+        "argocd",
+        "ci-cd"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/values/values-data.yaml",
+      "type": "config",
+      "name": "values-data.yaml",
+      "filePath": "Ansible/values/values-data.yaml",
+      "summary": "데이터 처리 서비스의 Helm 배포 values 파일로, secret, deployment, image, environment, persistence 설정을 정의하여 K3s 클러스터에 데이터 워크로드를 배포한다.",
+      "tags": [
+        "configuration",
+        "helm",
+        "kubernetes",
+        "deployment",
+        "data-pipeline"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:Ansible/values/values-loki.yaml",
+      "type": "config",
+      "name": "values-loki.yaml",
+      "filePath": "Ansible/values/values-loki.yaml",
+      "summary": "Grafana Loki 로그 집계 시스템의 Helm values 파일로, singleBinary 배포 모드와 minio 스토리지, monitoring, cache 등 로그 수집 백엔드 설정을 정의한다.",
+      "tags": [
+        "configuration",
+        "helm",
+        "logging",
+        "monitoring",
+        "observability"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Loki를 singleBinary deploymentMode로 운영하여 다수의 마이크로서비스 컴포넌트를 단일 바이너리로 통합."
+    },
+    {
+      "id": "config:Ansible/values/values-prometheus.yaml",
+      "type": "config",
+      "name": "values-prometheus.yaml",
+      "filePath": "Ansible/values/values-prometheus.yaml",
+      "summary": "kube-prometheus-stack의 Helm values 파일로, prometheus, grafana, alertmanager, nodeExporter, kube-state-metrics, prometheusOperator 등 메트릭 모니터링 스택 전체를 구성한다.",
+      "tags": [
+        "configuration",
+        "helm",
+        "monitoring",
+        "prometheus",
+        "observability"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:Ansible/values/values-promtail.yaml",
+      "type": "config",
+      "name": "values-promtail.yaml",
+      "filePath": "Ansible/values/values-promtail.yaml",
+      "summary": "Promtail 로그 수집 에이전트의 Helm values 파일로, Loki 전송 config, tolerations, resources를 정의하여 노드별 로그를 Loki로 전달한다.",
+      "tags": [
+        "configuration",
+        "helm",
+        "logging",
+        "monitoring",
+        "observability"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/values/values-redis.yaml",
+      "type": "config",
+      "name": "values-redis.yaml",
+      "filePath": "Ansible/values/values-redis.yaml",
+      "summary": "Redis의 Helm values 파일로, architecture, auth, master, replica, metrics 설정을 정의하여 캐시/세션 스토어로 사용할 Redis 인스턴스를 배포한다.",
+      "tags": [
+        "configuration",
+        "helm",
+        "redis",
+        "cache",
+        "infrastructure"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:Documents/CICD 전략.md",
+      "type": "document",
+      "name": "CICD 전략.md",
+      "filePath": "Documents/CICD 전략.md",
+      "summary": "FE/BE의 GitHub Actions(CI)와 ArgoCD(CD) 기반 GitOps 파이프라인 전략을 정리한 문서로, 트리거 조건, 이미지 태그 전략, Kustomize 매니페스트 패치, GHCR 접근 설정, 트러블슈팅을 다룬다.",
+      "tags": [
+        "documentation",
+        "ci-cd",
+        "deployment",
+        "gitops",
+        "argocd"
+      ],
+      "complexity": "complex",
+      "languageNotes": "29개 섹션으로 구성된 운영 문서로, GitHub Actions 트리거와 ArgoCD 자동 동기화의 이미지 태그 전파 경로를 상세히 기술한다."
+    },
+    {
+      "id": "document:Documents/서비스 개요.md",
+      "type": "document",
+      "name": "서비스 개요.md",
+      "filePath": "Documents/서비스 개요.md",
+      "summary": "4K Cinema 영화 추천 서비스의 전반적 소개 문서로, 주요 기능, 화면 구성, FE/BE/ML 기술 스택, DB 스키마, 데이터 흐름, 접근 정보를 설명한다.",
+      "tags": [
+        "documentation",
+        "overview",
+        "architecture",
+        "data-flow"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "클라이맥스 그래프와 유사 영화 추천 등 핵심 도메인 기능과 ML 벡터 생성 배치 흐름을 포함한다."
+    },
+    {
+      "id": "document:Documents/인프라 구축 기록.md",
+      "type": "document",
+      "name": "인프라 구축 기록.md",
+      "filePath": "Documents/인프라 구축 기록.md",
+      "summary": "KakaoCloud 5노드 K3s 클러스터의 인프라 구축 결과를 기록한 문서로, 네트워크/도메인/HTTPS, Ingress-Nginx, GPU Operator, Longhorn, Supabase, 모니터링, cert-manager, ArgoCD 구성과 보안 메모를 망라한다.",
+      "tags": [
+        "documentation",
+        "infrastructure",
+        "kubernetes",
+        "k3s",
+        "deployment"
+      ],
+      "complexity": "complex",
+      "languageNotes": "54개 섹션의 대규모 인프라 구축 기록으로, 각 컴포넌트의 설계 원칙과 트러블슈팅을 함께 정리한다."
+    },
+    {
+      "id": "document:Documents/인프라 구축 방법(명령어).md",
+      "type": "document",
+      "name": "인프라 구축 방법(명령어).md",
+      "filePath": "Documents/인프라 구축 방법(명령어).md",
+      "summary": "K3s 클러스터 프로비저닝부터 Ingress, cert-manager, Longhorn, ArgoCD, 모니터링, GPU Operator, Supabase, Redis, FE/BE 배포까지 실제 실행 명령어를 단계별로 정리한 런북이다.",
+      "tags": [
+        "documentation",
+        "infrastructure",
+        "runbook",
+        "deployment",
+        "ci-cd"
+      ],
+      "complexity": "complex",
+      "languageNotes": "39개 섹션의 명령어 중심 런북으로, Ansible 프로비저닝과 Helm 설치, kubectl secret 생성 등 재현 가능한 절차를 제공한다."
+    },
+    {
+      "id": "document:Documents/프로젝트 디렉토리 구조.md",
+      "type": "document",
+      "name": "프로젝트 디렉토리 구조.md",
+      "filePath": "Documents/프로젝트 디렉토리 구조.md",
+      "summary": "모노레포 전체 디렉토리 트리를 설명하는 문서로, .github(CI), 4K_FE(Next.js), 4K_BE(FastAPI), 4K_ML(배치), Ansible(IaC/매니페스트), Documents 각 영역의 역할을 정리한다.",
+      "tags": [
+        "documentation",
+        "overview",
+        "monorepo",
+        "architecture"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "전체 흐름 요약과 디렉토리 트리를 통해 신규 참여자가 프로젝트 구조를 빠르게 파악하도록 돕는다."
+    },
+    {
+      "id": "config:aws/.env.example",
+      "type": "config",
+      "name": ".env.example",
+      "filePath": "aws/.env.example",
+      "summary": "AWS DR 워밍스탠바이 앱 스택의 런타임 환경 변수 템플릿으로 TMDB API 키, Supabase 접속 정보, 매니저 인증 자격증명과 세션 시크릿을 정의한다.",
+      "tags": [
+        "configuration",
+        "environment",
+        "credentials",
+        "security",
+        "deployment"
+      ],
+      "complexity": "simple",
+      "languageNotes": "docker-compose의 env_file로 주입되는 .env의 예시 템플릿이다."
+    },
+    {
+      "id": "document:aws/COST-OPTIMIZATION.md",
+      "type": "document",
+      "name": "COST-OPTIMIZATION.md",
+      "filePath": "aws/COST-OPTIMIZATION.md",
+      "summary": "AWS DR 환경의 비용 최적화 방안을 정리한 문서로 NAT 게이트웨이 제거와 DB 인스턴스 다운사이징에 따른 비용 비교, 아키텍처 변경, 보안 트레이드오프, 롤백 방법을 8개 섹션으로 설명한다.",
+      "tags": [
+        "documentation",
+        "cost-optimization",
+        "infrastructure",
+        "aws",
+        "architecture"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:aws/DR-DB-RUNBOOK.md",
+      "type": "document",
+      "name": "DR-DB-RUNBOOK.md",
+      "filePath": "aws/DR-DB-RUNBOOK.md",
+      "summary": "WireGuard 터널을 통한 카카오 Postgres → AWS 레플리카 논리 복제 구성, PostgREST failover, 수동 승격 및 역동기화 절차를 단계별로 안내하는 DR DB 운영 런북이다.",
+      "tags": [
+        "documentation",
+        "runbook",
+        "disaster-recovery",
+        "database",
+        "replication"
+      ],
+      "complexity": "complex",
+      "languageNotes": "PostgreSQL 논리 복제(publisher/subscriber)와 WireGuard VPN 터널 설정 절차를 포함한다."
+    },
+    {
+      "id": "service:aws/docker-compose.yml",
+      "type": "service",
+      "name": "docker-compose.yml",
+      "filePath": "aws/docker-compose.yml",
+      "summary": "AWS EC2에서 동작하는 DR 워밍스탠바이 앱 스택의 오케스트레이션 정의로, GHCR의 frontend(Next.js)와 backend(FastAPI) 이미지를 헬스체크와 함께 구동한다.",
+      "tags": [
+        "orchestration",
+        "infrastructure",
+        "containerization",
+        "disaster-recovery",
+        "deployment"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "frontend만 외부 노출(3000), backend는 expose로 컴포즈 내부망에서만 접근되며 service_healthy 조건으로 의존성을 제어한다."
+    },
+    {
+      "id": "service:aws/docker-compose.yml:backend",
+      "type": "service",
+      "name": "backend",
+      "filePath": "aws/docker-compose.yml",
+      "summary": "GHCR의 4k-be FastAPI 이미지를 구동하는 비공개 백엔드 서비스로 8000 포트를 컴포즈 내부망에만 노출하고 urllib 기반 헬스체크를 수행한다.",
+      "tags": [
+        "service",
+        "backend",
+        "containerization",
+        "api"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:aws/docker-compose.yml:frontend",
+      "type": "service",
+      "name": "frontend",
+      "filePath": "aws/docker-compose.yml",
+      "summary": "GHCR의 4k-fe Next.js 이미지를 구동하는 공개 진입점 서비스로 3000 포트를 ALB에 노출하고 backend가 healthy 상태가 된 후 기동된다.",
+      "tags": [
+        "service",
+        "frontend",
+        "containerization",
+        "entry-point"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "resource:aws/terraform/alb.tf",
+      "type": "resource",
+      "name": "alb.tf",
+      "filePath": "aws/terraform/alb.tf",
+      "summary": "ACM 인증서 발급/검증과 Application Load Balancer, HTTPS 리스너 및 HTTP→HTTPS 리다이렉트, 앱 대상 그룹을 프로비저닝하는 Terraform 정의.",
+      "tags": [
+        "infrastructure",
+        "deployment",
+        "load-balancer",
+        "tls",
+        "terraform"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "ACM 인증서 검증을 Route53 DNS 레코드와 aws_acm_certificate_validation으로 자동화하는 표준 패턴 사용."
+    },
+    {
+      "id": "resource:aws/terraform/asg.tf",
+      "type": "resource",
+      "name": "asg.tf",
+      "filePath": "aws/terraform/asg.tf",
+      "summary": "앱 인스턴스용 Auto Scaling Group을 정의하며 ALB 대상 그룹에 연결되어 DR 시 용량을 확장하는 콜드 스탠바이 컴퓨트 계층.",
+      "tags": [
+        "infrastructure",
+        "deployment",
+        "autoscaling",
+        "disaster-recovery",
+        "terraform"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "resource:aws/terraform/compute.tf",
+      "type": "resource",
+      "name": "compute.tf",
+      "filePath": "aws/terraform/compute.tf",
+      "summary": "Amazon Linux 2023 AMI(SSM 파라미터)를 조회하고 앱 인스턴스용 Launch Template을 정의하는 Terraform 컴퓨트 설정.",
+      "tags": [
+        "infrastructure",
+        "deployment",
+        "compute",
+        "launch-template",
+        "terraform"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "resource:aws/terraform/db.tf",
+      "type": "resource",
+      "name": "db.tf",
+      "filePath": "aws/terraform/db.tf",
+      "summary": "EC2 기반 자체 관리 PostgreSQL 데이터베이스 인스턴스와 전용 보안 그룹, IAM 역할, 데이터용 EBS 볼륨 및 볼륨 연결을 프로비저닝.",
+      "tags": [
+        "infrastructure",
+        "database",
+        "compute",
+        "storage",
+        "terraform"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "RDS 대신 EBS 볼륨을 분리 부착한 EC2 인스턴스로 DB를 운영하여 비용을 절감하는 구성."
+    },
+    {
+      "id": "resource:aws/terraform/dns.tf",
+      "type": "resource",
+      "name": "dns.tf",
+      "filePath": "aws/terraform/dns.tf",
+      "summary": "앱과 데이터 엔드포인트에 대한 Route53 primary/secondary failover 레코드를 정의하여 카카오 오리진 장애 시 AWS로 트래픽을 전환하는 DNS failover 계층.",
+      "tags": [
+        "infrastructure",
+        "dns",
+        "disaster-recovery",
+        "failover",
+        "terraform"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "resource:aws/terraform/dr_trigger.tf",
+      "type": "resource",
+      "name": "dr_trigger.tf",
+      "filePath": "aws/terraform/dr_trigger.tf",
+      "summary": "카카오 오리진을 직접 점검하는 Route53 헬스체크와, CloudWatch 이벤트 스케줄로 주기 실행되어 ASG 용량을 조절하는 DR 컨트롤러 Lambda를 패키징/배포.",
+      "tags": [
+        "infrastructure",
+        "disaster-recovery",
+        "lambda",
+        "monitoring",
+        "terraform"
+      ],
+      "complexity": "complex",
+      "languageNotes": "DNS가 아닌 카카오 IP를 직접 점검하여 failover 레코드와의 순환 의존을 회피하는 단일 신호 설계."
+    },
+    {
+      "id": "resource:aws/terraform/iam.tf",
+      "type": "resource",
+      "name": "iam.tf",
+      "filePath": "aws/terraform/iam.tf",
+      "summary": "앱 EC2 인스턴스용 IAM 역할, SSM Core 정책 연결, SSM 파라미터 읽기 정책 및 인스턴스 프로파일을 정의하는 권한 설정.",
+      "tags": [
+        "infrastructure",
+        "security",
+        "iam",
+        "permissions",
+        "terraform"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "resource:aws/terraform/network.tf",
+      "type": "resource",
+      "name": "network.tf",
+      "filePath": "aws/terraform/network.tf",
+      "summary": "VPC, 인터넷 게이트웨이, 퍼블릭/프라이빗 서브넷, 라우트 테이블 및 연결을 프로비저닝하는 핵심 네트워킹 토폴로지.",
+      "tags": [
+        "infrastructure",
+        "networking",
+        "vpc",
+        "deployment",
+        "terraform"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "비용 절감을 위해 NAT 게이트웨이 없이 퍼블릭 서브넷 중심으로 구성."
+    },
+    {
+      "id": "resource:aws/terraform/outputs.tf",
+      "type": "resource",
+      "name": "outputs.tf",
+      "filePath": "aws/terraform/outputs.tf",
+      "summary": "VPC ID, 서브넷, ALB DNS/Zone, 대상 그룹 ARN, DB IP, DR 헬스체크 및 Lambda 등 14개의 Terraform 출력값을 노출.",
+      "tags": [
+        "infrastructure",
+        "outputs",
+        "terraform",
+        "configuration"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "resource:aws/terraform/postgrest.tf",
+      "type": "resource",
+      "name": "postgrest.tf",
+      "filePath": "aws/terraform/postgrest.tf",
+      "summary": "PostgREST 데이터 API용 ALB 대상 그룹, 대상 연결 및 경로 기반 리스너 규칙을 정의하여 데이터 엔드포인트로 라우팅.",
+      "tags": [
+        "infrastructure",
+        "load-balancer",
+        "api-schema",
+        "routing",
+        "terraform"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "resource:aws/terraform/providers.tf",
+      "type": "resource",
+      "name": "providers.tf",
+      "filePath": "aws/terraform/providers.tf",
+      "summary": "AWS provider 리전 등 Terraform provider 설정을 정의하는 구성 파일.",
+      "tags": [
+        "infrastructure",
+        "configuration",
+        "provider",
+        "terraform"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "resource:aws/terraform/security.tf",
+      "type": "resource",
+      "name": "security.tf",
+      "filePath": "aws/terraform/security.tf",
+      "summary": "ALB, 앱, bastion에 대한 보안 그룹과 인바운드/아웃바운드 규칙을 정의하는 네트워크 보안 경계 설정.",
+      "tags": [
+        "infrastructure",
+        "security",
+        "networking",
+        "firewall",
+        "terraform"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "resource:aws/terraform/variables.tf",
+      "type": "resource",
+      "name": "variables.tf",
+      "filePath": "aws/terraform/variables.tf",
+      "summary": "리전, 프로젝트명, CIDR, 인스턴스 타입, ASG 용량, 카카오 IP, DB 설정 등 19개의 입력 변수를 정의하는 Terraform 변수 선언 파일.",
+      "tags": [
+        "infrastructure",
+        "configuration",
+        "variables",
+        "terraform"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "resource:aws/terraform/versions.tf",
+      "type": "resource",
+      "name": "versions.tf",
+      "filePath": "aws/terraform/versions.tf",
+      "summary": "Terraform 코어 및 required provider 버전 제약을 명시하는 버전 고정 설정 파일.",
+      "tags": [
+        "infrastructure",
+        "configuration",
+        "versioning",
+        "terraform"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_BE/.python-version",
+      "type": "file",
+      "name": ".python-version",
+      "filePath": "4K_BE/.python-version",
+      "summary": "백엔드(FastAPI) 서비스의 pyenv용 Python 버전 고정 파일.",
+      "tags": [
+        "configuration",
+        "python",
+        "version-pin"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_BE/app/main.py",
+      "type": "file",
+      "name": "main.py",
+      "filePath": "4K_BE/app/main.py",
+      "summary": "FastAPI 백엔드의 메인 애플리케이션으로, TMDB API와 Supabase REST를 연동해 영화 목록/검색/상세 조회 및 매니저용 추가/수정/삭제 엔드포인트를 제공한다.",
+      "tags": [
+        "entry-point",
+        "api-handler",
+        "service",
+        "fastapi",
+        "tmdb"
+      ],
+      "complexity": "complex",
+      "languageNotes": "httpx.AsyncClient 기반 비동기 라우트와 Supabase REST 헤더 헬퍼를 사용하는 FastAPI 패턴."
+    },
+    {
+      "id": "function:4K_BE/app/main.py:list_movies",
+      "type": "function",
+      "name": "list_movies",
+      "filePath": "4K_BE/app/main.py",
+      "lineRange": [
+        62,
+        115
+      ],
+      "summary": "TMDB 인기 영화 목록을 페이지 단위로 가져오고 Supabase에 이미 등록된 영화 여부를 병합해 반환한다.",
+      "tags": [
+        "api-handler",
+        "tmdb",
+        "pagination"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_BE/app/main.py:search_movies",
+      "type": "function",
+      "name": "search_movies",
+      "filePath": "4K_BE/app/main.py",
+      "lineRange": [
+        119,
+        171
+      ],
+      "summary": "쿼리 문자열로 TMDB 영화를 검색하고 Supabase 등록 상태를 함께 표시한다.",
+      "tags": [
+        "api-handler",
+        "search",
+        "tmdb"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_BE/app/main.py:movie_detail",
+      "type": "function",
+      "name": "movie_detail",
+      "filePath": "4K_BE/app/main.py",
+      "lineRange": [
+        175,
+        196
+      ],
+      "summary": "Supabase에서 단일 영화 메타데이터와 벡터 정보를 조회해 상세 정보를 반환한다.",
+      "tags": [
+        "api-handler",
+        "supabase",
+        "detail"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_BE/app/main.py:update_movie",
+      "type": "function",
+      "name": "update_movie",
+      "filePath": "4K_BE/app/main.py",
+      "lineRange": [
+        207,
+        241
+      ],
+      "summary": "매니저 권한으로 영화 메타데이터와 벡터 필드를 Supabase PATCH로 수정한다.",
+      "tags": [
+        "api-handler",
+        "supabase",
+        "mutation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_BE/app/main.py:add_movie",
+      "type": "function",
+      "name": "add_movie",
+      "filePath": "4K_BE/app/main.py",
+      "lineRange": [
+        245,
+        300
+      ],
+      "summary": "TMDB에서 영화 상세를 가져와 가공한 뒤 Supabase에 새 영화 레코드를 삽입한다.",
+      "tags": [
+        "api-handler",
+        "tmdb",
+        "mutation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_BE/app/main.py:delete_movie",
+      "type": "function",
+      "name": "delete_movie",
+      "filePath": "4K_BE/app/main.py",
+      "lineRange": [
+        304,
+        315
+      ],
+      "summary": "Supabase에서 지정한 tmdb_id 영화 레코드를 삭제한다.",
+      "tags": [
+        "api-handler",
+        "supabase",
+        "mutation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_BE/DB_SCRIPTS/seed_movies.py",
+      "type": "file",
+      "name": "seed_movies.py",
+      "filePath": "4K_BE/DB_SCRIPTS/seed_movies.py",
+      "summary": "TMDB에서 영화 데이터를 수집·가공해 Supabase movies 테이블에 배치 업서트하는 DB 시드 스크립트.",
+      "tags": [
+        "script",
+        "data-pipeline",
+        "seed",
+        "tmdb",
+        "supabase"
+      ],
+      "complexity": "complex",
+      "languageNotes": "httpx 동기 호출로 TMDB 조회 후 중복 제거·배치 업서트하는 ETL 스크립트."
+    },
+    {
+      "id": "function:4K_BE/DB_SCRIPTS/seed_movies.py:fetch_movie",
+      "type": "function",
+      "name": "fetch_movie",
+      "filePath": "4K_BE/DB_SCRIPTS/seed_movies.py",
+      "lineRange": [
+        104,
+        147
+      ],
+      "summary": "TMDB 단일 영화 상세를 조회해 감독·출연진·예고편 등 필드를 추출하고 DB 레코드 형태로 정규화한다.",
+      "tags": [
+        "data-transformation",
+        "tmdb",
+        "serialization"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_BE/DB_SCRIPTS/seed_movies.py:get_existing_tmdb_ids",
+      "type": "function",
+      "name": "get_existing_tmdb_ids",
+      "filePath": "4K_BE/DB_SCRIPTS/seed_movies.py",
+      "lineRange": [
+        150,
+        168
+      ],
+      "summary": "Supabase에서 이미 적재된 tmdb_id 집합을 조회해 중복 시드를 방지한다.",
+      "tags": [
+        "data-access",
+        "supabase",
+        "deduplication"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_BE/DB_SCRIPTS/seed_movies.py:upsert_batch",
+      "type": "function",
+      "name": "upsert_batch",
+      "filePath": "4K_BE/DB_SCRIPTS/seed_movies.py",
+      "lineRange": [
+        185,
+        211
+      ],
+      "summary": "가공된 영화 리스트를 Supabase에 배치 단위로 업서트한다.",
+      "tags": [
+        "data-access",
+        "supabase",
+        "batch"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_BE/DB_SCRIPTS/seed_movies.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "4K_BE/DB_SCRIPTS/seed_movies.py",
+      "lineRange": [
+        214,
+        275
+      ],
+      "summary": "시드 스크립트의 진입점으로, 기존 ID 제외 후 TMDB에서 수집·배치 업서트하고 결과를 검증한다.",
+      "tags": [
+        "entry-point",
+        "orchestration",
+        "data-pipeline"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:4K_BE/requirements.txt",
+      "type": "document",
+      "name": "requirements.txt",
+      "filePath": "4K_BE/requirements.txt",
+      "summary": "백엔드 FastAPI 서비스의 Python 의존성 목록.",
+      "tags": [
+        "documentation",
+        "dependencies",
+        "python"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/api/manager/movies/[tmdb_id]/route.ts",
+      "type": "file",
+      "name": "route.ts",
+      "filePath": "4K_FE/app/api/manager/movies/[tmdb_id]/route.ts",
+      "summary": "매니저 단일 영화 라우트로, GET/PATCH/DELETE 요청을 백엔드 영화 API로 프록시한다.",
+      "tags": [
+        "api-handler",
+        "route",
+        "proxy",
+        "nextjs"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_FE/app/api/manager/movies/[tmdb_id]/route.ts:PATCH",
+      "type": "function",
+      "name": "PATCH",
+      "filePath": "4K_FE/app/api/manager/movies/[tmdb_id]/route.ts",
+      "lineRange": [
+        13,
+        26
+      ],
+      "summary": "요청 본문을 백엔드 영화 수정 API로 전달하고 결과를 반환하는 PATCH 핸들러.",
+      "tags": [
+        "api-handler",
+        "proxy",
+        "mutation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/api/manager/movies/route.ts",
+      "type": "file",
+      "name": "route.ts",
+      "filePath": "4K_FE/app/api/manager/movies/route.ts",
+      "summary": "매니저 영화 목록 라우트로, GET(목록)과 POST(추가) 요청을 백엔드로 프록시한다.",
+      "tags": [
+        "api-handler",
+        "route",
+        "proxy",
+        "nextjs"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/api/manager/movies/search/route.ts",
+      "type": "file",
+      "name": "route.ts",
+      "filePath": "4K_FE/app/api/manager/movies/search/route.ts",
+      "summary": "매니저 영화 검색 라우트로, 쿼리 파라미터를 백엔드 검색 API로 프록시한다.",
+      "tags": [
+        "api-handler",
+        "route",
+        "proxy",
+        "search"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/components/BackgroundThread.tsx",
+      "type": "file",
+      "name": "BackgroundThread.tsx",
+      "filePath": "4K_FE/app/components/BackgroundThread.tsx",
+      "summary": "OGL/WebGL 셰이더로 움직이는 라인 배경 효과를 렌더링하는 Threads 컴포넌트.",
+      "tags": [
+        "component",
+        "webgl",
+        "animation",
+        "background"
+      ],
+      "complexity": "complex",
+      "languageNotes": "WebGL 컨텍스트, requestAnimationFrame 루프, 마우스 인터랙션과 cleanup을 useEffect로 관리."
+    },
+    {
+      "id": "function:4K_FE/app/components/BackgroundThread.tsx:Threads",
+      "type": "function",
+      "name": "Threads",
+      "filePath": "4K_FE/app/components/BackgroundThread.tsx",
+      "lineRange": [
+        128,
+        233
+      ],
+      "summary": "WebGL 셰이더 기반 애니메이션 배경을 초기화·렌더링하고 리사이즈/마우스 이벤트와 정리를 처리하는 React 컴포넌트.",
+      "tags": [
+        "component",
+        "webgl",
+        "animation"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:4K_FE/app/components/ClimaxGraph.tsx",
+      "type": "file",
+      "name": "ClimaxGraph.tsx",
+      "filePath": "4K_FE/app/components/ClimaxGraph.tsx",
+      "summary": "영화 클라이맥스 곡선 데이터를 SVG 라인 그래프로 시각화하는 컴포넌트.",
+      "tags": [
+        "component",
+        "visualization",
+        "svg",
+        "chart"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/components/ClimaxGraph.tsx:ClimaxGraph",
+      "type": "function",
+      "name": "ClimaxGraph",
+      "filePath": "4K_FE/app/components/ClimaxGraph.tsx",
+      "lineRange": [
+        9,
+        81
+      ],
+      "summary": "데이터 포인트를 정규화해 SVG path로 클라이맥스 곡선을 그리는 React 컴포넌트.",
+      "tags": [
+        "component",
+        "visualization",
+        "svg"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_FE/app/components/DetailOverlay.tsx",
+      "type": "file",
+      "name": "DetailOverlay.tsx",
+      "filePath": "4K_FE/app/components/DetailOverlay.tsx",
+      "summary": "선택한 영화의 상세 오버레이로, 벡터·유사 영화를 DTW 거리 기반으로 계산해 클라이맥스 그래프와 함께 보여준다.",
+      "tags": [
+        "component",
+        "overlay",
+        "recommendation",
+        "visualization"
+      ],
+      "complexity": "complex",
+      "languageNotes": "DTW(동적 시간 워핑) 거리 알고리즘을 Float64Array로 구현해 유사 영화를 정렬."
+    },
+    {
+      "id": "function:4K_FE/app/components/DetailOverlay.tsx:dtwDistance",
+      "type": "function",
+      "name": "dtwDistance",
+      "filePath": "4K_FE/app/components/DetailOverlay.tsx",
+      "lineRange": [
+        8,
+        24
+      ],
+      "summary": "두 시계열 벡터 간 동적 시간 워핑(DTW) 거리를 계산한다.",
+      "tags": [
+        "utility",
+        "algorithm",
+        "dtw"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/components/DetailOverlay.tsx:DetailOverlay",
+      "type": "function",
+      "name": "DetailOverlay",
+      "filePath": "4K_FE/app/components/DetailOverlay.tsx",
+      "lineRange": [
+        37,
+        263
+      ],
+      "summary": "영화 상세 정보와 벡터를 로드하고 DTW 기반 유사 영화 추천을 표시하는 오버레이 컴포넌트.",
+      "tags": [
+        "component",
+        "overlay",
+        "recommendation"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:4K_FE/app/components/MiniGraph.tsx",
+      "type": "file",
+      "name": "MiniGraph.tsx",
+      "filePath": "4K_FE/app/components/MiniGraph.tsx",
+      "summary": "작은 SVG 스파크라인 형태로 클라이맥스 데이터를 표시하는 경량 그래프 컴포넌트.",
+      "tags": [
+        "component",
+        "visualization",
+        "svg",
+        "sparkline"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/components/MovieDetailModal.tsx",
+      "type": "file",
+      "name": "MovieDetailModal.tsx",
+      "filePath": "4K_FE/app/components/MovieDetailModal.tsx",
+      "summary": "매니저용 영화 상세 편집 모달로, 메타데이터·벡터를 로드해 폼으로 편집·저장하고 TMDB 새로고침을 지원한다.",
+      "tags": [
+        "component",
+        "modal",
+        "form",
+        "admin"
+      ],
+      "complexity": "complex",
+      "languageNotes": "useCallback으로 로드 로직을 메모이즈하고 다수의 useState로 폼·저장 상태를 관리하는 대형 편집 모달."
+    },
+    {
+      "id": "function:4K_FE/app/components/MovieDetailModal.tsx:MovieDetailModal",
+      "type": "function",
+      "name": "MovieDetailModal",
+      "filePath": "4K_FE/app/components/MovieDetailModal.tsx",
+      "lineRange": [
+        67,
+        420
+      ],
+      "summary": "영화 메타데이터와 벡터를 로드·편집·저장하고 TMDB 새로고침을 처리하는 매니저 모달 컴포넌트.",
+      "tags": [
+        "component",
+        "modal",
+        "form",
+        "admin"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:4K_FE/app/components/MovieDetailModal.tsx:parseVector",
+      "type": "function",
+      "name": "parseVector",
+      "filePath": "4K_FE/app/components/MovieDetailModal.tsx",
+      "lineRange": [
+        39,
+        47
+      ],
+      "summary": "원시 벡터 값을 배열 또는 JSON 문자열에서 안전하게 파싱한다.",
+      "tags": [
+        "utility",
+        "serialization",
+        "parsing"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/components/Tutorial.tsx",
+      "type": "file",
+      "name": "Tutorial.tsx",
+      "filePath": "4K_FE/app/components/Tutorial.tsx",
+      "summary": "온보딩 튜토리얼 오버레이로, 단계별 안내와 MiniGraph 미리보기를 제공한다.",
+      "tags": [
+        "component",
+        "onboarding",
+        "tutorial",
+        "overlay"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:4K_FE/app/components/Tutorial.tsx:Tutorial",
+      "type": "function",
+      "name": "Tutorial",
+      "filePath": "4K_FE/app/components/Tutorial.tsx",
+      "lineRange": [
+        68,
+        225
+      ],
+      "summary": "단계 기반 온보딩 안내와 인터랙티브 카드를 렌더링하는 튜토리얼 컴포넌트.",
+      "tags": [
+        "component",
+        "onboarding",
+        "tutorial"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:4K_FE/app/globals.css",
+      "type": "file",
+      "name": "globals.css",
+      "filePath": "4K_FE/app/globals.css",
+      "summary": "다크 시네마 테마의 전역 스타일과 CSS 변수, 애니메이션을 정의하는 글로벌 스타일시트.",
+      "tags": [
+        "styles",
+        "css",
+        "theme",
+        "global"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_FE/app/layout.tsx",
+      "type": "file",
+      "name": "layout.tsx",
+      "filePath": "4K_FE/app/layout.tsx",
+      "summary": "Next.js 루트 레이아웃으로, 전역 폰트·메타데이터·글로벌 CSS를 적용해 모든 페이지를 감싼다.",
+      "tags": [
+        "entry-point",
+        "layout",
+        "nextjs"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/login/page.tsx",
+      "type": "file",
+      "name": "page.tsx",
+      "filePath": "4K_FE/app/login/page.tsx",
+      "summary": "매니저 로그인 페이지로, 자격 증명을 인증 API에 제출하고 성공 시 리다이렉트한다.",
+      "tags": [
+        "component",
+        "page",
+        "auth",
+        "form"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/login/page.tsx:LoginPage",
+      "type": "function",
+      "name": "LoginPage",
+      "filePath": "4K_FE/app/login/page.tsx",
+      "lineRange": [
+        7,
+        107
+      ],
+      "summary": "ID/비밀번호 폼을 처리하고 로그인 API 호출 후 라우터로 리다이렉트하는 페이지 컴포넌트.",
+      "tags": [
+        "component",
+        "page",
+        "auth"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_FE/app/movie_list/page.tsx",
+      "type": "file",
+      "name": "page.tsx",
+      "filePath": "4K_FE/app/movie_list/page.tsx",
+      "summary": "매니저 영화 관리 페이지로, 목록/검색/페이지네이션과 영화 추가·삭제·상세 편집(모달)을 제공한다.",
+      "tags": [
+        "component",
+        "page",
+        "admin",
+        "crud"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:4K_FE/app/movie_list/page.tsx:MovieListPage",
+      "type": "function",
+      "name": "MovieListPage",
+      "filePath": "4K_FE/app/movie_list/page.tsx",
+      "lineRange": [
+        19,
+        299
+      ],
+      "summary": "영화 목록 조회·검색·추가·삭제·로그아웃을 관리하고 상세 모달을 띄우는 매니저 페이지 컴포넌트.",
+      "tags": [
+        "component",
+        "page",
+        "admin",
+        "crud"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:4K_FE/app/page.tsx",
+      "type": "file",
+      "name": "page.tsx",
+      "filePath": "4K_FE/app/page.tsx",
+      "summary": "서비스 첫 진입 온보딩 페이지로, 배경 효과와 기능 소개를 보여주고 대시보드로 이동한다.",
+      "tags": [
+        "entry-point",
+        "page",
+        "onboarding",
+        "landing"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:4K_FE/app/page.tsx:OnboardingPage",
+      "type": "function",
+      "name": "OnboardingPage",
+      "filePath": "4K_FE/app/page.tsx",
+      "lineRange": [
+        71,
+        256
+      ],
+      "summary": "기능 소개와 배경 애니메이션을 렌더링하고 시작 시 대시보드로 라우팅하는 랜딩 페이지 컴포넌트.",
+      "tags": [
+        "component",
+        "page",
+        "onboarding"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:4K_FE/eslint.config.mjs",
+      "type": "file",
+      "name": "eslint.config.mjs",
+      "filePath": "4K_FE/eslint.config.mjs",
+      "summary": "Next.js 프런트엔드의 ESLint flat config 설정 파일.",
+      "tags": [
+        "configuration",
+        "eslint",
+        "linting",
+        "build-system"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/next.config.ts",
+      "type": "file",
+      "name": "next.config.ts",
+      "filePath": "4K_FE/next.config.ts",
+      "summary": "Next.js 애플리케이션 빌드/런타임 설정 파일.",
+      "tags": [
+        "configuration",
+        "nextjs",
+        "build-system"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/postcss.config.mjs",
+      "type": "file",
+      "name": "postcss.config.mjs",
+      "filePath": "4K_FE/postcss.config.mjs",
+      "summary": "Tailwind/PostCSS 처리를 위한 PostCSS 설정 파일.",
+      "tags": [
+        "configuration",
+        "postcss",
+        "tailwind",
+        "build-system"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/.python-version",
+      "type": "file",
+      "name": ".python-version",
+      "filePath": "4K_ML/.python-version",
+      "summary": "ML 벡터 생성 모듈의 pyenv용 Python 버전 고정 파일.",
+      "tags": [
+        "configuration",
+        "python",
+        "version-pin"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/generate_vectors/generate_vectors.py",
+      "type": "file",
+      "name": "generate_vectors.py",
+      "filePath": "4K_ML/generate_vectors/generate_vectors.py",
+      "summary": "영화 장면 데이터에서 클라이맥스 벡터를 보간·평활화로 생성하고 Supabase에 업서트하는 ML 파이프라인 스크립트.",
+      "tags": [
+        "script",
+        "data-pipeline",
+        "ml",
+        "vector",
+        "supabase"
+      ],
+      "complexity": "complex",
+      "languageNotes": "numpy 보간(np.interp)과 savgol_filter 평활화로 시계열 클라이맥스 곡선을 정규화."
+    },
+    {
+      "id": "function:4K_ML/generate_vectors/generate_vectors.py:ext_fetch",
+      "type": "function",
+      "name": "ext_fetch",
+      "filePath": "4K_ML/generate_vectors/generate_vectors.py",
+      "lineRange": [
+        47,
+        71
+      ],
+      "summary": "외부 Supabase 테이블을 페이지 단위로 조회해 전체 행을 수집한다.",
+      "tags": [
+        "data-access",
+        "supabase",
+        "pagination"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_ML/generate_vectors/generate_vectors.py:vm4_upsert",
+      "type": "function",
+      "name": "vm4_upsert",
+      "filePath": "4K_ML/generate_vectors/generate_vectors.py",
+      "lineRange": [
+        74,
+        95
+      ],
+      "summary": "생성된 벡터 행을 배치 단위로 대상 테이블에 업서트한다.",
+      "tags": [
+        "data-access",
+        "supabase",
+        "batch"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_ML/generate_vectors/generate_vectors.py:process",
+      "type": "function",
+      "name": "process",
+      "filePath": "4K_ML/generate_vectors/generate_vectors.py",
+      "lineRange": [
+        100,
+        126
+      ],
+      "summary": "장면 포인트를 정렬·보간하고 savgol 평활화로 정규화된 클라이맥스 벡터를 산출한다.",
+      "tags": [
+        "algorithm",
+        "ml",
+        "signal-processing"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_ML/generate_vectors/generate_vectors.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "4K_ML/generate_vectors/generate_vectors.py",
+      "lineRange": [
+        131,
+        201
+      ],
+      "summary": "장면·자막 데이터를 수집해 영화별 클라이맥스 벡터를 생성하고 결과를 업서트하는 진입점.",
+      "tags": [
+        "entry-point",
+        "orchestration",
+        "data-pipeline"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:4K_ML/requirements.txt",
+      "type": "document",
+      "name": "requirements.txt",
+      "filePath": "4K_ML/requirements.txt",
+      "summary": "ML 벡터 생성 모듈의 Python 의존성 목록(numpy, scipy 등).",
+      "tags": [
+        "documentation",
+        "dependencies",
+        "python",
+        "ml"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/ansible.cfg",
+      "type": "config",
+      "name": "ansible.cfg",
+      "filePath": "Ansible/ansible.cfg",
+      "summary": "인프라 프로비저닝을 위한 Ansible 동작 설정(인벤토리, SSH 옵션 등).",
+      "tags": [
+        "configuration",
+        "ansible",
+        "infrastructure",
+        "automation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/group_vars/all.yaml",
+      "type": "config",
+      "name": "all.yaml",
+      "filePath": "Ansible/group_vars/all.yaml",
+      "summary": "Ansible의 모든 호스트 그룹에 공통 적용되는 변수 정의 파일이나, 현재 내용이 비어 있어 기본값에만 의존한다.",
+      "tags": [
+        "configuration",
+        "ansible",
+        "infrastructure"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/helm-values/ingress-nginx.yaml",
+      "type": "config",
+      "name": "ingress-nginx.yaml",
+      "filePath": "Ansible/helm-values/ingress-nginx.yaml",
+      "summary": "K3s 클러스터에 ingress-nginx 컨트롤러를 Helm으로 설치할 때 사용하는 values 오버라이드 파일이다.",
+      "tags": [
+        "configuration",
+        "helm",
+        "ingress",
+        "kubernetes",
+        "infrastructure"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/helm-values/longhorn.yaml",
+      "type": "config",
+      "name": "longhorn.yaml",
+      "filePath": "Ansible/helm-values/longhorn.yaml",
+      "summary": "Longhorn 분산 블록 스토리지의 Helm 설치 values로, defaultSettings/매니저/드라이버/UI/persistence 구성을 정의한다.",
+      "tags": [
+        "configuration",
+        "helm",
+        "storage",
+        "kubernetes",
+        "infrastructure"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/manifests/test/gpu-test.yaml",
+      "type": "config",
+      "name": "gpu-test.yaml",
+      "filePath": "Ansible/manifests/test/gpu-test.yaml",
+      "summary": "클러스터의 GPU 스케줄링/가용성을 검증하기 위한 테스트용 Kubernetes Pod 매니페스트다.",
+      "tags": [
+        "configuration",
+        "kubernetes",
+        "gpu",
+        "test",
+        "manifest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/manifests/test/test-nginx.yaml",
+      "type": "config",
+      "name": "test-nginx.yaml",
+      "filePath": "Ansible/manifests/test/test-nginx.yaml",
+      "summary": "ingress 및 클러스터 네트워킹 검증을 위해 nginx Deployment/Service/Ingress를 묶어 배포하는 테스트 매니페스트다.",
+      "tags": [
+        "configuration",
+        "kubernetes",
+        "ingress",
+        "test",
+        "manifest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:aws/terraform/.terraform.lock.hcl",
+      "type": "file",
+      "name": ".terraform.lock.hcl",
+      "filePath": "aws/terraform/.terraform.lock.hcl",
+      "summary": "Terraform이 자동 생성한 provider 의존성 잠금 파일로, AWS 등 provider의 버전과 해시를 고정해 재현 가능한 배포를 보장한다.",
+      "tags": [
+        "terraform",
+        "infrastructure",
+        "build-system",
+        "deployment"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Terraform 자동 생성 lock 파일로 직접 수정하지 않는다."
+    },
+    {
+      "id": "file:aws/terraform/lambda/dr_controller.py",
+      "type": "file",
+      "name": "dr_controller.py",
+      "filePath": "aws/terraform/lambda/dr_controller.py",
+      "summary": "Route53 헬스체크로 카카오(주 서비스) 상태를 1분마다 판정해, 정상이면 AWS 앱 ASG desired를 0으로(콜드), 장애면 N으로(DR 기동) 자동 조정하는 Lambda 핸들러다.",
+      "tags": [
+        "service",
+        "disaster-recovery",
+        "aws-lambda",
+        "event-handler",
+        "automation"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "boto3로 Route53 헬스체크 관측의 과반(majority) 성공 여부를 계산해 failover를 판단한다."
+    },
+    {
+      "id": "function:aws/terraform/lambda/dr_controller.py:_kakao_healthy",
+      "type": "function",
+      "name": "_kakao_healthy",
+      "filePath": "aws/terraform/lambda/dr_controller.py",
+      "lineRange": [
+        20,
+        32
+      ],
+      "summary": "Route53 헬스체크의 다중 체커 관측을 읽어 과반이 성공이면 카카오를 healthy로 판정하며, 관측이 없으면 불필요한 기동 방지를 위해 healthy로 간주한다.",
+      "tags": [
+        "validation",
+        "health-check",
+        "disaster-recovery"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:aws/terraform/lambda/dr_controller.py:handler",
+      "type": "function",
+      "name": "handler",
+      "filePath": "aws/terraform/lambda/dr_controller.py",
+      "lineRange": [
+        35,
+        56
+      ],
+      "summary": "카카오 상태에 따라 목표 desired capacity를 0 또는 DR_CAPACITY로 정하고, 현재 ASG 용량과 다를 때만 set_desired_capacity를 호출해 AWS 앱 스택을 기동/축소하는 Lambda 진입점이다.",
+      "tags": [
+        "event-handler",
+        "disaster-recovery",
+        "aws-lambda",
+        "automation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:aws/terraform/ssm-params.sh.example",
+      "type": "file",
+      "name": "ssm-params.sh.example",
+      "filePath": "aws/terraform/ssm-params.sh.example",
+      "summary": "앱/DB 시크릿을 Terraform state 밖의 SSM Parameter Store(SecureString)에 등록하는 예시 스크립트로, 카카오 시크릿과 동일 값을 사용해 failover 후에도 세션/키 호환을 보장한다.",
+      "tags": [
+        "script",
+        "security",
+        "secrets",
+        "deployment",
+        "infrastructure"
+      ],
+      "complexity": "simple",
+      "languageNotes": "민감 값을 TF state에 노출하지 않으려 TF 외부에서 관리하는 .example 템플릿이다."
+    },
+    {
+      "id": "file:aws/terraform/terraform.tfvars.example",
+      "type": "file",
+      "name": "terraform.tfvars.example",
+      "filePath": "aws/terraform/terraform.tfvars.example",
+      "summary": "Terraform 입력 변수의 기본값 예시로, 서울 리전 VPC(10.20.0.0/16)·서브넷·DB 인스턴스 타입·도메인·Bastion 허용 IP 등을 정의한다.",
+      "tags": [
+        "terraform",
+        "configuration",
+        "infrastructure",
+        "deployment"
+      ],
+      "complexity": "simple",
+      "languageNotes": "비용 절감을 위해 NAT 게이트웨이를 제거하고 앱/DB를 public 서브넷에 배치한 구성이다."
+    },
+    {
+      "id": "file:aws/terraform/user_data_db.sh.tftpl",
+      "type": "file",
+      "name": "user_data_db.sh.tftpl",
+      "filePath": "aws/terraform/user_data_db.sh.tftpl",
+      "summary": "DR DB 레플리카 EC2의 부트스트랩 템플릿으로, docker·WireGuard 설치와 데이터 EBS 자동 탐지·포맷·마운트까지 수행하며 Postgres 설정은 런북으로 위임한다.",
+      "tags": [
+        "script",
+        "terraform",
+        "bootstrap",
+        "disaster-recovery",
+        "infrastructure"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Nitro에서 device 이름이 바뀌므로 lsblk/awk로 미마운트 디스크를 자동 탐지하는 Terraform tftpl 템플릿이다."
+    },
+    {
+      "id": "file:aws/terraform/user_data.sh.tftpl",
+      "type": "file",
+      "name": "user_data.sh.tftpl",
+      "filePath": "aws/terraform/user_data.sh.tftpl",
+      "summary": "DR 앱 EC2의 부트스트랩 템플릿으로, docker/compose 설치 후 SSM에서 시크릿을 로드해 .env를 만들고 FE+BE docker-compose 스택을 기동한다.",
+      "tags": [
+        "script",
+        "terraform",
+        "bootstrap",
+        "disaster-recovery",
+        "deployment"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "compose 파일을 base64로 주입해 drift를 없애고 SSM Parameter Store로 시크릿을 가져오는 Terraform tftpl 템플릿이다."
+    },
+    {
+      "id": "document:readme.md",
+      "type": "document",
+      "name": "readme.md",
+      "filePath": "readme.md",
+      "summary": "KakaoCloud AIaaS(4K Cinema) 프로젝트의 최상위 문서로, 라이브 서비스·기술 스택·배포 파이프라인·저장소 구조·클러스터 구성·명령어 참고를 8개 섹션으로 정리한다.",
+      "tags": [
+        "documentation",
+        "entry-point",
+        "overview"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:4K_FE/app/components/FilterBar.tsx",
+      "target": "file:4K_FE/app/lib/data.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_FE/app/components/FilterBar.tsx",
+      "target": "function:4K_FE/app/components/FilterBar.tsx:FilterBar",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/components/FilterBar.tsx",
+      "target": "function:4K_FE/app/components/FilterBar.tsx:FilterBar",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/app/components/FilterBar.tsx",
+      "target": "function:4K_FE/app/components/FilterBar.tsx:YearRangeRow",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/components/FilterBar.tsx",
+      "target": "function:4K_FE/app/components/FilterBar.tsx:YearStepper",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/components/FilterBar.tsx",
+      "target": "function:4K_FE/app/components/FilterBar.tsx:PrefRow",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/components/FilterBar.tsx",
+      "target": "function:4K_FE/app/components/FilterBar.tsx:MultiFilterRow",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/components/FilterBar.tsx",
+      "target": "function:4K_FE/app/components/FilterBar.tsx:FilterRow",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/components/PosterCard.tsx",
+      "target": "file:4K_FE/app/lib/data.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_FE/app/components/PosterCard.tsx",
+      "target": "function:4K_FE/app/components/PosterCard.tsx:PosterCard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/components/PosterCard.tsx",
+      "target": "function:4K_FE/app/components/PosterCard.tsx:PosterCard",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/app/components/RandomModal.tsx",
+      "target": "file:4K_FE/app/lib/data.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_FE/app/components/RandomModal.tsx",
+      "target": "function:4K_FE/app/components/RandomModal.tsx:RandomModal",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/components/RandomModal.tsx",
+      "target": "function:4K_FE/app/components/RandomModal.tsx:RandomModal",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/app/components/RandomModal.tsx",
+      "target": "function:4K_FE/app/components/RandomModal.tsx:fetchRandomFromServer",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/dashboard/page.tsx",
+      "target": "file:4K_FE/app/components/DetailOverlay.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_FE/app/dashboard/page.tsx",
+      "target": "file:4K_FE/app/components/FilterBar.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_FE/app/dashboard/page.tsx",
+      "target": "file:4K_FE/app/components/PosterCard.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_FE/app/dashboard/page.tsx",
+      "target": "file:4K_FE/app/components/RandomModal.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_FE/app/dashboard/page.tsx",
+      "target": "file:4K_FE/app/components/Tutorial.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_FE/app/dashboard/page.tsx",
+      "target": "file:4K_FE/app/lib/data.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_FE/app/dashboard/page.tsx",
+      "target": "function:4K_FE/app/dashboard/page.tsx:Dashboard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/dashboard/page.tsx",
+      "target": "function:4K_FE/app/dashboard/page.tsx:Dashboard",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:4K_FE/app/dashboard/page.tsx:Dashboard",
+      "target": "function:4K_FE/app/lib/data.ts:fetchPreferredMovies",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:4K_FE/app/dashboard/page.tsx:Dashboard",
+      "target": "function:4K_FE/app/lib/data.ts:getRecentIds",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/app/lib/data.ts",
+      "target": "function:4K_FE/app/lib/data.ts:posterUrl",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/lib/data.ts",
+      "target": "function:4K_FE/app/lib/data.ts:posterUrl",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:4K_FE/app/movie_list/page.tsx:MovieListPage",
+      "target": "function:4K_FE/app/lib/data.ts:posterUrl",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/app/lib/data.ts",
+      "target": "function:4K_FE/app/lib/data.ts:fetchPreferredMovies",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/lib/data.ts",
+      "target": "function:4K_FE/app/lib/data.ts:fetchPreferredMovies",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/app/lib/data.ts",
+      "target": "function:4K_FE/app/lib/data.ts:fetchSimilarMovies",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/lib/data.ts",
+      "target": "function:4K_FE/app/lib/data.ts:fetchSimilarMovies",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/app/lib/data.ts",
+      "target": "function:4K_FE/app/lib/data.ts:fetchMovieVectors",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/lib/data.ts",
+      "target": "function:4K_FE/app/lib/data.ts:fetchMovieVectors",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/app/lib/data.ts",
+      "target": "function:4K_FE/app/lib/data.ts:fetchVector",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/lib/data.ts",
+      "target": "function:4K_FE/app/lib/data.ts:fetchVector",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/app/lib/data.ts",
+      "target": "function:4K_FE/app/lib/data.ts:getRecentIds",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/lib/data.ts",
+      "target": "function:4K_FE/app/lib/data.ts:getRecentIds",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/app/api/manager/auth/login/route.ts",
+      "target": "function:4K_FE/app/api/manager/auth/login/route.ts:POST",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/api/manager/auth/login/route.ts",
+      "target": "function:4K_FE/app/api/manager/auth/login/route.ts:POST",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/app/api/manager/auth/login/route.ts",
+      "target": "file:4K_FE/app/lib/auth.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "function:4K_FE/app/api/manager/auth/login/route.ts:POST",
+      "target": "function:4K_FE/app/lib/auth.ts:verifyCredentials",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:4K_FE/app/api/manager/auth/login/route.ts:POST",
+      "target": "function:4K_FE/app/lib/auth.ts:sessionToken",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/app/api/manager/auth/logout/route.ts",
+      "target": "function:4K_FE/app/api/manager/auth/logout/route.ts:POST",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/api/manager/auth/logout/route.ts",
+      "target": "function:4K_FE/app/api/manager/auth/logout/route.ts:POST",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/app/api/manager/auth/logout/route.ts",
+      "target": "file:4K_FE/app/lib/auth.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_FE/app/lib/auth.ts",
+      "target": "function:4K_FE/app/lib/auth.ts:verifyCredentials",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/lib/auth.ts",
+      "target": "function:4K_FE/app/lib/auth.ts:verifyCredentials",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/app/lib/auth.ts",
+      "target": "function:4K_FE/app/lib/auth.ts:sessionToken",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/lib/auth.ts",
+      "target": "function:4K_FE/app/lib/auth.ts:sessionToken",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/app/lib/auth.ts",
+      "target": "function:4K_FE/app/lib/auth.ts:isValidSession",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/lib/auth.ts",
+      "target": "function:4K_FE/app/lib/auth.ts:isValidSession",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:4K_FE/app/lib/auth.ts:isValidSession",
+      "target": "function:4K_FE/app/lib/auth.ts:sessionToken",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/proxy.ts",
+      "target": "function:4K_FE/proxy.ts:proxy",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/proxy.ts",
+      "target": "function:4K_FE/proxy.ts:proxy",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/proxy.ts",
+      "target": "file:4K_FE/app/lib/auth.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "function:4K_FE/proxy.ts:proxy",
+      "target": "function:4K_FE/app/lib/auth.ts:isValidSession",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "service:4K_BE/Dockerfile",
+      "target": "service:4K_BE/Dockerfile:python",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "service:4K_BE/Dockerfile",
+      "target": "file:4K_BE/app/main.py",
+      "type": "deploys",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "service:4K_FE/Dockerfile",
+      "target": "service:4K_FE/Dockerfile:deps",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:4K_FE/Dockerfile",
+      "target": "service:4K_FE/Dockerfile:builder",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:4K_FE/Dockerfile",
+      "target": "service:4K_FE/Dockerfile:runner",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:4K_FE/Dockerfile:builder",
+      "target": "service:4K_FE/Dockerfile:deps",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:4K_FE/Dockerfile:runner",
+      "target": "service:4K_FE/Dockerfile:builder",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:4K_FE/.dockerignore",
+      "target": "service:4K_FE/Dockerfile",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "pipeline:.github/workflows/deploy-4k-be.yml",
+      "target": "step:.github/workflows/deploy-4k-be.yml:Build and push Docker image",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "pipeline:.github/workflows/deploy-4k-be.yml",
+      "target": "step:.github/workflows/deploy-4k-be.yml:Update image tag in kustomization.yaml",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "pipeline:.github/workflows/deploy-4k-be.yml",
+      "target": "step:.github/workflows/deploy-4k-be.yml:Commit and push manifest update",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "pipeline:.github/workflows/deploy-4k-fe.yml",
+      "target": "step:.github/workflows/deploy-4k-fe.yml:Build and push Docker image",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "pipeline:.github/workflows/deploy-4k-fe.yml",
+      "target": "step:.github/workflows/deploy-4k-fe.yml:Update image tag in kustomization.yaml",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "pipeline:.github/workflows/deploy-4k-fe.yml",
+      "target": "step:.github/workflows/deploy-4k-fe.yml:Commit and push manifest update",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "document:4K_FE/CLAUDE.md",
+      "target": "document:4K_FE/AGENTS.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:4K_FE/package.json",
+      "target": "config:4K_FE/tsconfig.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:Ansible/manifests/4k-be/kustomization.yaml",
+      "target": "service:Ansible/manifests/4k-be/deployment.yaml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Ansible/manifests/4k-be/kustomization.yaml",
+      "target": "service:Ansible/manifests/4k-be/service.yaml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:Ansible/manifests/4k-be/service.yaml",
+      "target": "service:Ansible/manifests/4k-be/deployment.yaml",
+      "type": "serves",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "config:Ansible/manifests/4k-fe/kustomization.yaml",
+      "target": "service:Ansible/manifests/4k-fe/deployment.yaml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Ansible/manifests/4k-fe/kustomization.yaml",
+      "target": "service:Ansible/manifests/4k-fe/service.yaml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Ansible/manifests/4k-fe/kustomization.yaml",
+      "target": "service:Ansible/manifests/4k-fe/ingress.yaml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:Ansible/manifests/4k-fe/service.yaml",
+      "target": "service:Ansible/manifests/4k-fe/deployment.yaml",
+      "type": "serves",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "service:Ansible/manifests/4k-fe/ingress.yaml",
+      "target": "service:Ansible/manifests/4k-fe/service.yaml",
+      "type": "routes",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Ansible/manifests/apps/ingress-studio.yaml",
+      "target": "endpoint:Ansible/manifests/apps/ingress-studio.yaml:supabase-data-studio",
+      "type": "serves",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "config:Ansible/manifests/apps/ingress-studio.yaml",
+      "target": "endpoint:Ansible/manifests/apps/ingress-studio.yaml:supabase-data-api",
+      "type": "serves",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "config:Ansible/manifests/apps/ingress-studio.yaml",
+      "target": "endpoint:Ansible/manifests/apps/ingress-studio.yaml:supabase-ai-studio",
+      "type": "serves",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "config:Ansible/manifests/apps/ingress-studio.yaml",
+      "target": "endpoint:Ansible/manifests/apps/ingress-studio.yaml:grafana",
+      "type": "serves",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "config:Ansible/manifests/apps/ingress-studio.yaml",
+      "target": "endpoint:Ansible/manifests/apps/ingress-studio.yaml:argocd",
+      "type": "serves",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "config:Ansible/manifests/apps/cluster-issuer.yaml",
+      "target": "config:Ansible/manifests/apps/ingress-studio.yaml",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Ansible/manifests/apps/ingress-nginx-config.yaml",
+      "target": "config:Ansible/manifests/apps/ingress-studio.yaml",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Ansible/playbooks/02-k3s-server.yml",
+      "target": "config:Ansible/playbooks/01-common.yml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Ansible/playbooks/03-k3s-agent.yml",
+      "target": "config:Ansible/playbooks/01-common.yml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Ansible/playbooks/03-k3s-agent.yml",
+      "target": "config:Ansible/playbooks/02-k3s-server.yml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Ansible/playbooks/04-longhorn-prereq.yml",
+      "target": "config:Ansible/playbooks/03-k3s-agent.yml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Ansible/playbooks/01-common.yml",
+      "target": "config:Ansible/playbooks/00-ping.yml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:Documents/CICD 전략.md",
+      "target": "document:Documents/인프라 구축 방법(명령어).md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:Documents/인프라 구축 기록.md",
+      "target": "document:Documents/인프라 구축 방법(명령어).md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:Documents/인프라 구축 기록.md",
+      "target": "document:Documents/CICD 전략.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:Documents/서비스 개요.md",
+      "target": "document:Documents/프로젝트 디렉토리 구조.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:Documents/프로젝트 디렉토리 구조.md",
+      "target": "document:Documents/서비스 개요.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:aws/.env.example",
+      "target": "service:aws/docker-compose.yml",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:aws/docker-compose.yml",
+      "target": "service:aws/docker-compose.yml:backend",
+      "type": "deploys",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "service:aws/docker-compose.yml",
+      "target": "service:aws/docker-compose.yml:frontend",
+      "type": "deploys",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "service:aws/docker-compose.yml:frontend",
+      "target": "service:aws/docker-compose.yml:backend",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:aws/COST-OPTIMIZATION.md",
+      "target": "service:aws/docker-compose.yml",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:aws/DR-DB-RUNBOOK.md",
+      "target": "service:aws/docker-compose.yml",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "resource:aws/terraform/alb.tf",
+      "target": "resource:aws/terraform/variables.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/alb.tf",
+      "target": "resource:aws/terraform/network.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/alb.tf",
+      "target": "resource:aws/terraform/security.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/asg.tf",
+      "target": "resource:aws/terraform/compute.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/asg.tf",
+      "target": "resource:aws/terraform/alb.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/asg.tf",
+      "target": "resource:aws/terraform/network.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/compute.tf",
+      "target": "resource:aws/terraform/iam.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/compute.tf",
+      "target": "resource:aws/terraform/security.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/compute.tf",
+      "target": "resource:aws/terraform/variables.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/db.tf",
+      "target": "resource:aws/terraform/network.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/db.tf",
+      "target": "resource:aws/terraform/variables.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/dns.tf",
+      "target": "resource:aws/terraform/alb.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/dns.tf",
+      "target": "resource:aws/terraform/dr_trigger.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/dns.tf",
+      "target": "resource:aws/terraform/variables.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/dr_trigger.tf",
+      "target": "resource:aws/terraform/asg.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/dr_trigger.tf",
+      "target": "resource:aws/terraform/variables.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/iam.tf",
+      "target": "resource:aws/terraform/variables.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/network.tf",
+      "target": "resource:aws/terraform/variables.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/postgrest.tf",
+      "target": "resource:aws/terraform/alb.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/postgrest.tf",
+      "target": "resource:aws/terraform/db.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/security.tf",
+      "target": "resource:aws/terraform/network.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/security.tf",
+      "target": "resource:aws/terraform/variables.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/outputs.tf",
+      "target": "resource:aws/terraform/network.tf",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "resource:aws/terraform/outputs.tf",
+      "target": "resource:aws/terraform/alb.tf",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "resource:aws/terraform/outputs.tf",
+      "target": "resource:aws/terraform/db.tf",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "resource:aws/terraform/outputs.tf",
+      "target": "resource:aws/terraform/dr_trigger.tf",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "resource:aws/terraform/providers.tf",
+      "target": "resource:aws/terraform/variables.tf",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "resource:aws/terraform/versions.tf",
+      "target": "resource:aws/terraform/providers.tf",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:4K_BE/app/main.py",
+      "target": "function:4K_BE/app/main.py:list_movies",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_BE/app/main.py",
+      "target": "function:4K_BE/app/main.py:search_movies",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_BE/app/main.py",
+      "target": "function:4K_BE/app/main.py:movie_detail",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_BE/app/main.py",
+      "target": "function:4K_BE/app/main.py:update_movie",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_BE/app/main.py",
+      "target": "function:4K_BE/app/main.py:add_movie",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_BE/app/main.py",
+      "target": "function:4K_BE/app/main.py:delete_movie",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_BE/DB_SCRIPTS/seed_movies.py",
+      "target": "function:4K_BE/DB_SCRIPTS/seed_movies.py:fetch_movie",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_BE/DB_SCRIPTS/seed_movies.py",
+      "target": "function:4K_BE/DB_SCRIPTS/seed_movies.py:get_existing_tmdb_ids",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_BE/DB_SCRIPTS/seed_movies.py",
+      "target": "function:4K_BE/DB_SCRIPTS/seed_movies.py:upsert_batch",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_BE/DB_SCRIPTS/seed_movies.py",
+      "target": "function:4K_BE/DB_SCRIPTS/seed_movies.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/api/manager/movies/[tmdb_id]/route.ts",
+      "target": "function:4K_FE/app/api/manager/movies/[tmdb_id]/route.ts:PATCH",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/api/manager/movies/[tmdb_id]/route.ts",
+      "target": "function:4K_FE/app/api/manager/movies/[tmdb_id]/route.ts:PATCH",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/app/components/BackgroundThread.tsx",
+      "target": "function:4K_FE/app/components/BackgroundThread.tsx:Threads",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/components/ClimaxGraph.tsx",
+      "target": "function:4K_FE/app/components/ClimaxGraph.tsx:ClimaxGraph",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/components/ClimaxGraph.tsx",
+      "target": "function:4K_FE/app/components/ClimaxGraph.tsx:ClimaxGraph",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/app/components/DetailOverlay.tsx",
+      "target": "function:4K_FE/app/components/DetailOverlay.tsx:dtwDistance",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/components/DetailOverlay.tsx",
+      "target": "function:4K_FE/app/components/DetailOverlay.tsx:DetailOverlay",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/components/DetailOverlay.tsx",
+      "target": "function:4K_FE/app/components/DetailOverlay.tsx:DetailOverlay",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/app/components/MovieDetailModal.tsx",
+      "target": "function:4K_FE/app/components/MovieDetailModal.tsx:MovieDetailModal",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/components/MovieDetailModal.tsx",
+      "target": "function:4K_FE/app/components/MovieDetailModal.tsx:parseVector",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/components/MovieDetailModal.tsx",
+      "target": "function:4K_FE/app/components/MovieDetailModal.tsx:MovieDetailModal",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/app/components/Tutorial.tsx",
+      "target": "function:4K_FE/app/components/Tutorial.tsx:Tutorial",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/components/Tutorial.tsx",
+      "target": "function:4K_FE/app/components/Tutorial.tsx:Tutorial",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/app/login/page.tsx",
+      "target": "function:4K_FE/app/login/page.tsx:LoginPage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/login/page.tsx",
+      "target": "function:4K_FE/app/login/page.tsx:LoginPage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/app/movie_list/page.tsx",
+      "target": "function:4K_FE/app/movie_list/page.tsx:MovieListPage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/movie_list/page.tsx",
+      "target": "function:4K_FE/app/movie_list/page.tsx:MovieListPage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/app/page.tsx",
+      "target": "function:4K_FE/app/page.tsx:OnboardingPage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/page.tsx",
+      "target": "function:4K_FE/app/page.tsx:OnboardingPage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_ML/generate_vectors/generate_vectors.py",
+      "target": "function:4K_ML/generate_vectors/generate_vectors.py:ext_fetch",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_ML/generate_vectors/generate_vectors.py",
+      "target": "function:4K_ML/generate_vectors/generate_vectors.py:vm4_upsert",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_ML/generate_vectors/generate_vectors.py",
+      "target": "function:4K_ML/generate_vectors/generate_vectors.py:process",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_ML/generate_vectors/generate_vectors.py",
+      "target": "function:4K_ML/generate_vectors/generate_vectors.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:4K_FE/app/components/DetailOverlay.tsx",
+      "target": "file:4K_FE/app/components/ClimaxGraph.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_FE/app/components/DetailOverlay.tsx",
+      "target": "file:4K_FE/app/lib/data.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_FE/app/components/MovieDetailModal.tsx",
+      "target": "file:4K_FE/app/lib/data.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_FE/app/components/Tutorial.tsx",
+      "target": "file:4K_FE/app/components/MiniGraph.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_FE/app/layout.tsx",
+      "target": "file:4K_FE/app/globals.css",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_FE/app/movie_list/page.tsx",
+      "target": "file:4K_FE/app/components/MovieDetailModal.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_FE/app/movie_list/page.tsx",
+      "target": "file:4K_FE/app/lib/data.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_FE/app/page.tsx",
+      "target": "file:4K_FE/app/components/BackgroundThread.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "function:4K_FE/app/components/DetailOverlay.tsx:DetailOverlay",
+      "target": "function:4K_FE/app/lib/data.ts:fetchPreferredMovies",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:4K_FE/app/components/DetailOverlay.tsx:DetailOverlay",
+      "target": "function:4K_FE/app/lib/data.ts:fetchVector",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:4K_FE/app/components/DetailOverlay.tsx:DetailOverlay",
+      "target": "function:4K_FE/app/lib/data.ts:fetchMovieVectors",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "config:Ansible/ansible.cfg",
+      "target": "file:4K_FE/app/page.tsx",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:4K_BE/requirements.txt",
+      "target": "file:4K_BE/app/main.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:4K_ML/requirements.txt",
+      "target": "file:4K_ML/generate_vectors/generate_vectors.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:4K_FE/app/movie_list/page.tsx",
+      "target": "file:4K_FE/app/api/manager/movies/route.ts",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:4K_FE/app/movie_list/page.tsx",
+      "target": "file:4K_FE/app/api/manager/movies/search/route.ts",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:4K_FE/app/api/manager/movies/route.ts",
+      "target": "file:4K_BE/app/main.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:4K_FE/app/api/manager/movies/search/route.ts",
+      "target": "file:4K_BE/app/main.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:4K_FE/app/api/manager/movies/[tmdb_id]/route.ts",
+      "target": "file:4K_BE/app/main.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:aws/terraform/lambda/dr_controller.py",
+      "target": "function:aws/terraform/lambda/dr_controller.py:_kakao_healthy",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:aws/terraform/lambda/dr_controller.py",
+      "target": "function:aws/terraform/lambda/dr_controller.py:handler",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:aws/terraform/lambda/dr_controller.py",
+      "target": "function:aws/terraform/lambda/dr_controller.py:_kakao_healthy",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:aws/terraform/lambda/dr_controller.py",
+      "target": "function:aws/terraform/lambda/dr_controller.py:handler",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer:frontend",
+      "name": "프론트엔드 (4K Cinema 웹)",
+      "description": "Next.js 16 기반 영화 추천 웹 애플리케이션으로, 대시보드/로그인/영화목록 페이지, 클라이맥스 그래프 등 UI 컴포넌트, lib/data·auth 데이터 계층, 매니저용 API 라우트, 그리고 FE 전용 Dockerfile·빌드 설정·문서를 포함한다.",
+      "nodeIds": [
+        "file:4K_FE/app/components/FilterBar.tsx",
+        "file:4K_FE/app/components/PosterCard.tsx",
+        "file:4K_FE/app/components/RandomModal.tsx",
+        "file:4K_FE/app/dashboard/page.tsx",
+        "file:4K_FE/app/lib/data.ts",
+        "file:4K_FE/app/api/manager/auth/login/route.ts",
+        "file:4K_FE/app/api/manager/auth/logout/route.ts",
+        "file:4K_FE/app/lib/auth.ts",
+        "file:4K_FE/proxy.ts",
+        "service:4K_FE/Dockerfile",
+        "service:4K_FE/Dockerfile:deps",
+        "service:4K_FE/Dockerfile:builder",
+        "service:4K_FE/Dockerfile:runner",
+        "config:4K_FE/.dockerignore",
+        "config:4K_FE/.env.example",
+        "document:4K_FE/AGENTS.md",
+        "document:4K_FE/CLAUDE.md",
+        "document:4K_FE/README.md",
+        "config:4K_FE/package.json",
+        "config:4K_FE/tsconfig.json",
+        "file:4K_FE/app/api/manager/movies/[tmdb_id]/route.ts",
+        "file:4K_FE/app/api/manager/movies/route.ts",
+        "file:4K_FE/app/api/manager/movies/search/route.ts",
+        "file:4K_FE/app/components/BackgroundThread.tsx",
+        "file:4K_FE/app/components/ClimaxGraph.tsx",
+        "file:4K_FE/app/components/DetailOverlay.tsx",
+        "file:4K_FE/app/components/MiniGraph.tsx",
+        "file:4K_FE/app/components/MovieDetailModal.tsx",
+        "file:4K_FE/app/components/Tutorial.tsx",
+        "file:4K_FE/app/globals.css",
+        "file:4K_FE/app/layout.tsx",
+        "file:4K_FE/app/login/page.tsx",
+        "file:4K_FE/app/movie_list/page.tsx",
+        "file:4K_FE/app/page.tsx",
+        "file:4K_FE/eslint.config.mjs",
+        "file:4K_FE/next.config.ts",
+        "file:4K_FE/postcss.config.mjs"
+      ]
+    },
+    {
+      "id": "layer:backend",
+      "name": "백엔드 API (FastAPI)",
+      "description": "FastAPI/Uvicorn 기반 백엔드 서비스로, main.py API 진입점과 TMDB 영화 시드 스크립트, requirements, BE 전용 Dockerfile을 포함하는 추천 서비스의 서버 계층이다.",
+      "nodeIds": [
+        "service:4K_BE/Dockerfile",
+        "service:4K_BE/Dockerfile:python",
+        "file:4K_BE/.python-version",
+        "file:4K_BE/app/main.py",
+        "file:4K_BE/DB_SCRIPTS/seed_movies.py",
+        "document:4K_BE/requirements.txt"
+      ]
+    },
+    {
+      "id": "layer:ml",
+      "name": "ML 파이프라인",
+      "description": "영화 임베딩 벡터 생성을 담당하는 Python ML 파이프라인으로, generate_vectors 스크립트와 의존성 정의를 포함한다.",
+      "nodeIds": [
+        "file:4K_ML/.python-version",
+        "file:4K_ML/generate_vectors/generate_vectors.py",
+        "document:4K_ML/requirements.txt"
+      ]
+    },
+    {
+      "id": "layer:deployment",
+      "name": "K8s 배포 / GitOps (Ansible)",
+      "description": "KakaoCloud K3s 클러스터 프로비저닝 playbook과 4k-be·4k-fe·studio용 Kubernetes/Kustomize manifest, Ingress, ArgoCD 애플리케이션 정의, Helm values를 포함하는 GitOps 배포 계층이다.",
+      "nodeIds": [
+        "service:Ansible/manifests/4k-be/deployment.yaml",
+        "service:Ansible/manifests/4k-be/service.yaml",
+        "config:Ansible/manifests/4k-be/kustomization.yaml",
+        "service:Ansible/manifests/4k-fe/deployment.yaml",
+        "service:Ansible/manifests/4k-fe/ingress.yaml",
+        "config:Ansible/manifests/4k-fe/kustomization.yaml",
+        "service:Ansible/manifests/4k-fe/service.yaml",
+        "config:Ansible/manifests/apps/cluster-issuer.yaml",
+        "config:Ansible/manifests/apps/ingress-nginx-config.yaml",
+        "config:Ansible/manifests/apps/ingress-studio.yaml",
+        "endpoint:Ansible/manifests/apps/ingress-studio.yaml:supabase-data-studio",
+        "endpoint:Ansible/manifests/apps/ingress-studio.yaml:supabase-data-api",
+        "endpoint:Ansible/manifests/apps/ingress-studio.yaml:supabase-ai-studio",
+        "endpoint:Ansible/manifests/apps/ingress-studio.yaml:grafana",
+        "endpoint:Ansible/manifests/apps/ingress-studio.yaml:argocd",
+        "config:Ansible/manifests/argocd/argocd-app-4k-be.yaml",
+        "config:Ansible/manifests/argocd/argocd-app-4k-fe.yaml",
+        "config:Ansible/manifests/argocd/argocd-app-infra.yaml",
+        "config:Ansible/manifests/argocd/argocd-app-supabase-ai.yaml",
+        "config:Ansible/manifests/argocd/argocd-app-supabase-data.yaml",
+        "config:Ansible/playbooks/00-ping.yml",
+        "config:Ansible/playbooks/01-common.yml",
+        "config:Ansible/playbooks/02-k3s-server.yml",
+        "config:Ansible/playbooks/03-k3s-agent.yml",
+        "config:Ansible/playbooks/04-longhorn-prereq.yml",
+        "config:Ansible/values/values-ai.yaml",
+        "config:Ansible/values/values-argocd.yaml",
+        "config:Ansible/values/values-data.yaml",
+        "config:Ansible/values/values-loki.yaml",
+        "config:Ansible/values/values-prometheus.yaml",
+        "config:Ansible/values/values-promtail.yaml",
+        "config:Ansible/values/values-redis.yaml",
+        "config:Ansible/ansible.cfg",
+        "config:Ansible/group_vars/all.yaml",
+        "config:Ansible/helm-values/ingress-nginx.yaml",
+        "config:Ansible/helm-values/longhorn.yaml",
+        "config:Ansible/manifests/test/gpu-test.yaml",
+        "config:Ansible/manifests/test/test-nginx.yaml"
+      ]
+    },
+    {
+      "id": "layer:ci-cd",
+      "name": "CI/CD 파이프라인",
+      "description": "GitHub Actions 기반 4k-be·4k-fe 이미지 빌드 및 배포 자동화 워크플로우를 포함하는 CI/CD 계층이다.",
+      "nodeIds": [
+        "pipeline:.github/workflows/deploy-4k-be.yml",
+        "pipeline:.github/workflows/deploy-4k-fe.yml"
+      ]
+    },
+    {
+      "id": "layer:infrastructure",
+      "name": "AWS 재해복구 인프라 (Terraform)",
+      "description": "DR(재해복구)을 위한 AWS IaC 계층으로, VPC·ALB·ASG·EC2 PostgreSQL·Route53·DR 트리거 Lambda를 정의하는 Terraform 리소스와 docker-compose, 운영 runbook 문서를 포함한다.",
+      "nodeIds": [
+        "config:aws/.env.example",
+        "document:aws/COST-OPTIMIZATION.md",
+        "document:aws/DR-DB-RUNBOOK.md",
+        "service:aws/docker-compose.yml",
+        "service:aws/docker-compose.yml:backend",
+        "service:aws/docker-compose.yml:frontend",
+        "resource:aws/terraform/alb.tf",
+        "resource:aws/terraform/asg.tf",
+        "resource:aws/terraform/compute.tf",
+        "resource:aws/terraform/db.tf",
+        "resource:aws/terraform/dns.tf",
+        "resource:aws/terraform/dr_trigger.tf",
+        "resource:aws/terraform/iam.tf",
+        "resource:aws/terraform/network.tf",
+        "resource:aws/terraform/outputs.tf",
+        "resource:aws/terraform/postgrest.tf",
+        "resource:aws/terraform/providers.tf",
+        "resource:aws/terraform/security.tf",
+        "resource:aws/terraform/variables.tf",
+        "resource:aws/terraform/versions.tf",
+        "file:aws/terraform/.terraform.lock.hcl",
+        "file:aws/terraform/lambda/dr_controller.py",
+        "file:aws/terraform/ssm-params.sh.example",
+        "file:aws/terraform/terraform.tfvars.example",
+        "file:aws/terraform/user_data_db.sh.tftpl",
+        "file:aws/terraform/user_data.sh.tftpl"
+      ]
+    },
+    {
+      "id": "layer:documentation",
+      "name": "프로젝트 문서",
+      "description": "서비스 개요, 인프라 구축 기록·명령어, CI/CD 전략, 디렉토리 구조 등 프로젝트 전반을 설명하는 한국어 문서와 루트 README를 포함하는 문서 계층이다.",
+      "nodeIds": [
+        "document:Documents/CICD 전략.md",
+        "document:Documents/서비스 개요.md",
+        "document:Documents/인프라 구축 기록.md",
+        "document:Documents/인프라 구축 방법(명령어).md",
+        "document:Documents/프로젝트 디렉토리 구조.md",
+        "document:readme.md"
+      ]
+    }
+  ],
+  "tour": [
+    {
+      "order": 1,
+      "title": "프로젝트 개요와 서비스 소개",
+      "description": "최상위 readme.md에서 시작합니다. KakaoCloud K3s 클러스터 위에 구축한 4K Cinema 영화 추천 서비스의 목적, 기술 스택(Next.js·FastAPI·Supabase), 배포 파이프라인(GitHub Actions → GHCR → ArgoCD), 저장소 구조를 한눈에 정리한 문서로 전체 투어의 지도 역할을 합니다. 서비스 개요 문서는 주요 기능, 화면 구성, FE/BE/ML 기술 스택과 DB 스키마, 데이터 흐름을 더 깊이 설명하여 코드를 보기 전 맥락을 잡아줍니다.",
+      "nodeIds": [
+        "document:readme.md",
+        "document:Documents/서비스 개요.md"
+      ]
+    },
+    {
+      "order": 2,
+      "title": "프론트엔드 진입점: 대시보드 페이지",
+      "description": "BFS 분석에서 fan-out이 가장 높은(6) 메인 진입점인 대시보드 page.tsx입니다. 영화 목록 무한 스크롤 페치, 필터·검색·선호도 적용, 최근 본 영화, 상세/랜덤/튜토리얼 모달을 통합 관리하는 4K Cinema의 핵심 화면으로, 여기서 임포트하는 컴포넌트와 데이터 계층이 이후 단계의 뼈대가 됩니다.",
+      "nodeIds": [
+        "file:4K_FE/app/dashboard/page.tsx"
+      ],
+      "languageLesson": "Next.js 16의 App Router는 app/ 디렉터리의 폴더 구조가 그대로 URL 라우트가 됩니다. page.tsx는 해당 경로의 화면을 렌더링하는 파일이며, 클라이언트 상호작용(스크롤·모달)이 필요하면 파일 상단에 'use client' 지시어를 둡니다."
+    },
+    {
+      "order": 3,
+      "title": "데이터 유틸리티 계층 (lib/data)",
+      "description": "fan-in 7로 프론트엔드에서 가장 널리 의존되는 data.ts 모듈입니다. 포스터 URL·장르·배우 파싱 헬퍼, Supabase 상수와 필터 초기값, 추천/유사도/벡터 페치 함수, 최근 본 영화 localStorage 관리 함수를 한곳에 모아 2단계의 대시보드를 포함한 거의 모든 화면이 이 모듈을 통해 데이터를 다룹니다. 컴포넌트들이 공유하는 공통 어휘를 정의하는 계층입니다.",
+      "nodeIds": [
+        "file:4K_FE/app/lib/data.ts"
+      ]
+    },
+    {
+      "order": 4,
+      "title": "핵심 UI 컴포넌트와 클라이맥스 그래프",
+      "description": "BFS depth 1~2에서 대시보드가 직접 임포트하는 주요 컴포넌트들입니다. FilterBar는 장르·연도·선호 필터 패널을, PosterCard는 3D 틸트 효과의 영화 카드를, DetailOverlay는 상세 정보 오버레이를 담당합니다. 특히 ClimaxGraph와 MiniGraph는 이 서비스의 차별화 기능인 '영화 클라이맥스 그래프'를 시각화하여 3단계의 data.ts가 제공하는 벡터·유사도 데이터를 화면으로 표현합니다.",
+      "nodeIds": [
+        "file:4K_FE/app/components/FilterBar.tsx",
+        "file:4K_FE/app/components/PosterCard.tsx",
+        "file:4K_FE/app/components/DetailOverlay.tsx",
+        "file:4K_FE/app/components/ClimaxGraph.tsx",
+        "file:4K_FE/app/components/MiniGraph.tsx"
+      ]
+    },
+    {
+      "order": 5,
+      "title": "매니저 인증과 보호 라우트",
+      "description": "관리자 전용 기능을 지키는 인증 계층입니다. login/page.tsx는 자격 증명을 제출하고, lib/auth.ts(fan-in 3)는 HMAC 기반 세션 토큰 생성과 타이밍 안전 검증의 핵심 로직을 제공하며, login route.ts는 검증 후 HttpOnly 쿠키를 발급합니다. proxy.ts 미들웨어는 보호된 매니저 경로 접근 시 세션 쿠키를 검증해 미인증 요청을 로그인 페이지로 리다이렉트합니다.",
+      "nodeIds": [
+        "file:4K_FE/app/login/page.tsx",
+        "file:4K_FE/app/lib/auth.ts",
+        "file:4K_FE/app/api/manager/auth/login/route.ts",
+        "file:4K_FE/proxy.ts"
+      ],
+      "languageLesson": "Next.js 미들웨어(proxy.ts)는 요청이 페이지에 도달하기 전에 가로채 실행됩니다. HMAC 세션 검증은 timing-safe 비교(constant-time comparison)를 사용하는데, 이는 비교 시간 차이로 토큰을 추측하는 타이밍 공격을 막기 위함입니다."
+    },
+    {
+      "order": 6,
+      "title": "백엔드 API 진입점 (FastAPI)",
+      "description": "fan-in 5로 백엔드의 중심인 main.py입니다. TMDB API와 Supabase REST를 연동해 영화 목록/검색/상세 조회와 매니저용 추가/수정/삭제 엔드포인트를 제공하며, 2단계 프론트엔드가 호출하는 실제 서버 측 로직을 담고 있습니다. seed_movies.py는 TMDB에서 영화 데이터를 가져와 DB에 초기 적재하는 시드 스크립트로, 서비스의 데이터가 어디서 오는지 보여줍니다.",
+      "nodeIds": [
+        "file:4K_BE/app/main.py",
+        "file:4K_BE/DB_SCRIPTS/seed_movies.py"
+      ],
+      "languageLesson": "FastAPI는 Python 타입 힌트를 기반으로 요청 검증과 자동 OpenAPI 문서를 생성합니다. 경로 연산자 데코레이터(@app.get, @app.post)로 엔드포인트를 선언하며, async def 핸들러로 비동기 I/O를 처리합니다."
+    },
+    {
+      "order": 7,
+      "title": "ML 파이프라인: 영화 임베딩 벡터 생성",
+      "description": "추천 품질을 뒷받침하는 ML 배치 계층입니다. generate_vectors.py는 영화 메타데이터로부터 임베딩 벡터를 생성하여 Supabase의 pgvector 컬럼에 저장하며, 4단계 ClimaxGraph가 시각화하고 3단계 data.ts가 페치하는 유사도/벡터 데이터의 원천입니다. 별도 파이프라인으로 분리해 본 서비스 API와 무거운 연산을 떼어 둔 설계를 보여줍니다.",
+      "nodeIds": [
+        "file:4K_ML/generate_vectors/generate_vectors.py"
+      ],
+      "languageLesson": "임베딩 벡터는 영화의 의미적 특성을 고차원 수치 배열로 표현한 것으로, 두 벡터 간 코사인 유사도가 높을수록 비슷한 영화입니다. PostgreSQL의 pgvector 확장이 이 벡터 컬럼과 유사도 검색을 데이터베이스 레벨에서 지원합니다."
+    },
+    {
+      "order": 8,
+      "title": "컨테이너화: 멀티 스테이지 Dockerfile",
+      "description": "앞서 본 프론트엔드와 백엔드 코드가 어떻게 컨테이너 이미지로 패키징되는지 다룹니다. FE Dockerfile은 deps/builder/runner 3단계 멀티 스테이지 빌드로 node:22-alpine 기반 경량 standalone 이미지를 만들고, BE Dockerfile은 python:3.11-slim 위에서 uvicorn으로 8000 포트 앱을 구동합니다. 두 이미지 모두 GHCR에 푸시되어 K8s와 AWS DR 양쪽에서 재사용됩니다.",
+      "nodeIds": [
+        "service:4K_FE/Dockerfile",
+        "service:4K_BE/Dockerfile"
+      ],
+      "languageLesson": "멀티 스테이지 빌드는 여러 FROM 단계를 사용해 빌드 의존성과 런타임을 분리합니다. deps 단계에서 package*.json만 먼저 복사해 npm ci를 실행하면, 소스만 바뀔 때 의존성 레이어 캐시를 재사용해 빌드가 빨라집니다(레이어 순서가 캐시 효율을 좌우)."
+    },
+    {
+      "order": 9,
+      "title": "K3s 클러스터 프로비저닝 (Ansible)",
+      "description": "KakaoCloud VM 5대 위에 K3s 클러스터를 세우는 인프라 자동화 계층입니다. 02-k3s-server.yml은 마스터 노드에 Traefik 비활성화·TLS-SAN 설정으로 K3s 서버를 부트스트랩하고 node-token과 kubeconfig를 가져오며, 03-k3s-agent.yml은 워커·GPU 노드를 서버의 토큰으로 클러스터에 조인시킵니다. 코드가 실행될 무대를 코드로 구성하는 IaC의 출발점입니다.",
+      "nodeIds": [
+        "config:Ansible/playbooks/02-k3s-server.yml",
+        "config:Ansible/playbooks/03-k3s-agent.yml"
+      ]
+    },
+    {
+      "order": 10,
+      "title": "쿠버네티스 배포 매니페스트와 Ingress",
+      "description": "8단계의 컨테이너 이미지를 클러스터에 실제로 띄우는 매니페스트입니다. fe deployment.yaml은 ghcr.io/sanggyoon/4k-fe 이미지를 replicas 2로 배포하며 백엔드 URL과 매니저 자격증명을 환경변수로 주입하고, ingress.yaml은 cert-manager TLS와 함께 peakly.art 도메인 트래픽을 frontend 서비스로 라우팅합니다. kustomization.yaml은 이미지 태그를 커밋 해시로 고정해 배포 버전을 관리합니다.",
+      "nodeIds": [
+        "service:Ansible/manifests/4k-fe/deployment.yaml",
+        "service:Ansible/manifests/4k-fe/ingress.yaml",
+        "config:Ansible/manifests/4k-fe/kustomization.yaml"
+      ],
+      "languageLesson": "Kubernetes에서 Deployment는 Pod 레플리카와 롤링 업데이트를 관리하고, Service는 안정적인 내부 DNS로 Pod를 노출하며, Ingress는 외부 HTTP(S) 트래픽을 Service로 라우팅합니다. Kustomize는 base 매니페스트를 패치(images 태그 변경 등)로 오버레이해 환경별 구성을 만듭니다."
+    },
+    {
+      "order": 11,
+      "title": "데이터·운영 서비스 노출 (Supabase·Grafana·ArgoCD)",
+      "description": "서비스 데이터와 운영 도구를 외부 도메인으로 노출하는 Ingress 계층입니다(fan-out 5). supabase-data-api 엔드포인트는 Kong 게이트웨이로 /rest·/auth·/storage 경로를 라우팅해 6단계 백엔드와 프론트엔드가 사용하는 PostgreSQL+pgvector REST API를 제공하며, 같은 매니페스트가 Grafana 모니터링과 ArgoCD GitOps 대시보드도 함께 노출합니다.",
+      "nodeIds": [
+        "endpoint:Ansible/manifests/apps/ingress-studio.yaml:supabase-data-api",
+        "config:Ansible/manifests/apps/ingress-studio.yaml"
+      ]
+    },
+    {
+      "order": 12,
+      "title": "GitOps 자동 배포: ArgoCD + GitHub Actions",
+      "description": "프로젝트의 배포 흐름을 완성하는 capstone입니다. deploy-4k-fe/be.yml GitHub Actions는 main 브랜치 변경 시 Docker 이미지를 빌드해 GHCR에 푸시하고 kustomization 태그를 커밋하며(CI), argocd-app-4k-fe.yaml은 Git 저장소를 fe 네임스페이스에 자동 동기화해(CD) K3s 롤링 업데이트를 일으킵니다. CICD 전략 문서가 트리거·태그 전략·트러블슈팅을 정리합니다.",
+      "nodeIds": [
+        "pipeline:.github/workflows/deploy-4k-fe.yml",
+        "pipeline:.github/workflows/deploy-4k-be.yml",
+        "config:Ansible/manifests/argocd/argocd-app-4k-fe.yaml",
+        "document:Documents/CICD 전략.md"
+      ],
+      "languageLesson": "GitOps는 Git 저장소를 배포 상태의 단일 진실 원천(single source of truth)으로 삼는 방식입니다. GitHub Actions YAML은 on(트리거)·jobs(병렬)·steps(순차)로 구성되며, ArgoCD의 selfHeal·prune 옵션은 클러스터 실제 상태를 Git 선언과 자동으로 일치시킵니다."
+    },
+    {
+      "order": 13,
+      "title": "AWS 재해복구 인프라 (Terraform DR)",
+      "description": "카카오 오리진 장애에 대비한 AWS DR 스택입니다. network.tf가 VPC·서브넷 토폴로지를 깔고, dns.tf는 Route53 failover 레코드로 장애 시 AWS로 트래픽을 전환하며, dr_trigger.tf와 dr_controller.py Lambda는 헬스체크 결과에 따라 콜드 스탠바이 ASG 용량을 조절합니다. DR-DB-RUNBOOK 문서는 WireGuard 논리 복제와 수동 승격 절차를 안내합니다.",
+      "nodeIds": [
+        "resource:aws/terraform/network.tf",
+        "resource:aws/terraform/dns.tf",
+        "resource:aws/terraform/dr_trigger.tf",
+        "file:aws/terraform/lambda/dr_controller.py",
+        "document:aws/DR-DB-RUNBOOK.md"
+      ],
+      "languageLesson": "Terraform은 리소스로 원하는 인프라 상태를 선언하고 state 파일로 실제 존재를 추적합니다. apply 전 plan으로 변경을 미리 검토하며, 변수(variables.tf)와 출력(outputs.tf)으로 모듈을 매개변수화·연결합니다."
+    },
+    {
+      "order": 14,
+      "title": "전체 구조 정리: 디렉토리 가이드",
+      "description": "투어를 마무리하며 프로젝트 디렉토리 구조 문서로 전체 그림을 다시 조망합니다. .github(CI), 4K_FE(Next.js), 4K_BE(FastAPI), 4K_ML(배치), Ansible(IaC/매니페스트), aws(DR), Documents 각 영역의 역할 정리가 지금까지 단계별로 살펴본 프론트엔드→백엔드→ML→배포→DR의 모노레포 구조를 하나의 지도로 묶어 줍니다.",
+      "nodeIds": [
+        "document:Documents/프로젝트 디렉토리 구조.md"
+      ]
+    }
+  ]
+}

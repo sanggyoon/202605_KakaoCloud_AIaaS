@@ -1,0 +1,129 @@
+{
+  "nodes": [
+    {
+      "id": "config:Ansible/manifests/apps/cluster-issuer.yaml",
+      "type": "config",
+      "name": "cluster-issuer.yaml",
+      "filePath": "Ansible/manifests/apps/cluster-issuer.yaml",
+      "summary": "cert-manager ClusterIssuer 매니페스트로, Let's Encrypt staging 및 production ACME 발급자를 정의하여 nginx ingress 기반 HTTP-01 챌린지로 TLS 인증서를 자동 발급한다.",
+      "tags": ["configuration", "kubernetes", "tls", "cert-manager", "security"],
+      "complexity": "simple",
+      "languageNotes": "단일 파일 내 '---' 구분자로 staging/prod 두 ClusterIssuer를 멀티 도큐먼트로 정의한다."
+    },
+    {
+      "id": "config:Ansible/manifests/apps/ingress-nginx-config.yaml",
+      "type": "config",
+      "name": "ingress-nginx-config.yaml",
+      "filePath": "Ansible/manifests/apps/ingress-nginx-config.yaml",
+      "summary": "ingress-nginx 컨트롤러용 ConfigMap으로, 접근 로그를 JSON 포맷으로 출력하도록 log-format-upstream과 escape 설정을 지정한다.",
+      "tags": ["configuration", "kubernetes", "ingress", "logging", "monitoring"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/manifests/apps/ingress-studio.yaml",
+      "type": "config",
+      "name": "ingress-studio.yaml",
+      "filePath": "Ansible/manifests/apps/ingress-studio.yaml",
+      "summary": "data/ai/monitoring/argocd 네임스페이스의 주요 서비스(Supabase Studio·REST API, Grafana, ArgoCD)를 외부 도메인으로 노출하는 5개의 nginx Ingress 매니페스트로, cert-manager TLS와 Basic Auth를 적용한다.",
+      "tags": ["configuration", "kubernetes", "ingress", "routing", "tls"],
+      "complexity": "complex",
+      "languageNotes": "각 Ingress가 .4kakao.kro.kr(전환용)과 .peakly.art 두 호스트를 병행 라우팅하며 도메인 전환을 진행 중이다."
+    },
+    {
+      "id": "endpoint:Ansible/manifests/apps/ingress-studio.yaml:supabase-data-studio",
+      "type": "endpoint",
+      "name": "data.peakly.art/ (supabase-data-studio)",
+      "filePath": "Ansible/manifests/apps/ingress-studio.yaml",
+      "summary": "data 네임스페이스의 Supabase Studio 대시보드(포트 3000)를 data.peakly.art 도메인으로 노출하며 Basic Auth로 보호하는 Ingress.",
+      "tags": ["ingress", "endpoint", "supabase", "basic-auth"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "endpoint:Ansible/manifests/apps/ingress-studio.yaml:supabase-data-api",
+      "type": "endpoint",
+      "name": "data.peakly.art/rest,/auth,/storage (supabase-data-api)",
+      "filePath": "Ansible/manifests/apps/ingress-studio.yaml",
+      "summary": "Supabase Kong 게이트웨이(포트 8000)로 /rest/v1·/auth/v1·/storage/v1 경로를 라우팅하는 REST API Ingress로, Basic Auth 없이 Supabase JWT로 인증한다.",
+      "tags": ["ingress", "endpoint", "supabase", "api-schema"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "endpoint:Ansible/manifests/apps/ingress-studio.yaml:supabase-ai-studio",
+      "type": "endpoint",
+      "name": "ai.peakly.art/ (supabase-ai-studio)",
+      "filePath": "Ansible/manifests/apps/ingress-studio.yaml",
+      "summary": "ai 네임스페이스의 Supabase Studio 대시보드(포트 3000)를 ai.peakly.art 도메인으로 노출하며 Basic Auth로 보호하는 Ingress.",
+      "tags": ["ingress", "endpoint", "supabase", "basic-auth"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "endpoint:Ansible/manifests/apps/ingress-studio.yaml:grafana",
+      "type": "endpoint",
+      "name": "grafana.peakly.art/ (grafana)",
+      "filePath": "Ansible/manifests/apps/ingress-studio.yaml",
+      "summary": "monitoring 네임스페이스의 kube-prometheus-stack Grafana(포트 80)를 grafana.peakly.art 도메인으로 노출하는 Ingress.",
+      "tags": ["ingress", "endpoint", "grafana", "monitoring"],
+      "complexity": "simple"
+    },
+    {
+      "id": "endpoint:Ansible/manifests/apps/ingress-studio.yaml:argocd",
+      "type": "endpoint",
+      "name": "argocd.peakly.art/ (argocd)",
+      "filePath": "Ansible/manifests/apps/ingress-studio.yaml",
+      "summary": "argocd 네임스페이스의 argocd-server(포트 80, HTTP backend-protocol)를 argocd.peakly.art 도메인으로 노출하는 GitOps 대시보드 Ingress.",
+      "tags": ["ingress", "endpoint", "argocd", "ci-cd"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "config:Ansible/manifests/apps/ingress-studio.yaml",
+      "target": "endpoint:Ansible/manifests/apps/ingress-studio.yaml:supabase-data-studio",
+      "type": "serves",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "config:Ansible/manifests/apps/ingress-studio.yaml",
+      "target": "endpoint:Ansible/manifests/apps/ingress-studio.yaml:supabase-data-api",
+      "type": "serves",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "config:Ansible/manifests/apps/ingress-studio.yaml",
+      "target": "endpoint:Ansible/manifests/apps/ingress-studio.yaml:supabase-ai-studio",
+      "type": "serves",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "config:Ansible/manifests/apps/ingress-studio.yaml",
+      "target": "endpoint:Ansible/manifests/apps/ingress-studio.yaml:grafana",
+      "type": "serves",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "config:Ansible/manifests/apps/ingress-studio.yaml",
+      "target": "endpoint:Ansible/manifests/apps/ingress-studio.yaml:argocd",
+      "type": "serves",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "config:Ansible/manifests/apps/cluster-issuer.yaml",
+      "target": "config:Ansible/manifests/apps/ingress-studio.yaml",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Ansible/manifests/apps/ingress-nginx-config.yaml",
+      "target": "config:Ansible/manifests/apps/ingress-studio.yaml",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

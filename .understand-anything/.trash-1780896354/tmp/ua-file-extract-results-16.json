@@ -1,0 +1,3422 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 25,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "4K_BE/.python-version",
+      "language": "unknown",
+      "fileCategory": "code",
+      "totalLines": 1,
+      "nonEmptyLines": 1,
+      "metrics": {}
+    },
+    {
+      "path": "4K_BE/app/main.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 315,
+      "nonEmptyLines": 272,
+      "functions": [
+        {
+          "name": "_sb_headers",
+          "startLine": 33,
+          "endLine": 39,
+          "params": []
+        },
+        {
+          "name": "_pick_trailer",
+          "startLine": 42,
+          "endLine": 53,
+          "params": [
+            "videos"
+          ]
+        },
+        {
+          "name": "health",
+          "startLine": 57,
+          "endLine": 58,
+          "params": []
+        },
+        {
+          "name": "list_movies",
+          "startLine": 62,
+          "endLine": 115,
+          "params": [
+            "page"
+          ]
+        },
+        {
+          "name": "search_movies",
+          "startLine": 119,
+          "endLine": 171,
+          "params": [
+            "q",
+            "page"
+          ]
+        },
+        {
+          "name": "movie_detail",
+          "startLine": 175,
+          "endLine": 196,
+          "params": [
+            "tmdb_id"
+          ]
+        },
+        {
+          "name": "update_movie",
+          "startLine": 207,
+          "endLine": 241,
+          "params": [
+            "tmdb_id",
+            "payload"
+          ]
+        },
+        {
+          "name": "add_movie",
+          "startLine": 245,
+          "endLine": 300,
+          "params": [
+            "tmdb_id"
+          ]
+        },
+        {
+          "name": "delete_movie",
+          "startLine": 304,
+          "endLine": 315,
+          "params": [
+            "tmdb_id"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "_sb_headers",
+          "line": 33,
+          "isDefault": false
+        },
+        {
+          "name": "_pick_trailer",
+          "line": 42,
+          "isDefault": false
+        },
+        {
+          "name": "health",
+          "line": 56,
+          "isDefault": false
+        },
+        {
+          "name": "list_movies",
+          "line": 61,
+          "isDefault": false
+        },
+        {
+          "name": "search_movies",
+          "line": 118,
+          "isDefault": false
+        },
+        {
+          "name": "movie_detail",
+          "line": 174,
+          "isDefault": false
+        },
+        {
+          "name": "update_movie",
+          "line": 206,
+          "isDefault": false
+        },
+        {
+          "name": "add_movie",
+          "line": 244,
+          "isDefault": false
+        },
+        {
+          "name": "delete_movie",
+          "line": 303,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_pick_trailer",
+          "callee": "v.get",
+          "lineNumber": 45
+        },
+        {
+          "caller": "_pick_trailer",
+          "callee": "next",
+          "lineNumber": 50
+        },
+        {
+          "caller": "_pick_trailer",
+          "callee": "pred",
+          "lineNumber": 50
+        },
+        {
+          "caller": "list_movies",
+          "callee": "httpx.AsyncClient",
+          "lineNumber": 67
+        },
+        {
+          "caller": "list_movies",
+          "callee": "client.get",
+          "lineNumber": 69
+        },
+        {
+          "caller": "list_movies",
+          "callee": "HTTPException",
+          "lineNumber": 82
+        },
+        {
+          "caller": "list_movies",
+          "callee": "r.json",
+          "lineNumber": 83
+        },
+        {
+          "caller": "list_movies",
+          "callee": "data.get",
+          "lineNumber": 85
+        },
+        {
+          "caller": "list_movies",
+          "callee": "set",
+          "lineNumber": 89
+        },
+        {
+          "caller": "list_movies",
+          "callee": "\",\".join",
+          "lineNumber": 91
+        },
+        {
+          "caller": "list_movies",
+          "callee": "str",
+          "lineNumber": 91
+        },
+        {
+          "caller": "list_movies",
+          "callee": "client.get",
+          "lineNumber": 92
+        },
+        {
+          "caller": "list_movies",
+          "callee": "_sb_headers",
+          "lineNumber": 95
+        },
+        {
+          "caller": "list_movies",
+          "callee": "sb_r.json",
+          "lineNumber": 98
+        },
+        {
+          "caller": "list_movies",
+          "callee": "data.get",
+          "lineNumber": 101
+        },
+        {
+          "caller": "list_movies",
+          "callee": "min",
+          "lineNumber": 102
+        },
+        {
+          "caller": "list_movies",
+          "callee": "data.get",
+          "lineNumber": 102
+        },
+        {
+          "caller": "list_movies",
+          "callee": "m.get",
+          "lineNumber": 106
+        },
+        {
+          "caller": "list_movies",
+          "callee": "m.get",
+          "lineNumber": 107
+        },
+        {
+          "caller": "list_movies",
+          "callee": "m.get",
+          "lineNumber": 108
+        },
+        {
+          "caller": "list_movies",
+          "callee": "m.get",
+          "lineNumber": 109
+        },
+        {
+          "caller": "list_movies",
+          "callee": "m.get",
+          "lineNumber": 110
+        },
+        {
+          "caller": "search_movies",
+          "callee": "q.strip",
+          "lineNumber": 124
+        },
+        {
+          "caller": "search_movies",
+          "callee": "httpx.AsyncClient",
+          "lineNumber": 127
+        },
+        {
+          "caller": "search_movies",
+          "callee": "client.get",
+          "lineNumber": 128
+        },
+        {
+          "caller": "search_movies",
+          "callee": "HTTPException",
+          "lineNumber": 139
+        },
+        {
+          "caller": "search_movies",
+          "callee": "r.json",
+          "lineNumber": 140
+        },
+        {
+          "caller": "search_movies",
+          "callee": "data.get",
+          "lineNumber": 142
+        },
+        {
+          "caller": "search_movies",
+          "callee": "set",
+          "lineNumber": 145
+        },
+        {
+          "caller": "search_movies",
+          "callee": "\",\".join",
+          "lineNumber": 147
+        },
+        {
+          "caller": "search_movies",
+          "callee": "str",
+          "lineNumber": 147
+        },
+        {
+          "caller": "search_movies",
+          "callee": "client.get",
+          "lineNumber": 148
+        },
+        {
+          "caller": "search_movies",
+          "callee": "_sb_headers",
+          "lineNumber": 151
+        },
+        {
+          "caller": "search_movies",
+          "callee": "sb_r.json",
+          "lineNumber": 154
+        },
+        {
+          "caller": "search_movies",
+          "callee": "data.get",
+          "lineNumber": 157
+        },
+        {
+          "caller": "search_movies",
+          "callee": "min",
+          "lineNumber": 158
+        },
+        {
+          "caller": "search_movies",
+          "callee": "data.get",
+          "lineNumber": 158
+        },
+        {
+          "caller": "search_movies",
+          "callee": "m.get",
+          "lineNumber": 162
+        },
+        {
+          "caller": "search_movies",
+          "callee": "m.get",
+          "lineNumber": 163
+        },
+        {
+          "caller": "search_movies",
+          "callee": "m.get",
+          "lineNumber": 164
+        },
+        {
+          "caller": "search_movies",
+          "callee": "m.get",
+          "lineNumber": 165
+        },
+        {
+          "caller": "search_movies",
+          "callee": "m.get",
+          "lineNumber": 166
+        },
+        {
+          "caller": "movie_detail",
+          "callee": "httpx.AsyncClient",
+          "lineNumber": 177
+        },
+        {
+          "caller": "movie_detail",
+          "callee": "client.get",
+          "lineNumber": 178
+        },
+        {
+          "caller": "movie_detail",
+          "callee": "_sb_headers",
+          "lineNumber": 181
+        },
+        {
+          "caller": "movie_detail",
+          "callee": "HTTPException",
+          "lineNumber": 184
+        },
+        {
+          "caller": "movie_detail",
+          "callee": "m_r.json",
+          "lineNumber": 185
+        },
+        {
+          "caller": "movie_detail",
+          "callee": "HTTPException",
+          "lineNumber": 187
+        },
+        {
+          "caller": "movie_detail",
+          "callee": "client.get",
+          "lineNumber": 189
+        },
+        {
+          "caller": "movie_detail",
+          "callee": "_sb_headers",
+          "lineNumber": 192
+        },
+        {
+          "caller": "movie_detail",
+          "callee": "v_r.json",
+          "lineNumber": 194
+        },
+        {
+          "caller": "movie_detail",
+          "callee": "v_r.json",
+          "lineNumber": 194
+        },
+        {
+          "caller": "update_movie",
+          "callee": "payload.get",
+          "lineNumber": 212
+        },
+        {
+          "caller": "update_movie",
+          "callee": "payload.get",
+          "lineNumber": 213
+        },
+        {
+          "caller": "update_movie",
+          "callee": "movie_fields.items",
+          "lineNumber": 216
+        },
+        {
+          "caller": "update_movie",
+          "callee": "httpx.AsyncClient",
+          "lineNumber": 218
+        },
+        {
+          "caller": "update_movie",
+          "callee": "client.patch",
+          "lineNumber": 220
+        },
+        {
+          "caller": "update_movie",
+          "callee": "_sb_headers",
+          "lineNumber": 224
+        },
+        {
+          "caller": "update_movie",
+          "callee": "HTTPException",
+          "lineNumber": 227
+        },
+        {
+          "caller": "update_movie",
+          "callee": "isinstance",
+          "lineNumber": 230
+        },
+        {
+          "caller": "update_movie",
+          "callee": "all",
+          "lineNumber": 230
+        },
+        {
+          "caller": "update_movie",
+          "callee": "isinstance",
+          "lineNumber": 230
+        },
+        {
+          "caller": "update_movie",
+          "callee": "HTTPException",
+          "lineNumber": 231
+        },
+        {
+          "caller": "update_movie",
+          "callee": "client.patch",
+          "lineNumber": 232
+        },
+        {
+          "caller": "update_movie",
+          "callee": "_sb_headers",
+          "lineNumber": 236
+        },
+        {
+          "caller": "update_movie",
+          "callee": "HTTPException",
+          "lineNumber": 239
+        },
+        {
+          "caller": "add_movie",
+          "callee": "httpx.AsyncClient",
+          "lineNumber": 247
+        },
+        {
+          "caller": "add_movie",
+          "callee": "client.get",
+          "lineNumber": 248
+        },
+        {
+          "caller": "add_movie",
+          "callee": "HTTPException",
+          "lineNumber": 257
+        },
+        {
+          "caller": "add_movie",
+          "callee": "HTTPException",
+          "lineNumber": 259
+        },
+        {
+          "caller": "add_movie",
+          "callee": "r.json",
+          "lineNumber": 260
+        },
+        {
+          "caller": "add_movie",
+          "callee": "d.get(\"credits\", {}).get",
+          "lineNumber": 262
+        },
+        {
+          "caller": "add_movie",
+          "callee": "d.get",
+          "lineNumber": 262
+        },
+        {
+          "caller": "add_movie",
+          "callee": "next",
+          "lineNumber": 263
+        },
+        {
+          "caller": "add_movie",
+          "callee": "\", \".join",
+          "lineNumber": 264
+        },
+        {
+          "caller": "add_movie",
+          "callee": "d.get(\"credits\", {}).get",
+          "lineNumber": 264
+        },
+        {
+          "caller": "add_movie",
+          "callee": "d.get",
+          "lineNumber": 264
+        },
+        {
+          "caller": "add_movie",
+          "callee": "_pick_trailer",
+          "lineNumber": 265
+        },
+        {
+          "caller": "add_movie",
+          "callee": "d.get(\"videos\", {}).get",
+          "lineNumber": 265
+        },
+        {
+          "caller": "add_movie",
+          "callee": "d.get",
+          "lineNumber": 265
+        },
+        {
+          "caller": "add_movie",
+          "callee": "d.get",
+          "lineNumber": 268
+        },
+        {
+          "caller": "add_movie",
+          "callee": "int",
+          "lineNumber": 270
+        },
+        {
+          "caller": "add_movie",
+          "callee": "d.get",
+          "lineNumber": 276
+        },
+        {
+          "caller": "add_movie",
+          "callee": "d.get",
+          "lineNumber": 277
+        },
+        {
+          "caller": "add_movie",
+          "callee": "d.get",
+          "lineNumber": 278
+        },
+        {
+          "caller": "add_movie",
+          "callee": "d.get",
+          "lineNumber": 279
+        },
+        {
+          "caller": "add_movie",
+          "callee": "d.get",
+          "lineNumber": 282
+        },
+        {
+          "caller": "add_movie",
+          "callee": "\", \".join",
+          "lineNumber": 283
+        },
+        {
+          "caller": "add_movie",
+          "callee": "d.get",
+          "lineNumber": 283
+        },
+        {
+          "caller": "add_movie",
+          "callee": "d.get",
+          "lineNumber": 285
+        },
+        {
+          "caller": "add_movie",
+          "callee": "client.post",
+          "lineNumber": 291
+        },
+        {
+          "caller": "add_movie",
+          "callee": "_sb_headers",
+          "lineNumber": 295
+        },
+        {
+          "caller": "add_movie",
+          "callee": "HTTPException",
+          "lineNumber": 298
+        },
+        {
+          "caller": "delete_movie",
+          "callee": "httpx.AsyncClient",
+          "lineNumber": 306
+        },
+        {
+          "caller": "delete_movie",
+          "callee": "client.delete",
+          "lineNumber": 307
+        },
+        {
+          "caller": "delete_movie",
+          "callee": "_sb_headers",
+          "lineNumber": 310
+        },
+        {
+          "caller": "delete_movie",
+          "callee": "HTTPException",
+          "lineNumber": 313
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 9,
+        "functionCount": 9,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_BE/DB_SCRIPTS/seed_movies.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 279,
+      "nonEmptyLines": 243,
+      "functions": [
+        {
+          "name": "tmdb_get",
+          "startLine": 77,
+          "endLine": 85,
+          "params": [
+            "path",
+            "params"
+          ]
+        },
+        {
+          "name": "pick_trailer",
+          "startLine": 88,
+          "endLine": 101,
+          "params": [
+            "videos"
+          ]
+        },
+        {
+          "name": "fetch_movie",
+          "startLine": 104,
+          "endLine": 147,
+          "params": [
+            "tmdb_id"
+          ]
+        },
+        {
+          "name": "get_existing_tmdb_ids",
+          "startLine": 150,
+          "endLine": 168,
+          "params": []
+        },
+        {
+          "name": "verify_insert",
+          "startLine": 171,
+          "endLine": 182,
+          "params": [
+            "tmdb_id"
+          ]
+        },
+        {
+          "name": "upsert_batch",
+          "startLine": 185,
+          "endLine": 211,
+          "params": [
+            "movies"
+          ]
+        },
+        {
+          "name": "main",
+          "startLine": 214,
+          "endLine": 275,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "tmdb_get",
+          "line": 77,
+          "isDefault": false
+        },
+        {
+          "name": "pick_trailer",
+          "line": 88,
+          "isDefault": false
+        },
+        {
+          "name": "fetch_movie",
+          "line": 104,
+          "isDefault": false
+        },
+        {
+          "name": "get_existing_tmdb_ids",
+          "line": 150,
+          "isDefault": false
+        },
+        {
+          "name": "verify_insert",
+          "line": 171,
+          "isDefault": false
+        },
+        {
+          "name": "upsert_batch",
+          "line": 185,
+          "isDefault": false
+        },
+        {
+          "name": "main",
+          "line": 214,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "tmdb_get",
+          "callee": "httpx.get",
+          "lineNumber": 79
+        },
+        {
+          "caller": "tmdb_get",
+          "callee": "r.raise_for_status",
+          "lineNumber": 84
+        },
+        {
+          "caller": "tmdb_get",
+          "callee": "r.json",
+          "lineNumber": 85
+        },
+        {
+          "caller": "pick_trailer",
+          "callee": "v.get",
+          "lineNumber": 93
+        },
+        {
+          "caller": "pick_trailer",
+          "callee": "next",
+          "lineNumber": 98
+        },
+        {
+          "caller": "pick_trailer",
+          "callee": "pred",
+          "lineNumber": 98
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "tmdb_get",
+          "lineNumber": 110
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "print",
+          "lineNumber": 112
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "print",
+          "lineNumber": 115
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "d.get(\"credits\", {}).get",
+          "lineNumber": 119
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "d.get",
+          "lineNumber": 119
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "next",
+          "lineNumber": 120
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "\", \".join",
+          "lineNumber": 123
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "d.get(\"credits\", {}).get",
+          "lineNumber": 123
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "d.get",
+          "lineNumber": 123
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "pick_trailer",
+          "lineNumber": 125
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "d.get(\"videos\", {}).get",
+          "lineNumber": 125
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "d.get",
+          "lineNumber": 125
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "d.get",
+          "lineNumber": 128
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "int",
+          "lineNumber": 130
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "d.get",
+          "lineNumber": 136
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "d.get",
+          "lineNumber": 137
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "d.get",
+          "lineNumber": 138
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "d.get",
+          "lineNumber": 139
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "d.get",
+          "lineNumber": 142
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "\", \".join",
+          "lineNumber": 143
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "d.get",
+          "lineNumber": 143
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "d.get",
+          "lineNumber": 145
+        },
+        {
+          "caller": "get_existing_tmdb_ids",
+          "callee": "httpx.get",
+          "lineNumber": 155
+        },
+        {
+          "caller": "get_existing_tmdb_ids",
+          "callee": "print",
+          "lineNumber": 164
+        },
+        {
+          "caller": "get_existing_tmdb_ids",
+          "callee": "set",
+          "lineNumber": 165
+        },
+        {
+          "caller": "get_existing_tmdb_ids",
+          "callee": "r.json",
+          "lineNumber": 166
+        },
+        {
+          "caller": "get_existing_tmdb_ids",
+          "callee": "print",
+          "lineNumber": 167
+        },
+        {
+          "caller": "get_existing_tmdb_ids",
+          "callee": "len",
+          "lineNumber": 167
+        },
+        {
+          "caller": "verify_insert",
+          "callee": "httpx.get",
+          "lineNumber": 174
+        },
+        {
+          "caller": "verify_insert",
+          "callee": "len",
+          "lineNumber": 182
+        },
+        {
+          "caller": "verify_insert",
+          "callee": "r.json",
+          "lineNumber": 182
+        },
+        {
+          "caller": "upsert_batch",
+          "callee": "httpx.post",
+          "lineNumber": 199
+        },
+        {
+          "caller": "upsert_batch",
+          "callee": "print",
+          "lineNumber": 208
+        },
+        {
+          "caller": "upsert_batch",
+          "callee": "print",
+          "lineNumber": 210
+        },
+        {
+          "caller": "upsert_batch",
+          "callee": "len",
+          "lineNumber": 210
+        },
+        {
+          "caller": "main",
+          "callee": "SystemExit",
+          "lineNumber": 216
+        },
+        {
+          "caller": "main",
+          "callee": "SystemExit",
+          "lineNumber": 218
+        },
+        {
+          "caller": "main",
+          "callee": "get_existing_tmdb_ids",
+          "lineNumber": 221
+        },
+        {
+          "caller": "main",
+          "callee": "len",
+          "lineNumber": 224
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 225
+        },
+        {
+          "caller": "main",
+          "callee": "len",
+          "lineNumber": 225
+        },
+        {
+          "caller": "main",
+          "callee": "len",
+          "lineNumber": 225
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 229
+        },
+        {
+          "caller": "main",
+          "callee": "fetch_movie",
+          "lineNumber": 230
+        },
+        {
+          "caller": "main",
+          "callee": "upsert_batch",
+          "lineNumber": 232
+        },
+        {
+          "caller": "main",
+          "callee": "verify_insert",
+          "lineNumber": 234
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 236
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 238
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 241
+        },
+        {
+          "caller": "main",
+          "callee": "len",
+          "lineNumber": 244
+        },
+        {
+          "caller": "main",
+          "callee": "enumerate",
+          "lineNumber": 250
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 251
+        },
+        {
+          "caller": "main",
+          "callee": "fetch_movie",
+          "lineNumber": 252
+        },
+        {
+          "caller": "main",
+          "callee": "batch.append",
+          "lineNumber": 255
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 256
+        },
+        {
+          "caller": "main",
+          "callee": "failed.append",
+          "lineNumber": 258
+        },
+        {
+          "caller": "main",
+          "callee": "len",
+          "lineNumber": 261
+        },
+        {
+          "caller": "main",
+          "callee": "upsert_batch",
+          "lineNumber": 262
+        },
+        {
+          "caller": "main",
+          "callee": "batch.clear",
+          "lineNumber": 263
+        },
+        {
+          "caller": "main",
+          "callee": "time.sleep",
+          "lineNumber": 265
+        },
+        {
+          "caller": "main",
+          "callee": "upsert_batch",
+          "lineNumber": 269
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 271
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 272
+        },
+        {
+          "caller": "main",
+          "callee": "len",
+          "lineNumber": 272
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 273
+        },
+        {
+          "caller": "main",
+          "callee": "len",
+          "lineNumber": 273
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 275
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 7,
+        "functionCount": 7,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_BE/requirements.txt",
+      "language": "txt",
+      "fileCategory": "docs",
+      "totalLines": 4,
+      "nonEmptyLines": 4,
+      "metrics": {}
+    },
+    {
+      "path": "4K_FE/app/api/manager/movies/[tmdb_id]/route.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 36,
+      "nonEmptyLines": 33,
+      "functions": [
+        {
+          "name": "GET",
+          "startLine": 3,
+          "endLine": 11,
+          "params": [
+            "_request",
+            "{ params }"
+          ]
+        },
+        {
+          "name": "PATCH",
+          "startLine": 13,
+          "endLine": 26,
+          "params": [
+            "request",
+            "{ params }"
+          ]
+        },
+        {
+          "name": "DELETE",
+          "startLine": 28,
+          "endLine": 36,
+          "params": [
+            "_request",
+            "{ params }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "GET",
+          "line": 3,
+          "isDefault": false
+        },
+        {
+          "name": "PATCH",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "DELETE",
+          "line": 28,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "GET",
+          "callee": "fetch",
+          "lineNumber": 8
+        },
+        {
+          "caller": "GET",
+          "callee": "res.json",
+          "lineNumber": 9
+        },
+        {
+          "caller": "GET",
+          "callee": "Response.json",
+          "lineNumber": 10
+        },
+        {
+          "caller": "PATCH",
+          "callee": "request.json",
+          "lineNumber": 18
+        },
+        {
+          "caller": "PATCH",
+          "callee": "fetch",
+          "lineNumber": 19
+        },
+        {
+          "caller": "PATCH",
+          "callee": "JSON.stringify",
+          "lineNumber": 22
+        },
+        {
+          "caller": "PATCH",
+          "callee": "res.json",
+          "lineNumber": 24
+        },
+        {
+          "caller": "PATCH",
+          "callee": "Response.json",
+          "lineNumber": 25
+        },
+        {
+          "caller": "DELETE",
+          "callee": "fetch",
+          "lineNumber": 33
+        },
+        {
+          "caller": "DELETE",
+          "callee": "res.json",
+          "lineNumber": 34
+        },
+        {
+          "caller": "DELETE",
+          "callee": "Response.json",
+          "lineNumber": 35
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/api/manager/movies/route.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 18,
+      "nonEmptyLines": 15,
+      "functions": [
+        {
+          "name": "GET",
+          "startLine": 4,
+          "endLine": 11,
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "POST",
+          "startLine": 13,
+          "endLine": 18,
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "GET",
+          "line": 4,
+          "isDefault": false
+        },
+        {
+          "name": "POST",
+          "line": 13,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "GET",
+          "callee": "searchParams.get",
+          "lineNumber": 6
+        },
+        {
+          "caller": "GET",
+          "callee": "fetch",
+          "lineNumber": 8
+        },
+        {
+          "caller": "GET",
+          "callee": "res.json",
+          "lineNumber": 9
+        },
+        {
+          "caller": "GET",
+          "callee": "Response.json",
+          "lineNumber": 10
+        },
+        {
+          "caller": "POST",
+          "callee": "request.json",
+          "lineNumber": 14
+        },
+        {
+          "caller": "POST",
+          "callee": "fetch",
+          "lineNumber": 15
+        },
+        {
+          "caller": "POST",
+          "callee": "res.json",
+          "lineNumber": 16
+        },
+        {
+          "caller": "POST",
+          "callee": "Response.json",
+          "lineNumber": 17
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/api/manager/movies/search/route.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 15,
+      "nonEmptyLines": 13,
+      "functions": [
+        {
+          "name": "GET",
+          "startLine": 4,
+          "endLine": 15,
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "GET",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "GET",
+          "callee": "searchParams.get",
+          "lineNumber": 6
+        },
+        {
+          "caller": "GET",
+          "callee": "searchParams.get",
+          "lineNumber": 7
+        },
+        {
+          "caller": "GET",
+          "callee": "fetch",
+          "lineNumber": 9
+        },
+        {
+          "caller": "GET",
+          "callee": "encodeURIComponent",
+          "lineNumber": 10
+        },
+        {
+          "caller": "GET",
+          "callee": "res.json",
+          "lineNumber": 13
+        },
+        {
+          "caller": "GET",
+          "callee": "Response.json",
+          "lineNumber": 14
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/components/BackgroundThread.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 235,
+      "nonEmptyLines": 201,
+      "functions": [
+        {
+          "name": "Threads",
+          "startLine": 128,
+          "endLine": 233,
+          "params": [
+            "{\n  color = [1, 1, 1],\n  amplitude = 1,\n  distance = 0,\n  enableMouseInteraction = false,\n  ...rest\n}"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Threads",
+          "callee": "useRef",
+          "lineNumber": 135
+        },
+        {
+          "caller": "Threads",
+          "callee": "useRef",
+          "lineNumber": 136
+        },
+        {
+          "caller": "Threads",
+          "callee": "useEffect",
+          "lineNumber": 138
+        },
+        {
+          "caller": "Threads",
+          "callee": "gl.clearColor",
+          "lineNumber": 144
+        },
+        {
+          "caller": "Threads",
+          "callee": "gl.enable",
+          "lineNumber": 145
+        },
+        {
+          "caller": "Threads",
+          "callee": "gl.blendFunc",
+          "lineNumber": 146
+        },
+        {
+          "caller": "Threads",
+          "callee": "container.appendChild",
+          "lineNumber": 147
+        },
+        {
+          "caller": "resize",
+          "callee": "renderer.setSize",
+          "lineNumber": 173
+        },
+        {
+          "caller": "Threads",
+          "callee": "window.addEventListener",
+          "lineNumber": 178
+        },
+        {
+          "caller": "Threads",
+          "callee": "resize",
+          "lineNumber": 179
+        },
+        {
+          "caller": "handleMouseMove",
+          "callee": "container.getBoundingClientRect",
+          "lineNumber": 185
+        },
+        {
+          "caller": "Threads",
+          "callee": "container.addEventListener",
+          "lineNumber": 194
+        },
+        {
+          "caller": "Threads",
+          "callee": "container.addEventListener",
+          "lineNumber": 195
+        },
+        {
+          "caller": "update",
+          "callee": "renderer.render",
+          "lineNumber": 211
+        },
+        {
+          "caller": "update",
+          "callee": "requestAnimationFrame",
+          "lineNumber": 212
+        },
+        {
+          "caller": "Threads",
+          "callee": "requestAnimationFrame",
+          "lineNumber": 214
+        },
+        {
+          "caller": "Threads",
+          "callee": "cancelAnimationFrame",
+          "lineNumber": 218
+        },
+        {
+          "caller": "Threads",
+          "callee": "window.removeEventListener",
+          "lineNumber": 219
+        },
+        {
+          "caller": "Threads",
+          "callee": "container.removeEventListener",
+          "lineNumber": 222
+        },
+        {
+          "caller": "Threads",
+          "callee": "container.removeEventListener",
+          "lineNumber": 223
+        },
+        {
+          "caller": "Threads",
+          "callee": "container.contains",
+          "lineNumber": 225
+        },
+        {
+          "caller": "Threads",
+          "callee": "container.removeChild",
+          "lineNumber": 225
+        },
+        {
+          "caller": "Threads",
+          "callee": "gl.getExtension('WEBGL_lose_context')?.loseContext",
+          "lineNumber": 226
+        },
+        {
+          "caller": "Threads",
+          "callee": "gl.getExtension",
+          "lineNumber": 226
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/components/ClimaxGraph.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 81,
+      "nonEmptyLines": 69,
+      "functions": [
+        {
+          "name": "ClimaxGraph",
+          "startLine": 9,
+          "endLine": 81,
+          "params": [
+            "{ data, height = 160 }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ClimaxGraph",
+          "line": 9,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "ClimaxGraph",
+          "callee": "Math.min",
+          "lineNumber": 17
+        },
+        {
+          "caller": "ClimaxGraph",
+          "callee": "Math.max",
+          "lineNumber": 18
+        },
+        {
+          "caller": "ClimaxGraph",
+          "callee": "data.map",
+          "lineNumber": 25
+        },
+        {
+          "caller": "ClimaxGraph",
+          "callee": "toX",
+          "lineNumber": 25
+        },
+        {
+          "caller": "ClimaxGraph",
+          "callee": "toY",
+          "lineNumber": 25
+        },
+        {
+          "caller": "ClimaxGraph",
+          "callee": "toY",
+          "lineNumber": 37
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/components/DetailOverlay.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 263,
+      "nonEmptyLines": 241,
+      "functions": [
+        {
+          "name": "dtwDistance",
+          "startLine": 8,
+          "endLine": 24,
+          "params": [
+            "a",
+            "b"
+          ]
+        },
+        {
+          "name": "DetailOverlay",
+          "startLine": 37,
+          "endLine": 263,
+          "params": [
+            "{ movie, onClose, onSelectMovie }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "DetailOverlay",
+          "line": 37,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "dtwDistance",
+          "callee": "new Float64Array((n + 1) * (m + 1)).fill",
+          "lineNumber": 11
+        },
+        {
+          "caller": "dtwDistance",
+          "callee": "Math.min",
+          "lineNumber": 16
+        },
+        {
+          "caller": "dtwDistance",
+          "callee": "Math.sqrt",
+          "lineNumber": 23
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "genreList",
+          "lineNumber": 38
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "castList",
+          "lineNumber": 39
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "useState",
+          "lineNumber": 41
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "useState",
+          "lineNumber": 42
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "useState",
+          "lineNumber": 43
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "useState",
+          "lineNumber": 44
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "useEffect",
+          "lineNumber": 47
+        },
+        {
+          "caller": "onKey",
+          "callee": "onClose",
+          "lineNumber": 48
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "window.addEventListener",
+          "lineNumber": 49
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "window.removeEventListener",
+          "lineNumber": 50
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "useEffect",
+          "lineNumber": 55
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "setVector",
+          "lineNumber": 56
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "setVectorLoading",
+          "lineNumber": 57
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "setSimilar",
+          "lineNumber": 58
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "setSimilarLoading",
+          "lineNumber": 59
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "Promise.all([\n      fetchVector(movie.tmdb_id),\n      fetchPreferredMovies([movie.tmdb_id], [], 50),\n    ]).then",
+          "lineNumber": 61
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "Promise.all",
+          "lineNumber": 61
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "fetchVector",
+          "lineNumber": 62
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "fetchPreferredMovies",
+          "lineNumber": 63
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "setVector",
+          "lineNumber": 65
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "setVectorLoading",
+          "lineNumber": 66
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "rawCandidates.filter",
+          "lineNumber": 69
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "setSimilarLoading",
+          "lineNumber": 72
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "setSimilar",
+          "lineNumber": 77
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "setSimilarLoading",
+          "lineNumber": 78
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "fetchMovieVectors",
+          "lineNumber": 83
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "candidates.map",
+          "lineNumber": 83
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "candidates\n        .map((m: Movie) => ({\n          movie: m,\n          dist: vecMap.has(m.tmdb_id) ? dtwDistance(queryVec, vecMap.get(m.tmdb_id)!) : Infinity,\n        }))\n        .sort((a: { dist: number }, b: { dist: number }) => a.dist - b.dist)\n        .slice(0, 4)\n        .map",
+          "lineNumber": 84
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "candidates\n        .map((m: Movie) => ({\n          movie: m,\n          dist: vecMap.has(m.tmdb_id) ? dtwDistance(queryVec, vecMap.get(m.tmdb_id)!) : Infinity,\n        }))\n        .sort((a: { dist: number }, b: { dist: number }) => a.dist - b.dist)\n        .slice",
+          "lineNumber": 84
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "candidates\n        .map((m: Movie) => ({\n          movie: m,\n          dist: vecMap.has(m.tmdb_id) ? dtwDistance(queryVec, vecMap.get(m.tmdb_id)!) : Infinity,\n        }))\n        .sort",
+          "lineNumber": 84
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "candidates\n        .map",
+          "lineNumber": 84
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "vecMap.has",
+          "lineNumber": 87
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "dtwDistance",
+          "lineNumber": 87
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "vecMap.get",
+          "lineNumber": 87
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "setSimilar",
+          "lineNumber": 93
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "setSimilarLoading",
+          "lineNumber": 94
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "genres.map",
+          "lineNumber": 130
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "Array.from({ length: 4 }).map",
+          "lineNumber": 170
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "Array.from",
+          "lineNumber": 170
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "similar.map",
+          "lineNumber": 173
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "posterUrl",
+          "lineNumber": 174
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "genreList(m.genre).slice",
+          "lineNumber": 175
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "genreList",
+          "lineNumber": 175
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "onSelectMovie",
+          "lineNumber": 179
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "simGenres.join",
+          "lineNumber": 203
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "cast.join",
+          "lineNumber": 231
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/components/MiniGraph.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 39,
+      "nonEmptyLines": 35,
+      "functions": [
+        {
+          "name": "MiniGraph",
+          "startLine": 10,
+          "endLine": 39,
+          "params": [
+            "{ data, color = 'var(--accent)', height = 40 }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "MiniGraph",
+          "line": 10,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "MiniGraph",
+          "callee": "data.map",
+          "lineNumber": 16
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/components/MovieDetailModal.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 476,
+      "nonEmptyLines": 443,
+      "functions": [
+        {
+          "name": "parseVector",
+          "startLine": 39,
+          "endLine": 47,
+          "params": [
+            "raw"
+          ]
+        },
+        {
+          "name": "MovieDetailModal",
+          "startLine": 67,
+          "endLine": 420,
+          "params": [
+            "{\n  tmdbId,\n  fallbackTitle,\n  onClose,\n}"
+          ]
+        },
+        {
+          "name": "Field",
+          "startLine": 431,
+          "endLine": 438,
+          "params": [
+            "{ label, children }"
+          ]
+        },
+        {
+          "name": "Section",
+          "startLine": 440,
+          "endLine": 452,
+          "params": [
+            "{ title, children }"
+          ]
+        },
+        {
+          "name": "KV",
+          "startLine": 454,
+          "endLine": 461,
+          "params": [
+            "{ k, v }"
+          ]
+        },
+        {
+          "name": "Badge",
+          "startLine": 463,
+          "endLine": 476,
+          "params": [
+            "{ label, value, ok }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "MovieDetailModal",
+          "line": 67,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "parseVector",
+          "callee": "Array.isArray",
+          "lineNumber": 41
+        },
+        {
+          "caller": "parseVector",
+          "callee": "JSON.parse",
+          "lineNumber": 43
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "useState",
+          "lineNumber": 76
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "useState",
+          "lineNumber": 77
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "useState",
+          "lineNumber": 78
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "useState",
+          "lineNumber": 79
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "useState",
+          "lineNumber": 82
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "useState",
+          "lineNumber": 83
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "useState",
+          "lineNumber": 85
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "useState",
+          "lineNumber": 86
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "useState",
+          "lineNumber": 87
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "useCallback",
+          "lineNumber": 89
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "setLoading",
+          "lineNumber": 90
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "setError",
+          "lineNumber": 91
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "fetch",
+          "lineNumber": 93
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "res.json",
+          "lineNumber": 94
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "setError",
+          "lineNumber": 96
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "setMeta",
+          "lineNumber": 99
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "setVectorRow",
+          "lineNumber": 100
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "String",
+          "lineNumber": 106
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "setForm",
+          "lineNumber": 108
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "parseVector",
+          "lineNumber": 110
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "setVectorText",
+          "lineNumber": 111
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "JSON.stringify",
+          "lineNumber": 111
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "setError",
+          "lineNumber": 113
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "setLoading",
+          "lineNumber": 115
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "useEffect",
+          "lineNumber": 119
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "load",
+          "lineNumber": 120
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "useEffect",
+          "lineNumber": 124
+        },
+        {
+          "caller": "onKey",
+          "callee": "onClose",
+          "lineNumber": 125
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "window.addEventListener",
+          "lineNumber": 126
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "window.removeEventListener",
+          "lineNumber": 127
+        },
+        {
+          "caller": "setField",
+          "callee": "setForm",
+          "lineNumber": 131
+        },
+        {
+          "caller": "handleSave",
+          "callee": "setSaving",
+          "lineNumber": 134
+        },
+        {
+          "caller": "handleSave",
+          "callee": "setSaveMsg",
+          "lineNumber": 135
+        },
+        {
+          "caller": "handleSave",
+          "callee": "raw.trim",
+          "lineNumber": 141
+        },
+        {
+          "caller": "handleSave",
+          "callee": "(form[key as string] ?? '').trim",
+          "lineNumber": 144
+        },
+        {
+          "caller": "handleSave",
+          "callee": "Number",
+          "lineNumber": 148
+        },
+        {
+          "caller": "handleSave",
+          "callee": "Number.isNaN",
+          "lineNumber": 149
+        },
+        {
+          "caller": "handleSave",
+          "callee": "setSaveMsg",
+          "lineNumber": 150
+        },
+        {
+          "caller": "handleSave",
+          "callee": "setSaving",
+          "lineNumber": 151
+        },
+        {
+          "caller": "handleSave",
+          "callee": "vectorText.trim",
+          "lineNumber": 161
+        },
+        {
+          "caller": "handleSave",
+          "callee": "JSON.parse",
+          "lineNumber": 165
+        },
+        {
+          "caller": "handleSave",
+          "callee": "setSaveMsg",
+          "lineNumber": 167
+        },
+        {
+          "caller": "handleSave",
+          "callee": "setSaving",
+          "lineNumber": 168
+        },
+        {
+          "caller": "handleSave",
+          "callee": "Array.isArray",
+          "lineNumber": 171
+        },
+        {
+          "caller": "handleSave",
+          "callee": "parsed.every",
+          "lineNumber": 171
+        },
+        {
+          "caller": "handleSave",
+          "callee": "setSaveMsg",
+          "lineNumber": 172
+        },
+        {
+          "caller": "handleSave",
+          "callee": "setSaving",
+          "lineNumber": 173
+        },
+        {
+          "caller": "handleSave",
+          "callee": "fetch",
+          "lineNumber": 179
+        },
+        {
+          "caller": "handleSave",
+          "callee": "JSON.stringify",
+          "lineNumber": 182
+        },
+        {
+          "caller": "handleSave",
+          "callee": "res.json",
+          "lineNumber": 184
+        },
+        {
+          "caller": "handleSave",
+          "callee": "setSaveMsg",
+          "lineNumber": 186
+        },
+        {
+          "caller": "handleSave",
+          "callee": "setSaveMsg",
+          "lineNumber": 189
+        },
+        {
+          "caller": "handleSave",
+          "callee": "load",
+          "lineNumber": 191
+        },
+        {
+          "caller": "handleSave",
+          "callee": "setSaveMsg",
+          "lineNumber": 193
+        },
+        {
+          "caller": "handleSave",
+          "callee": "setSaving",
+          "lineNumber": 195
+        },
+        {
+          "caller": "handleRefresh",
+          "callee": "window.confirm",
+          "lineNumber": 202
+        },
+        {
+          "caller": "handleRefresh",
+          "callee": "setRefreshing",
+          "lineNumber": 205
+        },
+        {
+          "caller": "handleRefresh",
+          "callee": "setSaveMsg",
+          "lineNumber": 206
+        },
+        {
+          "caller": "handleRefresh",
+          "callee": "fetch",
+          "lineNumber": 208
+        },
+        {
+          "caller": "handleRefresh",
+          "callee": "JSON.stringify",
+          "lineNumber": 211
+        },
+        {
+          "caller": "handleRefresh",
+          "callee": "res.json",
+          "lineNumber": 213
+        },
+        {
+          "caller": "handleRefresh",
+          "callee": "setSaveMsg",
+          "lineNumber": 215
+        },
+        {
+          "caller": "handleRefresh",
+          "callee": "load",
+          "lineNumber": 218
+        },
+        {
+          "caller": "handleRefresh",
+          "callee": "setSaveMsg",
+          "lineNumber": 219
+        },
+        {
+          "caller": "handleRefresh",
+          "callee": "setSaveMsg",
+          "lineNumber": 221
+        },
+        {
+          "caller": "handleRefresh",
+          "callee": "setRefreshing",
+          "lineNumber": 223
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "posterUrl",
+          "lineNumber": 227
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "parseVector",
+          "lineNumber": 228
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "e.stopPropagation",
+          "lineNumber": 241
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "NUM_FIELDS.map",
+          "lineNumber": 309
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "setField",
+          "lineNumber": 314
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "TEXT_FIELDS.map",
+          "lineNumber": 321
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "setField",
+          "lineNumber": 326
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "setField",
+          "lineNumber": 333
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "setVectorText",
+          "lineNumber": 350
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "saveMsg.includes",
+          "lineNumber": 392
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 6,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/components/Tutorial.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 225,
+      "nonEmptyLines": 213,
+      "functions": [
+        {
+          "name": "Tutorial",
+          "startLine": 68,
+          "endLine": 225,
+          "params": [
+            "{ step, onNext, onSkip, onComplete }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Tutorial",
+          "line": 68,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Tutorial",
+          "callee": "useState",
+          "lineNumber": 69
+        },
+        {
+          "caller": "Tutorial",
+          "callee": "e.stopPropagation",
+          "lineNumber": 77
+        },
+        {
+          "caller": "Tutorial",
+          "callee": "setCardHovered",
+          "lineNumber": 140
+        },
+        {
+          "caller": "Tutorial",
+          "callee": "setCardHovered",
+          "lineNumber": 141
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/globals.css",
+      "language": "css",
+      "fileCategory": "markup",
+      "totalLines": 161,
+      "nonEmptyLines": 136,
+      "metrics": {}
+    },
+    {
+      "path": "4K_FE/app/layout.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 42,
+      "nonEmptyLines": 37,
+      "functions": [
+        {
+          "name": "RootLayout",
+          "startLine": 29,
+          "endLine": 42,
+          "params": [
+            "{\n  children,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "metadata",
+          "line": 23,
+          "isDefault": false
+        },
+        {
+          "name": "RootLayout",
+          "line": 29,
+          "isDefault": true
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 2,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/login/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 116,
+      "nonEmptyLines": 107,
+      "functions": [
+        {
+          "name": "LoginPage",
+          "startLine": 7,
+          "endLine": 107,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "LoginPage",
+          "line": 7,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "LoginPage",
+          "callee": "useRouter",
+          "lineNumber": 8
+        },
+        {
+          "caller": "LoginPage",
+          "callee": "useState",
+          "lineNumber": 9
+        },
+        {
+          "caller": "LoginPage",
+          "callee": "useState",
+          "lineNumber": 10
+        },
+        {
+          "caller": "LoginPage",
+          "callee": "useState",
+          "lineNumber": 11
+        },
+        {
+          "caller": "LoginPage",
+          "callee": "useState",
+          "lineNumber": 12
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "e.preventDefault",
+          "lineNumber": 15
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "setLoading",
+          "lineNumber": 16
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "setError",
+          "lineNumber": 17
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "fetch",
+          "lineNumber": 19
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "JSON.stringify",
+          "lineNumber": 22
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "res.json",
+          "lineNumber": 24
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "setError",
+          "lineNumber": 26
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "new URLSearchParams(window.location.search).get",
+          "lineNumber": 30
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "router.replace",
+          "lineNumber": 31
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "next.startsWith",
+          "lineNumber": 31
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "router.refresh",
+          "lineNumber": 32
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "setError",
+          "lineNumber": 34
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "setLoading",
+          "lineNumber": 36
+        },
+        {
+          "caller": "LoginPage",
+          "callee": "setId",
+          "lineNumber": 69
+        },
+        {
+          "caller": "LoginPage",
+          "callee": "setPassword",
+          "lineNumber": 81
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/movie_list/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 317,
+      "nonEmptyLines": 299,
+      "functions": [
+        {
+          "name": "MovieListPage",
+          "startLine": 19,
+          "endLine": 299,
+          "params": []
+        },
+        {
+          "name": "paginationBtn",
+          "startLine": 307,
+          "endLine": 317,
+          "params": [
+            "disabled"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "MovieListPage",
+          "line": 19,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "MovieListPage",
+          "callee": "useRouter",
+          "lineNumber": 20
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "useState",
+          "lineNumber": 21
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "useState",
+          "lineNumber": 22
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "useState",
+          "lineNumber": 23
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "useState",
+          "lineNumber": 24
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "useState",
+          "lineNumber": 26
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "useState",
+          "lineNumber": 28
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "useState",
+          "lineNumber": 29
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "useState",
+          "lineNumber": 31
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "useCallback",
+          "lineNumber": 33
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "setLoading",
+          "lineNumber": 34
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "q.trim",
+          "lineNumber": 36
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "encodeURIComponent",
+          "lineNumber": 37
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "fetch",
+          "lineNumber": 39
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "res.json",
+          "lineNumber": 40
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "setMovies",
+          "lineNumber": 41
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "setTotalPages",
+          "lineNumber": 42
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "setMovies",
+          "lineNumber": 44
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "setLoading",
+          "lineNumber": 46
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "useEffect",
+          "lineNumber": 50
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "fetchMovies",
+          "lineNumber": 51
+        },
+        {
+          "caller": "runSearch",
+          "callee": "setPage",
+          "lineNumber": 56
+        },
+        {
+          "caller": "runSearch",
+          "callee": "setActiveQuery",
+          "lineNumber": 57
+        },
+        {
+          "caller": "runSearch",
+          "callee": "q.trim",
+          "lineNumber": 57
+        },
+        {
+          "caller": "handleLogout",
+          "callee": "fetch",
+          "lineNumber": 62
+        },
+        {
+          "caller": "handleLogout",
+          "callee": "router.replace",
+          "lineNumber": 63
+        },
+        {
+          "caller": "handleLogout",
+          "callee": "router.refresh",
+          "lineNumber": 64
+        },
+        {
+          "caller": "handleAdd",
+          "callee": "setPending",
+          "lineNumber": 68
+        },
+        {
+          "caller": "handleAdd",
+          "callee": "new Set(s).add",
+          "lineNumber": 68
+        },
+        {
+          "caller": "handleAdd",
+          "callee": "fetch",
+          "lineNumber": 70
+        },
+        {
+          "caller": "handleAdd",
+          "callee": "JSON.stringify",
+          "lineNumber": 73
+        },
+        {
+          "caller": "handleAdd",
+          "callee": "setMovies",
+          "lineNumber": 76
+        },
+        {
+          "caller": "handleAdd",
+          "callee": "prev.map",
+          "lineNumber": 76
+        },
+        {
+          "caller": "handleAdd",
+          "callee": "setPending",
+          "lineNumber": 78
+        },
+        {
+          "caller": "handleAdd",
+          "callee": "n.delete",
+          "lineNumber": 78
+        },
+        {
+          "caller": "handleDelete",
+          "callee": "setPending",
+          "lineNumber": 83
+        },
+        {
+          "caller": "handleDelete",
+          "callee": "new Set(s).add",
+          "lineNumber": 83
+        },
+        {
+          "caller": "handleDelete",
+          "callee": "fetch",
+          "lineNumber": 85
+        },
+        {
+          "caller": "handleDelete",
+          "callee": "setMovies",
+          "lineNumber": 86
+        },
+        {
+          "caller": "handleDelete",
+          "callee": "prev.map",
+          "lineNumber": 86
+        },
+        {
+          "caller": "handleDelete",
+          "callee": "setPending",
+          "lineNumber": 88
+        },
+        {
+          "caller": "handleDelete",
+          "callee": "n.delete",
+          "lineNumber": 88
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "router.push",
+          "lineNumber": 108
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "e.preventDefault",
+          "lineNumber": 120
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "runSearch",
+          "lineNumber": 120
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "setQuery",
+          "lineNumber": 126
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "setQuery",
+          "lineNumber": 140
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "runSearch",
+          "lineNumber": 140
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "setPage",
+          "lineNumber": 166
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "Math.max",
+          "lineNumber": 166
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "paginationBtn",
+          "lineNumber": 168
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "setPage",
+          "lineNumber": 176
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "Math.min",
+          "lineNumber": 176
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "paginationBtn",
+          "lineNumber": 178
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "Array.from({ length: 20 }).map",
+          "lineNumber": 205
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "Array.from",
+          "lineNumber": 205
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "movies.map",
+          "lineNumber": 218
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "posterUrl",
+          "lineNumber": 219
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "pending.has",
+          "lineNumber": 220
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "m.release_date?.slice",
+          "lineNumber": 221
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "setDetail",
+          "lineNumber": 232
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "handleDelete",
+          "lineNumber": 265
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "handleAdd",
+          "lineNumber": 265
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "setDetail",
+          "lineNumber": 294
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 256,
+      "nonEmptyLines": 247,
+      "functions": [
+        {
+          "name": "OnboardingPage",
+          "startLine": 71,
+          "endLine": 256,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "OnboardingPage",
+          "line": 71,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "OnboardingPage",
+          "callee": "useRouter",
+          "lineNumber": 72
+        },
+        {
+          "caller": "OnboardingPage",
+          "callee": "FEATURES.map",
+          "lineNumber": 167
+        },
+        {
+          "caller": "OnboardingPage",
+          "callee": "router.push",
+          "lineNumber": 210
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/eslint.config.mjs",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 18,
+      "nonEmptyLines": 16,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/next.config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 7,
+      "nonEmptyLines": 5,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/postcss.config.mjs",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 7,
+      "nonEmptyLines": 6,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/.python-version",
+      "language": "unknown",
+      "fileCategory": "code",
+      "totalLines": 1,
+      "nonEmptyLines": 1,
+      "metrics": {}
+    },
+    {
+      "path": "4K_ML/generate_vectors/generate_vectors.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 205,
+      "nonEmptyLines": 164,
+      "functions": [
+        {
+          "name": "ext_fetch",
+          "startLine": 47,
+          "endLine": 71,
+          "params": [
+            "table",
+            "params"
+          ]
+        },
+        {
+          "name": "vm4_upsert",
+          "startLine": 74,
+          "endLine": 95,
+          "params": [
+            "table",
+            "rows",
+            "on_conflict"
+          ]
+        },
+        {
+          "name": "process",
+          "startLine": 100,
+          "endLine": 126,
+          "params": [
+            "points"
+          ]
+        },
+        {
+          "name": "main",
+          "startLine": 131,
+          "endLine": 201,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "ext_fetch",
+          "line": 47,
+          "isDefault": false
+        },
+        {
+          "name": "vm4_upsert",
+          "line": 74,
+          "isDefault": false
+        },
+        {
+          "name": "process",
+          "line": 100,
+          "isDefault": false
+        },
+        {
+          "name": "main",
+          "line": 131,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "ext_fetch",
+          "callee": "httpx.get",
+          "lineNumber": 57
+        },
+        {
+          "caller": "ext_fetch",
+          "callee": "r.raise_for_status",
+          "lineNumber": 63
+        },
+        {
+          "caller": "ext_fetch",
+          "callee": "r.json",
+          "lineNumber": 64
+        },
+        {
+          "caller": "ext_fetch",
+          "callee": "result.extend",
+          "lineNumber": 65
+        },
+        {
+          "caller": "ext_fetch",
+          "callee": "print",
+          "lineNumber": 66
+        },
+        {
+          "caller": "ext_fetch",
+          "callee": "len",
+          "lineNumber": 66
+        },
+        {
+          "caller": "ext_fetch",
+          "callee": "len",
+          "lineNumber": 67
+        },
+        {
+          "caller": "ext_fetch",
+          "callee": "print",
+          "lineNumber": 70
+        },
+        {
+          "caller": "vm4_upsert",
+          "callee": "len",
+          "lineNumber": 81
+        },
+        {
+          "caller": "vm4_upsert",
+          "callee": "range",
+          "lineNumber": 82
+        },
+        {
+          "caller": "vm4_upsert",
+          "callee": "httpx.post",
+          "lineNumber": 84
+        },
+        {
+          "caller": "vm4_upsert",
+          "callee": "RuntimeError",
+          "lineNumber": 94
+        },
+        {
+          "caller": "vm4_upsert",
+          "callee": "print",
+          "lineNumber": 95
+        },
+        {
+          "caller": "vm4_upsert",
+          "callee": "min",
+          "lineNumber": 95
+        },
+        {
+          "caller": "process",
+          "callee": "len",
+          "lineNumber": 105
+        },
+        {
+          "caller": "process",
+          "callee": "points.sort",
+          "lineNumber": 108
+        },
+        {
+          "caller": "process",
+          "callee": "np.array",
+          "lineNumber": 109
+        },
+        {
+          "caller": "process",
+          "callee": "np.array",
+          "lineNumber": 110
+        },
+        {
+          "caller": "process",
+          "callee": "np.linspace",
+          "lineNumber": 113
+        },
+        {
+          "caller": "process",
+          "callee": "x.min",
+          "lineNumber": 113
+        },
+        {
+          "caller": "process",
+          "callee": "x.max",
+          "lineNumber": 113
+        },
+        {
+          "caller": "process",
+          "callee": "np.interp",
+          "lineNumber": 114
+        },
+        {
+          "caller": "process",
+          "callee": "min",
+          "lineNumber": 117
+        },
+        {
+          "caller": "process",
+          "callee": "len",
+          "lineNumber": 117
+        },
+        {
+          "caller": "process",
+          "callee": "savgol_filter",
+          "lineNumber": 120
+        },
+        {
+          "caller": "process",
+          "callee": "y_smooth.std",
+          "lineNumber": 123
+        },
+        {
+          "caller": "process",
+          "callee": "y_smooth.mean",
+          "lineNumber": 126
+        },
+        {
+          "caller": "main",
+          "callee": "SystemExit",
+          "lineNumber": 133
+        },
+        {
+          "caller": "main",
+          "callee": "SystemExit",
+          "lineNumber": 135
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 138
+        },
+        {
+          "caller": "main",
+          "callee": "ext_fetch",
+          "lineNumber": 140
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 144
+        },
+        {
+          "caller": "main",
+          "callee": "len",
+          "lineNumber": 144
+        },
+        {
+          "caller": "main",
+          "callee": "ext_fetch",
+          "lineNumber": 146
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 147
+        },
+        {
+          "caller": "main",
+          "callee": "len",
+          "lineNumber": 147
+        },
+        {
+          "caller": "main",
+          "callee": "ext_fetch",
+          "lineNumber": 149
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 150
+        },
+        {
+          "caller": "main",
+          "callee": "len",
+          "lineNumber": 150
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 153
+        },
+        {
+          "caller": "main",
+          "callee": "sub_map.get",
+          "lineNumber": 157
+        },
+        {
+          "caller": "main",
+          "callee": "defaultdict",
+          "lineNumber": 161
+        },
+        {
+          "caller": "main",
+          "callee": "scene_map.get",
+          "lineNumber": 163
+        },
+        {
+          "caller": "main",
+          "callee": "movie_points[tmdb_id].append",
+          "lineNumber": 169
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 171
+        },
+        {
+          "caller": "main",
+          "callee": "len",
+          "lineNumber": 171
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 174
+        },
+        {
+          "caller": "main",
+          "callee": "movie_points.items",
+          "lineNumber": 179
+        },
+        {
+          "caller": "main",
+          "callee": "process",
+          "lineNumber": 180
+        },
+        {
+          "caller": "main",
+          "callee": "vectors.append",
+          "lineNumber": 185
+        },
+        {
+          "caller": "main",
+          "callee": "vec.tolist",
+          "lineNumber": 187
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 193
+        },
+        {
+          "caller": "main",
+          "callee": "len",
+          "lineNumber": 193
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 194
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 197
+        },
+        {
+          "caller": "main",
+          "callee": "len",
+          "lineNumber": 197
+        },
+        {
+          "caller": "main",
+          "callee": "vm4_upsert",
+          "lineNumber": 199
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 201
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 4,
+        "functionCount": 4,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/requirements.txt",
+      "language": "txt",
+      "fileCategory": "docs",
+      "totalLines": 10,
+      "nonEmptyLines": 10,
+      "metrics": {}
+    },
+    {
+      "path": "Ansible/ansible.cfg",
+      "language": "config",
+      "fileCategory": "config",
+      "totalLines": 11,
+      "nonEmptyLines": 10,
+      "metrics": {}
+    }
+  ]
+}

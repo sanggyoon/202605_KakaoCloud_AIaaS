@@ -1,0 +1,17 @@
+{
+  "projectRoot": "/Users/sanggyoon/Documents/KakaoCloud_Project",
+  "batchFiles": [
+    {"path": "4K_FE/app/components/FilterBar.tsx", "language": "typescript", "sizeLines": 683, "fileCategory": "code"},
+    {"path": "4K_FE/app/components/PosterCard.tsx", "language": "typescript", "sizeLines": 329, "fileCategory": "code"},
+    {"path": "4K_FE/app/components/RandomModal.tsx", "language": "typescript", "sizeLines": 192, "fileCategory": "code"},
+    {"path": "4K_FE/app/dashboard/page.tsx", "language": "typescript", "sizeLines": 658, "fileCategory": "code"},
+    {"path": "4K_FE/app/lib/data.ts", "language": "typescript", "sizeLines": 165, "fileCategory": "code"}
+  ],
+  "batchImportData": {
+    "4K_FE/app/components/FilterBar.tsx": ["4K_FE/app/lib/data.ts"],
+    "4K_FE/app/components/PosterCard.tsx": ["4K_FE/app/lib/data.ts"],
+    "4K_FE/app/components/RandomModal.tsx": ["4K_FE/app/lib/data.ts"],
+    "4K_FE/app/dashboard/page.tsx": ["4K_FE/app/components/DetailOverlay.tsx","4K_FE/app/components/FilterBar.tsx","4K_FE/app/components/PosterCard.tsx","4K_FE/app/components/RandomModal.tsx","4K_FE/app/components/Tutorial.tsx","4K_FE/app/lib/data.ts"],
+    "4K_FE/app/lib/data.ts": []
+  }
+}

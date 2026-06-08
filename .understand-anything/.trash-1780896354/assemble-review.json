@@ -1,0 +1,15 @@
+{
+  "fixedSectionOk": true,
+  "nodesRecovered": 1,
+  "edgesRestored": 3,
+  "crossBatchEdgesAdded": 0,
+  "typesRemapped": 0,
+  "complexityRemapped": 0,
+  "notes": [
+    "Fixed section sane: func:->function: normalization is a systemic LLM output pattern (expected). No node-type or complexity anomalies remain — all 173 nodes use valid types (file/function/service/config/pipeline/step/endpoint/document/resource) and valid complexity values (simple 83 / moderate 58 / complex 31 + 1 added).",
+    "Single 'could not fix' item resolved: the dropped edge MovieListPage -> data.ts:posterUrl (calls) was a genuine cross-batch gap. posterUrl is a real exported function (4K_FE/app/lib/data.ts:20-23) that the data.ts batch omitted while the movie_list batch emitted the call edge. Recovered the node with an accurate Korean summary and real lineRange, then restored 3 edges: data.ts contains posterUrl, data.ts exports posterUrl, and the original MovieListPage calls posterUrl.",
+    "Cross-batch import verification: all 107 importMap entries already had matching 'imports' file edges in the assembled graph — 0 missing, so 0 added. The merge script's 'Recovered 0 imports edges' is correct, not a defect.",
+    "No nodes with missing id, no unknown node types, no unknown complexity values were present after the mechanical merge.",
+    "Final graph: 173 nodes, 188 edges, 0 dangling edges, 0 duplicate edges."
+  ]
+}

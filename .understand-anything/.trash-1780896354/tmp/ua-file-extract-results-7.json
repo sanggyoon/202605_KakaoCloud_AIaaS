@@ -1,0 +1,120 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 3,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "Ansible/manifests/4k-be/deployment.yaml",
+      "language": "yaml",
+      "fileCategory": "config",
+      "totalLines": 44,
+      "nonEmptyLines": 44,
+      "sections": [
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "spec",
+          "level": 1,
+          "line": 6
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 4
+      }
+    },
+    {
+      "path": "Ansible/manifests/4k-be/kustomization.yaml",
+      "language": "yaml",
+      "fileCategory": "config",
+      "totalLines": 12,
+      "nonEmptyLines": 9,
+      "sections": [
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "namespace",
+          "level": 1,
+          "line": 4
+        },
+        {
+          "heading": "resources",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "images",
+          "level": 1,
+          "line": 10
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 5
+      }
+    },
+    {
+      "path": "Ansible/manifests/4k-be/service.yaml",
+      "language": "yaml",
+      "fileCategory": "config",
+      "totalLines": 11,
+      "nonEmptyLines": 11,
+      "sections": [
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "spec",
+          "level": 1,
+          "line": 6
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 4
+      }
+    }
+  ]
+}

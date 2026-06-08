@@ -1,0 +1,56 @@
+{
+  "nodes": [
+    {
+      "id": "service:Ansible/manifests/4k-be/deployment.yaml",
+      "type": "service",
+      "name": "deployment.yaml",
+      "filePath": "Ansible/manifests/4k-be/deployment.yaml",
+      "summary": "백엔드(4k-be) 컨테이너를 be 네임스페이스에 배포하는 Kubernetes Deployment 매니페스트. ghcr.io의 4k-be 이미지를 8000 포트로 단일 레플리카로 실행하며, /health 기반 readiness/liveness 프로브와 CPU/메모리 리소스 제한을 정의한다.",
+      "tags": ["orchestration", "infrastructure", "deployment", "kubernetes", "backend"],
+      "complexity": "simple",
+      "languageNotes": "nodeSelector(workload: app)로 앱 워크로드 노드에 스케줄링하고 envFrom secretRef(4k-be-secrets)로 환경 변수를 시크릿에서 주입한다."
+    },
+    {
+      "id": "service:Ansible/manifests/4k-be/service.yaml",
+      "type": "service",
+      "name": "service.yaml",
+      "filePath": "Ansible/manifests/4k-be/service.yaml",
+      "summary": "백엔드 Pod를 클러스터 내부에 노출하는 Kubernetes Service 매니페스트. app=backend 셀렉터로 Pod를 선택하여 8000 포트를 동일 포트로 전달한다.",
+      "tags": ["orchestration", "infrastructure", "kubernetes", "networking", "backend"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/manifests/4k-be/kustomization.yaml",
+      "type": "config",
+      "name": "kustomization.yaml",
+      "filePath": "Ansible/manifests/4k-be/kustomization.yaml",
+      "summary": "백엔드 매니페스트를 묶는 Kustomize 설정. be 네임스페이스에 deployment.yaml과 service.yaml을 배포하고 4k-be 이미지 태그를 특정 커밋 해시(3f64704)로 고정한다.",
+      "tags": ["configuration", "orchestration", "kubernetes", "kustomize", "deployment"],
+      "complexity": "simple",
+      "languageNotes": "images 오버레이로 이미지 태그를 GitOps 방식으로 고정하여 배포 버전을 관리한다."
+    }
+  ],
+  "edges": [
+    {
+      "source": "config:Ansible/manifests/4k-be/kustomization.yaml",
+      "target": "service:Ansible/manifests/4k-be/deployment.yaml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Ansible/manifests/4k-be/kustomization.yaml",
+      "target": "service:Ansible/manifests/4k-be/service.yaml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:Ansible/manifests/4k-be/service.yaml",
+      "target": "service:Ansible/manifests/4k-be/deployment.yaml",
+      "type": "serves",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

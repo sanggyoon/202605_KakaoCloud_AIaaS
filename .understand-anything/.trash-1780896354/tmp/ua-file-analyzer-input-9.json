@@ -1,0 +1,13 @@
+{
+  "projectRoot": "/Users/sanggyoon/Documents/KakaoCloud_Project",
+  "batchFiles": [
+    {"path": "Ansible/manifests/apps/cluster-issuer.yaml", "language": "yaml", "sizeLines": 31, "fileCategory": "config"},
+    {"path": "Ansible/manifests/apps/ingress-nginx-config.yaml", "language": "yaml", "sizeLines": 12, "fileCategory": "config"},
+    {"path": "Ansible/manifests/apps/ingress-studio.yaml", "language": "yaml", "sizeLines": 233, "fileCategory": "config"}
+  ],
+  "batchImportData": {
+    "Ansible/manifests/apps/cluster-issuer.yaml": [],
+    "Ansible/manifests/apps/ingress-nginx-config.yaml": [],
+    "Ansible/manifests/apps/ingress-studio.yaml": []
+  }
+}

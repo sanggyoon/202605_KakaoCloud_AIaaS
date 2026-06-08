@@ -1,0 +1,105 @@
+{
+  "nodes": [
+    {
+      "id": "config:aws/.env.example",
+      "type": "config",
+      "name": ".env.example",
+      "filePath": "aws/.env.example",
+      "summary": "AWS DR 워밍스탠바이 앱 스택의 런타임 환경 변수 템플릿으로 TMDB API 키, Supabase 접속 정보, 매니저 인증 자격증명과 세션 시크릿을 정의한다.",
+      "tags": ["configuration", "environment", "credentials", "security", "deployment"],
+      "complexity": "simple",
+      "languageNotes": "docker-compose의 env_file로 주입되는 .env의 예시 템플릿이다."
+    },
+    {
+      "id": "document:aws/COST-OPTIMIZATION.md",
+      "type": "document",
+      "name": "COST-OPTIMIZATION.md",
+      "filePath": "aws/COST-OPTIMIZATION.md",
+      "summary": "AWS DR 환경의 비용 최적화 방안을 정리한 문서로 NAT 게이트웨이 제거와 DB 인스턴스 다운사이징에 따른 비용 비교, 아키텍처 변경, 보안 트레이드오프, 롤백 방법을 8개 섹션으로 설명한다.",
+      "tags": ["documentation", "cost-optimization", "infrastructure", "aws", "architecture"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:aws/DR-DB-RUNBOOK.md",
+      "type": "document",
+      "name": "DR-DB-RUNBOOK.md",
+      "filePath": "aws/DR-DB-RUNBOOK.md",
+      "summary": "WireGuard 터널을 통한 카카오 Postgres → AWS 레플리카 논리 복제 구성, PostgREST failover, 수동 승격 및 역동기화 절차를 단계별로 안내하는 DR DB 운영 런북이다.",
+      "tags": ["documentation", "runbook", "disaster-recovery", "database", "replication"],
+      "complexity": "complex",
+      "languageNotes": "PostgreSQL 논리 복제(publisher/subscriber)와 WireGuard VPN 터널 설정 절차를 포함한다."
+    },
+    {
+      "id": "service:aws/docker-compose.yml",
+      "type": "service",
+      "name": "docker-compose.yml",
+      "filePath": "aws/docker-compose.yml",
+      "summary": "AWS EC2에서 동작하는 DR 워밍스탠바이 앱 스택의 오케스트레이션 정의로, GHCR의 frontend(Next.js)와 backend(FastAPI) 이미지를 헬스체크와 함께 구동한다.",
+      "tags": ["orchestration", "infrastructure", "containerization", "disaster-recovery", "deployment"],
+      "complexity": "moderate",
+      "languageNotes": "frontend만 외부 노출(3000), backend는 expose로 컴포즈 내부망에서만 접근되며 service_healthy 조건으로 의존성을 제어한다."
+    },
+    {
+      "id": "service:aws/docker-compose.yml:backend",
+      "type": "service",
+      "name": "backend",
+      "filePath": "aws/docker-compose.yml",
+      "summary": "GHCR의 4k-be FastAPI 이미지를 구동하는 비공개 백엔드 서비스로 8000 포트를 컴포즈 내부망에만 노출하고 urllib 기반 헬스체크를 수행한다.",
+      "tags": ["service", "backend", "containerization", "api"],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:aws/docker-compose.yml:frontend",
+      "type": "service",
+      "name": "frontend",
+      "filePath": "aws/docker-compose.yml",
+      "summary": "GHCR의 4k-fe Next.js 이미지를 구동하는 공개 진입점 서비스로 3000 포트를 ALB에 노출하고 backend가 healthy 상태가 된 후 기동된다.",
+      "tags": ["service", "frontend", "containerization", "entry-point"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "config:aws/.env.example",
+      "target": "service:aws/docker-compose.yml",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:aws/docker-compose.yml",
+      "target": "service:aws/docker-compose.yml:backend",
+      "type": "deploys",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "service:aws/docker-compose.yml",
+      "target": "service:aws/docker-compose.yml:frontend",
+      "type": "deploys",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "service:aws/docker-compose.yml:frontend",
+      "target": "service:aws/docker-compose.yml:backend",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:aws/COST-OPTIMIZATION.md",
+      "target": "service:aws/docker-compose.yml",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:aws/DR-DB-RUNBOOK.md",
+      "target": "service:aws/docker-compose.yml",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

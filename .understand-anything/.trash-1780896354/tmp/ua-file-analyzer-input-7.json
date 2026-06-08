@@ -1,0 +1,13 @@
+{
+  "projectRoot": "/Users/sanggyoon/Documents/KakaoCloud_Project",
+  "batchFiles": [
+    {"path": "Ansible/manifests/4k-be/deployment.yaml", "language": "yaml", "sizeLines": 44, "fileCategory": "config"},
+    {"path": "Ansible/manifests/4k-be/kustomization.yaml", "language": "yaml", "sizeLines": 12, "fileCategory": "config"},
+    {"path": "Ansible/manifests/4k-be/service.yaml", "language": "yaml", "sizeLines": 11, "fileCategory": "config"}
+  ],
+  "batchImportData": {
+    "Ansible/manifests/4k-be/deployment.yaml": [],
+    "Ansible/manifests/4k-be/kustomization.yaml": [],
+    "Ansible/manifests/4k-be/service.yaml": []
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "projectRoot": "/Users/sanggyoon/Documents/KakaoCloud_Project",
+  "batchFiles": [
+    {"path": "Ansible/playbooks/00-ping.yml", "language": "yaml", "sizeLines": 4, "fileCategory": "config"},
+    {"path": "Ansible/playbooks/01-common.yml", "language": "yaml", "sizeLines": 68, "fileCategory": "config"},
+    {"path": "Ansible/playbooks/02-k3s-server.yml", "language": "yaml", "sizeLines": 52, "fileCategory": "config"},
+    {"path": "Ansible/playbooks/03-k3s-agent.yml", "language": "yaml", "sizeLines": 31, "fileCategory": "config"},
+    {"path": "Ansible/playbooks/04-longhorn-prereq.yml", "language": "yaml", "sizeLines": 29, "fileCategory": "config"}
+  ],
+  "batchImportData": {
+    "Ansible/playbooks/00-ping.yml": [],
+    "Ansible/playbooks/01-common.yml": [],
+    "Ansible/playbooks/02-k3s-server.yml": [],
+    "Ansible/playbooks/03-k3s-agent.yml": [],
+    "Ansible/playbooks/04-longhorn-prereq.yml": []
+  }
+}

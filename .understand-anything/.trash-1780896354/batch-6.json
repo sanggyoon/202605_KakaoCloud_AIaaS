@@ -1,0 +1,76 @@
+{
+  "nodes": [
+    {
+      "id": "config:4K_FE/.env.example",
+      "type": "config",
+      "name": ".env.example",
+      "filePath": "4K_FE/.env.example",
+      "summary": "4K Cinema 프론트엔드의 환경 변수 템플릿으로, 관리자 로그인 자격증명(MANAGER_ID, MANAGER_PASSWORD)과 세션 시크릿(MANAGER_SESSION_SECRET)을 정의한다.",
+      "tags": ["configuration", "security", "environment", "frontend"],
+      "complexity": "simple",
+      "languageNotes": "민감한 자격증명을 담는 .env 템플릿으로, 실제 값은 배포 시 주입된다."
+    },
+    {
+      "id": "document:4K_FE/AGENTS.md",
+      "type": "document",
+      "name": "AGENTS.md",
+      "filePath": "4K_FE/AGENTS.md",
+      "summary": "코드 작성 전 node_modules/next/dist/docs/의 가이드를 참고하라고 안내하는 AI 에이전트용 지침 문서로, 이 프로젝트의 Next.js 버전이 기존 관례와 다름을 경고한다.",
+      "tags": ["documentation", "development", "ai-agent", "frontend"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:4K_FE/CLAUDE.md",
+      "type": "document",
+      "name": "CLAUDE.md",
+      "filePath": "4K_FE/CLAUDE.md",
+      "summary": "Claude Code용 프로젝트 지침 파일로, AGENTS.md의 내용을 참조(@AGENTS.md)하여 동일한 에이전트 가이드를 적용한다.",
+      "tags": ["documentation", "development", "ai-agent", "frontend"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:4K_FE/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "4K_FE/README.md",
+      "summary": "create-next-app으로 생성된 프론트엔드 기본 README로, 개발 서버 실행 방법(Getting Started), Next.js 학습 자료, Vercel 배포 안내를 담고 있다.",
+      "tags": ["documentation", "entry-point", "overview", "frontend"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:4K_FE/package.json",
+      "type": "config",
+      "name": "package.json",
+      "filePath": "4K_FE/package.json",
+      "summary": "4K Cinema 프론트엔드의 패키지 매니페스트로, Next.js 16/React 19 기반 의존성과 dev/build/start/lint 스크립트를 정의한다. ogl(WebGL)과 Tailwind CSS 4를 사용한다.",
+      "tags": ["configuration", "build-system", "frontend", "dependencies"],
+      "complexity": "simple",
+      "languageNotes": "Next.js 16.2.5 + React 19.2.4 + Tailwind CSS 4 조합으로, ogl 라이브러리로 WebGL 렌더링을 지원한다."
+    },
+    {
+      "id": "config:4K_FE/tsconfig.json",
+      "type": "config",
+      "name": "tsconfig.json",
+      "filePath": "4K_FE/tsconfig.json",
+      "summary": "프론트엔드 TypeScript 컴파일러 설정으로, strict 모드와 Next.js 플러그인, 경로 별칭을 활성화하여 .ts/.tsx 소스의 타입 검사를 구성한다.",
+      "tags": ["configuration", "typescript", "build-system", "frontend"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "document:4K_FE/CLAUDE.md",
+      "target": "document:4K_FE/AGENTS.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:4K_FE/package.json",
+      "target": "config:4K_FE/tsconfig.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

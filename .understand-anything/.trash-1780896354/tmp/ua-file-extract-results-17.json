@@ -1,0 +1,395 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 12,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "Ansible/group_vars/all.yaml",
+      "language": "yaml",
+      "fileCategory": "config",
+      "totalLines": 1,
+      "nonEmptyLines": 0,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 0
+      }
+    },
+    {
+      "path": "Ansible/helm-values/ingress-nginx.yaml",
+      "language": "yaml",
+      "fileCategory": "config",
+      "totalLines": 11,
+      "nonEmptyLines": 11,
+      "sections": [
+        {
+          "heading": "controller",
+          "level": 1,
+          "line": 1
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 1
+      }
+    },
+    {
+      "path": "Ansible/helm-values/longhorn.yaml",
+      "language": "yaml",
+      "fileCategory": "config",
+      "totalLines": 21,
+      "nonEmptyLines": 17,
+      "sections": [
+        {
+          "heading": "defaultSettings",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "longhornManager",
+          "level": 1,
+          "line": 8
+        },
+        {
+          "heading": "longhornDriver",
+          "level": 1,
+          "line": 12
+        },
+        {
+          "heading": "longhornUI",
+          "level": 1,
+          "line": 16
+        },
+        {
+          "heading": "persistence",
+          "level": 1,
+          "line": 19
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 5
+      }
+    },
+    {
+      "path": "Ansible/manifests/test/gpu-test.yaml",
+      "language": "yaml",
+      "fileCategory": "config",
+      "totalLines": 15,
+      "nonEmptyLines": 15,
+      "sections": [
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "spec",
+          "level": 1,
+          "line": 6
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 4
+      }
+    },
+    {
+      "path": "Ansible/manifests/test/test-nginx.yaml",
+      "language": "yaml",
+      "fileCategory": "config",
+      "totalLines": 52,
+      "nonEmptyLines": 52,
+      "sections": [
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "spec",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 24
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 25
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 26
+        },
+        {
+          "heading": "spec",
+          "level": 1,
+          "line": 29
+        },
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 36
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 37
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 38
+        },
+        {
+          "heading": "spec",
+          "level": 1,
+          "line": 41
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 12
+      }
+    },
+    {
+      "path": "aws/terraform/.terraform.lock.hcl",
+      "language": "hcl",
+      "fileCategory": "code",
+      "totalLines": 46,
+      "nonEmptyLines": 44,
+      "metrics": {}
+    },
+    {
+      "path": "aws/terraform/lambda/dr_controller.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 56,
+      "nonEmptyLines": 46,
+      "functions": [
+        {
+          "name": "_kakao_healthy",
+          "startLine": 20,
+          "endLine": 32,
+          "params": []
+        },
+        {
+          "name": "handler",
+          "startLine": 35,
+          "endLine": 56,
+          "params": [
+            "event",
+            "context"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "_kakao_healthy",
+          "line": 20,
+          "isDefault": false
+        },
+        {
+          "name": "handler",
+          "line": 35,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_kakao_healthy",
+          "callee": "route53.get_health_check_status",
+          "lineNumber": 22
+        },
+        {
+          "caller": "_kakao_healthy",
+          "callee": "resp.get",
+          "lineNumber": 23
+        },
+        {
+          "caller": "_kakao_healthy",
+          "callee": "sum",
+          "lineNumber": 27
+        },
+        {
+          "caller": "_kakao_healthy",
+          "callee": "o.get(\"StatusReport\", {}).get",
+          "lineNumber": 30
+        },
+        {
+          "caller": "_kakao_healthy",
+          "callee": "o.get",
+          "lineNumber": 30
+        },
+        {
+          "caller": "_kakao_healthy",
+          "callee": "len",
+          "lineNumber": 32
+        },
+        {
+          "caller": "handler",
+          "callee": "_kakao_healthy",
+          "lineNumber": 36
+        },
+        {
+          "caller": "handler",
+          "callee": "autoscaling.describe_auto_scaling_groups",
+          "lineNumber": 39
+        },
+        {
+          "caller": "handler",
+          "callee": "print",
+          "lineNumber": 43
+        },
+        {
+          "caller": "handler",
+          "callee": "print",
+          "lineNumber": 48
+        },
+        {
+          "caller": "handler",
+          "callee": "autoscaling.set_desired_capacity",
+          "lineNumber": 51
+        },
+        {
+          "caller": "handler",
+          "callee": "print",
+          "lineNumber": 56
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "aws/terraform/ssm-params.sh.example",
+      "language": "example",
+      "fileCategory": "code",
+      "totalLines": 26,
+      "nonEmptyLines": 21,
+      "metrics": {}
+    },
+    {
+      "path": "aws/terraform/terraform.tfvars.example",
+      "language": "example",
+      "fileCategory": "code",
+      "totalLines": 20,
+      "nonEmptyLines": 14,
+      "metrics": {}
+    },
+    {
+      "path": "aws/terraform/user_data_db.sh.tftpl",
+      "language": "tftpl",
+      "fileCategory": "code",
+      "totalLines": 38,
+      "nonEmptyLines": 33,
+      "metrics": {}
+    },
+    {
+      "path": "aws/terraform/user_data.sh.tftpl",
+      "language": "tftpl",
+      "fileCategory": "code",
+      "totalLines": 48,
+      "nonEmptyLines": 41,
+      "metrics": {}
+    },
+    {
+      "path": "readme.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 107,
+      "nonEmptyLines": 80,
+      "sections": [
+        {
+          "heading": "KakaoCloud AIaaS Project",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "라이브 서비스",
+          "level": 2,
+          "line": 7
+        },
+        {
+          "heading": "기술 스택",
+          "level": 2,
+          "line": 19
+        },
+        {
+          "heading": "배포 파이프라인 요약",
+          "level": 2,
+          "line": 34
+        },
+        {
+          "heading": "저장소 구조",
+          "level": 2,
+          "line": 44
+        },
+        {
+          "heading": "문서",
+          "level": 2,
+          "line": 62
+        },
+        {
+          "heading": "클러스터 구성",
+          "level": 2,
+          "line": 74
+        },
+        {
+          "heading": "빠른 명령어 참고",
+          "level": 2,
+          "line": 86
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 8
+      }
+    }
+  ]
+}

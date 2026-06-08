@@ -1,0 +1,862 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 5,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "Documents/CICD 전략.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 387,
+      "nonEmptyLines": 305,
+      "sections": [
+        {
+          "heading": "CI/CD 전략",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "목차",
+          "level": 2,
+          "line": 5
+        },
+        {
+          "heading": "1. 개요",
+          "level": 2,
+          "line": 20
+        },
+        {
+          "heading": "파이프라인 목록",
+          "level": 3,
+          "line": 29
+        },
+        {
+          "heading": "2. 파이프라인 전체 흐름",
+          "level": 2,
+          "line": 41
+        },
+        {
+          "heading": "FE (4K Cinema)",
+          "level": 3,
+          "line": 43
+        },
+        {
+          "heading": "BE (4K Backend)",
+          "level": 3,
+          "line": 83
+        },
+        {
+          "heading": "3. CI — GitHub Actions",
+          "level": 2,
+          "line": 126
+        },
+        {
+          "heading": "트리거 조건",
+          "level": 3,
+          "line": 128
+        },
+        {
+          "heading": "권한 모델",
+          "level": 3,
+          "line": 154
+        },
+        {
+          "heading": "이미지 태그 전략",
+          "level": 3,
+          "line": 164
+        },
+        {
+          "heading": "Docker 빌드 최적화",
+          "level": 3,
+          "line": 173
+        },
+        {
+          "heading": "무한루프 방지",
+          "level": 3,
+          "line": 182
+        },
+        {
+          "heading": "4. CD — ArgoCD",
+          "level": 2,
+          "line": 192
+        },
+        {
+          "heading": "Application 설정",
+          "level": 3,
+          "line": 194
+        },
+        {
+          "heading": "이미지 태그 업데이트 경로",
+          "level": 3,
+          "line": 234
+        },
+        {
+          "heading": "sync 상태 확인",
+          "level": 3,
+          "line": 246
+        },
+        {
+          "heading": "5. 매니페스트 구조 (Kustomize)",
+          "level": 2,
+          "line": 261
+        },
+        {
+          "heading": "kustomization.yaml 이미지 패치",
+          "level": 3,
+          "line": 276
+        },
+        {
+          "heading": "6. 배포 대상 리소스",
+          "level": 2,
+          "line": 286
+        },
+        {
+          "heading": "FE (fe 네임스페이스)",
+          "level": 3,
+          "line": 288
+        },
+        {
+          "heading": "BE (be 네임스페이스)",
+          "level": 3,
+          "line": 296
+        },
+        {
+          "heading": "롤링 업데이트 기본 동작",
+          "level": 3,
+          "line": 303
+        },
+        {
+          "heading": "7. GHCR 이미지 접근 설정",
+          "level": 2,
+          "line": 320
+        },
+        {
+          "heading": "Public 패키지인 경우 (권장)",
+          "level": 3,
+          "line": 322
+        },
+        {
+          "heading": "Private 패키지인 경우",
+          "level": 3,
+          "line": 328
+        },
+        {
+          "heading": "8. 트리거별 동작 정리",
+          "level": 2,
+          "line": 352
+        },
+        {
+          "heading": "9. 트러블슈팅",
+          "level": 2,
+          "line": 364
+        },
+        {
+          "heading": "10. 향후 개선 가능 항목",
+          "level": 2,
+          "line": 378
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 29
+      }
+    },
+    {
+      "path": "Documents/서비스 개요.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 212,
+      "nonEmptyLines": 163,
+      "sections": [
+        {
+          "heading": "4K Cinema 서비스 개요",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "목차",
+          "level": 2,
+          "line": 7
+        },
+        {
+          "heading": "1. 서비스 소개",
+          "level": 2,
+          "line": 18
+        },
+        {
+          "heading": "2. 주요 기능",
+          "level": 2,
+          "line": 30
+        },
+        {
+          "heading": "3. 화면 구성",
+          "level": 2,
+          "line": 47
+        },
+        {
+          "heading": "랜딩/온보딩 페이지 (`/`)",
+          "level": 3,
+          "line": 49
+        },
+        {
+          "heading": "대시보드 (`/dashboard`)",
+          "level": 3,
+          "line": 54
+        },
+        {
+          "heading": "매니저 페이지 (`/movie_list`)",
+          "level": 3,
+          "line": 61
+        },
+        {
+          "heading": "4. 기술 스택",
+          "level": 2,
+          "line": 70
+        },
+        {
+          "heading": "Frontend (`4K_FE/`)",
+          "level": 3,
+          "line": 72
+        },
+        {
+          "heading": "Backend (`4K_BE/`)",
+          "level": 3,
+          "line": 82
+        },
+        {
+          "heading": "ML 파이프라인 (`4K_ML/`)",
+          "level": 3,
+          "line": 91
+        },
+        {
+          "heading": "데이터베이스 스키마 (vm4 Supabase)",
+          "level": 3,
+          "line": 101
+        },
+        {
+          "heading": "5. 데이터 흐름",
+          "level": 2,
+          "line": 138
+        },
+        {
+          "heading": "ML 벡터 생성 (오프라인 배치)",
+          "level": 3,
+          "line": 140
+        },
+        {
+          "heading": "영화 추가 (매니저)",
+          "level": 3,
+          "line": 153
+        },
+        {
+          "heading": "사용자 영화 탐색",
+          "level": 3,
+          "line": 162
+        },
+        {
+          "heading": "영화 상세 (클라이맥스 그래프 + 유사 영화)",
+          "level": 3,
+          "line": 170
+        },
+        {
+          "heading": "6. 접근 정보",
+          "level": 2,
+          "line": 187
+        },
+        {
+          "heading": "Pod 상태 확인",
+          "level": 3,
+          "line": 199
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 20
+      }
+    },
+    {
+      "path": "Documents/인프라 구축 기록.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 528,
+      "nonEmptyLines": 400,
+      "sections": [
+        {
+          "heading": "KakaoCloud K3s 인프라 구축 기록",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "목차",
+          "level": 2,
+          "line": 5
+        },
+        {
+          "heading": "1. 환경 개요",
+          "level": 2,
+          "line": 28
+        },
+        {
+          "heading": "클러스터 구성",
+          "level": 3,
+          "line": 30
+        },
+        {
+          "heading": "사양",
+          "level": 3,
+          "line": 40
+        },
+        {
+          "heading": "Namespace",
+          "level": 3,
+          "line": 47
+        },
+        {
+          "heading": "2. 네트워크 구성",
+          "level": 2,
+          "line": 64
+        },
+        {
+          "heading": "트래픽 흐름",
+          "level": 3,
+          "line": 66
+        },
+        {
+          "heading": "vm1 NAT 설정",
+          "level": 3,
+          "line": 84
+        },
+        {
+          "heading": "TLS-SAN (K3s API)",
+          "level": 3,
+          "line": 90
+        },
+        {
+          "heading": "3. 도메인 + HTTPS",
+          "level": 2,
+          "line": 97
+        },
+        {
+          "heading": "도메인",
+          "level": 3,
+          "line": 99
+        },
+        {
+          "heading": "인증서 (cert-manager + Let's Encrypt)",
+          "level": 3,
+          "line": 116
+        },
+        {
+          "heading": "4. K3s 설치 옵션",
+          "level": 2,
+          "line": 125
+        },
+        {
+          "heading": "Server (vm1)",
+          "level": 3,
+          "line": 127
+        },
+        {
+          "heading": "Agent (vm2~5)",
+          "level": 3,
+          "line": 138
+        },
+        {
+          "heading": "5. Ingress-Nginx",
+          "level": 2,
+          "line": 148
+        },
+        {
+          "heading": "설치 옵션 (Helm)",
+          "level": 3,
+          "line": 150
+        },
+        {
+          "heading": "로그 포맷 (JSON)",
+          "level": 3,
+          "line": 157
+        },
+        {
+          "heading": "6. GPU Operator",
+          "level": 2,
+          "line": 163
+        },
+        {
+          "heading": "구성",
+          "level": 3,
+          "line": 165
+        },
+        {
+          "heading": "containerd 통합 방식",
+          "level": 3,
+          "line": 172
+        },
+        {
+          "heading": "7. Longhorn (스토리지)",
+          "level": 2,
+          "line": 181
+        },
+        {
+          "heading": "구성",
+          "level": 3,
+          "line": 183
+        },
+        {
+          "heading": "주요 트러블슈팅",
+          "level": 3,
+          "line": 189
+        },
+        {
+          "heading": "8. 스토리지 매핑 (최종)",
+          "level": 2,
+          "line": 197
+        },
+        {
+          "heading": "설계 원칙",
+          "level": 3,
+          "line": 210
+        },
+        {
+          "heading": "9. Supabase 구성",
+          "level": 2,
+          "line": 218
+        },
+        {
+          "heading": "배포 방식",
+          "level": 3,
+          "line": 220
+        },
+        {
+          "heading": "Ingress 구조 (data ns)",
+          "level": 3,
+          "line": 229
+        },
+        {
+          "heading": "data ns (서비스 DB)",
+          "level": 3,
+          "line": 241
+        },
+        {
+          "heading": "ai ns (학습 DB)",
+          "level": 3,
+          "line": 251
+        },
+        {
+          "heading": "Secret 관리",
+          "level": 3,
+          "line": 258
+        },
+        {
+          "heading": "10. 모니터링",
+          "level": 2,
+          "line": 267
+        },
+        {
+          "heading": "구성",
+          "level": 3,
+          "line": 269
+        },
+        {
+          "heading": "감사 로그",
+          "level": 3,
+          "line": 278
+        },
+        {
+          "heading": "11. cert-manager",
+          "level": 2,
+          "line": 285
+        },
+        {
+          "heading": "ClusterIssuer",
+          "level": 3,
+          "line": 287
+        },
+        {
+          "heading": "HTTP-01 챌린지",
+          "level": 3,
+          "line": 292
+        },
+        {
+          "heading": "12. ArgoCD (GitOps)",
+          "level": 2,
+          "line": 299
+        },
+        {
+          "heading": "구성",
+          "level": 3,
+          "line": 301
+        },
+        {
+          "heading": "Applications (현재 클러스터에 등록된 것 = 3개)",
+          "level": 3,
+          "line": 307
+        },
+        {
+          "heading": "동작 검증",
+          "level": 3,
+          "line": 322
+        },
+        {
+          "heading": "13. 파일 구조",
+          "level": 2,
+          "line": 329
+        },
+        {
+          "heading": "14. 접근 정보 (외부 노출)",
+          "level": 2,
+          "line": 394
+        },
+        {
+          "heading": "15. 보안 메모",
+          "level": 2,
+          "line": 421
+        },
+        {
+          "heading": "현재 상태 (학습/POC)",
+          "level": 3,
+          "line": 423
+        },
+        {
+          "heading": "운영 가려면 추가 필요",
+          "level": 3,
+          "line": 433
+        },
+        {
+          "heading": "16. CI/CD 파이프라인",
+          "level": 2,
+          "line": 444
+        },
+        {
+          "heading": "4K Cinema FE",
+          "level": 3,
+          "line": 446
+        },
+        {
+          "heading": "4K Backend BE",
+          "level": 3,
+          "line": 462
+        },
+        {
+          "heading": "초기 등록 (최초 1회)",
+          "level": 3,
+          "line": 479
+        },
+        {
+          "heading": "17. 다음 작업",
+          "level": 2,
+          "line": 493
+        },
+        {
+          "heading": "18. 트러블슈팅 체크리스트",
+          "level": 2,
+          "line": 513
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 54
+      }
+    },
+    {
+      "path": "Documents/인프라 구축 방법(명령어).md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 507,
+      "nonEmptyLines": 363,
+      "sections": [
+        {
+          "heading": "인프라 구축 방법 (명령어)",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "목차",
+          "level": 2,
+          "line": 6
+        },
+        {
+          "heading": "0. 사전 준비",
+          "level": 2,
+          "line": 31
+        },
+        {
+          "heading": "1. Ansible: 클러스터 프로비저닝",
+          "level": 2,
+          "line": 49
+        },
+        {
+          "heading": "kubeconfig 가져오기",
+          "level": 3,
+          "line": 70
+        },
+        {
+          "heading": "node-token 저장",
+          "level": 3,
+          "line": 79
+        },
+        {
+          "heading": "2. 노드 라벨 설정",
+          "level": 2,
+          "line": 87
+        },
+        {
+          "heading": "3. vm1 NAT 설정 (vm2~5 인터넷 아웃바운드)",
+          "level": 2,
+          "line": 100
+        },
+        {
+          "heading": "4. Helm 레포 등록",
+          "level": 2,
+          "line": 116
+        },
+        {
+          "heading": "5. ingress-nginx 설치",
+          "level": 2,
+          "line": 132
+        },
+        {
+          "heading": "6. cert-manager 설치",
+          "level": 2,
+          "line": 142
+        },
+        {
+          "heading": "7. Longhorn 설치",
+          "level": 2,
+          "line": 152
+        },
+        {
+          "heading": "8. ArgoCD 설치",
+          "level": 2,
+          "line": 162
+        },
+        {
+          "heading": "ArgoCD Application 등록",
+          "level": 3,
+          "line": 174
+        },
+        {
+          "heading": "9. 모니터링 스택 설치",
+          "level": 2,
+          "line": 185
+        },
+        {
+          "heading": "10. NVIDIA GPU Operator 설치 (vm5)",
+          "level": 2,
+          "line": 206
+        },
+        {
+          "heading": "11. Supabase Secrets 생성 및 적용",
+          "level": 2,
+          "line": 224
+        },
+        {
+          "heading": "네임스페이스 생성",
+          "level": 3,
+          "line": 226
+        },
+        {
+          "heading": "Secret 생성",
+          "level": 3,
+          "line": 233
+        },
+        {
+          "heading": "Secret 적용",
+          "level": 3,
+          "line": 245
+        },
+        {
+          "heading": "Ingress Basic Auth Secret 생성 (Studio 로그인용)",
+          "level": 3,
+          "line": 255
+        },
+        {
+          "heading": "12. Supabase 배포 (Helm 직접 설치)",
+          "level": 2,
+          "line": 273
+        },
+        {
+          "heading": "13. Service DB 초기화 (movies 테이블)",
+          "level": 2,
+          "line": 299
+        },
+        {
+          "heading": "테이블 생성 + RLS 비활성화",
+          "level": 3,
+          "line": 303
+        },
+        {
+          "heading": "TMDB 메타데이터 시드",
+          "level": 3,
+          "line": 323
+        },
+        {
+          "heading": "14. Redis 설치",
+          "level": 2,
+          "line": 341
+        },
+        {
+          "heading": "15. 4K Cinema BE 배포 (ArgoCD + GitHub Actions)",
+          "level": 2,
+          "line": 351
+        },
+        {
+          "heading": "BE Secret 생성 (최초 1회, 필수)",
+          "level": 3,
+          "line": 353
+        },
+        {
+          "heading": "ArgoCD Application 등록 (최초 1회)",
+          "level": 3,
+          "line": 367
+        },
+        {
+          "heading": "이후 배포 흐름",
+          "level": 3,
+          "line": 376
+        },
+        {
+          "heading": "BE Pod 상태 확인",
+          "level": 3,
+          "line": 388
+        },
+        {
+          "heading": "16. 4K Cinema FE 배포 (ArgoCD + GitHub Actions)",
+          "level": 2,
+          "line": 400
+        },
+        {
+          "heading": "GHCR 이미지 접근 설정",
+          "level": 3,
+          "line": 402
+        },
+        {
+          "heading": "ArgoCD Application 등록 (최초 1회)",
+          "level": 3,
+          "line": 420
+        },
+        {
+          "heading": "이후 배포 흐름",
+          "level": 3,
+          "line": 429
+        },
+        {
+          "heading": "FE Pod 상태 확인",
+          "level": 3,
+          "line": 441
+        },
+        {
+          "heading": "17. 배포 상태 확인",
+          "level": 2,
+          "line": 452
+        },
+        {
+          "heading": "비밀번호 / 키 조회 (참고)",
+          "level": 2,
+          "line": 473
+        },
+        {
+          "heading": "Helm 업그레이드 (설정 변경 시)",
+          "level": 2,
+          "line": 497
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 39
+      }
+    },
+    {
+      "path": "Documents/프로젝트 디렉토리 구조.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 302,
+      "nonEmptyLines": 255,
+      "sections": [
+        {
+          "heading": "KakaoCloud_Project 디렉토리 구조",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "목차",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "전체 흐름 요약",
+          "level": 2,
+          "line": 18
+        },
+        {
+          "heading": "전체 트리",
+          "level": 2,
+          "line": 34
+        },
+        {
+          "heading": "`.github/` — GitHub Actions CI",
+          "level": 2,
+          "line": 159
+        },
+        {
+          "heading": "`4K_FE/` — 프론트엔드 (Next.js)",
+          "level": 2,
+          "line": 168
+        },
+        {
+          "heading": "`4K_BE/` — 백엔드 (FastAPI)",
+          "level": 2,
+          "line": 192
+        },
+        {
+          "heading": "`4K_ML/` — ML 파이프라인 (오프라인 배치)",
+          "level": 2,
+          "line": 208
+        },
+        {
+          "heading": "시계열 처리 상세",
+          "level": 3,
+          "line": 218
+        },
+        {
+          "heading": "`Ansible/` — 인프라 프로비저닝 + K8s 매니페스트",
+          "level": 2,
+          "line": 234
+        },
+        {
+          "heading": "`Ansible/values/` — Helm values 파일",
+          "level": 2,
+          "line": 254
+        },
+        {
+          "heading": "`Ansible/manifests/apps/ingress-studio.yaml` — Ingress 구조",
+          "level": 2,
+          "line": 272
+        },
+        {
+          "heading": "`Documents/` — 문서",
+          "level": 2,
+          "line": 294
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 13
+      }
+    }
+  ]
+}

@@ -1,0 +1,215 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 3,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "Ansible/manifests/apps/cluster-issuer.yaml",
+      "language": "yaml",
+      "fileCategory": "config",
+      "totalLines": 31,
+      "nonEmptyLines": 31,
+      "sections": [
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 4
+        },
+        {
+          "heading": "spec",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 18
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 19
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 20
+        },
+        {
+          "heading": "spec",
+          "level": 1,
+          "line": 22
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 8
+      }
+    },
+    {
+      "path": "Ansible/manifests/apps/ingress-nginx-config.yaml",
+      "language": "yaml",
+      "fileCategory": "config",
+      "totalLines": 12,
+      "nonEmptyLines": 12,
+      "sections": [
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "data",
+          "level": 1,
+          "line": 10
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 4
+      }
+    },
+    {
+      "path": "Ansible/manifests/apps/ingress-studio.yaml",
+      "language": "yaml",
+      "fileCategory": "config",
+      "totalLines": 233,
+      "nonEmptyLines": 231,
+      "sections": [
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 4
+        },
+        {
+          "heading": "spec",
+          "level": 1,
+          "line": 13
+        },
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 45
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 46
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 47
+        },
+        {
+          "heading": "spec",
+          "level": 1,
+          "line": 53
+        },
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 112
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 113
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 114
+        },
+        {
+          "heading": "spec",
+          "level": 1,
+          "line": 123
+        },
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 154
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 155
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 156
+        },
+        {
+          "heading": "spec",
+          "level": 1,
+          "line": 162
+        },
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 194
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 195
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 196
+        },
+        {
+          "heading": "spec",
+          "level": 1,
+          "line": 203
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 20
+      }
+    }
+  ]
+}

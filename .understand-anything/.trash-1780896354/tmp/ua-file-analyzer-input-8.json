@@ -1,0 +1,15 @@
+{
+  "projectRoot": "/Users/sanggyoon/Documents/KakaoCloud_Project",
+  "batchFiles": [
+    {"path": "Ansible/manifests/4k-fe/deployment.yaml", "language": "yaml", "sizeLines": 52, "fileCategory": "config"},
+    {"path": "Ansible/manifests/4k-fe/ingress.yaml", "language": "yaml", "sizeLines": 53, "fileCategory": "config"},
+    {"path": "Ansible/manifests/4k-fe/kustomization.yaml", "language": "yaml", "sizeLines": 13, "fileCategory": "config"},
+    {"path": "Ansible/manifests/4k-fe/service.yaml", "language": "yaml", "sizeLines": 11, "fileCategory": "config"}
+  ],
+  "batchImportData": {
+    "Ansible/manifests/4k-fe/deployment.yaml": [],
+    "Ansible/manifests/4k-fe/ingress.yaml": [],
+    "Ansible/manifests/4k-fe/kustomization.yaml": [],
+    "Ansible/manifests/4k-fe/service.yaml": []
+  }
+}

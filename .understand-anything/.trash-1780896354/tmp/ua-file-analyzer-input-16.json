@@ -1,0 +1,196 @@
+{
+  "projectRoot": "/Users/sanggyoon/Documents/KakaoCloud_Project",
+  "batchFiles": [
+    {
+      "path": "4K_BE/.python-version",
+      "language": "unknown",
+      "sizeLines": 1,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_BE/app/main.py",
+      "language": "python",
+      "sizeLines": 315,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_BE/DB_SCRIPTS/seed_movies.py",
+      "language": "python",
+      "sizeLines": 279,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_BE/requirements.txt",
+      "language": "txt",
+      "sizeLines": 4,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "4K_FE/app/api/manager/movies/[tmdb_id]/route.ts",
+      "language": "typescript",
+      "sizeLines": 36,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/app/api/manager/movies/route.ts",
+      "language": "typescript",
+      "sizeLines": 18,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/app/api/manager/movies/search/route.ts",
+      "language": "typescript",
+      "sizeLines": 15,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/app/components/BackgroundThread.tsx",
+      "language": "typescript",
+      "sizeLines": 235,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/app/components/ClimaxGraph.tsx",
+      "language": "typescript",
+      "sizeLines": 81,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/app/components/DetailOverlay.tsx",
+      "language": "typescript",
+      "sizeLines": 263,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/app/components/MiniGraph.tsx",
+      "language": "typescript",
+      "sizeLines": 39,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/app/components/MovieDetailModal.tsx",
+      "language": "typescript",
+      "sizeLines": 476,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/app/components/Tutorial.tsx",
+      "language": "typescript",
+      "sizeLines": 225,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/app/globals.css",
+      "language": "css",
+      "sizeLines": 161,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "4K_FE/app/layout.tsx",
+      "language": "typescript",
+      "sizeLines": 42,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/app/login/page.tsx",
+      "language": "typescript",
+      "sizeLines": 116,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/app/movie_list/page.tsx",
+      "language": "typescript",
+      "sizeLines": 317,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/app/page.tsx",
+      "language": "typescript",
+      "sizeLines": 256,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/eslint.config.mjs",
+      "language": "javascript",
+      "sizeLines": 18,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/next.config.ts",
+      "language": "typescript",
+      "sizeLines": 7,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/postcss.config.mjs",
+      "language": "javascript",
+      "sizeLines": 7,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_ML/.python-version",
+      "language": "unknown",
+      "sizeLines": 1,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_ML/generate_vectors/generate_vectors.py",
+      "language": "python",
+      "sizeLines": 205,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_ML/requirements.txt",
+      "language": "txt",
+      "sizeLines": 10,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "Ansible/ansible.cfg",
+      "language": "config",
+      "sizeLines": 10,
+      "fileCategory": "config"
+    }
+  ],
+  "batchImportData": {
+    "4K_BE/.python-version": [],
+    "4K_BE/app/main.py": [],
+    "4K_BE/DB_SCRIPTS/seed_movies.py": [],
+    "4K_BE/requirements.txt": [],
+    "4K_FE/app/api/manager/movies/[tmdb_id]/route.ts": [],
+    "4K_FE/app/api/manager/movies/route.ts": [],
+    "4K_FE/app/api/manager/movies/search/route.ts": [],
+    "4K_FE/app/components/BackgroundThread.tsx": [],
+    "4K_FE/app/components/ClimaxGraph.tsx": [],
+    "4K_FE/app/components/DetailOverlay.tsx": [
+      "4K_FE/app/components/ClimaxGraph.tsx",
+      "4K_FE/app/lib/data.ts"
+    ],
+    "4K_FE/app/components/MiniGraph.tsx": [],
+    "4K_FE/app/components/MovieDetailModal.tsx": [
+      "4K_FE/app/lib/data.ts"
+    ],
+    "4K_FE/app/components/Tutorial.tsx": [
+      "4K_FE/app/components/MiniGraph.tsx"
+    ],
+    "4K_FE/app/globals.css": [],
+    "4K_FE/app/layout.tsx": [
+      "4K_FE/app/globals.css"
+    ],
+    "4K_FE/app/login/page.tsx": [],
+    "4K_FE/app/movie_list/page.tsx": [
+      "4K_FE/app/components/MovieDetailModal.tsx",
+      "4K_FE/app/lib/data.ts"
+    ],
+    "4K_FE/app/page.tsx": [
+      "4K_FE/app/components/BackgroundThread.tsx"
+    ],
+    "4K_FE/eslint.config.mjs": [],
+    "4K_FE/next.config.ts": [],
+    "4K_FE/postcss.config.mjs": [],
+    "4K_ML/.python-version": [],
+    "4K_ML/generate_vectors/generate_vectors.py": [],
+    "4K_ML/requirements.txt": [],
+    "Ansible/ansible.cfg": []
+  }
+}

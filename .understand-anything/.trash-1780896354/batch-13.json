@@ -1,0 +1,91 @@
+{
+  "nodes": [
+    {
+      "id": "document:Documents/CICD 전략.md",
+      "type": "document",
+      "name": "CICD 전략.md",
+      "filePath": "Documents/CICD 전략.md",
+      "summary": "FE/BE의 GitHub Actions(CI)와 ArgoCD(CD) 기반 GitOps 파이프라인 전략을 정리한 문서로, 트리거 조건, 이미지 태그 전략, Kustomize 매니페스트 패치, GHCR 접근 설정, 트러블슈팅을 다룬다.",
+      "tags": ["documentation", "ci-cd", "deployment", "gitops", "argocd"],
+      "complexity": "complex",
+      "languageNotes": "29개 섹션으로 구성된 운영 문서로, GitHub Actions 트리거와 ArgoCD 자동 동기화의 이미지 태그 전파 경로를 상세히 기술한다."
+    },
+    {
+      "id": "document:Documents/서비스 개요.md",
+      "type": "document",
+      "name": "서비스 개요.md",
+      "filePath": "Documents/서비스 개요.md",
+      "summary": "4K Cinema 영화 추천 서비스의 전반적 소개 문서로, 주요 기능, 화면 구성, FE/BE/ML 기술 스택, DB 스키마, 데이터 흐름, 접근 정보를 설명한다.",
+      "tags": ["documentation", "overview", "architecture", "data-flow"],
+      "complexity": "moderate",
+      "languageNotes": "클라이맥스 그래프와 유사 영화 추천 등 핵심 도메인 기능과 ML 벡터 생성 배치 흐름을 포함한다."
+    },
+    {
+      "id": "document:Documents/인프라 구축 기록.md",
+      "type": "document",
+      "name": "인프라 구축 기록.md",
+      "filePath": "Documents/인프라 구축 기록.md",
+      "summary": "KakaoCloud 5노드 K3s 클러스터의 인프라 구축 결과를 기록한 문서로, 네트워크/도메인/HTTPS, Ingress-Nginx, GPU Operator, Longhorn, Supabase, 모니터링, cert-manager, ArgoCD 구성과 보안 메모를 망라한다.",
+      "tags": ["documentation", "infrastructure", "kubernetes", "k3s", "deployment"],
+      "complexity": "complex",
+      "languageNotes": "54개 섹션의 대규모 인프라 구축 기록으로, 각 컴포넌트의 설계 원칙과 트러블슈팅을 함께 정리한다."
+    },
+    {
+      "id": "document:Documents/인프라 구축 방법(명령어).md",
+      "type": "document",
+      "name": "인프라 구축 방법(명령어).md",
+      "filePath": "Documents/인프라 구축 방법(명령어).md",
+      "summary": "K3s 클러스터 프로비저닝부터 Ingress, cert-manager, Longhorn, ArgoCD, 모니터링, GPU Operator, Supabase, Redis, FE/BE 배포까지 실제 실행 명령어를 단계별로 정리한 런북이다.",
+      "tags": ["documentation", "infrastructure", "runbook", "deployment", "ci-cd"],
+      "complexity": "complex",
+      "languageNotes": "39개 섹션의 명령어 중심 런북으로, Ansible 프로비저닝과 Helm 설치, kubectl secret 생성 등 재현 가능한 절차를 제공한다."
+    },
+    {
+      "id": "document:Documents/프로젝트 디렉토리 구조.md",
+      "type": "document",
+      "name": "프로젝트 디렉토리 구조.md",
+      "filePath": "Documents/프로젝트 디렉토리 구조.md",
+      "summary": "모노레포 전체 디렉토리 트리를 설명하는 문서로, .github(CI), 4K_FE(Next.js), 4K_BE(FastAPI), 4K_ML(배치), Ansible(IaC/매니페스트), Documents 각 영역의 역할을 정리한다.",
+      "tags": ["documentation", "overview", "monorepo", "architecture"],
+      "complexity": "moderate",
+      "languageNotes": "전체 흐름 요약과 디렉토리 트리를 통해 신규 참여자가 프로젝트 구조를 빠르게 파악하도록 돕는다."
+    }
+  ],
+  "edges": [
+    {
+      "source": "document:Documents/CICD 전략.md",
+      "target": "document:Documents/인프라 구축 방법(명령어).md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:Documents/인프라 구축 기록.md",
+      "target": "document:Documents/인프라 구축 방법(명령어).md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:Documents/인프라 구축 기록.md",
+      "target": "document:Documents/CICD 전략.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:Documents/서비스 개요.md",
+      "target": "document:Documents/프로젝트 디렉토리 구조.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:Documents/프로젝트 디렉토리 구조.md",
+      "target": "document:Documents/서비스 개요.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

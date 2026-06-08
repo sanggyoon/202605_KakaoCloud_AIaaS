@@ -1,0 +1,112 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 5,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "Ansible/playbooks/00-ping.yml",
+      "language": "yaml",
+      "fileCategory": "config",
+      "totalLines": 4,
+      "nonEmptyLines": 4,
+      "sections": [
+        {
+          "heading": "[0]",
+          "level": 1,
+          "line": 1
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 1
+      }
+    },
+    {
+      "path": "Ansible/playbooks/01-common.yml",
+      "language": "yaml",
+      "fileCategory": "config",
+      "totalLines": 68,
+      "nonEmptyLines": 59,
+      "sections": [
+        {
+          "heading": "Common base setup",
+          "level": 1,
+          "line": 1
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 1
+      }
+    },
+    {
+      "path": "Ansible/playbooks/02-k3s-server.yml",
+      "language": "yaml",
+      "fileCategory": "config",
+      "totalLines": 52,
+      "nonEmptyLines": 47,
+      "sections": [
+        {
+          "heading": "Install K3s server on master",
+          "level": 1,
+          "line": 1
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 1
+      }
+    },
+    {
+      "path": "Ansible/playbooks/03-k3s-agent.yml",
+      "language": "yaml",
+      "fileCategory": "config",
+      "totalLines": 31,
+      "nonEmptyLines": 29,
+      "sections": [
+        {
+          "heading": "Install K3s agent on workers",
+          "level": 1,
+          "line": 1
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 1
+      }
+    },
+    {
+      "path": "Ansible/playbooks/04-longhorn-prereq.yml",
+      "language": "yaml",
+      "fileCategory": "config",
+      "totalLines": 29,
+      "nonEmptyLines": 26,
+      "sections": [
+        {
+          "heading": "Longhorn prerequisites",
+          "level": 1,
+          "line": 1
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 1
+      }
+    }
+  ]
+}

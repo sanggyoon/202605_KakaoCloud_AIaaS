@@ -1,0 +1,15 @@
+{
+  "projectRoot": "/Users/sanggyoon/Documents/KakaoCloud_Project",
+  "batchFiles": [
+    {"path": "4K_FE/app/api/manager/auth/login/route.ts", "language": "typescript", "sizeLines": 26, "fileCategory": "code"},
+    {"path": "4K_FE/app/api/manager/auth/logout/route.ts", "language": "typescript", "sizeLines": 8, "fileCategory": "code"},
+    {"path": "4K_FE/app/lib/auth.ts", "language": "typescript", "sizeLines": 32, "fileCategory": "code"},
+    {"path": "4K_FE/proxy.ts", "language": "typescript", "sizeLines": 28, "fileCategory": "code"}
+  ],
+  "batchImportData": {
+    "4K_FE/app/api/manager/auth/login/route.ts": ["4K_FE/app/lib/auth.ts"],
+    "4K_FE/app/api/manager/auth/logout/route.ts": ["4K_FE/app/lib/auth.ts"],
+    "4K_FE/app/lib/auth.ts": [],
+    "4K_FE/proxy.ts": ["4K_FE/app/lib/auth.ts"]
+  }
+}

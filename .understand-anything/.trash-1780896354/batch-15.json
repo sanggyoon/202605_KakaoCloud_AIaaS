@@ -1,0 +1,332 @@
+{
+  "nodes": [
+    {
+      "id": "resource:aws/terraform/alb.tf",
+      "type": "resource",
+      "name": "alb.tf",
+      "filePath": "aws/terraform/alb.tf",
+      "summary": "ACM 인증서 발급/검증과 Application Load Balancer, HTTPS 리스너 및 HTTP→HTTPS 리다이렉트, 앱 대상 그룹을 프로비저닝하는 Terraform 정의.",
+      "tags": ["infrastructure", "deployment", "load-balancer", "tls", "terraform"],
+      "complexity": "moderate",
+      "languageNotes": "ACM 인증서 검증을 Route53 DNS 레코드와 aws_acm_certificate_validation으로 자동화하는 표준 패턴 사용."
+    },
+    {
+      "id": "resource:aws/terraform/asg.tf",
+      "type": "resource",
+      "name": "asg.tf",
+      "filePath": "aws/terraform/asg.tf",
+      "summary": "앱 인스턴스용 Auto Scaling Group을 정의하며 ALB 대상 그룹에 연결되어 DR 시 용량을 확장하는 콜드 스탠바이 컴퓨트 계층.",
+      "tags": ["infrastructure", "deployment", "autoscaling", "disaster-recovery", "terraform"],
+      "complexity": "simple"
+    },
+    {
+      "id": "resource:aws/terraform/compute.tf",
+      "type": "resource",
+      "name": "compute.tf",
+      "filePath": "aws/terraform/compute.tf",
+      "summary": "Amazon Linux 2023 AMI(SSM 파라미터)를 조회하고 앱 인스턴스용 Launch Template을 정의하는 Terraform 컴퓨트 설정.",
+      "tags": ["infrastructure", "deployment", "compute", "launch-template", "terraform"],
+      "complexity": "simple"
+    },
+    {
+      "id": "resource:aws/terraform/db.tf",
+      "type": "resource",
+      "name": "db.tf",
+      "filePath": "aws/terraform/db.tf",
+      "summary": "EC2 기반 자체 관리 PostgreSQL 데이터베이스 인스턴스와 전용 보안 그룹, IAM 역할, 데이터용 EBS 볼륨 및 볼륨 연결을 프로비저닝.",
+      "tags": ["infrastructure", "database", "compute", "storage", "terraform"],
+      "complexity": "moderate",
+      "languageNotes": "RDS 대신 EBS 볼륨을 분리 부착한 EC2 인스턴스로 DB를 운영하여 비용을 절감하는 구성."
+    },
+    {
+      "id": "resource:aws/terraform/dns.tf",
+      "type": "resource",
+      "name": "dns.tf",
+      "filePath": "aws/terraform/dns.tf",
+      "summary": "앱과 데이터 엔드포인트에 대한 Route53 primary/secondary failover 레코드를 정의하여 카카오 오리진 장애 시 AWS로 트래픽을 전환하는 DNS failover 계층.",
+      "tags": ["infrastructure", "dns", "disaster-recovery", "failover", "terraform"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "resource:aws/terraform/dr_trigger.tf",
+      "type": "resource",
+      "name": "dr_trigger.tf",
+      "filePath": "aws/terraform/dr_trigger.tf",
+      "summary": "카카오 오리진을 직접 점검하는 Route53 헬스체크와, CloudWatch 이벤트 스케줄로 주기 실행되어 ASG 용량을 조절하는 DR 컨트롤러 Lambda를 패키징/배포.",
+      "tags": ["infrastructure", "disaster-recovery", "lambda", "monitoring", "terraform"],
+      "complexity": "complex",
+      "languageNotes": "DNS가 아닌 카카오 IP를 직접 점검하여 failover 레코드와의 순환 의존을 회피하는 단일 신호 설계."
+    },
+    {
+      "id": "resource:aws/terraform/iam.tf",
+      "type": "resource",
+      "name": "iam.tf",
+      "filePath": "aws/terraform/iam.tf",
+      "summary": "앱 EC2 인스턴스용 IAM 역할, SSM Core 정책 연결, SSM 파라미터 읽기 정책 및 인스턴스 프로파일을 정의하는 권한 설정.",
+      "tags": ["infrastructure", "security", "iam", "permissions", "terraform"],
+      "complexity": "simple"
+    },
+    {
+      "id": "resource:aws/terraform/network.tf",
+      "type": "resource",
+      "name": "network.tf",
+      "filePath": "aws/terraform/network.tf",
+      "summary": "VPC, 인터넷 게이트웨이, 퍼블릭/프라이빗 서브넷, 라우트 테이블 및 연결을 프로비저닝하는 핵심 네트워킹 토폴로지.",
+      "tags": ["infrastructure", "networking", "vpc", "deployment", "terraform"],
+      "complexity": "moderate",
+      "languageNotes": "비용 절감을 위해 NAT 게이트웨이 없이 퍼블릭 서브넷 중심으로 구성."
+    },
+    {
+      "id": "resource:aws/terraform/outputs.tf",
+      "type": "resource",
+      "name": "outputs.tf",
+      "filePath": "aws/terraform/outputs.tf",
+      "summary": "VPC ID, 서브넷, ALB DNS/Zone, 대상 그룹 ARN, DB IP, DR 헬스체크 및 Lambda 등 14개의 Terraform 출력값을 노출.",
+      "tags": ["infrastructure", "outputs", "terraform", "configuration"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "resource:aws/terraform/postgrest.tf",
+      "type": "resource",
+      "name": "postgrest.tf",
+      "filePath": "aws/terraform/postgrest.tf",
+      "summary": "PostgREST 데이터 API용 ALB 대상 그룹, 대상 연결 및 경로 기반 리스너 규칙을 정의하여 데이터 엔드포인트로 라우팅.",
+      "tags": ["infrastructure", "load-balancer", "api-schema", "routing", "terraform"],
+      "complexity": "simple"
+    },
+    {
+      "id": "resource:aws/terraform/providers.tf",
+      "type": "resource",
+      "name": "providers.tf",
+      "filePath": "aws/terraform/providers.tf",
+      "summary": "AWS provider 리전 등 Terraform provider 설정을 정의하는 구성 파일.",
+      "tags": ["infrastructure", "configuration", "provider", "terraform"],
+      "complexity": "simple"
+    },
+    {
+      "id": "resource:aws/terraform/security.tf",
+      "type": "resource",
+      "name": "security.tf",
+      "filePath": "aws/terraform/security.tf",
+      "summary": "ALB, 앱, bastion에 대한 보안 그룹과 인바운드/아웃바운드 규칙을 정의하는 네트워크 보안 경계 설정.",
+      "tags": ["infrastructure", "security", "networking", "firewall", "terraform"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "resource:aws/terraform/variables.tf",
+      "type": "resource",
+      "name": "variables.tf",
+      "filePath": "aws/terraform/variables.tf",
+      "summary": "리전, 프로젝트명, CIDR, 인스턴스 타입, ASG 용량, 카카오 IP, DB 설정 등 19개의 입력 변수를 정의하는 Terraform 변수 선언 파일.",
+      "tags": ["infrastructure", "configuration", "variables", "terraform"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "resource:aws/terraform/versions.tf",
+      "type": "resource",
+      "name": "versions.tf",
+      "filePath": "aws/terraform/versions.tf",
+      "summary": "Terraform 코어 및 required provider 버전 제약을 명시하는 버전 고정 설정 파일.",
+      "tags": ["infrastructure", "configuration", "versioning", "terraform"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "resource:aws/terraform/alb.tf",
+      "target": "resource:aws/terraform/variables.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/alb.tf",
+      "target": "resource:aws/terraform/network.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/alb.tf",
+      "target": "resource:aws/terraform/security.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/asg.tf",
+      "target": "resource:aws/terraform/compute.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/asg.tf",
+      "target": "resource:aws/terraform/alb.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/asg.tf",
+      "target": "resource:aws/terraform/network.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/compute.tf",
+      "target": "resource:aws/terraform/iam.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/compute.tf",
+      "target": "resource:aws/terraform/security.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/compute.tf",
+      "target": "resource:aws/terraform/variables.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/db.tf",
+      "target": "resource:aws/terraform/network.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/db.tf",
+      "target": "resource:aws/terraform/variables.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/dns.tf",
+      "target": "resource:aws/terraform/alb.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/dns.tf",
+      "target": "resource:aws/terraform/dr_trigger.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/dns.tf",
+      "target": "resource:aws/terraform/variables.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/dr_trigger.tf",
+      "target": "resource:aws/terraform/asg.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/dr_trigger.tf",
+      "target": "resource:aws/terraform/variables.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/iam.tf",
+      "target": "resource:aws/terraform/variables.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/network.tf",
+      "target": "resource:aws/terraform/variables.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/postgrest.tf",
+      "target": "resource:aws/terraform/alb.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/postgrest.tf",
+      "target": "resource:aws/terraform/db.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/security.tf",
+      "target": "resource:aws/terraform/network.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/security.tf",
+      "target": "resource:aws/terraform/variables.tf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "resource:aws/terraform/outputs.tf",
+      "target": "resource:aws/terraform/network.tf",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "resource:aws/terraform/outputs.tf",
+      "target": "resource:aws/terraform/alb.tf",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "resource:aws/terraform/outputs.tf",
+      "target": "resource:aws/terraform/db.tf",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "resource:aws/terraform/outputs.tf",
+      "target": "resource:aws/terraform/dr_trigger.tf",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "resource:aws/terraform/providers.tf",
+      "target": "resource:aws/terraform/variables.tf",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "resource:aws/terraform/versions.tf",
+      "target": "resource:aws/terraform/providers.tf",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

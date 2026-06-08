@@ -1,0 +1,2232 @@
+{
+  "version": "1.0.0",
+  "gitCommitHash": "e52435473e04f9d75df5586f550960da94c429b1",
+  "generatedAt": "2026-06-08T05:25:42.727Z",
+  "files": {
+    ".github/workflows/deploy-4k-be.yml": {
+      "filePath": ".github/workflows/deploy-4k-be.yml",
+      "contentHash": "32420fd937376a9ff53e0c14b4acbd0be7ec984d8a077e07dc3c5817784bde89",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 65,
+      "hasStructuralAnalysis": true
+    },
+    ".github/workflows/deploy-4k-fe.yml": {
+      "filePath": ".github/workflows/deploy-4k-fe.yml",
+      "contentHash": "4713cd408f9a985d83504b3f34517c0afb9a2e7392bc2b2a3706515cdf76534c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 65,
+      "hasStructuralAnalysis": true
+    },
+    "4K_BE/.python-version": {
+      "filePath": "4K_BE/.python-version",
+      "contentHash": "61141e9590171b900fdf709e7ea8f050d5c2a69198d4a4a1977d7c45186307e5",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": false
+    },
+    "4K_BE/app/main.py": {
+      "filePath": "4K_BE/app/main.py",
+      "contentHash": "a0ce50242d4e8ea08f8a16023de468b232895c9a44b7a89025f5deecce609e56",
+      "functions": [
+        {
+          "name": "_sb_headers",
+          "params": [],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "_pick_trailer",
+          "params": [
+            "videos"
+          ],
+          "returnType": "str | None",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "health",
+          "params": [],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "list_movies",
+          "params": [
+            "page"
+          ],
+          "exported": true,
+          "lineCount": 54
+        },
+        {
+          "name": "search_movies",
+          "params": [
+            "q",
+            "page"
+          ],
+          "exported": true,
+          "lineCount": 53
+        },
+        {
+          "name": "movie_detail",
+          "params": [
+            "tmdb_id"
+          ],
+          "exported": true,
+          "lineCount": 22
+        },
+        {
+          "name": "update_movie",
+          "params": [
+            "tmdb_id",
+            "payload"
+          ],
+          "exported": true,
+          "lineCount": 35
+        },
+        {
+          "name": "add_movie",
+          "params": [
+            "tmdb_id"
+          ],
+          "exported": true,
+          "lineCount": 56
+        },
+        {
+          "name": "delete_movie",
+          "params": [
+            "tmdb_id"
+          ],
+          "exported": true,
+          "lineCount": 12
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        },
+        {
+          "source": "dotenv",
+          "specifiers": [
+            "load_dotenv"
+          ]
+        },
+        {
+          "source": "fastapi",
+          "specifiers": [
+            "FastAPI",
+            "HTTPException"
+          ]
+        },
+        {
+          "source": "fastapi.middleware.cors",
+          "specifiers": [
+            "CORSMiddleware"
+          ]
+        }
+      ],
+      "exports": [
+        "_sb_headers",
+        "_pick_trailer",
+        "health",
+        "list_movies",
+        "search_movies",
+        "movie_detail",
+        "update_movie",
+        "add_movie",
+        "delete_movie"
+      ],
+      "totalLines": 316,
+      "hasStructuralAnalysis": true
+    },
+    "4K_BE/DB_SCRIPTS/seed_movies.py": {
+      "filePath": "4K_BE/DB_SCRIPTS/seed_movies.py",
+      "contentHash": "ea1dc1d539514166847a0cbb1c6684b243d39b1b6bbbd1bdd3babbaff4cabd0d",
+      "functions": [
+        {
+          "name": "tmdb_get",
+          "params": [
+            "path",
+            "params"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "pick_trailer",
+          "params": [
+            "videos"
+          ],
+          "returnType": "str | None",
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "fetch_movie",
+          "params": [
+            "tmdb_id"
+          ],
+          "returnType": "dict | None",
+          "exported": true,
+          "lineCount": 44
+        },
+        {
+          "name": "get_existing_tmdb_ids",
+          "params": [],
+          "returnType": "set[int]",
+          "exported": true,
+          "lineCount": 19
+        },
+        {
+          "name": "verify_insert",
+          "params": [
+            "tmdb_id"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "upsert_batch",
+          "params": [
+            "movies"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 27
+        },
+        {
+          "name": "main",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 62
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "time",
+          "specifiers": [
+            "time"
+          ]
+        },
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        },
+        {
+          "source": "dotenv",
+          "specifiers": [
+            "load_dotenv"
+          ]
+        }
+      ],
+      "exports": [
+        "tmdb_get",
+        "pick_trailer",
+        "fetch_movie",
+        "get_existing_tmdb_ids",
+        "verify_insert",
+        "upsert_batch",
+        "main"
+      ],
+      "totalLines": 280,
+      "hasStructuralAnalysis": true
+    },
+    "4K_BE/Dockerfile": {
+      "filePath": "4K_BE/Dockerfile",
+      "contentHash": "291bbaaa7d7533dd1063a3e553883c31cfae1db8d2ffb47b3f2a95cb689b7062",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 13,
+      "hasStructuralAnalysis": true
+    },
+    "4K_BE/requirements.txt": {
+      "filePath": "4K_BE/requirements.txt",
+      "contentHash": "62bb1a5f094dfd580199c60d95f715a289a8245f7604c6ed5744cae6708eb32d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 5,
+      "hasStructuralAnalysis": false
+    },
+    "4K_FE/.dockerignore": {
+      "filePath": "4K_FE/.dockerignore",
+      "contentHash": "a6b7415bf08ae05537f68b3449833c9ec9f70b60dfe12ff1bf03fbe6b89bb4bd",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 7,
+      "hasStructuralAnalysis": false
+    },
+    "4K_FE/.env.example": {
+      "filePath": "4K_FE/.env.example",
+      "contentHash": "0c89556766317e8d8eb93716dfdd5cb33cc54f0ee0cdcd7994e6e332198ea793",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 20,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/AGENTS.md": {
+      "filePath": "4K_FE/AGENTS.md",
+      "contentHash": "e3447d84251880fb34cfae09131cb4c57471529bbfe60976a3245793cf621627",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 6,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/api/manager/auth/login/route.ts": {
+      "filePath": "4K_FE/app/api/manager/auth/login/route.ts",
+      "contentHash": "48c3a27660cf84ff1442b234b311f39be86c05d9fe08efb81b6bcac33c151e56",
+      "functions": [
+        {
+          "name": "POST",
+          "params": [
+            "request"
+          ],
+          "exported": true,
+          "lineCount": 23
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "next/headers",
+          "specifiers": [
+            "cookies"
+          ]
+        },
+        {
+          "source": "@/app/lib/auth",
+          "specifiers": [
+            "verifyCredentials",
+            "sessionToken",
+            "SESSION_COOKIE",
+            "SESSION_MAX_AGE"
+          ]
+        }
+      ],
+      "exports": [
+        "POST"
+      ],
+      "totalLines": 27,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/api/manager/auth/logout/route.ts": {
+      "filePath": "4K_FE/app/api/manager/auth/logout/route.ts",
+      "contentHash": "de5a2dfa08e52e65cc54006fe1a1af3b17ff5958d6ea1db90212b3606384fb9a",
+      "functions": [
+        {
+          "name": "POST",
+          "params": [],
+          "exported": true,
+          "lineCount": 5
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "next/headers",
+          "specifiers": [
+            "cookies"
+          ]
+        },
+        {
+          "source": "@/app/lib/auth",
+          "specifiers": [
+            "SESSION_COOKIE"
+          ]
+        }
+      ],
+      "exports": [
+        "POST"
+      ],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/api/manager/movies/[tmdb_id]/route.ts": {
+      "filePath": "4K_FE/app/api/manager/movies/[tmdb_id]/route.ts",
+      "contentHash": "691091ec3a7aa474e9963d663ea248bf7cc7e4ece0d32c0485f53449db78d6f1",
+      "functions": [
+        {
+          "name": "GET",
+          "params": [
+            "_request",
+            "{ params }"
+          ],
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "PATCH",
+          "params": [
+            "request",
+            "{ params }"
+          ],
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "DELETE",
+          "params": [
+            "_request",
+            "{ params }"
+          ],
+          "exported": true,
+          "lineCount": 9
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "GET",
+        "PATCH",
+        "DELETE"
+      ],
+      "totalLines": 37,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/api/manager/movies/route.ts": {
+      "filePath": "4K_FE/app/api/manager/movies/route.ts",
+      "contentHash": "d06bb17524902acc7edbde646f114e2acca73d28af23a7557a0dd5fc1114e26f",
+      "functions": [
+        {
+          "name": "GET",
+          "params": [
+            "request"
+          ],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "POST",
+          "params": [
+            "request"
+          ],
+          "exported": true,
+          "lineCount": 6
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "GET",
+        "POST"
+      ],
+      "totalLines": 19,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/api/manager/movies/search/route.ts": {
+      "filePath": "4K_FE/app/api/manager/movies/search/route.ts",
+      "contentHash": "434cdf9d3a5a7ca58487eee675629d830339290dcc09794d9cc5bb5aa2817f2d",
+      "functions": [
+        {
+          "name": "GET",
+          "params": [
+            "request"
+          ],
+          "exported": true,
+          "lineCount": 12
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "GET"
+      ],
+      "totalLines": 16,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/components/BackgroundThread.tsx": {
+      "filePath": "4K_FE/app/components/BackgroundThread.tsx",
+      "contentHash": "8885c8f990a65b73fe54b64fe6f9d3777ede042249cc06469327898f79039eca",
+      "functions": [
+        {
+          "name": "Threads",
+          "params": [
+            "{\n  color = [1, 1, 1],\n  amplitude = 1,\n  distance = 0,\n  enableMouseInteraction = false,\n  ...rest\n}"
+          ],
+          "exported": false,
+          "lineCount": 106
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "react",
+          "specifiers": [
+            "React",
+            "useEffect",
+            "useRef"
+          ]
+        },
+        {
+          "source": "ogl",
+          "specifiers": [
+            "Renderer",
+            "Program",
+            "Mesh",
+            "Triangle",
+            "Color"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 236,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/components/ClimaxGraph.tsx": {
+      "filePath": "4K_FE/app/components/ClimaxGraph.tsx",
+      "contentHash": "b329239e5445aad67bdb32a8cc48381f320a6227c0d62dc0ba85cd5564aef38c",
+      "functions": [
+        {
+          "name": "ClimaxGraph",
+          "params": [
+            "{ data, height = 160 }"
+          ],
+          "exported": true,
+          "lineCount": 73
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "ClimaxGraph"
+      ],
+      "totalLines": 82,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/components/DetailOverlay.tsx": {
+      "filePath": "4K_FE/app/components/DetailOverlay.tsx",
+      "contentHash": "8f894ca3fa23083e5ecaa3fc82e95524ad191f6e3d48e7e2e2babda753373336",
+      "functions": [
+        {
+          "name": "dtwDistance",
+          "params": [
+            "a",
+            "b"
+          ],
+          "returnType": "number",
+          "exported": false,
+          "lineCount": 17
+        },
+        {
+          "name": "DetailOverlay",
+          "params": [
+            "{ movie, onClose, onSelectMovie }"
+          ],
+          "exported": true,
+          "lineCount": 227
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "react",
+          "specifiers": [
+            "useState",
+            "useEffect"
+          ]
+        },
+        {
+          "source": "@/app/lib/data",
+          "specifiers": [
+            "Movie",
+            "posterUrl",
+            "genreList",
+            "castList",
+            "fetchVector",
+            "fetchPreferredMovies",
+            "fetchMovieVectors"
+          ]
+        },
+        {
+          "source": "@/app/components/ClimaxGraph",
+          "specifiers": [
+            "ClimaxGraph"
+          ]
+        }
+      ],
+      "exports": [
+        "DetailOverlay"
+      ],
+      "totalLines": 264,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/components/FilterBar.tsx": {
+      "filePath": "4K_FE/app/components/FilterBar.tsx",
+      "contentHash": "b93a54efd7558bb2e735c05ef1f1d920e7ed107f5288a7d37593acb4868fee77",
+      "functions": [
+        {
+          "name": "FilterRow",
+          "params": [
+            "{\n  label,\n  options,\n  value,\n  onChange,\n}"
+          ],
+          "exported": false,
+          "lineCount": 54
+        },
+        {
+          "name": "MultiFilterRow",
+          "params": [
+            "{\n  label,\n  options,\n  values,\n  onChange,\n}"
+          ],
+          "exported": false,
+          "lineCount": 58
+        },
+        {
+          "name": "YearStepper",
+          "params": [
+            "{\n  value,\n  min,\n  max,\n  onChange,\n}"
+          ],
+          "exported": false,
+          "lineCount": 111
+        },
+        {
+          "name": "YearRangeRow",
+          "params": [
+            "{\n  min,\n  max,\n  value,\n  onChange,\n}"
+          ],
+          "exported": false,
+          "lineCount": 168
+        },
+        {
+          "name": "PrefRow",
+          "params": [
+            "{\n  label,\n  ids,\n  movies,\n  onRemove,\n  accent,\n}"
+          ],
+          "exported": false,
+          "lineCount": 99
+        },
+        {
+          "name": "FilterBar",
+          "params": [
+            "{\n  open,\n  draft,\n  movies,\n  onChangeDraft,\n  onSearch,\n  onReset,\n  search,\n  onSearchChange,\n}"
+          ],
+          "exported": true,
+          "lineCount": 166
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "react",
+          "specifiers": [
+            "useEffect",
+            "useRef",
+            "useState"
+          ]
+        },
+        {
+          "source": "@/app/lib/data",
+          "specifiers": [
+            "Filters",
+            "Movie",
+            "GENRES"
+          ]
+        }
+      ],
+      "exports": [
+        "FilterBar"
+      ],
+      "totalLines": 684,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/components/MiniGraph.tsx": {
+      "filePath": "4K_FE/app/components/MiniGraph.tsx",
+      "contentHash": "c311b8453340e2be9ba683d10e061110193b057970e3e61ff564f6ff6bee122d",
+      "functions": [
+        {
+          "name": "MiniGraph",
+          "params": [
+            "{ data, color = 'var(--accent)', height = 40 }"
+          ],
+          "exported": true,
+          "lineCount": 30
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "MiniGraph"
+      ],
+      "totalLines": 40,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/components/MovieDetailModal.tsx": {
+      "filePath": "4K_FE/app/components/MovieDetailModal.tsx",
+      "contentHash": "bd53eb45e5e28d2cebdf59c6aa28f9f5b7a4e89c7c0df195afb80265859631cf",
+      "functions": [
+        {
+          "name": "parseVector",
+          "params": [
+            "raw"
+          ],
+          "returnType": "number[]",
+          "exported": false,
+          "lineCount": 9
+        },
+        {
+          "name": "MovieDetailModal",
+          "params": [
+            "{\n  tmdbId,\n  fallbackTitle,\n  onClose,\n}"
+          ],
+          "exported": true,
+          "lineCount": 354
+        },
+        {
+          "name": "Field",
+          "params": [
+            "{ label, children }"
+          ],
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "Section",
+          "params": [
+            "{ title, children }"
+          ],
+          "exported": false,
+          "lineCount": 13
+        },
+        {
+          "name": "KV",
+          "params": [
+            "{ k, v }"
+          ],
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "Badge",
+          "params": [
+            "{ label, value, ok }"
+          ],
+          "exported": false,
+          "lineCount": 14
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "react",
+          "specifiers": [
+            "useState",
+            "useEffect",
+            "useCallback"
+          ]
+        },
+        {
+          "source": "@/app/lib/data",
+          "specifiers": [
+            "posterUrl"
+          ]
+        }
+      ],
+      "exports": [
+        "MovieDetailModal"
+      ],
+      "totalLines": 477,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/components/PosterCard.tsx": {
+      "filePath": "4K_FE/app/components/PosterCard.tsx",
+      "contentHash": "0dbb7fa6e4c7b5798760f591a9f1a31c758b57d0cf9f696aa63931e1c4f9c159",
+      "functions": [
+        {
+          "name": "PosterCard",
+          "params": [
+            "{\n  movie,\n  isHovered,\n  onHover,\n  onClick,\n  pref,\n  onTogglePref,\n}"
+          ],
+          "exported": true,
+          "lineCount": 311
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "react",
+          "specifiers": [
+            "useState"
+          ]
+        },
+        {
+          "source": "@/app/lib/data",
+          "specifiers": [
+            "Movie",
+            "posterUrl",
+            "genreList"
+          ]
+        }
+      ],
+      "exports": [
+        "PosterCard"
+      ],
+      "totalLines": 330,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/components/RandomModal.tsx": {
+      "filePath": "4K_FE/app/components/RandomModal.tsx",
+      "contentHash": "f472373340d80faf3f789bb1dde399a0c020df3a78c80b86d0df9da908b944a5",
+      "functions": [
+        {
+          "name": "fetchRandomFromServer",
+          "params": [],
+          "returnType": "Promise<Movie | null>",
+          "exported": false,
+          "lineCount": 21
+        },
+        {
+          "name": "RandomModal",
+          "params": [
+            "{ movies, onClose, onPick }"
+          ],
+          "exported": true,
+          "lineCount": 158
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "react",
+          "specifiers": [
+            "useEffect",
+            "useRef",
+            "useState",
+            "useCallback"
+          ]
+        },
+        {
+          "source": "@/app/lib/data",
+          "specifiers": [
+            "Movie",
+            "posterUrl",
+            "genreList",
+            "SUPABASE_URL",
+            "SUPABASE_ANON_KEY"
+          ]
+        }
+      ],
+      "exports": [
+        "RandomModal"
+      ],
+      "totalLines": 193,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/components/Tutorial.tsx": {
+      "filePath": "4K_FE/app/components/Tutorial.tsx",
+      "contentHash": "1e0ed3ec7ac9ba577f736d8643c27e0e4c946384c42df4a57b1665d989fda95b",
+      "functions": [
+        {
+          "name": "Tutorial",
+          "params": [
+            "{ step, onNext, onSkip, onComplete }"
+          ],
+          "exported": true,
+          "lineCount": 158
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "react",
+          "specifiers": [
+            "useState"
+          ]
+        },
+        {
+          "source": "./MiniGraph",
+          "specifiers": [
+            "MiniGraph"
+          ]
+        }
+      ],
+      "exports": [
+        "Tutorial"
+      ],
+      "totalLines": 226,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/dashboard/page.tsx": {
+      "filePath": "4K_FE/app/dashboard/page.tsx",
+      "contentHash": "9b3a18fb7c27c0bb0b470e41cf1ac5b920eff7262730d1aa1d5509fd09593c47",
+      "functions": [
+        {
+          "name": "Dashboard",
+          "params": [],
+          "exported": true,
+          "lineCount": 632
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "react",
+          "specifiers": [
+            "useState",
+            "useEffect",
+            "useCallback",
+            "useRef"
+          ]
+        },
+        {
+          "source": "next/navigation",
+          "specifiers": [
+            "useRouter"
+          ]
+        },
+        {
+          "source": "@/app/lib/data",
+          "specifiers": [
+            "INITIAL_FILTERS",
+            "Filters",
+            "Movie",
+            "SUPABASE_URL",
+            "SUPABASE_ANON_KEY",
+            "getRecentIds",
+            "addRecentId",
+            "removeRecentId",
+            "fetchPreferredMovies"
+          ]
+        },
+        {
+          "source": "next/image",
+          "specifiers": [
+            "Image"
+          ]
+        },
+        {
+          "source": "@/app/components/PosterCard",
+          "specifiers": [
+            "PosterCard"
+          ]
+        },
+        {
+          "source": "@/app/components/FilterBar",
+          "specifiers": [
+            "FilterBar"
+          ]
+        },
+        {
+          "source": "@/app/components/DetailOverlay",
+          "specifiers": [
+            "DetailOverlay"
+          ]
+        },
+        {
+          "source": "@/app/components/RandomModal",
+          "specifiers": [
+            "RandomModal"
+          ]
+        },
+        {
+          "source": "@/app/components/Tutorial",
+          "specifiers": [
+            "Tutorial"
+          ]
+        }
+      ],
+      "exports": [
+        "Dashboard"
+      ],
+      "totalLines": 659,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/globals.css": {
+      "filePath": "4K_FE/app/globals.css",
+      "contentHash": "71f1843c88dd63ee3954d2880c94c3f02f87c69f4aeee561dddb14cb1ea28035",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 162,
+      "hasStructuralAnalysis": false
+    },
+    "4K_FE/app/layout.tsx": {
+      "filePath": "4K_FE/app/layout.tsx",
+      "contentHash": "265343ac9e680953bcc987cd6c47f1db6a775e63080d1565abb9bb326393844c",
+      "functions": [
+        {
+          "name": "RootLayout",
+          "params": [
+            "{\n  children,\n}"
+          ],
+          "exported": true,
+          "lineCount": 14
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "next",
+          "specifiers": [
+            "Metadata"
+          ]
+        },
+        {
+          "source": "next/font/google",
+          "specifiers": [
+            "Inter_Tight",
+            "Playfair_Display",
+            "JetBrains_Mono"
+          ]
+        },
+        {
+          "source": "./globals.css",
+          "specifiers": []
+        }
+      ],
+      "exports": [
+        "metadata",
+        "RootLayout"
+      ],
+      "totalLines": 43,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/lib/auth.ts": {
+      "filePath": "4K_FE/app/lib/auth.ts",
+      "contentHash": "f46220042297b769698097cc8492fe84cba82dfa3c4dfba2d08a96cbc1d54599",
+      "functions": [
+        {
+          "name": "verifyCredentials",
+          "params": [
+            "id",
+            "password"
+          ],
+          "returnType": "boolean",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "sessionToken",
+          "params": [],
+          "returnType": "string",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "isValidSession",
+          "params": [
+            "token"
+          ],
+          "returnType": "boolean",
+          "exported": true,
+          "lineCount": 7
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "node:crypto",
+          "specifiers": [
+            "crypto"
+          ]
+        }
+      ],
+      "exports": [
+        "SESSION_COOKIE",
+        "SESSION_MAX_AGE",
+        "verifyCredentials",
+        "sessionToken",
+        "isValidSession"
+      ],
+      "totalLines": 33,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/lib/data.ts": {
+      "filePath": "4K_FE/app/lib/data.ts",
+      "contentHash": "e2be94c7761961ba36501e2eb99e076c513e367d4a483dd9bc3b1549b14c022a",
+      "functions": [
+        {
+          "name": "posterUrl",
+          "params": [
+            "path"
+          ],
+          "returnType": "string | null",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "genreList",
+          "params": [
+            "genre"
+          ],
+          "returnType": "string[]",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "castList",
+          "params": [
+            "actors"
+          ],
+          "returnType": "string[]",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "fetchPreferredMovies",
+          "params": [
+            "likeIds",
+            "dislikeIds",
+            "matchCount"
+          ],
+          "returnType": "Promise<Movie[]>",
+          "exported": true,
+          "lineCount": 17
+        },
+        {
+          "name": "fetchSimilarMovies",
+          "params": [
+            "movieId",
+            "count"
+          ],
+          "returnType": "Promise<Movie[]>",
+          "exported": true,
+          "lineCount": 16
+        },
+        {
+          "name": "fetchMovieVectors",
+          "params": [
+            "tmdbIds"
+          ],
+          "returnType": "Promise<Map<number, number[]>>",
+          "exported": true,
+          "lineCount": 17
+        },
+        {
+          "name": "fetchVector",
+          "params": [
+            "tmdbId"
+          ],
+          "returnType": "Promise<number[] | null>",
+          "exported": true,
+          "lineCount": 17
+        },
+        {
+          "name": "getRecentIds",
+          "params": [],
+          "returnType": "number[]",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "addRecentId",
+          "params": [
+            "tmdbId"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "removeRecentId",
+          "params": [
+            "tmdbId"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 3
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "posterUrl",
+        "genreList",
+        "castList",
+        "SUPABASE_URL",
+        "SUPABASE_ANON_KEY",
+        "GENRES",
+        "INITIAL_FILTERS",
+        "fetchPreferredMovies",
+        "fetchSimilarMovies",
+        "fetchMovieVectors",
+        "fetchVector",
+        "getRecentIds",
+        "addRecentId",
+        "removeRecentId"
+      ],
+      "totalLines": 166,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/login/page.tsx": {
+      "filePath": "4K_FE/app/login/page.tsx",
+      "contentHash": "77c2eb2406d6dc0015fea6a912fb5545d05f71d5b5b9b6423b16c1e04e9b6402",
+      "functions": [
+        {
+          "name": "LoginPage",
+          "params": [],
+          "exported": true,
+          "lineCount": 101
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "react",
+          "specifiers": [
+            "useState"
+          ]
+        },
+        {
+          "source": "next/navigation",
+          "specifiers": [
+            "useRouter"
+          ]
+        }
+      ],
+      "exports": [
+        "LoginPage"
+      ],
+      "totalLines": 117,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/movie_list/page.tsx": {
+      "filePath": "4K_FE/app/movie_list/page.tsx",
+      "contentHash": "2c7f7943f3cf762b721c5f280271293baf3ff6be365702e3056519837f8e5ccf",
+      "functions": [
+        {
+          "name": "MovieListPage",
+          "params": [],
+          "exported": true,
+          "lineCount": 281
+        },
+        {
+          "name": "paginationBtn",
+          "params": [
+            "disabled"
+          ],
+          "returnType": "React.CSSProperties",
+          "exported": false,
+          "lineCount": 11
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "react",
+          "specifiers": [
+            "useState",
+            "useEffect",
+            "useCallback"
+          ]
+        },
+        {
+          "source": "next/navigation",
+          "specifiers": [
+            "useRouter"
+          ]
+        },
+        {
+          "source": "@/app/lib/data",
+          "specifiers": [
+            "posterUrl"
+          ]
+        },
+        {
+          "source": "@/app/components/MovieDetailModal",
+          "specifiers": [
+            "MovieDetailModal"
+          ]
+        }
+      ],
+      "exports": [
+        "MovieListPage"
+      ],
+      "totalLines": 318,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/page.tsx": {
+      "filePath": "4K_FE/app/page.tsx",
+      "contentHash": "dddbb164dea92d2931998aa113af453ff75258ef8231ed4c92f22cd278a77ada",
+      "functions": [
+        {
+          "name": "OnboardingPage",
+          "params": [],
+          "exported": true,
+          "lineCount": 186
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "next/navigation",
+          "specifiers": [
+            "useRouter"
+          ]
+        },
+        {
+          "source": "@/app/components/BackgroundThread",
+          "specifiers": [
+            "BackgroundThread"
+          ]
+        }
+      ],
+      "exports": [
+        "OnboardingPage"
+      ],
+      "totalLines": 257,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/CLAUDE.md": {
+      "filePath": "4K_FE/CLAUDE.md",
+      "contentHash": "336cc4fbf19beaada7ccf9986414fa91851a8d7a07dfb3ccbe800a69eed0ab49",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/Dockerfile": {
+      "filePath": "4K_FE/Dockerfile",
+      "contentHash": "bc0df5739429820393d078cbd2fcb31834f33318ec89f18bc772707756095c9c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 37,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/eslint.config.mjs": {
+      "filePath": "4K_FE/eslint.config.mjs",
+      "contentHash": "870f1adccecf3051cbcd9fd307cef51d7633cf510979c181a81f4b1797273493",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "eslint/config",
+          "specifiers": [
+            "defineConfig",
+            "globalIgnores"
+          ]
+        },
+        {
+          "source": "eslint-config-next/core-web-vitals",
+          "specifiers": [
+            "nextVitals"
+          ]
+        },
+        {
+          "source": "eslint-config-next/typescript",
+          "specifiers": [
+            "nextTs"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 19,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/next.config.ts": {
+      "filePath": "4K_FE/next.config.ts",
+      "contentHash": "b5146142b51153082c0d1374fc831f388d50dccd70a1267a08ac55d54059a616",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "next",
+          "specifiers": [
+            "NextConfig"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 8,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/package.json": {
+      "filePath": "4K_FE/package.json",
+      "contentHash": "edc1501095bc5fceeabbd386d4f6987d5ecf80e6311c2a1728a384fedd6fc581",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 28,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/postcss.config.mjs": {
+      "filePath": "4K_FE/postcss.config.mjs",
+      "contentHash": "dfac7ac2d86d326a0e5adb024e7943c181393ed17a5fcb8f0315b24c7da6ddde",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 8,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/proxy.ts": {
+      "filePath": "4K_FE/proxy.ts",
+      "contentHash": "f5e4ae25c97d7c7f0c583a633d46e7601e5707c5f8ae8297236e822ea449012e",
+      "functions": [
+        {
+          "name": "proxy",
+          "params": [
+            "request"
+          ],
+          "exported": true,
+          "lineCount": 18
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "next/server",
+          "specifiers": [
+            "NextResponse"
+          ]
+        },
+        {
+          "source": "next/server",
+          "specifiers": [
+            "NextRequest"
+          ]
+        },
+        {
+          "source": "@/app/lib/auth",
+          "specifiers": [
+            "SESSION_COOKIE",
+            "isValidSession"
+          ]
+        }
+      ],
+      "exports": [
+        "proxy",
+        "config"
+      ],
+      "totalLines": 29,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/README.md": {
+      "filePath": "4K_FE/README.md",
+      "contentHash": "60b55ff7df79af72590f9524208e46642bc32bdc175cdad41349681c0e2f958f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 37,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/tsconfig.json": {
+      "filePath": "4K_FE/tsconfig.json",
+      "contentHash": "be18523b23b78b6e1a876ddd107d330f0168bddf09d751b57e0b5edce69c66f3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 35,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/.python-version": {
+      "filePath": "4K_ML/.python-version",
+      "contentHash": "61141e9590171b900fdf709e7ea8f050d5c2a69198d4a4a1977d7c45186307e5",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": false
+    },
+    "4K_ML/generate_vectors/generate_vectors.py": {
+      "filePath": "4K_ML/generate_vectors/generate_vectors.py",
+      "contentHash": "11eaf3fbc2f8eada0d93ec591986158d68e2b1a70804441112dddb6deae6be2b",
+      "functions": [
+        {
+          "name": "ext_fetch",
+          "params": [
+            "table",
+            "params"
+          ],
+          "returnType": "list[dict]",
+          "exported": true,
+          "lineCount": 25
+        },
+        {
+          "name": "vm4_upsert",
+          "params": [
+            "table",
+            "rows",
+            "on_conflict"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 22
+        },
+        {
+          "name": "process",
+          "params": [
+            "points"
+          ],
+          "returnType": "np.ndarray | None",
+          "exported": true,
+          "lineCount": 27
+        },
+        {
+          "name": "main",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 71
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "collections",
+          "specifiers": [
+            "defaultdict"
+          ]
+        },
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        },
+        {
+          "source": "numpy",
+          "specifiers": [
+            "np"
+          ]
+        },
+        {
+          "source": "dotenv",
+          "specifiers": [
+            "load_dotenv"
+          ]
+        },
+        {
+          "source": "scipy.signal",
+          "specifiers": [
+            "savgol_filter"
+          ]
+        }
+      ],
+      "exports": [
+        "ext_fetch",
+        "vm4_upsert",
+        "process",
+        "main"
+      ],
+      "totalLines": 206,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/requirements.txt": {
+      "filePath": "4K_ML/requirements.txt",
+      "contentHash": "a5e5fb52dd87e89eec46c40f4a4cbebea11d80ea8082386526724ff6599f29b7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 11,
+      "hasStructuralAnalysis": false
+    },
+    "Ansible/ansible.cfg": {
+      "filePath": "Ansible/ansible.cfg",
+      "contentHash": "4fb4a01beb24997487bf29316ffe25daa2422f0591ee7155650c6f3e7d53912f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 11,
+      "hasStructuralAnalysis": false
+    },
+    "Ansible/group_vars/all.yaml": {
+      "filePath": "Ansible/group_vars/all.yaml",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/helm-values/ingress-nginx.yaml": {
+      "filePath": "Ansible/helm-values/ingress-nginx.yaml",
+      "contentHash": "d186a2b8d9a2969b17c14b3c7bf58dec1a874c970508fe304f55087ee2a6d0a6",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 12,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/helm-values/longhorn.yaml": {
+      "filePath": "Ansible/helm-values/longhorn.yaml",
+      "contentHash": "3dd15a1c7608281be2ad3afa62bdbead9ea85d33816959a46042fda32d728309",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 22,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/4k-be/deployment.yaml": {
+      "filePath": "Ansible/manifests/4k-be/deployment.yaml",
+      "contentHash": "7c71b4d2b580e276e4ca4321cff71b26d814d17fec273e36c11308dd9ee8127a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 45,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/4k-be/kustomization.yaml": {
+      "filePath": "Ansible/manifests/4k-be/kustomization.yaml",
+      "contentHash": "068b2bcf9cf59a50a223942598e758d9232b53c2ab604be6c3745cd3fe61d71a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 13,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/4k-be/service.yaml": {
+      "filePath": "Ansible/manifests/4k-be/service.yaml",
+      "contentHash": "ae37c1a175802faebcb97aa45bd698a5bcee5837ba61b46b932d74c4b5fa94d3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 12,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/4k-fe/deployment.yaml": {
+      "filePath": "Ansible/manifests/4k-fe/deployment.yaml",
+      "contentHash": "51bfc41fe6adc091bb27d066d3117dd323fa75bbaec12b103d86cb5832e5d1d5",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 53,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/4k-fe/ingress.yaml": {
+      "filePath": "Ansible/manifests/4k-fe/ingress.yaml",
+      "contentHash": "f6b2944b36bfe2f8567f7f76841e9a999c77352eb2a46d263dae34d99fbd1bdb",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 54,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/4k-fe/kustomization.yaml": {
+      "filePath": "Ansible/manifests/4k-fe/kustomization.yaml",
+      "contentHash": "9a5800341a20354f449b2f2d46afd5512f8c091c962a27e1f608d5b8362f7926",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 14,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/4k-fe/service.yaml": {
+      "filePath": "Ansible/manifests/4k-fe/service.yaml",
+      "contentHash": "469b6fac2dafe2b12a8cfe562f827810dac247441b74b82f5465b35377f8624e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 12,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/apps/cluster-issuer.yaml": {
+      "filePath": "Ansible/manifests/apps/cluster-issuer.yaml",
+      "contentHash": "c510c068d8899c5513525b508e05d21689c1914714787e64a396fb9e2c723e84",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 32,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/apps/ingress-nginx-config.yaml": {
+      "filePath": "Ansible/manifests/apps/ingress-nginx-config.yaml",
+      "contentHash": "b8834925fb6ebc8178c0f1d69efdd202846bd7b053ca330954b9d055a61a924b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 13,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/apps/ingress-studio.yaml": {
+      "filePath": "Ansible/manifests/apps/ingress-studio.yaml",
+      "contentHash": "6e7814038de035ae9be038a0f9d661764bf67c8ccb2acae37ca7b1d165c9af74",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 234,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/argocd/argocd-app-4k-be.yaml": {
+      "filePath": "Ansible/manifests/argocd/argocd-app-4k-be.yaml",
+      "contentHash": "6c29402b283bbf4bf55c693b979fbcfcc35eb8efbf41f035ae09722e411ab010",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 21,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/argocd/argocd-app-4k-fe.yaml": {
+      "filePath": "Ansible/manifests/argocd/argocd-app-4k-fe.yaml",
+      "contentHash": "e85e3c1bb50348eab5d5d4959f99a3e57a6ef62a1e6e5c357d0c6a8ee00f25cc",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 21,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/argocd/argocd-app-infra.yaml": {
+      "filePath": "Ansible/manifests/argocd/argocd-app-infra.yaml",
+      "contentHash": "5b1b25a8585f16e888ca26a77e5e2661dd67c34ecdd0a225fc25dd5de76ae12e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 21,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/argocd/argocd-app-supabase-ai.yaml": {
+      "filePath": "Ansible/manifests/argocd/argocd-app-supabase-ai.yaml",
+      "contentHash": "4eef355ab1129c01ac0662cd5fee1d9ca0ce7fb34be030e5bae594a2e9f3be7d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 27,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/argocd/argocd-app-supabase-data.yaml": {
+      "filePath": "Ansible/manifests/argocd/argocd-app-supabase-data.yaml",
+      "contentHash": "1e7e723e6d3c803bf281308e30b51f6bf70fa2b05ed1070fea8338a1a3cf7439",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 27,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/test/gpu-test.yaml": {
+      "filePath": "Ansible/manifests/test/gpu-test.yaml",
+      "contentHash": "827fc26a08a74097fa9d9bf2fb178f1772d3c992ee7f5908f1aed1e8c1de62db",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 16,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/test/test-nginx.yaml": {
+      "filePath": "Ansible/manifests/test/test-nginx.yaml",
+      "contentHash": "e11bb0e95c314a90f5b7a0239ac3ac76c642deba58b6d694b8502b5d785d8df3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 53,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/playbooks/00-ping.yml": {
+      "filePath": "Ansible/playbooks/00-ping.yml",
+      "contentHash": "44cc3013178eb5cc7efd6055eb9eb6db052527d4d2cb0878493b33edc0cf2ab9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 5,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/playbooks/01-common.yml": {
+      "filePath": "Ansible/playbooks/01-common.yml",
+      "contentHash": "77180a546eb287fac706ed7cab8440f22dc79bc1f78ed5edc3bb82c74bd5d512",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 69,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/playbooks/02-k3s-server.yml": {
+      "filePath": "Ansible/playbooks/02-k3s-server.yml",
+      "contentHash": "c312791f4c64964c46963614fd6ba37a682e2e127c31ddd763a8b26534f3e494",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 53,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/playbooks/03-k3s-agent.yml": {
+      "filePath": "Ansible/playbooks/03-k3s-agent.yml",
+      "contentHash": "76c6dc0e59b0e5a2e86b262b14060e08c71e28033c37583bffb22bef9b51745f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 32,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/playbooks/04-longhorn-prereq.yml": {
+      "filePath": "Ansible/playbooks/04-longhorn-prereq.yml",
+      "contentHash": "9bba16c8b7de7c288989b7ca11aec825d204dc5ee4582f0a6adfa32c2f1deec9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 30,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/values/values-ai.yaml": {
+      "filePath": "Ansible/values/values-ai.yaml",
+      "contentHash": "ba71b097cb5c8300431927f257933798f7359bbd5f152887e2efb2997e43686e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 108,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/values/values-argocd.yaml": {
+      "filePath": "Ansible/values/values-argocd.yaml",
+      "contentHash": "261ffd17d2ecdea2d24a94e963c38bca94ed72da1b7f8f96a7a0f5bb473ca641",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 39,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/values/values-data.yaml": {
+      "filePath": "Ansible/values/values-data.yaml",
+      "contentHash": "6d1498f4690a1c15b4aa8b913f1f39ac879d713c16f33d44028b572458c1a347",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 105,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/values/values-loki.yaml": {
+      "filePath": "Ansible/values/values-loki.yaml",
+      "contentHash": "973aaf9b5e5dd9314890deeef64e8472070a2450e9302289902e9a4987575932",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 94,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/values/values-prometheus.yaml": {
+      "filePath": "Ansible/values/values-prometheus.yaml",
+      "contentHash": "6c5583771151917ababb354f9b9de5346cadde8bbf987aafc3790dcc3220f932",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 75,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/values/values-promtail.yaml": {
+      "filePath": "Ansible/values/values-promtail.yaml",
+      "contentHash": "c09d6499ea7052e6097699669a0d8cf612b520494c13b77c74b1a36ff8dce4fb",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 17,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/values/values-redis.yaml": {
+      "filePath": "Ansible/values/values-redis.yaml",
+      "contentHash": "a8c5cb23f77139d3cf2d60e1a49867db3d4abd7d147c041fb385d1c19cf2bbe3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "aws/.env.example": {
+      "filePath": "aws/.env.example",
+      "contentHash": "78dede8ef56b5094fea06c212d91a141887b180d320e731fd521721ea212099d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 25,
+      "hasStructuralAnalysis": true
+    },
+    "aws/COST-OPTIMIZATION.md": {
+      "filePath": "aws/COST-OPTIMIZATION.md",
+      "contentHash": "02399f424ecaa89b0df7cf6af757dbc5ce0a25e111d989ce5e1a0502a7bf057a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 119,
+      "hasStructuralAnalysis": true
+    },
+    "aws/docker-compose.yml": {
+      "filePath": "aws/docker-compose.yml",
+      "contentHash": "94f32b576ad6090bffff1aaada7f4f98afe8a34ed41acb39fb5ffc89913ae882",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 54,
+      "hasStructuralAnalysis": true
+    },
+    "aws/DR-DB-RUNBOOK.md": {
+      "filePath": "aws/DR-DB-RUNBOOK.md",
+      "contentHash": "db74ccde57b13aa4c0a3c980a87b479ecd4a70a2a804a10e0dfdecaee35c36a3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 185,
+      "hasStructuralAnalysis": true
+    },
+    "aws/terraform/.terraform.lock.hcl": {
+      "filePath": "aws/terraform/.terraform.lock.hcl",
+      "contentHash": "c45284ce7b7efe48ceb8bc55616708a111ee8bade44405cd56f9ad98ff0a861a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 47,
+      "hasStructuralAnalysis": false
+    },
+    "aws/terraform/alb.tf": {
+      "filePath": "aws/terraform/alb.tf",
+      "contentHash": "44f24beaee3703d1273a7f9fb3be4993ba59102d0a235c9069df3d3f74168b9e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 101,
+      "hasStructuralAnalysis": true
+    },
+    "aws/terraform/asg.tf": {
+      "filePath": "aws/terraform/asg.tf",
+      "contentHash": "d7d4d81b31f8d710a60d2ba3367ce6646003f64c92e8cd188add4b419cc30c28",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 33,
+      "hasStructuralAnalysis": true
+    },
+    "aws/terraform/compute.tf": {
+      "filePath": "aws/terraform/compute.tf",
+      "contentHash": "bfe19f293d8e516a74e72deea4fc5a57e1bc8128c33c69d8a512aeddf831d48a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 44,
+      "hasStructuralAnalysis": true
+    },
+    "aws/terraform/db.tf": {
+      "filePath": "aws/terraform/db.tf",
+      "contentHash": "0290d26b995e838f66257460cdca0aba4f9bfd0674479fe2055193de4a979048",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 99,
+      "hasStructuralAnalysis": true
+    },
+    "aws/terraform/dns.tf": {
+      "filePath": "aws/terraform/dns.tf",
+      "contentHash": "1ec4740427691d8fdde417536823a6fd3272f34730b692a7f6f6d6832c24704f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 83,
+      "hasStructuralAnalysis": true
+    },
+    "aws/terraform/dr_trigger.tf": {
+      "filePath": "aws/terraform/dr_trigger.tf",
+      "contentHash": "266cb4d3e4d81d785af28936107f12f1bf1bd062b65018c5240e12187ded1b41",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 103,
+      "hasStructuralAnalysis": true
+    },
+    "aws/terraform/iam.tf": {
+      "filePath": "aws/terraform/iam.tf",
+      "contentHash": "9c334019bfd4e6ddd5a7f13f4fce8a3a7f78f84afef63a4e5e8550efd7a8e552",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 48,
+      "hasStructuralAnalysis": true
+    },
+    "aws/terraform/lambda/dr_controller.py": {
+      "filePath": "aws/terraform/lambda/dr_controller.py",
+      "contentHash": "3d581db8e209e6a2e02cde312221edccfb1fbebecacd333bfbfac763ae865235",
+      "functions": [
+        {
+          "name": "_kakao_healthy",
+          "params": [],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 13
+        },
+        {
+          "name": "handler",
+          "params": [
+            "event",
+            "context"
+          ],
+          "exported": true,
+          "lineCount": 22
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "boto3",
+          "specifiers": [
+            "boto3"
+          ]
+        }
+      ],
+      "exports": [
+        "_kakao_healthy",
+        "handler"
+      ],
+      "totalLines": 57,
+      "hasStructuralAnalysis": true
+    },
+    "aws/terraform/network.tf": {
+      "filePath": "aws/terraform/network.tf",
+      "contentHash": "8f1baaa1b4c26b9b4cf657636e60ca48c7f18bf817ed70d66b2916fc31a9e7e8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 64,
+      "hasStructuralAnalysis": true
+    },
+    "aws/terraform/outputs.tf": {
+      "filePath": "aws/terraform/outputs.tf",
+      "contentHash": "f988ac4c5275e3b72f75ab249e82c81228234bfd4dbbc6309299fe80b6146f60",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 71,
+      "hasStructuralAnalysis": true
+    },
+    "aws/terraform/postgrest.tf": {
+      "filePath": "aws/terraform/postgrest.tf",
+      "contentHash": "c6a7e29b5641d4748915c34470c99dd7f039d385e3168dc43ba7428456c72aca",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 48,
+      "hasStructuralAnalysis": true
+    },
+    "aws/terraform/providers.tf": {
+      "filePath": "aws/terraform/providers.tf",
+      "contentHash": "30fff2aad8c2cceb3387d7d9b26ab348fb20780c21db16efcd65e5225921ffaa",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 13,
+      "hasStructuralAnalysis": true
+    },
+    "aws/terraform/security.tf": {
+      "filePath": "aws/terraform/security.tf",
+      "contentHash": "0ee5d08a17df2f4ba89e7bc8f207916cbf0857f324bdbe6ebdf4de6b199e3b4c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 87,
+      "hasStructuralAnalysis": true
+    },
+    "aws/terraform/ssm-params.sh.example": {
+      "filePath": "aws/terraform/ssm-params.sh.example",
+      "contentHash": "9b67c128ed9b10a24be6dadf38871d126aec778c0d29ce1ceddb241502531524",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 27,
+      "hasStructuralAnalysis": false
+    },
+    "aws/terraform/terraform.tfvars.example": {
+      "filePath": "aws/terraform/terraform.tfvars.example",
+      "contentHash": "0071744793be5caa71e3ccda706f3a18c5c1188c3fdc0e0e156b0a3aa6af2463",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 21,
+      "hasStructuralAnalysis": false
+    },
+    "aws/terraform/user_data_db.sh.tftpl": {
+      "filePath": "aws/terraform/user_data_db.sh.tftpl",
+      "contentHash": "234e67578358c095b7aa15c134b4cd935e86d3821a5a515b71b6805b9c9082d5",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 39,
+      "hasStructuralAnalysis": false
+    },
+    "aws/terraform/user_data.sh.tftpl": {
+      "filePath": "aws/terraform/user_data.sh.tftpl",
+      "contentHash": "61b3598600bd6c0404bd81e2daa5401b03a129e064ace06d3113fe482545b5a1",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 49,
+      "hasStructuralAnalysis": false
+    },
+    "aws/terraform/variables.tf": {
+      "filePath": "aws/terraform/variables.tf",
+      "contentHash": "57b8a8686e74475dd358df932f5bf62ce5184ac1229bf4f0675e85d0ea8bc460",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 123,
+      "hasStructuralAnalysis": true
+    },
+    "aws/terraform/versions.tf": {
+      "filePath": "aws/terraform/versions.tf",
+      "contentHash": "55fa8ee2aa145523df8c41655b424dd99d5d4cb139bc468dfb323590cfa5f92c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 25,
+      "hasStructuralAnalysis": true
+    },
+    "Documents/CICD 전략.md": {
+      "filePath": "Documents/CICD 전략.md",
+      "contentHash": "acf048a7abdbbda2212d9997f23f91e97ac88edf2e16c839bf8ed841b8fbb500",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 388,
+      "hasStructuralAnalysis": true
+    },
+    "Documents/서비스 개요.md": {
+      "filePath": "Documents/서비스 개요.md",
+      "contentHash": "b747cd5ce206fdbffce57b247720552029d0013c7bb55d383036aca497dd8cc5",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 213,
+      "hasStructuralAnalysis": true
+    },
+    "Documents/인프라 구축 기록.md": {
+      "filePath": "Documents/인프라 구축 기록.md",
+      "contentHash": "14816d9897f7abe7c77a4d2d1cdf31a86e38f8c8d5ab94178fcddefd6f1f32ff",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 529,
+      "hasStructuralAnalysis": true
+    },
+    "Documents/인프라 구축 방법(명령어).md": {
+      "filePath": "Documents/인프라 구축 방법(명령어).md",
+      "contentHash": "e9236277ae0ece28dd27fa148a7b14a225f51f43ca39d3cddf55706b2e99c879",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 508,
+      "hasStructuralAnalysis": true
+    },
+    "Documents/프로젝트 디렉토리 구조.md": {
+      "filePath": "Documents/프로젝트 디렉토리 구조.md",
+      "contentHash": "6ca198a625b72dab92b7c1cb4b9fa2dcd5d811b68d587183dd55c1ba0c830651",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 303,
+      "hasStructuralAnalysis": true
+    },
+    "readme.md": {
+      "filePath": "readme.md",
+      "contentHash": "b836f15883eb6c991493037bf0dbcd9f621b4f2393e995b0548540a590ce9026",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 108,
+      "hasStructuralAnalysis": true
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "nodes": [
+    {
+      "id": "service:4K_BE/Dockerfile",
+      "type": "service",
+      "name": "Dockerfile",
+      "filePath": "4K_BE/Dockerfile",
+      "summary": "4K Cinema 백엔드 FastAPI 애플리케이션을 컨테이너화하는 단일 스테이지 Dockerfile로, python:3.11-slim 기반에서 의존성을 설치하고 uvicorn으로 8000 포트에서 앱을 구동한다.",
+      "tags": ["containerization", "infrastructure", "deployment", "python", "fastapi"],
+      "complexity": "simple",
+      "languageNotes": "slim 베이스 이미지와 pip --no-cache-dir 옵션으로 이미지 크기를 줄이고, requirements.txt를 앱 코드보다 먼저 COPY해 의존성 레이어 캐싱을 활용한다."
+    },
+    {
+      "id": "service:4K_BE/Dockerfile:python",
+      "type": "service",
+      "name": "python",
+      "filePath": "4K_BE/Dockerfile",
+      "summary": "python:3.11-slim 이미지를 기반으로 /app 작업 디렉터리에서 의존성을 설치하고 앱 코드를 복사한 뒤 8000 포트로 uvicorn 서버를 실행하는 빌드 스테이지.",
+      "tags": ["containerization", "build-stage", "python", "uvicorn"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "service:4K_BE/Dockerfile",
+      "target": "service:4K_BE/Dockerfile:python",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "service:4K_BE/Dockerfile",
+      "target": "file:4K_BE/app/main.py",
+      "type": "deploys",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

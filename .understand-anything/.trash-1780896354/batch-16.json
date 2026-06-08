@@ -1,0 +1,540 @@
+{
+  "nodes": [
+    {
+      "id": "file:4K_BE/.python-version",
+      "type": "file",
+      "name": ".python-version",
+      "filePath": "4K_BE/.python-version",
+      "summary": "백엔드(FastAPI) 서비스의 pyenv용 Python 버전 고정 파일.",
+      "tags": ["configuration", "python", "version-pin"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_BE/app/main.py",
+      "type": "file",
+      "name": "main.py",
+      "filePath": "4K_BE/app/main.py",
+      "summary": "FastAPI 백엔드의 메인 애플리케이션으로, TMDB API와 Supabase REST를 연동해 영화 목록/검색/상세 조회 및 매니저용 추가/수정/삭제 엔드포인트를 제공한다.",
+      "tags": ["entry-point", "api-handler", "service", "fastapi", "tmdb"],
+      "complexity": "complex",
+      "languageNotes": "httpx.AsyncClient 기반 비동기 라우트와 Supabase REST 헤더 헬퍼를 사용하는 FastAPI 패턴."
+    },
+    {
+      "id": "function:4K_BE/app/main.py:list_movies",
+      "type": "function",
+      "name": "list_movies",
+      "filePath": "4K_BE/app/main.py",
+      "lineRange": [62, 115],
+      "summary": "TMDB 인기 영화 목록을 페이지 단위로 가져오고 Supabase에 이미 등록된 영화 여부를 병합해 반환한다.",
+      "tags": ["api-handler", "tmdb", "pagination"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_BE/app/main.py:search_movies",
+      "type": "function",
+      "name": "search_movies",
+      "filePath": "4K_BE/app/main.py",
+      "lineRange": [119, 171],
+      "summary": "쿼리 문자열로 TMDB 영화를 검색하고 Supabase 등록 상태를 함께 표시한다.",
+      "tags": ["api-handler", "search", "tmdb"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_BE/app/main.py:movie_detail",
+      "type": "function",
+      "name": "movie_detail",
+      "filePath": "4K_BE/app/main.py",
+      "lineRange": [175, 196],
+      "summary": "Supabase에서 단일 영화 메타데이터와 벡터 정보를 조회해 상세 정보를 반환한다.",
+      "tags": ["api-handler", "supabase", "detail"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_BE/app/main.py:update_movie",
+      "type": "function",
+      "name": "update_movie",
+      "filePath": "4K_BE/app/main.py",
+      "lineRange": [207, 241],
+      "summary": "매니저 권한으로 영화 메타데이터와 벡터 필드를 Supabase PATCH로 수정한다.",
+      "tags": ["api-handler", "supabase", "mutation"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_BE/app/main.py:add_movie",
+      "type": "function",
+      "name": "add_movie",
+      "filePath": "4K_BE/app/main.py",
+      "lineRange": [245, 300],
+      "summary": "TMDB에서 영화 상세를 가져와 가공한 뒤 Supabase에 새 영화 레코드를 삽입한다.",
+      "tags": ["api-handler", "tmdb", "mutation"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_BE/app/main.py:delete_movie",
+      "type": "function",
+      "name": "delete_movie",
+      "filePath": "4K_BE/app/main.py",
+      "lineRange": [304, 315],
+      "summary": "Supabase에서 지정한 tmdb_id 영화 레코드를 삭제한다.",
+      "tags": ["api-handler", "supabase", "mutation"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_BE/DB_SCRIPTS/seed_movies.py",
+      "type": "file",
+      "name": "seed_movies.py",
+      "filePath": "4K_BE/DB_SCRIPTS/seed_movies.py",
+      "summary": "TMDB에서 영화 데이터를 수집·가공해 Supabase movies 테이블에 배치 업서트하는 DB 시드 스크립트.",
+      "tags": ["script", "data-pipeline", "seed", "tmdb", "supabase"],
+      "complexity": "complex",
+      "languageNotes": "httpx 동기 호출로 TMDB 조회 후 중복 제거·배치 업서트하는 ETL 스크립트."
+    },
+    {
+      "id": "function:4K_BE/DB_SCRIPTS/seed_movies.py:fetch_movie",
+      "type": "function",
+      "name": "fetch_movie",
+      "filePath": "4K_BE/DB_SCRIPTS/seed_movies.py",
+      "lineRange": [104, 147],
+      "summary": "TMDB 단일 영화 상세를 조회해 감독·출연진·예고편 등 필드를 추출하고 DB 레코드 형태로 정규화한다.",
+      "tags": ["data-transformation", "tmdb", "serialization"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_BE/DB_SCRIPTS/seed_movies.py:get_existing_tmdb_ids",
+      "type": "function",
+      "name": "get_existing_tmdb_ids",
+      "filePath": "4K_BE/DB_SCRIPTS/seed_movies.py",
+      "lineRange": [150, 168],
+      "summary": "Supabase에서 이미 적재된 tmdb_id 집합을 조회해 중복 시드를 방지한다.",
+      "tags": ["data-access", "supabase", "deduplication"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_BE/DB_SCRIPTS/seed_movies.py:upsert_batch",
+      "type": "function",
+      "name": "upsert_batch",
+      "filePath": "4K_BE/DB_SCRIPTS/seed_movies.py",
+      "lineRange": [185, 211],
+      "summary": "가공된 영화 리스트를 Supabase에 배치 단위로 업서트한다.",
+      "tags": ["data-access", "supabase", "batch"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_BE/DB_SCRIPTS/seed_movies.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "4K_BE/DB_SCRIPTS/seed_movies.py",
+      "lineRange": [214, 275],
+      "summary": "시드 스크립트의 진입점으로, 기존 ID 제외 후 TMDB에서 수집·배치 업서트하고 결과를 검증한다.",
+      "tags": ["entry-point", "orchestration", "data-pipeline"],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:4K_BE/requirements.txt",
+      "type": "document",
+      "name": "requirements.txt",
+      "filePath": "4K_BE/requirements.txt",
+      "summary": "백엔드 FastAPI 서비스의 Python 의존성 목록.",
+      "tags": ["documentation", "dependencies", "python"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/api/manager/movies/[tmdb_id]/route.ts",
+      "type": "file",
+      "name": "route.ts",
+      "filePath": "4K_FE/app/api/manager/movies/[tmdb_id]/route.ts",
+      "summary": "매니저 단일 영화 라우트로, GET/PATCH/DELETE 요청을 백엔드 영화 API로 프록시한다.",
+      "tags": ["api-handler", "route", "proxy", "nextjs"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_FE/app/api/manager/movies/[tmdb_id]/route.ts:PATCH",
+      "type": "function",
+      "name": "PATCH",
+      "filePath": "4K_FE/app/api/manager/movies/[tmdb_id]/route.ts",
+      "lineRange": [13, 26],
+      "summary": "요청 본문을 백엔드 영화 수정 API로 전달하고 결과를 반환하는 PATCH 핸들러.",
+      "tags": ["api-handler", "proxy", "mutation"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/api/manager/movies/route.ts",
+      "type": "file",
+      "name": "route.ts",
+      "filePath": "4K_FE/app/api/manager/movies/route.ts",
+      "summary": "매니저 영화 목록 라우트로, GET(목록)과 POST(추가) 요청을 백엔드로 프록시한다.",
+      "tags": ["api-handler", "route", "proxy", "nextjs"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/api/manager/movies/search/route.ts",
+      "type": "file",
+      "name": "route.ts",
+      "filePath": "4K_FE/app/api/manager/movies/search/route.ts",
+      "summary": "매니저 영화 검색 라우트로, 쿼리 파라미터를 백엔드 검색 API로 프록시한다.",
+      "tags": ["api-handler", "route", "proxy", "search"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/components/BackgroundThread.tsx",
+      "type": "file",
+      "name": "BackgroundThread.tsx",
+      "filePath": "4K_FE/app/components/BackgroundThread.tsx",
+      "summary": "OGL/WebGL 셰이더로 움직이는 라인 배경 효과를 렌더링하는 Threads 컴포넌트.",
+      "tags": ["component", "webgl", "animation", "background"],
+      "complexity": "complex",
+      "languageNotes": "WebGL 컨텍스트, requestAnimationFrame 루프, 마우스 인터랙션과 cleanup을 useEffect로 관리."
+    },
+    {
+      "id": "function:4K_FE/app/components/BackgroundThread.tsx:Threads",
+      "type": "function",
+      "name": "Threads",
+      "filePath": "4K_FE/app/components/BackgroundThread.tsx",
+      "lineRange": [128, 233],
+      "summary": "WebGL 셰이더 기반 애니메이션 배경을 초기화·렌더링하고 리사이즈/마우스 이벤트와 정리를 처리하는 React 컴포넌트.",
+      "tags": ["component", "webgl", "animation"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:4K_FE/app/components/ClimaxGraph.tsx",
+      "type": "file",
+      "name": "ClimaxGraph.tsx",
+      "filePath": "4K_FE/app/components/ClimaxGraph.tsx",
+      "summary": "영화 클라이맥스 곡선 데이터를 SVG 라인 그래프로 시각화하는 컴포넌트.",
+      "tags": ["component", "visualization", "svg", "chart"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/components/ClimaxGraph.tsx:ClimaxGraph",
+      "type": "function",
+      "name": "ClimaxGraph",
+      "filePath": "4K_FE/app/components/ClimaxGraph.tsx",
+      "lineRange": [9, 81],
+      "summary": "데이터 포인트를 정규화해 SVG path로 클라이맥스 곡선을 그리는 React 컴포넌트.",
+      "tags": ["component", "visualization", "svg"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_FE/app/components/DetailOverlay.tsx",
+      "type": "file",
+      "name": "DetailOverlay.tsx",
+      "filePath": "4K_FE/app/components/DetailOverlay.tsx",
+      "summary": "선택한 영화의 상세 오버레이로, 벡터·유사 영화를 DTW 거리 기반으로 계산해 클라이맥스 그래프와 함께 보여준다.",
+      "tags": ["component", "overlay", "recommendation", "visualization"],
+      "complexity": "complex",
+      "languageNotes": "DTW(동적 시간 워핑) 거리 알고리즘을 Float64Array로 구현해 유사 영화를 정렬."
+    },
+    {
+      "id": "function:4K_FE/app/components/DetailOverlay.tsx:dtwDistance",
+      "type": "function",
+      "name": "dtwDistance",
+      "filePath": "4K_FE/app/components/DetailOverlay.tsx",
+      "lineRange": [8, 24],
+      "summary": "두 시계열 벡터 간 동적 시간 워핑(DTW) 거리를 계산한다.",
+      "tags": ["utility", "algorithm", "dtw"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/components/DetailOverlay.tsx:DetailOverlay",
+      "type": "function",
+      "name": "DetailOverlay",
+      "filePath": "4K_FE/app/components/DetailOverlay.tsx",
+      "lineRange": [37, 263],
+      "summary": "영화 상세 정보와 벡터를 로드하고 DTW 기반 유사 영화 추천을 표시하는 오버레이 컴포넌트.",
+      "tags": ["component", "overlay", "recommendation"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:4K_FE/app/components/MiniGraph.tsx",
+      "type": "file",
+      "name": "MiniGraph.tsx",
+      "filePath": "4K_FE/app/components/MiniGraph.tsx",
+      "summary": "작은 SVG 스파크라인 형태로 클라이맥스 데이터를 표시하는 경량 그래프 컴포넌트.",
+      "tags": ["component", "visualization", "svg", "sparkline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/components/MovieDetailModal.tsx",
+      "type": "file",
+      "name": "MovieDetailModal.tsx",
+      "filePath": "4K_FE/app/components/MovieDetailModal.tsx",
+      "summary": "매니저용 영화 상세 편집 모달로, 메타데이터·벡터를 로드해 폼으로 편집·저장하고 TMDB 새로고침을 지원한다.",
+      "tags": ["component", "modal", "form", "admin"],
+      "complexity": "complex",
+      "languageNotes": "useCallback으로 로드 로직을 메모이즈하고 다수의 useState로 폼·저장 상태를 관리하는 대형 편집 모달."
+    },
+    {
+      "id": "function:4K_FE/app/components/MovieDetailModal.tsx:MovieDetailModal",
+      "type": "function",
+      "name": "MovieDetailModal",
+      "filePath": "4K_FE/app/components/MovieDetailModal.tsx",
+      "lineRange": [67, 420],
+      "summary": "영화 메타데이터와 벡터를 로드·편집·저장하고 TMDB 새로고침을 처리하는 매니저 모달 컴포넌트.",
+      "tags": ["component", "modal", "form", "admin"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:4K_FE/app/components/MovieDetailModal.tsx:parseVector",
+      "type": "function",
+      "name": "parseVector",
+      "filePath": "4K_FE/app/components/MovieDetailModal.tsx",
+      "lineRange": [39, 47],
+      "summary": "원시 벡터 값을 배열 또는 JSON 문자열에서 안전하게 파싱한다.",
+      "tags": ["utility", "serialization", "parsing"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/components/Tutorial.tsx",
+      "type": "file",
+      "name": "Tutorial.tsx",
+      "filePath": "4K_FE/app/components/Tutorial.tsx",
+      "summary": "온보딩 튜토리얼 오버레이로, 단계별 안내와 MiniGraph 미리보기를 제공한다.",
+      "tags": ["component", "onboarding", "tutorial", "overlay"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:4K_FE/app/components/Tutorial.tsx:Tutorial",
+      "type": "function",
+      "name": "Tutorial",
+      "filePath": "4K_FE/app/components/Tutorial.tsx",
+      "lineRange": [68, 225],
+      "summary": "단계 기반 온보딩 안내와 인터랙티브 카드를 렌더링하는 튜토리얼 컴포넌트.",
+      "tags": ["component", "onboarding", "tutorial"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:4K_FE/app/globals.css",
+      "type": "file",
+      "name": "globals.css",
+      "filePath": "4K_FE/app/globals.css",
+      "summary": "다크 시네마 테마의 전역 스타일과 CSS 변수, 애니메이션을 정의하는 글로벌 스타일시트.",
+      "tags": ["styles", "css", "theme", "global"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_FE/app/layout.tsx",
+      "type": "file",
+      "name": "layout.tsx",
+      "filePath": "4K_FE/app/layout.tsx",
+      "summary": "Next.js 루트 레이아웃으로, 전역 폰트·메타데이터·글로벌 CSS를 적용해 모든 페이지를 감싼다.",
+      "tags": ["entry-point", "layout", "nextjs"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/login/page.tsx",
+      "type": "file",
+      "name": "page.tsx",
+      "filePath": "4K_FE/app/login/page.tsx",
+      "summary": "매니저 로그인 페이지로, 자격 증명을 인증 API에 제출하고 성공 시 리다이렉트한다.",
+      "tags": ["component", "page", "auth", "form"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/login/page.tsx:LoginPage",
+      "type": "function",
+      "name": "LoginPage",
+      "filePath": "4K_FE/app/login/page.tsx",
+      "lineRange": [7, 107],
+      "summary": "ID/비밀번호 폼을 처리하고 로그인 API 호출 후 라우터로 리다이렉트하는 페이지 컴포넌트.",
+      "tags": ["component", "page", "auth"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_FE/app/movie_list/page.tsx",
+      "type": "file",
+      "name": "page.tsx",
+      "filePath": "4K_FE/app/movie_list/page.tsx",
+      "summary": "매니저 영화 관리 페이지로, 목록/검색/페이지네이션과 영화 추가·삭제·상세 편집(모달)을 제공한다.",
+      "tags": ["component", "page", "admin", "crud"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:4K_FE/app/movie_list/page.tsx:MovieListPage",
+      "type": "function",
+      "name": "MovieListPage",
+      "filePath": "4K_FE/app/movie_list/page.tsx",
+      "lineRange": [19, 299],
+      "summary": "영화 목록 조회·검색·추가·삭제·로그아웃을 관리하고 상세 모달을 띄우는 매니저 페이지 컴포넌트.",
+      "tags": ["component", "page", "admin", "crud"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:4K_FE/app/page.tsx",
+      "type": "file",
+      "name": "page.tsx",
+      "filePath": "4K_FE/app/page.tsx",
+      "summary": "서비스 첫 진입 온보딩 페이지로, 배경 효과와 기능 소개를 보여주고 대시보드로 이동한다.",
+      "tags": ["entry-point", "page", "onboarding", "landing"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:4K_FE/app/page.tsx:OnboardingPage",
+      "type": "function",
+      "name": "OnboardingPage",
+      "filePath": "4K_FE/app/page.tsx",
+      "lineRange": [71, 256],
+      "summary": "기능 소개와 배경 애니메이션을 렌더링하고 시작 시 대시보드로 라우팅하는 랜딩 페이지 컴포넌트.",
+      "tags": ["component", "page", "onboarding"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:4K_FE/eslint.config.mjs",
+      "type": "file",
+      "name": "eslint.config.mjs",
+      "filePath": "4K_FE/eslint.config.mjs",
+      "summary": "Next.js 프런트엔드의 ESLint flat config 설정 파일.",
+      "tags": ["configuration", "eslint", "linting", "build-system"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/next.config.ts",
+      "type": "file",
+      "name": "next.config.ts",
+      "filePath": "4K_FE/next.config.ts",
+      "summary": "Next.js 애플리케이션 빌드/런타임 설정 파일.",
+      "tags": ["configuration", "nextjs", "build-system"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/postcss.config.mjs",
+      "type": "file",
+      "name": "postcss.config.mjs",
+      "filePath": "4K_FE/postcss.config.mjs",
+      "summary": "Tailwind/PostCSS 처리를 위한 PostCSS 설정 파일.",
+      "tags": ["configuration", "postcss", "tailwind", "build-system"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/.python-version",
+      "type": "file",
+      "name": ".python-version",
+      "filePath": "4K_ML/.python-version",
+      "summary": "ML 벡터 생성 모듈의 pyenv용 Python 버전 고정 파일.",
+      "tags": ["configuration", "python", "version-pin"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/generate_vectors/generate_vectors.py",
+      "type": "file",
+      "name": "generate_vectors.py",
+      "filePath": "4K_ML/generate_vectors/generate_vectors.py",
+      "summary": "영화 장면 데이터에서 클라이맥스 벡터를 보간·평활화로 생성하고 Supabase에 업서트하는 ML 파이프라인 스크립트.",
+      "tags": ["script", "data-pipeline", "ml", "vector", "supabase"],
+      "complexity": "complex",
+      "languageNotes": "numpy 보간(np.interp)과 savgol_filter 평활화로 시계열 클라이맥스 곡선을 정규화."
+    },
+    {
+      "id": "function:4K_ML/generate_vectors/generate_vectors.py:ext_fetch",
+      "type": "function",
+      "name": "ext_fetch",
+      "filePath": "4K_ML/generate_vectors/generate_vectors.py",
+      "lineRange": [47, 71],
+      "summary": "외부 Supabase 테이블을 페이지 단위로 조회해 전체 행을 수집한다.",
+      "tags": ["data-access", "supabase", "pagination"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_ML/generate_vectors/generate_vectors.py:vm4_upsert",
+      "type": "function",
+      "name": "vm4_upsert",
+      "filePath": "4K_ML/generate_vectors/generate_vectors.py",
+      "lineRange": [74, 95],
+      "summary": "생성된 벡터 행을 배치 단위로 대상 테이블에 업서트한다.",
+      "tags": ["data-access", "supabase", "batch"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_ML/generate_vectors/generate_vectors.py:process",
+      "type": "function",
+      "name": "process",
+      "filePath": "4K_ML/generate_vectors/generate_vectors.py",
+      "lineRange": [100, 126],
+      "summary": "장면 포인트를 정렬·보간하고 savgol 평활화로 정규화된 클라이맥스 벡터를 산출한다.",
+      "tags": ["algorithm", "ml", "signal-processing"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_ML/generate_vectors/generate_vectors.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "4K_ML/generate_vectors/generate_vectors.py",
+      "lineRange": [131, 201],
+      "summary": "장면·자막 데이터를 수집해 영화별 클라이맥스 벡터를 생성하고 결과를 업서트하는 진입점.",
+      "tags": ["entry-point", "orchestration", "data-pipeline"],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:4K_ML/requirements.txt",
+      "type": "document",
+      "name": "requirements.txt",
+      "filePath": "4K_ML/requirements.txt",
+      "summary": "ML 벡터 생성 모듈의 Python 의존성 목록(numpy, scipy 등).",
+      "tags": ["documentation", "dependencies", "python", "ml"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/ansible.cfg",
+      "type": "config",
+      "name": "ansible.cfg",
+      "filePath": "Ansible/ansible.cfg",
+      "summary": "인프라 프로비저닝을 위한 Ansible 동작 설정(인벤토리, SSH 옵션 등).",
+      "tags": ["configuration", "ansible", "infrastructure", "automation"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {"source": "file:4K_BE/app/main.py", "target": "function:4K_BE/app/main.py:list_movies", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_BE/app/main.py", "target": "function:4K_BE/app/main.py:search_movies", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_BE/app/main.py", "target": "function:4K_BE/app/main.py:movie_detail", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_BE/app/main.py", "target": "function:4K_BE/app/main.py:update_movie", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_BE/app/main.py", "target": "function:4K_BE/app/main.py:add_movie", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_BE/app/main.py", "target": "function:4K_BE/app/main.py:delete_movie", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_BE/DB_SCRIPTS/seed_movies.py", "target": "function:4K_BE/DB_SCRIPTS/seed_movies.py:fetch_movie", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_BE/DB_SCRIPTS/seed_movies.py", "target": "function:4K_BE/DB_SCRIPTS/seed_movies.py:get_existing_tmdb_ids", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_BE/DB_SCRIPTS/seed_movies.py", "target": "function:4K_BE/DB_SCRIPTS/seed_movies.py:upsert_batch", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_BE/DB_SCRIPTS/seed_movies.py", "target": "function:4K_BE/DB_SCRIPTS/seed_movies.py:main", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/api/manager/movies/[tmdb_id]/route.ts", "target": "function:4K_FE/app/api/manager/movies/[tmdb_id]/route.ts:PATCH", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/api/manager/movies/[tmdb_id]/route.ts", "target": "function:4K_FE/app/api/manager/movies/[tmdb_id]/route.ts:PATCH", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_FE/app/components/BackgroundThread.tsx", "target": "function:4K_FE/app/components/BackgroundThread.tsx:Threads", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/components/ClimaxGraph.tsx", "target": "function:4K_FE/app/components/ClimaxGraph.tsx:ClimaxGraph", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/components/ClimaxGraph.tsx", "target": "function:4K_FE/app/components/ClimaxGraph.tsx:ClimaxGraph", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_FE/app/components/DetailOverlay.tsx", "target": "function:4K_FE/app/components/DetailOverlay.tsx:dtwDistance", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/components/DetailOverlay.tsx", "target": "function:4K_FE/app/components/DetailOverlay.tsx:DetailOverlay", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/components/DetailOverlay.tsx", "target": "function:4K_FE/app/components/DetailOverlay.tsx:DetailOverlay", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_FE/app/components/MovieDetailModal.tsx", "target": "function:4K_FE/app/components/MovieDetailModal.tsx:MovieDetailModal", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/components/MovieDetailModal.tsx", "target": "function:4K_FE/app/components/MovieDetailModal.tsx:parseVector", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/components/MovieDetailModal.tsx", "target": "function:4K_FE/app/components/MovieDetailModal.tsx:MovieDetailModal", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_FE/app/components/Tutorial.tsx", "target": "function:4K_FE/app/components/Tutorial.tsx:Tutorial", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/components/Tutorial.tsx", "target": "function:4K_FE/app/components/Tutorial.tsx:Tutorial", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_FE/app/login/page.tsx", "target": "function:4K_FE/app/login/page.tsx:LoginPage", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/login/page.tsx", "target": "function:4K_FE/app/login/page.tsx:LoginPage", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_FE/app/movie_list/page.tsx", "target": "function:4K_FE/app/movie_list/page.tsx:MovieListPage", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/movie_list/page.tsx", "target": "function:4K_FE/app/movie_list/page.tsx:MovieListPage", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_FE/app/page.tsx", "target": "function:4K_FE/app/page.tsx:OnboardingPage", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/page.tsx", "target": "function:4K_FE/app/page.tsx:OnboardingPage", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_ML/generate_vectors/generate_vectors.py", "target": "function:4K_ML/generate_vectors/generate_vectors.py:ext_fetch", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/generate_vectors/generate_vectors.py", "target": "function:4K_ML/generate_vectors/generate_vectors.py:vm4_upsert", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/generate_vectors/generate_vectors.py", "target": "function:4K_ML/generate_vectors/generate_vectors.py:process", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/generate_vectors/generate_vectors.py", "target": "function:4K_ML/generate_vectors/generate_vectors.py:main", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/components/DetailOverlay.tsx", "target": "file:4K_FE/app/components/ClimaxGraph.tsx", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_FE/app/components/DetailOverlay.tsx", "target": "file:4K_FE/app/lib/data.ts", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_FE/app/components/MovieDetailModal.tsx", "target": "file:4K_FE/app/lib/data.ts", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_FE/app/components/Tutorial.tsx", "target": "file:4K_FE/app/components/MiniGraph.tsx", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_FE/app/layout.tsx", "target": "file:4K_FE/app/globals.css", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_FE/app/movie_list/page.tsx", "target": "file:4K_FE/app/components/MovieDetailModal.tsx", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_FE/app/movie_list/page.tsx", "target": "file:4K_FE/app/lib/data.ts", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_FE/app/page.tsx", "target": "file:4K_FE/app/components/BackgroundThread.tsx", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "function:4K_FE/app/components/DetailOverlay.tsx:DetailOverlay", "target": "function:4K_FE/app/lib/data.ts:fetchPreferredMovies", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_FE/app/components/DetailOverlay.tsx:DetailOverlay", "target": "function:4K_FE/app/lib/data.ts:fetchVector", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_FE/app/components/DetailOverlay.tsx:DetailOverlay", "target": "function:4K_FE/app/lib/data.ts:fetchMovieVectors", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_FE/app/movie_list/page.tsx:MovieListPage", "target": "function:4K_FE/app/lib/data.ts:posterUrl", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "config:Ansible/ansible.cfg", "target": "file:4K_FE/app/page.tsx", "type": "configures", "direction": "forward", "weight": 0.6},
+    {"source": "document:4K_BE/requirements.txt", "target": "file:4K_BE/app/main.py", "type": "documents", "direction": "forward", "weight": 0.5},
+    {"source": "document:4K_ML/requirements.txt", "target": "file:4K_ML/generate_vectors/generate_vectors.py", "type": "documents", "direction": "forward", "weight": 0.5},
+    {"source": "file:4K_FE/app/movie_list/page.tsx", "target": "file:4K_FE/app/api/manager/movies/route.ts", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:4K_FE/app/movie_list/page.tsx", "target": "file:4K_FE/app/api/manager/movies/search/route.ts", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:4K_FE/app/api/manager/movies/route.ts", "target": "file:4K_BE/app/main.py", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:4K_FE/app/api/manager/movies/search/route.ts", "target": "file:4K_BE/app/main.py", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:4K_FE/app/api/manager/movies/[tmdb_id]/route.ts", "target": "file:4K_BE/app/main.py", "type": "depends_on", "direction": "forward", "weight": 0.6}
+  ]
+}

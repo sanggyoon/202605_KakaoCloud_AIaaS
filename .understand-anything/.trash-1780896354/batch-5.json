@@ -1,0 +1,122 @@
+{
+  "nodes": [
+    {
+      "id": "pipeline:.github/workflows/deploy-4k-be.yml",
+      "type": "pipeline",
+      "name": "deploy-4k-be.yml",
+      "filePath": ".github/workflows/deploy-4k-be.yml",
+      "summary": "4K Cinema 백엔드 배포용 GitHub Actions 워크플로우로, main 브랜치의 4K_BE 변경 시 Docker 이미지를 빌드해 GHCR에 푸시하고 kustomization.yaml의 이미지 태그를 커밋하는 GitOps 파이프라인이다.",
+      "tags": ["ci-cd", "deployment", "containerization", "gitops", "infrastructure"],
+      "complexity": "moderate",
+      "languageNotes": "GitOps 패턴: 이미지 빌드 후 매니페스트의 newTag를 sed로 치환하고 [skip ci] 커밋으로 푸시해 ArgoCD/Flux 동기화를 유도한다. GHA cache(type=gha)로 빌드 캐시를 활용한다."
+    },
+    {
+      "id": "pipeline:.github/workflows/deploy-4k-fe.yml",
+      "type": "pipeline",
+      "name": "deploy-4k-fe.yml",
+      "filePath": ".github/workflows/deploy-4k-fe.yml",
+      "summary": "4K Cinema 프론트엔드 배포용 GitHub Actions 워크플로우로, main 브랜치의 4K_FE 변경 시 Docker 이미지를 빌드해 GHCR에 푸시하고 kustomization.yaml의 이미지 태그를 커밋하는 GitOps 파이프라인이다.",
+      "tags": ["ci-cd", "deployment", "containerization", "gitops", "infrastructure"],
+      "complexity": "moderate",
+      "languageNotes": "GitOps 패턴: 이미지 빌드 후 매니페스트의 newTag를 sed로 치환하고 [skip ci] 커밋으로 푸시해 ArgoCD/Flux 동기화를 유도한다. GHA cache(type=gha)로 빌드 캐시를 활용한다."
+    },
+    {
+      "id": "step:.github/workflows/deploy-4k-be.yml:Build and push Docker image",
+      "type": "step",
+      "name": "Build and push Docker image",
+      "filePath": ".github/workflows/deploy-4k-be.yml",
+      "summary": "4K_BE 컨텍스트로 Docker 이미지를 빌드하여 SHA 및 latest 태그로 GHCR(ghcr.io/sanggyoon/4k-be)에 푸시한다.",
+      "tags": ["ci-cd", "containerization", "deployment", "docker-build"],
+      "complexity": "simple"
+    },
+    {
+      "id": "step:.github/workflows/deploy-4k-be.yml:Update image tag in kustomization.yaml",
+      "type": "step",
+      "name": "Update image tag in kustomization.yaml",
+      "filePath": ".github/workflows/deploy-4k-be.yml",
+      "summary": "sed로 Ansible/manifests/4k-be/kustomization.yaml의 newTag를 새 SHA로 치환해 GitOps 배포 매니페스트를 갱신한다.",
+      "tags": ["ci-cd", "gitops", "deployment", "kustomize"],
+      "complexity": "simple"
+    },
+    {
+      "id": "step:.github/workflows/deploy-4k-be.yml:Commit and push manifest update",
+      "type": "step",
+      "name": "Commit and push manifest update",
+      "filePath": ".github/workflows/deploy-4k-be.yml",
+      "summary": "갱신된 kustomization.yaml을 github-actions bot 계정으로 커밋하고 rebase 후 push하여 배포를 트리거한다.",
+      "tags": ["ci-cd", "gitops", "deployment", "automation"],
+      "complexity": "simple"
+    },
+    {
+      "id": "step:.github/workflows/deploy-4k-fe.yml:Build and push Docker image",
+      "type": "step",
+      "name": "Build and push Docker image",
+      "filePath": ".github/workflows/deploy-4k-fe.yml",
+      "summary": "4K_FE 컨텍스트로 Docker 이미지를 빌드하여 SHA 및 latest 태그로 GHCR(ghcr.io/sanggyoon/4k-fe)에 푸시한다.",
+      "tags": ["ci-cd", "containerization", "deployment", "docker-build"],
+      "complexity": "simple"
+    },
+    {
+      "id": "step:.github/workflows/deploy-4k-fe.yml:Update image tag in kustomization.yaml",
+      "type": "step",
+      "name": "Update image tag in kustomization.yaml",
+      "filePath": ".github/workflows/deploy-4k-fe.yml",
+      "summary": "sed로 Ansible/manifests/4k-fe/kustomization.yaml의 newTag를 새 SHA로 치환해 GitOps 배포 매니페스트를 갱신한다.",
+      "tags": ["ci-cd", "gitops", "deployment", "kustomize"],
+      "complexity": "simple"
+    },
+    {
+      "id": "step:.github/workflows/deploy-4k-fe.yml:Commit and push manifest update",
+      "type": "step",
+      "name": "Commit and push manifest update",
+      "filePath": ".github/workflows/deploy-4k-fe.yml",
+      "summary": "갱신된 kustomization.yaml을 github-actions bot 계정으로 커밋하고 rebase 후 push하여 배포를 트리거한다.",
+      "tags": ["ci-cd", "gitops", "deployment", "automation"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "pipeline:.github/workflows/deploy-4k-be.yml",
+      "target": "step:.github/workflows/deploy-4k-be.yml:Build and push Docker image",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "pipeline:.github/workflows/deploy-4k-be.yml",
+      "target": "step:.github/workflows/deploy-4k-be.yml:Update image tag in kustomization.yaml",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "pipeline:.github/workflows/deploy-4k-be.yml",
+      "target": "step:.github/workflows/deploy-4k-be.yml:Commit and push manifest update",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "pipeline:.github/workflows/deploy-4k-fe.yml",
+      "target": "step:.github/workflows/deploy-4k-fe.yml:Build and push Docker image",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "pipeline:.github/workflows/deploy-4k-fe.yml",
+      "target": "step:.github/workflows/deploy-4k-fe.yml:Update image tag in kustomization.yaml",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "pipeline:.github/workflows/deploy-4k-fe.yml",
+      "target": "step:.github/workflows/deploy-4k-fe.yml:Commit and push manifest update",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    }
+  ]
+}

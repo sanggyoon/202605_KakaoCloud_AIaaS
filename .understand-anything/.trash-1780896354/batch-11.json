@@ -1,0 +1,91 @@
+{
+  "nodes": [
+    {
+      "id": "config:Ansible/playbooks/00-ping.yml",
+      "type": "config",
+      "name": "00-ping.yml",
+      "filePath": "Ansible/playbooks/00-ping.yml",
+      "summary": "모든 클러스터 노드에 대한 연결성을 확인하는 Ansible ping 플레이북으로, 프로비저닝 전 SSH 도달 가능 여부를 점검한다.",
+      "tags": ["configuration", "infrastructure", "ansible", "connectivity-check"],
+      "complexity": "simple",
+      "languageNotes": "Ansible 플레이북: 본격적인 프로비저닝 전 인벤토리 노드의 도달성을 검증하는 헬스체크 단계."
+    },
+    {
+      "id": "config:Ansible/playbooks/01-common.yml",
+      "type": "config",
+      "name": "01-common.yml",
+      "filePath": "Ansible/playbooks/01-common.yml",
+      "summary": "k3s_cluster 그룹 전체에 공통 기본 설정을 적용하는 플레이북으로, 타임존 설정, swap 비활성화, 커널 모듈(overlay/br_netfilter) 로드, sysctl 파라미터, 기본 패키지 설치를 수행한다.",
+      "tags": ["configuration", "infrastructure", "ansible", "kubernetes", "base-setup"],
+      "complexity": "moderate",
+      "languageNotes": "K8s 노드 부트스트랩 표준 절차: swapoff, br_netfilter/overlay modprobe, net.bridge sysctl 활성화를 멱등적으로 구성."
+    },
+    {
+      "id": "config:Ansible/playbooks/02-k3s-server.yml",
+      "type": "config",
+      "name": "02-k3s-server.yml",
+      "filePath": "Ansible/playbooks/02-k3s-server.yml",
+      "summary": "마스터 노드에 K3s 서버를 설치하는 플레이북으로, Traefik 비활성화 및 TLS-SAN 설정으로 K3s를 부트스트랩하고 node-token과 kubeconfig를 로컬로 가져와 서버 주소를 패치한다.",
+      "tags": ["configuration", "infrastructure", "ansible", "kubernetes", "deployment"],
+      "complexity": "moderate",
+      "languageNotes": "K3s 컨트롤 플레인 설치: node-token을 슬러프하여 로컬에 저장하고 kubeconfig의 127.0.0.1을 퍼블릭 IP로 치환해 외부 접근을 가능하게 한다."
+    },
+    {
+      "id": "config:Ansible/playbooks/03-k3s-agent.yml",
+      "type": "config",
+      "name": "03-k3s-agent.yml",
+      "filePath": "Ansible/playbooks/03-k3s-agent.yml",
+      "summary": "워커 및 GPU 노드에 K3s 에이전트를 설치해 클러스터에 조인시키는 플레이북으로, 서버 플레이북이 저장한 node-token을 읽어 K3S_URL로 서버에 연결한다.",
+      "tags": ["configuration", "infrastructure", "ansible", "kubernetes", "deployment"],
+      "complexity": "simple",
+      "languageNotes": "에이전트 조인: 로컬에 저장된 node-token 파일을 lookup하여 K3S_TOKEN으로 전달하므로 서버 설치 플레이북에 선행 의존한다."
+    },
+    {
+      "id": "config:Ansible/playbooks/04-longhorn-prereq.yml",
+      "type": "config",
+      "name": "04-longhorn-prereq.yml",
+      "filePath": "Ansible/playbooks/04-longhorn-prereq.yml",
+      "summary": "Longhorn 분산 스토리지를 위한 사전 요건을 vm4 노드에 설치하는 플레이북으로, open-iscsi/nfs-common 패키지 설치, iscsid 서비스 활성화, iscsi_tcp 커널 모듈 로드를 수행한다.",
+      "tags": ["configuration", "infrastructure", "ansible", "storage", "longhorn"],
+      "complexity": "simple",
+      "languageNotes": "Longhorn 요구사항: iSCSI 데몬과 iscsi_tcp 모듈을 영속화하여 분산 블록 스토리지의 볼륨 마운트를 준비한다."
+    }
+  ],
+  "edges": [
+    {
+      "source": "config:Ansible/playbooks/02-k3s-server.yml",
+      "target": "config:Ansible/playbooks/01-common.yml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Ansible/playbooks/03-k3s-agent.yml",
+      "target": "config:Ansible/playbooks/01-common.yml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Ansible/playbooks/03-k3s-agent.yml",
+      "target": "config:Ansible/playbooks/02-k3s-server.yml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Ansible/playbooks/04-longhorn-prereq.yml",
+      "target": "config:Ansible/playbooks/03-k3s-agent.yml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Ansible/playbooks/01-common.yml",
+      "target": "config:Ansible/playbooks/00-ping.yml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

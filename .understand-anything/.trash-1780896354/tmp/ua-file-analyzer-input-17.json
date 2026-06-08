@@ -1,0 +1,31 @@
+{
+  "projectRoot": "/Users/sanggyoon/Documents/KakaoCloud_Project",
+  "batchFiles": [
+    {"path": "Ansible/group_vars/all.yaml", "language": "yaml", "sizeLines": 0, "fileCategory": "config"},
+    {"path": "Ansible/helm-values/ingress-nginx.yaml", "language": "yaml", "sizeLines": 11, "fileCategory": "config"},
+    {"path": "Ansible/helm-values/longhorn.yaml", "language": "yaml", "sizeLines": 21, "fileCategory": "config"},
+    {"path": "Ansible/manifests/test/gpu-test.yaml", "language": "yaml", "sizeLines": 15, "fileCategory": "config"},
+    {"path": "Ansible/manifests/test/test-nginx.yaml", "language": "yaml", "sizeLines": 52, "fileCategory": "config"},
+    {"path": "aws/terraform/.terraform.lock.hcl", "language": "hcl", "sizeLines": 46, "fileCategory": "code"},
+    {"path": "aws/terraform/lambda/dr_controller.py", "language": "python", "sizeLines": 56, "fileCategory": "code"},
+    {"path": "aws/terraform/ssm-params.sh.example", "language": "example", "sizeLines": 26, "fileCategory": "code"},
+    {"path": "aws/terraform/terraform.tfvars.example", "language": "example", "sizeLines": 20, "fileCategory": "code"},
+    {"path": "aws/terraform/user_data_db.sh.tftpl", "language": "tftpl", "sizeLines": 38, "fileCategory": "code"},
+    {"path": "aws/terraform/user_data.sh.tftpl", "language": "tftpl", "sizeLines": 48, "fileCategory": "code"},
+    {"path": "readme.md", "language": "markdown", "sizeLines": 107, "fileCategory": "docs"}
+  ],
+  "batchImportData": {
+    "Ansible/group_vars/all.yaml": [],
+    "Ansible/helm-values/ingress-nginx.yaml": [],
+    "Ansible/helm-values/longhorn.yaml": [],
+    "Ansible/manifests/test/gpu-test.yaml": [],
+    "Ansible/manifests/test/test-nginx.yaml": [],
+    "aws/terraform/.terraform.lock.hcl": [],
+    "aws/terraform/lambda/dr_controller.py": [],
+    "aws/terraform/ssm-params.sh.example": [],
+    "aws/terraform/terraform.tfvars.example": [],
+    "aws/terraform/user_data_db.sh.tftpl": [],
+    "aws/terraform/user_data.sh.tftpl": [],
+    "readme.md": []
+  }
+}

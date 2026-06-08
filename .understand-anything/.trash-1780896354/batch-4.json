@@ -1,0 +1,94 @@
+{
+  "nodes": [
+    {
+      "id": "service:4K_FE/Dockerfile",
+      "type": "service",
+      "name": "Dockerfile",
+      "filePath": "4K_FE/Dockerfile",
+      "summary": "4K Cinema 프론트엔드(Next.js)를 위한 멀티 스테이지 Docker 빌드 정의로, deps/builder/runner 3단계를 거쳐 node:22-alpine 기반의 경량 프로덕션 이미지를 생성하고 3000 포트로 standalone 서버를 실행한다.",
+      "tags": ["containerization", "infrastructure", "deployment", "nextjs"],
+      "complexity": "moderate",
+      "languageNotes": "멀티 스테이지 빌드로 의존성 설치(deps)와 빌드(builder)를 런타임 이미지(runner)와 분리하고, Next.js standalone 출력과 비루트(nextjs) 사용자로 이미지 크기·보안을 최적화한다."
+    },
+    {
+      "id": "service:4K_FE/Dockerfile:deps",
+      "type": "service",
+      "name": "deps",
+      "filePath": "4K_FE/Dockerfile",
+      "summary": "package*.json만 복사해 npm ci로 의존성을 설치하는 빌드 캐시 전용 스테이지로, 소스 변경 시에도 의존성 레이어 재사용을 가능하게 한다.",
+      "tags": ["containerization", "build-stage", "dependencies"],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:4K_FE/Dockerfile:builder",
+      "type": "service",
+      "name": "builder",
+      "filePath": "4K_FE/Dockerfile",
+      "summary": "deps 스테이지의 node_modules와 전체 소스를 가져와 Supabase 환경변수(ARG/ENV)를 주입한 뒤 npm run build로 Next.js 애플리케이션을 빌드하는 스테이지.",
+      "tags": ["containerization", "build-stage", "nextjs"],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:4K_FE/Dockerfile:runner",
+      "type": "service",
+      "name": "runner",
+      "filePath": "4K_FE/Dockerfile",
+      "summary": "builder의 standalone 빌드 산출물(.next/standalone, static, public)만 복사해 비루트 nextjs 사용자로 3000 포트에서 node server.js를 실행하는 최종 프로덕션 런타임 스테이지.",
+      "tags": ["containerization", "runtime", "deployment", "security"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:4K_FE/.dockerignore",
+      "type": "config",
+      "name": ".dockerignore",
+      "filePath": "4K_FE/.dockerignore",
+      "summary": "Docker 빌드 컨텍스트에서 node_modules, 빌드 산출물 등 불필요한 파일을 제외해 빌드 속도와 이미지 효율을 높이는 무시 규칙 파일.",
+      "tags": ["configuration", "containerization", "infrastructure"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "service:4K_FE/Dockerfile",
+      "target": "service:4K_FE/Dockerfile:deps",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:4K_FE/Dockerfile",
+      "target": "service:4K_FE/Dockerfile:builder",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:4K_FE/Dockerfile",
+      "target": "service:4K_FE/Dockerfile:runner",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:4K_FE/Dockerfile:builder",
+      "target": "service:4K_FE/Dockerfile:deps",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:4K_FE/Dockerfile:runner",
+      "target": "service:4K_FE/Dockerfile:builder",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:4K_FE/.dockerignore",
+      "target": "service:4K_FE/Dockerfile",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "nodes": [
+    {
+      "id": "config:Ansible/values/values-ai.yaml",
+      "type": "config",
+      "name": "values-ai.yaml",
+      "filePath": "Ansible/values/values-ai.yaml",
+      "summary": "ML/AI 추천 서비스의 Helm 배포 values 파일로, secret, deployment, environment, persistence, ingress 설정을 정의하여 K3s 클러스터에 AI 워크로드를 배포한다.",
+      "tags": ["configuration", "helm", "kubernetes", "deployment", "infrastructure"],
+      "complexity": "moderate",
+      "languageNotes": "Helm chart values 형식으로 persistence와 ingress를 포함한 풀 애플리케이션 배포 스펙."
+    },
+    {
+      "id": "config:Ansible/values/values-argocd.yaml",
+      "type": "config",
+      "name": "values-argocd.yaml",
+      "filePath": "Ansible/values/values-argocd.yaml",
+      "summary": "ArgoCD GitOps 컨트롤러의 Helm values 파일로, server, repoServer, controller, redis, dex, applicationSet, notifications 등 ArgoCD 컴포넌트별 배포 설정을 정의한다.",
+      "tags": ["configuration", "helm", "gitops", "argocd", "ci-cd"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/values/values-data.yaml",
+      "type": "config",
+      "name": "values-data.yaml",
+      "filePath": "Ansible/values/values-data.yaml",
+      "summary": "데이터 처리 서비스의 Helm 배포 values 파일로, secret, deployment, image, environment, persistence 설정을 정의하여 K3s 클러스터에 데이터 워크로드를 배포한다.",
+      "tags": ["configuration", "helm", "kubernetes", "deployment", "data-pipeline"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:Ansible/values/values-loki.yaml",
+      "type": "config",
+      "name": "values-loki.yaml",
+      "filePath": "Ansible/values/values-loki.yaml",
+      "summary": "Grafana Loki 로그 집계 시스템의 Helm values 파일로, singleBinary 배포 모드와 minio 스토리지, monitoring, cache 등 로그 수집 백엔드 설정을 정의한다.",
+      "tags": ["configuration", "helm", "logging", "monitoring", "observability"],
+      "complexity": "moderate",
+      "languageNotes": "Loki를 singleBinary deploymentMode로 운영하여 다수의 마이크로서비스 컴포넌트를 단일 바이너리로 통합."
+    },
+    {
+      "id": "config:Ansible/values/values-prometheus.yaml",
+      "type": "config",
+      "name": "values-prometheus.yaml",
+      "filePath": "Ansible/values/values-prometheus.yaml",
+      "summary": "kube-prometheus-stack의 Helm values 파일로, prometheus, grafana, alertmanager, nodeExporter, kube-state-metrics, prometheusOperator 등 메트릭 모니터링 스택 전체를 구성한다.",
+      "tags": ["configuration", "helm", "monitoring", "prometheus", "observability"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:Ansible/values/values-promtail.yaml",
+      "type": "config",
+      "name": "values-promtail.yaml",
+      "filePath": "Ansible/values/values-promtail.yaml",
+      "summary": "Promtail 로그 수집 에이전트의 Helm values 파일로, Loki 전송 config, tolerations, resources를 정의하여 노드별 로그를 Loki로 전달한다.",
+      "tags": ["configuration", "helm", "logging", "monitoring", "observability"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/values/values-redis.yaml",
+      "type": "config",
+      "name": "values-redis.yaml",
+      "filePath": "Ansible/values/values-redis.yaml",
+      "summary": "Redis의 Helm values 파일로, architecture, auth, master, replica, metrics 설정을 정의하여 캐시/세션 스토어로 사용할 Redis 인스턴스를 배포한다.",
+      "tags": ["configuration", "helm", "redis", "cache", "infrastructure"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": []
+}

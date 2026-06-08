@@ -1,0 +1,168 @@
+{
+  "nodes": [
+    {
+      "id": "config:Ansible/group_vars/all.yaml",
+      "type": "config",
+      "name": "all.yaml",
+      "filePath": "Ansible/group_vars/all.yaml",
+      "summary": "Ansible의 모든 호스트 그룹에 공통 적용되는 변수 정의 파일이나, 현재 내용이 비어 있어 기본값에만 의존한다.",
+      "tags": ["configuration", "ansible", "infrastructure"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/helm-values/ingress-nginx.yaml",
+      "type": "config",
+      "name": "ingress-nginx.yaml",
+      "filePath": "Ansible/helm-values/ingress-nginx.yaml",
+      "summary": "K3s 클러스터에 ingress-nginx 컨트롤러를 Helm으로 설치할 때 사용하는 values 오버라이드 파일이다.",
+      "tags": ["configuration", "helm", "ingress", "kubernetes", "infrastructure"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/helm-values/longhorn.yaml",
+      "type": "config",
+      "name": "longhorn.yaml",
+      "filePath": "Ansible/helm-values/longhorn.yaml",
+      "summary": "Longhorn 분산 블록 스토리지의 Helm 설치 values로, defaultSettings/매니저/드라이버/UI/persistence 구성을 정의한다.",
+      "tags": ["configuration", "helm", "storage", "kubernetes", "infrastructure"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/manifests/test/gpu-test.yaml",
+      "type": "config",
+      "name": "gpu-test.yaml",
+      "filePath": "Ansible/manifests/test/gpu-test.yaml",
+      "summary": "클러스터의 GPU 스케줄링/가용성을 검증하기 위한 테스트용 Kubernetes Pod 매니페스트다.",
+      "tags": ["configuration", "kubernetes", "gpu", "test", "manifest"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/manifests/test/test-nginx.yaml",
+      "type": "config",
+      "name": "test-nginx.yaml",
+      "filePath": "Ansible/manifests/test/test-nginx.yaml",
+      "summary": "ingress 및 클러스터 네트워킹 검증을 위해 nginx Deployment/Service/Ingress를 묶어 배포하는 테스트 매니페스트다.",
+      "tags": ["configuration", "kubernetes", "ingress", "test", "manifest"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:aws/terraform/.terraform.lock.hcl",
+      "type": "file",
+      "name": ".terraform.lock.hcl",
+      "filePath": "aws/terraform/.terraform.lock.hcl",
+      "summary": "Terraform이 자동 생성한 provider 의존성 잠금 파일로, AWS 등 provider의 버전과 해시를 고정해 재현 가능한 배포를 보장한다.",
+      "tags": ["terraform", "infrastructure", "build-system", "deployment"],
+      "complexity": "simple",
+      "languageNotes": "Terraform 자동 생성 lock 파일로 직접 수정하지 않는다."
+    },
+    {
+      "id": "file:aws/terraform/lambda/dr_controller.py",
+      "type": "file",
+      "name": "dr_controller.py",
+      "filePath": "aws/terraform/lambda/dr_controller.py",
+      "summary": "Route53 헬스체크로 카카오(주 서비스) 상태를 1분마다 판정해, 정상이면 AWS 앱 ASG desired를 0으로(콜드), 장애면 N으로(DR 기동) 자동 조정하는 Lambda 핸들러다.",
+      "tags": ["service", "disaster-recovery", "aws-lambda", "event-handler", "automation"],
+      "complexity": "moderate",
+      "languageNotes": "boto3로 Route53 헬스체크 관측의 과반(majority) 성공 여부를 계산해 failover를 판단한다."
+    },
+    {
+      "id": "function:aws/terraform/lambda/dr_controller.py:_kakao_healthy",
+      "type": "function",
+      "name": "_kakao_healthy",
+      "filePath": "aws/terraform/lambda/dr_controller.py",
+      "lineRange": [20, 32],
+      "summary": "Route53 헬스체크의 다중 체커 관측을 읽어 과반이 성공이면 카카오를 healthy로 판정하며, 관측이 없으면 불필요한 기동 방지를 위해 healthy로 간주한다.",
+      "tags": ["validation", "health-check", "disaster-recovery"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:aws/terraform/lambda/dr_controller.py:handler",
+      "type": "function",
+      "name": "handler",
+      "filePath": "aws/terraform/lambda/dr_controller.py",
+      "lineRange": [35, 56],
+      "summary": "카카오 상태에 따라 목표 desired capacity를 0 또는 DR_CAPACITY로 정하고, 현재 ASG 용량과 다를 때만 set_desired_capacity를 호출해 AWS 앱 스택을 기동/축소하는 Lambda 진입점이다.",
+      "tags": ["event-handler", "disaster-recovery", "aws-lambda", "automation"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:aws/terraform/ssm-params.sh.example",
+      "type": "file",
+      "name": "ssm-params.sh.example",
+      "filePath": "aws/terraform/ssm-params.sh.example",
+      "summary": "앱/DB 시크릿을 Terraform state 밖의 SSM Parameter Store(SecureString)에 등록하는 예시 스크립트로, 카카오 시크릿과 동일 값을 사용해 failover 후에도 세션/키 호환을 보장한다.",
+      "tags": ["script", "security", "secrets", "deployment", "infrastructure"],
+      "complexity": "simple",
+      "languageNotes": "민감 값을 TF state에 노출하지 않으려 TF 외부에서 관리하는 .example 템플릿이다."
+    },
+    {
+      "id": "file:aws/terraform/terraform.tfvars.example",
+      "type": "file",
+      "name": "terraform.tfvars.example",
+      "filePath": "aws/terraform/terraform.tfvars.example",
+      "summary": "Terraform 입력 변수의 기본값 예시로, 서울 리전 VPC(10.20.0.0/16)·서브넷·DB 인스턴스 타입·도메인·Bastion 허용 IP 등을 정의한다.",
+      "tags": ["terraform", "configuration", "infrastructure", "deployment"],
+      "complexity": "simple",
+      "languageNotes": "비용 절감을 위해 NAT 게이트웨이를 제거하고 앱/DB를 public 서브넷에 배치한 구성이다."
+    },
+    {
+      "id": "file:aws/terraform/user_data_db.sh.tftpl",
+      "type": "file",
+      "name": "user_data_db.sh.tftpl",
+      "filePath": "aws/terraform/user_data_db.sh.tftpl",
+      "summary": "DR DB 레플리카 EC2의 부트스트랩 템플릿으로, docker·WireGuard 설치와 데이터 EBS 자동 탐지·포맷·마운트까지 수행하며 Postgres 설정은 런북으로 위임한다.",
+      "tags": ["script", "terraform", "bootstrap", "disaster-recovery", "infrastructure"],
+      "complexity": "moderate",
+      "languageNotes": "Nitro에서 device 이름이 바뀌므로 lsblk/awk로 미마운트 디스크를 자동 탐지하는 Terraform tftpl 템플릿이다."
+    },
+    {
+      "id": "file:aws/terraform/user_data.sh.tftpl",
+      "type": "file",
+      "name": "user_data.sh.tftpl",
+      "filePath": "aws/terraform/user_data.sh.tftpl",
+      "summary": "DR 앱 EC2의 부트스트랩 템플릿으로, docker/compose 설치 후 SSM에서 시크릿을 로드해 .env를 만들고 FE+BE docker-compose 스택을 기동한다.",
+      "tags": ["script", "terraform", "bootstrap", "disaster-recovery", "deployment"],
+      "complexity": "moderate",
+      "languageNotes": "compose 파일을 base64로 주입해 drift를 없애고 SSM Parameter Store로 시크릿을 가져오는 Terraform tftpl 템플릿이다."
+    },
+    {
+      "id": "document:readme.md",
+      "type": "document",
+      "name": "readme.md",
+      "filePath": "readme.md",
+      "summary": "KakaoCloud AIaaS(4K Cinema) 프로젝트의 최상위 문서로, 라이브 서비스·기술 스택·배포 파이프라인·저장소 구조·클러스터 구성·명령어 참고를 8개 섹션으로 정리한다.",
+      "tags": ["documentation", "entry-point", "overview"],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:aws/terraform/lambda/dr_controller.py",
+      "target": "function:aws/terraform/lambda/dr_controller.py:_kakao_healthy",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:aws/terraform/lambda/dr_controller.py",
+      "target": "function:aws/terraform/lambda/dr_controller.py:handler",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:aws/terraform/lambda/dr_controller.py",
+      "target": "function:aws/terraform/lambda/dr_controller.py:_kakao_healthy",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:aws/terraform/lambda/dr_controller.py",
+      "target": "function:aws/terraform/lambda/dr_controller.py:handler",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}
