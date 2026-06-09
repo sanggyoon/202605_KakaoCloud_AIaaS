@@ -14,6 +14,7 @@ from fastapi.responses import StreamingResponse
 
 from app import tmdb_common as tc
 from app import backfill_popular as bf
+from app import subtitle_collect as sc
 
 # 로컬 개발 편의: .env 자동 로드.
 # 실제 운영(쿠버네티스)에서는 환경변수가 직접 주입되며, load_dotenv는
@@ -182,6 +183,20 @@ async def backfill_now():
     async def stream():
         async with httpx.AsyncClient(timeout=20, verify=False) as client:
             async for ev in bf.backfill_events(client, max_new, max_pages, rate_delay):
+                yield json.dumps(ev, ensure_ascii=False) + "\n"
+
+    return StreamingResponse(stream(), media_type="application/x-ndjson")
+
+
+@app.post("/api/subtitles/collect")
+async def subtitles_collect():
+    """매니저 '자막 데이터 수집' — 자막 없는 영화를 최대 max_new편 수집하며
+    진행 상황을 NDJSON 스트림으로 흘려보낸다."""
+    max_new, rate_delay = sc.config_from_env()
+
+    async def stream():
+        async with httpx.AsyncClient(timeout=60, verify=False) as client:
+            async for ev in sc.collect_events(client, max_new, rate_delay):
                 yield json.dumps(ev, ensure_ascii=False) + "\n"
 
     return StreamingResponse(stream(), media_type="application/x-ndjson")
