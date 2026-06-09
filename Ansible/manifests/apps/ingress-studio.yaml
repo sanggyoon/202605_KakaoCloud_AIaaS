@@ -151,6 +151,74 @@ spec:
                 port:
                   number: 3000
 ---
+# ai Supabase REST API (Kong) — Basic Auth 없음, Supabase JWT로 인증
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: supabase-ai-api
+  namespace: ai
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - ai.4kakao.kro.kr   # 전환 후 제거
+      secretName: ai-supabase-tls
+    - hosts:
+        - ai.peakly.art
+      secretName: ai-supabase-peakly-tls
+  rules:
+    - host: ai.4kakao.kro.kr   # 전환 후 제거
+      http:
+        paths:
+          - path: /rest/v1
+            pathType: Prefix
+            backend:
+              service:
+                name: supabase-ai-supabase-kong
+                port:
+                  number: 8000
+          - path: /auth/v1
+            pathType: Prefix
+            backend:
+              service:
+                name: supabase-ai-supabase-kong
+                port:
+                  number: 8000
+          - path: /storage/v1
+            pathType: Prefix
+            backend:
+              service:
+                name: supabase-ai-supabase-kong
+                port:
+                  number: 8000
+    - host: ai.peakly.art
+      http:
+        paths:
+          - path: /rest/v1
+            pathType: Prefix
+            backend:
+              service:
+                name: supabase-ai-supabase-kong
+                port:
+                  number: 8000
+          - path: /auth/v1
+            pathType: Prefix
+            backend:
+              service:
+                name: supabase-ai-supabase-kong
+                port:
+                  number: 8000
+          - path: /storage/v1
+            pathType: Prefix
+            backend:
+              service:
+                name: supabase-ai-supabase-kong
+                port:
+                  number: 8000
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
