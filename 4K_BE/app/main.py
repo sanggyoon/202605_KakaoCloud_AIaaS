@@ -4,6 +4,8 @@ TMDB 영화 목록 조회 + Supabase 추가/삭제
 """
 import json
 import os
+from datetime import datetime, timedelta, timezone
+
 import httpx
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
@@ -302,3 +304,70 @@ async def delete_movie(tmdb_id: int):
             raise HTTPException(status_code=500, detail=f"Supabase 삭제 실패: {sb_r.text[:200]}")
 
         return {"ok": True, "tmdb_id": tmdb_id}
+
+
+@app.post("/api/visits")
+async def log_visit(payload: dict):
+    """공개 서비스 방문 기록 — FE 비콘이 브라우저당 하루 1회 호출한다."""
+    visitor_id = (payload.get("visitor_id") or "").strip()
+    if not visitor_id:
+        raise HTTPException(status_code=400, detail="visitor_id is required")
+    async with httpx.AsyncClient(timeout=15, verify=False) as client:
+        r = await client.post(
+            f"{tc.data_url()}/rest/v1/visits",
+            json=[{"visitor_id": visitor_id}],
+            headers=tc.sb_headers(),
+        )
+        if r.status_code not in (200, 201, 204):
+            raise HTTPException(status_code=500, detail=f"방문 기록 실패: {r.text[:200]}")
+    return {"ok": True}
+
+
+def _parse_count(content_range: str | None) -> int:
+    """PostgREST count 응답의 Content-Range("0-0/1234" 또는 "*/0")에서 total 파싱."""
+    if not content_range or "/" not in content_range:
+        return 0
+    total = content_range.rsplit("/", 1)[-1]
+    return int(total) if total.isdigit() else 0
+
+
+async def _count(client: httpx.AsyncClient, table: str, params: dict) -> int:
+    """Supabase 테이블의 행 수를 count=exact 헤더로 조회."""
+    headers = tc.sb_headers()
+    headers["Prefer"] = "count=exact"
+    headers["Range-Unit"] = "items"
+    headers["Range"] = "0-0"
+    r = await client.get(
+        f"{tc.data_url()}/rest/v1/{table}",
+        params={"select": "id", **params},
+        headers=headers,
+    )
+    if r.status_code not in (200, 206):
+        return 0
+    return _parse_count(r.headers.get("content-range"))
+
+
+@app.get("/api/stats")
+async def stats():
+    """매니저 모니터링용 집계 — 방문자(기간별) + 영화 데이터(그래프 유무)."""
+    now = datetime.now(timezone.utc)
+    day_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    week_start = now - timedelta(days=7)
+    month_start = now - timedelta(days=30)
+
+    async with httpx.AsyncClient(timeout=15, verify=False) as client:
+        total_v = await _count(client, "visits", {})
+        month_v = await _count(client, "visits", {"created_at": f"gte.{month_start.isoformat()}"})
+        week_v = await _count(client, "visits", {"created_at": f"gte.{week_start.isoformat()}"})
+        day_v = await _count(client, "visits", {"created_at": f"gte.{day_start.isoformat()}"})
+        total_m = await _count(client, "movies", {})
+        with_graph = await _count(client, "movies", {"has_vector": "eq.true"})
+
+    return {
+        "visitors": {"total": total_v, "month": month_v, "week": week_v, "day": day_v},
+        "movies": {
+            "total": total_m,
+            "with_graph": with_graph,
+            "without_graph": total_m - with_graph,
+        },
+    }
