@@ -9,18 +9,84 @@ interface Stats {
   movies: { total: number; with_graph: number; without_graph: number };
 }
 
+interface Job {
+  running: boolean;
+  processed: number;
+  target: number;
+  title: string | null;
+  done: { added: number; failed: number } | null;
+}
+
+// NDJSON 진행 스트림 소비 — backfill·collect 공통
+async function streamJob(
+  endpoint: string,
+  setJob: React.Dispatch<React.SetStateAction<Job | null>>,
+  onComplete?: () => void,
+) {
+  setJob({ running: true, processed: 0, target: 100, title: null, done: null });
+  try {
+    const res = await fetch(endpoint, { method: 'POST' });
+    if (!res.ok || !res.body) throw new Error('시작 실패');
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buf = '';
+    let doneEv: { added: number; failed: number } | null = null;
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buf += decoder.decode(value, { stream: true });
+      const lines = buf.split('\n');
+      buf = lines.pop() ?? '';
+      for (const line of lines) {
+        if (!line.trim()) continue;
+        const ev = JSON.parse(line);
+        if (ev.type === 'progress') {
+          setJob((s) => (s ? { ...s, processed: ev.processed, target: ev.target, title: ev.title } : s));
+        } else if (ev.type === 'done') {
+          doneEv = { added: ev.added, failed: (ev.failed ?? []).length };
+        }
+      }
+    }
+    setJob((s) => (s ? { ...s, running: false, done: doneEv ?? { added: 0, failed: 0 } } : s));
+    onComplete?.();
+  } catch {
+    setJob((s) => (s ? { ...s, running: false, done: { added: 0, failed: 0 } } : s));
+  }
+}
+
+function JobBanner({ job, label, onClose }: { job: Job; label: string; onClose: () => void }) {
+  const pct = Math.min(100, Math.round(
+    ((job.running ? job.processed : job.done?.added ?? 0) / Math.max(1, job.target)) * 100));
+  return (
+    <div style={{ padding: '14px 0', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+        <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)' }}>
+          {job.running
+            ? `${label} 중… ${job.processed} / ${job.target}${job.title ? ` — ${job.title}` : ''}`
+            : `완료 — 신규 ${job.done?.added ?? 0}개${job.done?.failed ? `, 실패 ${job.done.failed}개` : ''}`}
+        </span>
+        {!job.running && (
+          <button onClick={onClose}
+            style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', cursor: 'pointer', fontSize: 12, fontFamily: 'inherit' }}>
+            닫기
+          </button>
+        )}
+      </div>
+      <div style={{ height: 6, borderRadius: 999, background: 'rgba(255,255,255,0.08)', overflow: 'hidden' }}>
+        <div style={{ height: '100%', width: `${pct}%`,
+          background: job.running ? 'var(--accent)' : 'rgba(34,197,94,0.85)', transition: 'width 0.3s ease' }} />
+      </div>
+    </div>
+  );
+}
+
 export default function ManagerPage() {
   const router = useRouter();
   const [stats, setStats] = useState<Stats | null>(null);
   const [statsLoading, setStatsLoading] = useState(true);
-  // backfill(신규 100개 추가) 진행 상태
-  const [backfill, setBackfill] = useState<{
-    running: boolean;
-    processed: number;
-    target: number;
-    title: string | null;
-    done: { added: number; failed: number } | null;
-  } | null>(null);
+  // backfill(신규 100개 추가) / collect(자막 데이터 수집) 진행 상태
+  const [backfill, setBackfill] = useState<Job | null>(null);
+  const [collect, setCollect] = useState<Job | null>(null);
 
   const fetchStats = async () => {
     setStatsLoading(true);
@@ -39,39 +105,16 @@ export default function ManagerPage() {
     fetchStats();
   }, []);
 
-  // 신규 100개 수동 추가 — CronJob과 동일한 backfill을 즉시 실행, NDJSON 진행 스트림 소비
-  const runBackfill = async () => {
+  // 신규 100개 수동 추가 — backfill 스트림 소비
+  const runBackfill = () => {
     if (backfill?.running) return;
-    setBackfill({ running: true, processed: 0, target: 100, title: null, done: null });
-    try {
-      const res = await fetch('/api/manager/movies/backfill', { method: 'POST' });
-      if (!res.ok || !res.body) throw new Error('backfill 시작 실패');
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let buf = '';
-      let doneEv: { added: number; failed: number } | null = null;
-      for (;;) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        buf += decoder.decode(value, { stream: true });
-        const lines = buf.split('\n');
-        buf = lines.pop() ?? '';
-        for (const line of lines) {
-          if (!line.trim()) continue;
-          const ev = JSON.parse(line);
-          if (ev.type === 'progress') {
-            setBackfill((s) => (s ? { ...s, processed: ev.processed, target: ev.target, title: ev.title } : s));
-          } else if (ev.type === 'done') {
-            doneEv = { added: ev.added, failed: (ev.failed ?? []).length };
-          }
-        }
-      }
-      setBackfill((s) => (s ? { ...s, running: false, done: doneEv ?? { added: 0, failed: 0 } } : s));
-      // 새 영화가 추가됐으므로 통계 갱신
-      fetchStats();
-    } catch {
-      setBackfill((s) => (s ? { ...s, running: false, done: { added: 0, failed: 0 } } : s));
-    }
+    streamJob('/api/manager/movies/backfill', setBackfill, fetchStats);
+  };
+
+  // 자막 데이터 수집 — 자막 없는 영화 최대 100편, collect 스트림 소비
+  const runCollect = () => {
+    if (collect?.running) return;
+    streamJob('/api/manager/subtitles/collect', setCollect, fetchStats);
   };
 
   const handleLogout = async () => {
@@ -149,6 +192,9 @@ export default function ManagerPage() {
             <button onClick={runBackfill} disabled={backfill?.running} style={actionBtn(!!backfill?.running)}>
               {backfill?.running ? '추가 중…' : '새로운 영화 100개 추가'}
             </button>
+            <button onClick={runCollect} disabled={collect?.running} style={actionBtn(!!collect?.running)}>
+              {collect?.running ? '수집 중…' : '자막 데이터 수집'}
+            </button>
             <button
               disabled
               title="추후 개발된 모델로 동작 예정"
@@ -159,36 +205,9 @@ export default function ManagerPage() {
           </div>
         </section>
 
-        {/* Backfill 진행 배너 */}
-        {backfill && (
-          <div style={{ padding: '14px 0', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-              <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)' }}>
-                {backfill.running
-                  ? `신규 영화 추가 중… ${backfill.processed} / ${backfill.target}${backfill.title ? ` — ${backfill.title}` : ''}`
-                  : `완료 — 신규 ${backfill.done?.added ?? 0}개 추가${backfill.done?.failed ? `, 실패 ${backfill.done.failed}개` : ''}`}
-              </span>
-              {!backfill.running && (
-                <button
-                  onClick={() => setBackfill(null)}
-                  style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', cursor: 'pointer', fontSize: 12, fontFamily: 'inherit' }}
-                >
-                  닫기
-                </button>
-              )}
-            </div>
-            <div style={{ height: 6, borderRadius: 999, background: 'rgba(255,255,255,0.08)', overflow: 'hidden' }}>
-              <div
-                style={{
-                  height: '100%',
-                  width: `${Math.min(100, Math.round(((backfill.running ? backfill.processed : backfill.done?.added ?? 0) / Math.max(1, backfill.target)) * 100))}%`,
-                  background: backfill.running ? 'var(--accent)' : 'rgba(34,197,94,0.85)',
-                  transition: 'width 0.3s ease',
-                }}
-              />
-            </div>
-          </div>
-        )}
+        {/* 진행 배너 (backfill / collect) */}
+        {backfill && <JobBanner job={backfill} label="신규 영화 추가" onClose={() => setBackfill(null)} />}
+        {collect && <JobBanner job={collect} label="자막 수집" onClose={() => setCollect(null)} />}
       </main>
     </div>
   );
