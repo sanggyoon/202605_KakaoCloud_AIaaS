@@ -58,11 +58,11 @@ vm5 AI DB에 영화별 영어 자막 원본을 채워야 C(대사/씬 분리)·D
 - `select.py` — 순수 선택 로직(네트워크 없음)
   - `choose(candidates: list[dict]) -> dict | None`: 필터·SDH우선·반환순 규칙
   - `is_srt(c) -> bool`, `is_sdh(c) -> bool` 등 보조 순수 함수
-- `db.py` — DB 입출력
-  - `iter_movies() -> Iterable[int]`: vm4 `movies`에서 tmdb_id 페이지네이션(REST, `DATA_SUPABASE_*`)
-  - `get_state(conn, tmdb_id) -> str | None`: vm5 `processing_status.subtitle_state`
-  - `save_subtitle(conn, tmdb_id, chosen, raw_text)`: `subtitles` upsert(on conflict tmdb_id)
-  - `set_status(conn, tmdb_id, state, error=None)`: `processing_status` upsert + `updated_at`/`retry_count`
+- `db.py` — DB 입출력 (모두 Supabase REST/PostgREST. vm5 `training`은 비공개 스키마라 Accept-Profile/Content-Profile 헤더 사용. 직접 Postgres(psycopg) 아님 — vm5 5432 포트 비공개.)
+  - `iter_movies() -> Iterable[int]`: vm4 `movies` tmdb_id 페이지네이션(REST, `DATA_SUPABASE_*`)
+  - `get_state(tmdb_id) -> str | None`: vm5 `processing_status.subtitle_state`
+  - `save_subtitle(tmdb_id, chosen, raw_text)`: `subtitles` upsert(on conflict tmdb_id)
+  - `set_status(tmdb_id, state, error=None)`: `processing_status` upsert + `updated_at`
 - `fetch_subtitles.py` — 배치 메인(아래 흐름), env 검증·페이싱·상한·우아한 중단
 
 ## 데이터 흐름 (영화 1편당)
@@ -98,7 +98,7 @@ alter table training.subtitles add column if not exists is_sdh boolean;
 
 ## 환경변수
 
-`SUBDL_API_KEY`(신규), `AI_DATABASE_URL`(vm5 psycopg, A에서), `DATA_SUPABASE_URL`·`DATA_SUPABASE_KEY`(vm4 movies 읽기, 기존). 로컬은 `4K_ML/.env`.
+`SUBDL_API_KEY`(신규), `AI_DATABASE_URL`·`AI_DATABASE_KEY`(vm5 REST, 비공개 schema=training), `DATA_SUPABASE_URL`·`DATA_SUPABASE_KEY`(vm4 movies 읽기, 기존), 선택 `AI_BASIC_USER`/`AI_BASIC_PASS`·`DATA_BASIC_USER`/`DATA_BASIC_PASS`(nginx basic auth). 로컬은 `4K_ML/.env`.
 
 ## 테스트 (간단)
 
