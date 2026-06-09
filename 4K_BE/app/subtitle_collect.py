@@ -132,15 +132,39 @@ async def download_and_extract(client: httpx.AsyncClient, url_path: str) -> str:
 
 # ── vm5 io ────────────────────────────────────────────────────────
 
-async def get_done_ids(client: httpx.AsyncClient) -> set[int]:
+MAX_RETRIES = 3  # failed가 이 횟수에 도달하면 종료 상태로 간주(더는 재시도 안 함)
+
+
+async def fetch_status(client: httpx.AsyncClient) -> dict[int, dict]:
+    """processing_status를 {tmdb_id: {"state": str, "retry": int}}로 한 번에 조회."""
     r = await client.get(
         f"{ai_url()}/rest/v1/processing_status",
-        params={"select": "tmdb_id", "subtitle_state": "eq.done", "limit": "100000"},
+        params={"select": "tmdb_id,subtitle_state,retry_count", "limit": "1000000"},
         headers=ai_headers(), auth=_ai_auth(),
     )
     if r.status_code != 200:
-        return set()
-    return {row["tmdb_id"] for row in r.json()}
+        return {}
+    return {
+        row["tmdb_id"]: {"state": row.get("subtitle_state"), "retry": row.get("retry_count") or 0}
+        for row in r.json()
+    }
+
+
+def _is_terminal(info: dict) -> bool:
+    """더 시도하지 않을 종료 상태: done·skipped, 또는 failed가 재시도 상한 도달."""
+    st = info.get("state")
+    if st in ("done", "skipped"):
+        return True
+    return st == "failed" and (info.get("retry") or 0) >= MAX_RETRIES
+
+
+async def remaining_counts(client: httpx.AsyncClient) -> dict:
+    """수집 가능한(=종료 상태 아닌) 영화 수. {total, terminal, remaining}."""
+    movie_ids = await tc.get_existing_tmdb_ids(client)
+    status = await fetch_status(client)
+    terminal = sum(1 for mid in movie_ids if mid in status and _is_terminal(status[mid]))
+    total = len(movie_ids)
+    return {"total": total, "terminal": terminal, "remaining": total - terminal}
 
 
 async def save_subtitle(client: httpx.AsyncClient, tmdb_id: int, chosen: dict, raw_text: str) -> None:
@@ -157,9 +181,12 @@ async def save_subtitle(client: httpx.AsyncClient, tmdb_id: int, chosen: dict, r
         raise RuntimeError(f"subtitles upsert 실패 {r.status_code}: {r.text[:200]}")
 
 
-async def set_status(client: httpx.AsyncClient, tmdb_id: int, state: str, error: str | None = None) -> None:
+async def set_status(client: httpx.AsyncClient, tmdb_id: int, state: str,
+                     error: str | None = None, retry_count: int | None = None) -> None:
     row = {"tmdb_id": tmdb_id, "subtitle_state": state, "error": error,
            "updated_at": datetime.now(timezone.utc).isoformat()}
+    if retry_count is not None:
+        row["retry_count"] = retry_count
     r = await client.post(f"{ai_url()}/rest/v1/processing_status",
                           params={"on_conflict": "tmdb_id"}, json=[row],
                           headers=ai_headers(write=True), auth=_ai_auth())
@@ -177,7 +204,7 @@ async def collect_events(client: httpx.AsyncClient, max_new: int, rate_delay: fl
     processed = 시도한(자막 없던) 영화 누적. SubdlRateLimit 시 done으로 마무리.
     """
     movie_ids = sorted(await tc.get_existing_tmdb_ids(client))
-    done = await get_done_ids(client)
+    status = await fetch_status(client)
     processed = 0
     added = 0
     skipped = 0
@@ -186,8 +213,10 @@ async def collect_events(client: httpx.AsyncClient, max_new: int, rate_delay: fl
     for tmdb_id in movie_ids:
         if processed >= max_new:
             break
-        if tmdb_id in done:
+        info = status.get(tmdb_id)
+        if info and _is_terminal(info):
             continue
+        prev_retry = (info or {}).get("retry", 0)
         title = None
         try:
             chosen = choose(await search(client, tmdb_id))
@@ -198,7 +227,7 @@ async def collect_events(client: httpx.AsyncClient, max_new: int, rate_delay: fl
                 title = chosen.get("release_name")
                 raw = await download_and_extract(client, chosen.get("url") or "")
                 if not raw.strip():
-                    await set_status(client, tmdb_id, "failed", "empty srt")
+                    await set_status(client, tmdb_id, "failed", "empty srt", retry_count=prev_retry + 1)
                     failed.append(tmdb_id)
                 else:
                     await save_subtitle(client, tmdb_id, chosen, raw)
@@ -207,7 +236,7 @@ async def collect_events(client: httpx.AsyncClient, max_new: int, rate_delay: fl
         except SubdlRateLimit:
             break
         except Exception as e:  # noqa: BLE001
-            await set_status(client, tmdb_id, "failed", str(e)[:500])
+            await set_status(client, tmdb_id, "failed", str(e)[:500], retry_count=prev_retry + 1)
             failed.append(tmdb_id)
         processed += 1
         yield {"type": "progress", "processed": processed, "target": max_new, "title": title}

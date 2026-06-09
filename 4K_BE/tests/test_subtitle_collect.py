@@ -120,20 +120,97 @@ async def test_collect_events_happy(monkeypatch):
     assert any(e["type"] == "progress" for e in events)
 
 
-async def test_collect_events_skips_done(monkeypatch):
+async def test_collect_events_skips_terminal_states(monkeypatch):
+    # done·skipped·failed(retry>=3)는 종료 상태 → subdl/저장 호출 없이 건너뜀(handler 500이면 실패)
     _set_env(monkeypatch)
 
     def handler(req: httpx.Request) -> httpx.Response:
         u = str(req.url)
         if "data.test/rest/v1/movies" in u:
-            return httpx.Response(200, json=[{"tmdb_id": 100}])
+            return httpx.Response(200, json=[{"tmdb_id": 1}, {"tmdb_id": 2}, {"tmdb_id": 3}])
         if "ai.test/rest/v1/processing_status" in u and req.method == "GET":
-            return httpx.Response(200, json=[{"tmdb_id": 100}])
+            return httpx.Response(200, json=[
+                {"tmdb_id": 1, "subtitle_state": "done", "retry_count": 0},
+                {"tmdb_id": 2, "subtitle_state": "skipped", "retry_count": 0},
+                {"tmdb_id": 3, "subtitle_state": "failed", "retry_count": 3},
+            ])
         return httpx.Response(500)
 
     client = _client(handler)
     events = [ev async for ev in sc.collect_events(client, max_new=100, rate_delay=0)]
     assert events == [{"type": "done", "added": 0, "skipped": 0, "failed": []}]
+
+
+async def test_collect_events_retries_failed_under_cap(monkeypatch):
+    # failed retry_count=1 (<3) → 재시도 대상
+    _set_env(monkeypatch)
+    zb = _zip_bytes()
+
+    def handler(req: httpx.Request) -> httpx.Response:
+        u = str(req.url)
+        if "data.test/rest/v1/movies" in u:
+            return httpx.Response(200, json=[{"tmdb_id": 5}])
+        if "ai.test/rest/v1/processing_status" in u and req.method == "GET":
+            return httpx.Response(200, json=[{"tmdb_id": 5, "subtitle_state": "failed", "retry_count": 1}])
+        if "api.subdl.com" in u:
+            return httpx.Response(200, json={"status": True,
+                "subtitles": [{"url": "/s.zip", "hi": True, "language": "EN"}]})
+        if "dl.subdl.com" in u:
+            return httpx.Response(200, content=zb)
+        return httpx.Response(201, json=[])
+
+    client = _client(handler)
+    events = [ev async for ev in sc.collect_events(client, max_new=100, rate_delay=0)]
+    assert events[-1]["added"] == 1
+
+
+async def test_collect_events_increments_retry_on_failure(monkeypatch):
+    # failed(retry 1) 영화가 또 실패 → status POST에 retry_count=2 기록
+    _set_env(monkeypatch)
+    posted = {}
+
+    def handler(req: httpx.Request) -> httpx.Response:
+        import json
+        u = str(req.url)
+        if "data.test/rest/v1/movies" in u:
+            return httpx.Response(200, json=[{"tmdb_id": 5}])
+        if "ai.test/rest/v1/processing_status" in u and req.method == "GET":
+            return httpx.Response(200, json=[{"tmdb_id": 5, "subtitle_state": "failed", "retry_count": 1}])
+        if "api.subdl.com" in u:
+            return httpx.Response(200, json={"status": True,
+                "subtitles": [{"url": "/s.zip", "hi": True, "language": "EN"}]})
+        if "dl.subdl.com" in u:
+            return httpx.Response(500, text="boom")  # 다운로드 실패
+        if "ai.test/rest/v1/processing_status" in u and req.method == "POST":
+            posted.update(json.loads(req.content)[0])
+            return httpx.Response(201, json=[])
+        return httpx.Response(201, json=[])
+
+    client = _client(handler)
+    events = [ev async for ev in sc.collect_events(client, max_new=100, rate_delay=0)]
+    assert events[-1]["failed"] == [5]
+    assert posted["subtitle_state"] == "failed"
+    assert posted["retry_count"] == 2
+
+
+async def test_remaining_counts(monkeypatch):
+    _set_env(monkeypatch)
+
+    def handler(req: httpx.Request) -> httpx.Response:
+        u = str(req.url)
+        if "data.test/rest/v1/movies" in u:
+            return httpx.Response(200, json=[{"tmdb_id": 1}, {"tmdb_id": 2}, {"tmdb_id": 3}])
+        if "ai.test/rest/v1/processing_status" in u and req.method == "GET":
+            return httpx.Response(200, json=[
+                {"tmdb_id": 1, "subtitle_state": "done", "retry_count": 0},
+                {"tmdb_id": 2, "subtitle_state": "failed", "retry_count": 1},
+            ])
+        return httpx.Response(500)
+
+    client = _client(handler)
+    counts = await sc.remaining_counts(client)
+    # 1=done(종료), 2=failed1(미종료), 3=상태없음(미종료) → remaining 2
+    assert counts == {"total": 3, "terminal": 1, "remaining": 2}
 
 
 async def test_collect_events_respects_max_new(monkeypatch):

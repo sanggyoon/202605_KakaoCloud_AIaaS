@@ -189,10 +189,11 @@ async def backfill_now():
 
 
 @app.post("/api/subtitles/collect")
-async def subtitles_collect():
-    """매니저 '자막 데이터 수집' — 자막 없는 영화를 최대 max_new편 수집하며
-    진행 상황을 NDJSON 스트림으로 흘려보낸다."""
-    max_new, rate_delay = sc.config_from_env()
+async def subtitles_collect(limit: int | None = None):
+    """매니저 '자막 데이터 수집' — 자막 없는 영화를 최대 limit편 수집하며
+    진행 상황을 NDJSON 스트림으로 흘려보낸다. limit 미지정 시 env 기본값."""
+    default_max, rate_delay = sc.config_from_env()
+    max_new = default_max if limit is None else max(1, min(limit, 2000))
 
     async def stream():
         async with httpx.AsyncClient(timeout=60, verify=False) as client:
@@ -200,6 +201,13 @@ async def subtitles_collect():
                 yield json.dumps(ev, ensure_ascii=False) + "\n"
 
     return StreamingResponse(stream(), media_type="application/x-ndjson")
+
+
+@app.get("/api/subtitles/remaining")
+async def subtitles_remaining():
+    """수집 가능한(종료 상태 아닌) 영화 수 — 매니저 입력칸의 최대치 표시용."""
+    async with httpx.AsyncClient(timeout=30, verify=False) as client:
+        return await sc.remaining_counts(client)
 
 
 @app.get("/api/movies/{tmdb_id}/detail")
