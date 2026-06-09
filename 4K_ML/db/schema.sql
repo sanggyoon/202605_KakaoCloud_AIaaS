@@ -9,6 +9,7 @@ create table if not exists training.subtitles (
   provider_file_id text,
   release_name     text,
   raw_text         text   not null,
+  is_sdh           boolean,
   created_at       timestamptz not null default now()
 );
 
