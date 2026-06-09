@@ -61,3 +61,157 @@ def _largest_srt(zip_bytes: bytes) -> str:
         return raw.decode("utf-8")
     except UnicodeDecodeError:
         return raw.decode("latin-1")
+
+
+import asyncio
+from datetime import datetime, timezone
+
+import httpx
+
+from app import tmdb_common as tc
+
+
+def _subdl_key() -> str:
+    key = os.getenv("SUBDL_API_KEY", "")
+    if not key:
+        raise RuntimeError("SUBDL_API_KEY 환경변수가 필요합니다.")
+    return key
+
+
+# ── vm5(ai) REST 접근 ─────────────────────────────────────────────
+
+def ai_url() -> str:
+    return os.getenv("AI_DATABASE_URL", "")
+
+
+def _ai_key() -> str:
+    return os.getenv("AI_DATABASE_KEY", "")
+
+
+def _ai_auth():
+    user = os.getenv("AI_BASIC_USER")
+    return (user, os.getenv("AI_BASIC_PASS", "")) if user else None
+
+
+def ai_headers(write: bool = False) -> dict:
+    key = _ai_key()
+    h = {"apikey": key, "Authorization": f"Bearer {key}"}
+    if write:
+        h["Content-Type"] = "application/json"
+        h["Prefer"] = "resolution=merge-duplicates,return=minimal"
+    return h
+
+
+# ── subdl (async) ─────────────────────────────────────────────────
+
+async def search(client: httpx.AsyncClient, tmdb_id: int) -> list[dict]:
+    r = await client.get(SUBDL_API, params={
+        "api_key": _subdl_key(), "tmdb_id": tmdb_id, "type": "movie",
+        "languages": "EN", "subs_per_page": 30, "hi": 1, "releases": 1,
+    })
+    if r.status_code == 429:
+        raise SubdlRateLimit("subdl 429")
+    r.raise_for_status()
+    data = r.json()
+    if isinstance(data, dict) and data.get("status") is False:
+        msg = str(data.get("error", "")).lower()
+        if "limit" in msg or "quota" in msg:
+            raise SubdlRateLimit(msg)
+        return []
+    return data.get("subtitles", []) if isinstance(data, dict) else []
+
+
+async def download_and_extract(client: httpx.AsyncClient, url_path: str) -> str:
+    url = url_path if url_path.startswith("http") else f"{SUBDL_DL}{url_path}"
+    r = await client.get(url)
+    if r.status_code == 429:
+        raise SubdlRateLimit("subdl download 429")
+    r.raise_for_status()
+    return _largest_srt(r.content)
+
+
+# ── vm5 io ────────────────────────────────────────────────────────
+
+async def get_done_ids(client: httpx.AsyncClient) -> set[int]:
+    r = await client.get(
+        f"{ai_url()}/rest/v1/processing_status",
+        params={"select": "tmdb_id", "subtitle_state": "eq.done", "limit": "100000"},
+        headers=ai_headers(), auth=_ai_auth(),
+    )
+    if r.status_code != 200:
+        return set()
+    return {row["tmdb_id"] for row in r.json()}
+
+
+async def save_subtitle(client: httpx.AsyncClient, tmdb_id: int, chosen: dict, raw_text: str) -> None:
+    row = {
+        "tmdb_id": tmdb_id, "language": "en", "provider": "subdl",
+        "provider_file_id": str(chosen.get("url") or ""),
+        "release_name": chosen.get("release_name"),
+        "is_sdh": bool(chosen.get("hi")), "raw_text": raw_text,
+    }
+    r = await client.post(f"{ai_url()}/rest/v1/subtitles",
+                          params={"on_conflict": "tmdb_id"}, json=[row],
+                          headers=ai_headers(write=True), auth=_ai_auth())
+    if r.status_code not in (200, 201, 204):
+        raise RuntimeError(f"subtitles upsert 실패 {r.status_code}: {r.text[:200]}")
+
+
+async def set_status(client: httpx.AsyncClient, tmdb_id: int, state: str, error: str | None = None) -> None:
+    row = {"tmdb_id": tmdb_id, "subtitle_state": state, "error": error,
+           "updated_at": datetime.now(timezone.utc).isoformat()}
+    r = await client.post(f"{ai_url()}/rest/v1/processing_status",
+                          params={"on_conflict": "tmdb_id"}, json=[row],
+                          headers=ai_headers(write=True), auth=_ai_auth())
+    if r.status_code not in (200, 201, 204):
+        raise RuntimeError(f"status upsert 실패 {r.status_code}: {r.text[:200]}")
+
+
+# ── 이벤트 제너레이터 ─────────────────────────────────────────────
+
+async def collect_events(client: httpx.AsyncClient, max_new: int, rate_delay: float):
+    """vm4 movies 중 vm5에서 done 아닌 영화를 최대 max_new편 수집하며 진행 이벤트 yield.
+
+    {"type":"progress","processed":int,"target":int,"title":str|None}
+    {"type":"done","added":int,"skipped":int,"failed":list[int]}
+    processed = 시도한(자막 없던) 영화 누적. SubdlRateLimit 시 done으로 마무리.
+    """
+    movie_ids = sorted(await tc.get_existing_tmdb_ids(client))
+    done = await get_done_ids(client)
+    processed = 0
+    added = 0
+    skipped = 0
+    failed: list[int] = []
+
+    for tmdb_id in movie_ids:
+        if processed >= max_new:
+            break
+        if tmdb_id in done:
+            continue
+        title = None
+        try:
+            chosen = choose(await search(client, tmdb_id))
+            if chosen is None:
+                await set_status(client, tmdb_id, "skipped")
+                skipped += 1
+            else:
+                title = chosen.get("release_name")
+                raw = await download_and_extract(client, chosen.get("url") or "")
+                if not raw.strip():
+                    await set_status(client, tmdb_id, "failed", "empty srt")
+                    failed.append(tmdb_id)
+                else:
+                    await save_subtitle(client, tmdb_id, chosen, raw)
+                    await set_status(client, tmdb_id, "done")
+                    added += 1
+        except SubdlRateLimit:
+            break
+        except Exception as e:  # noqa: BLE001
+            await set_status(client, tmdb_id, "failed", str(e)[:500])
+            failed.append(tmdb_id)
+        processed += 1
+        yield {"type": "progress", "processed": processed, "target": max_new, "title": title}
+        if rate_delay:
+            await asyncio.sleep(rate_delay)
+
+    yield {"type": "done", "added": added, "skipped": skipped, "failed": failed}
