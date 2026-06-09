@@ -1,6 +1,6 @@
 """vm4 movies 읽기 + vm5 subtitles/processing_status 쓰기 — 모두 Supabase REST(PostgREST).
 
-vm5는 비공개 `training` 스키마라 PostgREST 프로파일 헤더(Accept-Profile/Content-Profile)를 쓴다.
+테이블은 public 스키마에 있어 별도 프로파일 헤더가 필요 없다.
 nginx basic auth가 걸려 있으면 *_BASIC_USER/PASS env로 전달된다(없으면 미적용).
 """
 import os
@@ -58,14 +58,12 @@ def _vm5_auth():
 
 
 def _vm5_headers(write: bool = False) -> dict:
+    # 테이블은 public 스키마라 별도 프로파일 헤더 불필요.
     _, key = _vm5()
     h = {"apikey": key, "Authorization": f"Bearer {key}"}
     if write:
-        h["Content-Profile"] = "training"   # 비공개 스키마 쓰기 대상
         h["Content-Type"] = "application/json"
         h["Prefer"] = "resolution=merge-duplicates,return=minimal"
-    else:
-        h["Accept-Profile"] = "training"    # 비공개 스키마 읽기 대상
     return h
 
 

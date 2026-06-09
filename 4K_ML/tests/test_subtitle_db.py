@@ -53,18 +53,11 @@ def test_get_state_returns_none_when_absent(monkeypatch, mock_httpx):
     assert db.get_state(999) is None
 
 
-def test_get_state_uses_training_profile(monkeypatch, mock_httpx):
+def test_get_state_returns_value(monkeypatch, mock_httpx):
     monkeypatch.setenv("AI_DATABASE_URL", "https://vm5")
     monkeypatch.setenv("AI_DATABASE_KEY", "k")
-    seen = {}
-
-    def handler(req: httpx.Request) -> httpx.Response:
-        seen["profile"] = req.headers.get("accept-profile")
-        return httpx.Response(200, json=[{"subtitle_state": "done"}])
-
-    mock_httpx(handler)
+    mock_httpx(lambda req: httpx.Response(200, json=[{"subtitle_state": "done"}]))
     assert db.get_state(1) == "done"
-    assert seen["profile"] == "training"
 
 
 def test_save_subtitle_posts_row(monkeypatch, mock_httpx):
@@ -75,12 +68,10 @@ def test_save_subtitle_posts_row(monkeypatch, mock_httpx):
     def handler(req: httpx.Request) -> httpx.Response:
         import json
         seen["body"] = json.loads(req.content)
-        seen["profile"] = req.headers.get("content-profile")
         return httpx.Response(201, json=[])
 
     mock_httpx(handler)
     db.save_subtitle(7, {"url": "/x.zip", "release_name": "R", "hi": 1}, "srt-text")
-    assert seen["profile"] == "training"
     assert seen["body"][0]["tmdb_id"] == 7
     assert seen["body"][0]["is_sdh"] is True
     assert seen["body"][0]["raw_text"] == "srt-text"

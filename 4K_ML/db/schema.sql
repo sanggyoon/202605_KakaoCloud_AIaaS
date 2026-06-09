@@ -1,7 +1,7 @@
-create schema if not exists training;
+-- ML 파이프라인 테이블 — public 스키마 (Supabase REST가 기본 노출).
 
 -- 1. 자막 원본 (영화당 1개)
-create table if not exists training.subtitles (
+create table if not exists subtitles (
   id               bigint generated always as identity primary key,
   tmdb_id          bigint not null unique,
   language         text   not null default 'en',
@@ -14,9 +14,9 @@ create table if not exists training.subtitles (
 );
 
 -- 3. 씬 (dialogues가 참조하므로 먼저 생성)
-create table if not exists training.scenes (
+create table if not exists scenes (
   id             bigint generated always as identity primary key,
-  subtitles_id   bigint not null references training.subtitles(id) on delete cascade,
+  subtitles_id   bigint not null references subtitles(id) on delete cascade,
   scene_index    int    not null,
   start_ms       int    not null,
   end_ms         int    not null,
@@ -27,13 +27,13 @@ create table if not exists training.scenes (
   created_at     timestamptz not null default now(),
   unique (subtitles_id, scene_index)
 );
-create index if not exists scenes_subtitles_id_idx on training.scenes (subtitles_id);
+create index if not exists scenes_subtitles_id_idx on scenes (subtitles_id);
 
 -- 2. 대사 (자막 한 줄)
-create table if not exists training.dialogues (
+create table if not exists dialogues (
   id             bigint generated always as identity primary key,
-  subtitles_id   bigint not null references training.subtitles(id) on delete cascade,
-  scenes_id      bigint references training.scenes(id) on delete set null,
+  subtitles_id   bigint not null references subtitles(id) on delete cascade,
+  scenes_id      bigint references scenes(id) on delete set null,
   line_index     int    not null,
   start_ms       int    not null,
   end_ms         int    not null,
@@ -45,11 +45,11 @@ create table if not exists training.dialogues (
   progress_ratio double precision not null,
   unique (subtitles_id, line_index)
 );
-create index if not exists dialogues_subtitles_id_idx on training.dialogues (subtitles_id);
-create index if not exists dialogues_scenes_id_idx on training.dialogues (scenes_id);
+create index if not exists dialogues_subtitles_id_idx on dialogues (subtitles_id);
+create index if not exists dialogues_scenes_id_idx on dialogues (scenes_id);
 
 -- 6. 모델 버전 레지스트리 (scene_scores가 참조하므로 먼저 생성)
-create table if not exists training.model_versions (
+create table if not exists model_versions (
   model_version text primary key,
   kind          text not null,
   description   text,
@@ -58,18 +58,18 @@ create table if not exists training.model_versions (
 );
 
 -- 4. 씬 점수
-create table if not exists training.scene_scores (
+create table if not exists scene_scores (
   id            bigint generated always as identity primary key,
-  scenes_id     bigint not null references training.scenes(id) on delete cascade,
+  scenes_id     bigint not null references scenes(id) on delete cascade,
   score         double precision not null,
-  model_version text not null references training.model_versions(model_version),
+  model_version text not null references model_versions(model_version),
   created_at    timestamptz not null default now(),
   unique (scenes_id, model_version)
 );
-create index if not exists scene_scores_model_version_idx on training.scene_scores (model_version);
+create index if not exists scene_scores_model_version_idx on scene_scores (model_version);
 
 -- 5. 영화별 파이프라인 진행 상태
-create table if not exists training.processing_status (
+create table if not exists processing_status (
   tmdb_id        bigint primary key,
   subtitle_state text not null default 'pending',
   parse_state    text not null default 'pending',
