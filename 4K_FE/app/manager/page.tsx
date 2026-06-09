@@ -87,6 +87,9 @@ export default function ManagerPage() {
   // backfill(신규 100개 추가) / collect(자막 데이터 수집) 진행 상태
   const [backfill, setBackfill] = useState<Job | null>(null);
   const [collect, setCollect] = useState<Job | null>(null);
+  // 자막 수집 가능한(종료 상태 아닌) 영화 수 + 입력 개수
+  const [remaining, setRemaining] = useState<number | null>(null);
+  const [collectN, setCollectN] = useState(50);
 
   const fetchStats = async () => {
     setStatsLoading(true);
@@ -101,8 +104,20 @@ export default function ManagerPage() {
     }
   };
 
+  const fetchRemaining = async () => {
+    try {
+      const res = await fetch('/api/manager/subtitles/remaining', { cache: 'no-store' });
+      if (!res.ok) throw new Error('remaining 조회 실패');
+      const data = await res.json();
+      setRemaining(typeof data.remaining === 'number' ? data.remaining : null);
+    } catch {
+      setRemaining(null);
+    }
+  };
+
   useEffect(() => {
     fetchStats();
+    fetchRemaining();
   }, []);
 
   // 신규 100개 수동 추가 — backfill 스트림 소비
@@ -111,10 +126,14 @@ export default function ManagerPage() {
     streamJob('/api/manager/movies/backfill', setBackfill, fetchStats);
   };
 
-  // 자막 데이터 수집 — 자막 없는 영화 최대 100편, collect 스트림 소비
+  // 자막 데이터 수집 — 입력한 개수만큼, collect 스트림 소비
   const runCollect = () => {
     if (collect?.running) return;
-    streamJob('/api/manager/subtitles/collect', setCollect, fetchStats);
+    const n = Math.max(1, Math.min(collectN, remaining ?? collectN));
+    streamJob(`/api/manager/subtitles/collect?limit=${n}`, setCollect, () => {
+      fetchStats();
+      fetchRemaining();
+    });
   };
 
   const handleLogout = async () => {
@@ -192,9 +211,29 @@ export default function ManagerPage() {
             <button onClick={runBackfill} disabled={backfill?.running} style={actionBtn(!!backfill?.running)}>
               {backfill?.running ? '추가 중…' : '새로운 영화 100개 추가'}
             </button>
-            <button onClick={runCollect} disabled={collect?.running} style={actionBtn(!!collect?.running)}>
-              {collect?.running ? '수집 중…' : '자막 데이터 수집'}
-            </button>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <input
+                  type="number"
+                  min={1}
+                  max={remaining ?? undefined}
+                  value={collectN}
+                  onChange={(e) => setCollectN(Math.max(1, Number(e.target.value) || 1))}
+                  disabled={collect?.running}
+                  style={{
+                    width: 72, padding: '13px 10px', borderRadius: 10,
+                    background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
+                    color: 'var(--fg)', fontSize: 14, fontFamily: 'inherit', outline: 'none',
+                  }}
+                />
+                <button onClick={runCollect} disabled={collect?.running || remaining === 0} style={actionBtn(!!collect?.running || remaining === 0)}>
+                  {collect?.running ? '수집 중…' : '자막 데이터 수집'}
+                </button>
+              </div>
+              <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', paddingLeft: 2 }}>
+                {remaining === null ? '최대 —' : `최대 ${remaining.toLocaleString('ko-KR')}개 수집 가능`}
+              </span>
+            </div>
             <button
               disabled
               title="추후 개발된 모델로 동작 예정"
