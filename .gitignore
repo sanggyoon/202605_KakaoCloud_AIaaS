@@ -23,7 +23,4 @@ yarn-error.log*
 *.pem
 
 # claude plugin - UnderstandAnything
-.understand-anything
-
-# claude plugin - superpowers
-docs
+# .understand-anything
