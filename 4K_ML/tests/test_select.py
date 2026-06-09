@@ -2,26 +2,27 @@ from subtitle_fetch import select as sel
 
 
 def test_choose_prefers_sdh():
-    c = [{"name": "a.srt", "hi": 0}, {"name": "b.srt", "hi": 1}]
-    assert sel.choose(c)["name"] == "b.srt"
+    c = [{"url": "/a.zip", "hi": 0}, {"url": "/b.zip", "hi": 1}]
+    assert sel.choose(c)["url"] == "/b.zip"
 
 
-def test_choose_filters_non_srt():
-    assert sel.choose([{"name": "a.sub", "hi": 1}]) is None
+def test_choose_filters_non_english():
+    # subdl 응답은 language='EN'/lang='english'. 다른 언어는 제외.
+    assert sel.choose([{"url": "/a.zip", "hi": 1, "language": "FR", "lang": "french"}]) is None
 
 
 def test_choose_fallback_to_non_sdh():
-    c = [{"name": "a.srt", "hi": 0}]
-    assert sel.choose(c)["name"] == "a.srt"
+    c = [{"url": "/a.zip", "hi": 0}]
+    assert sel.choose(c)["url"] == "/a.zip"
 
 
 def test_choose_skips_full_season():
-    assert sel.choose([{"name": "a.srt", "hi": 1, "full_season": True}]) is None
+    assert sel.choose([{"url": "/a.zip", "hi": 1, "full_season": True}]) is None
 
 
 def test_choose_tiebreak_keeps_return_order():
-    c = [{"name": "first.srt", "hi": 1}, {"name": "second.srt", "hi": 1}]
-    assert sel.choose(c)["name"] == "first.srt"
+    c = [{"url": "/first.zip", "hi": 1}, {"url": "/second.zip", "hi": 1}]
+    assert sel.choose(c)["url"] == "/first.zip"
 
 
 def test_choose_empty_returns_none():
