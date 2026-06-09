@@ -26,7 +26,7 @@ def test_process_movie_done(monkeypatch):
 def test_process_movie_skipped_when_no_candidate(monkeypatch):
     statuses, saved = [], []
     _patch_common(monkeypatch, statuses, saved)
-    monkeypatch.setattr(main.subdl, "search", lambda t, http: [{"name": "a.sub", "hi": 0}])
+    monkeypatch.setattr(main.subdl, "search", lambda t, http: [])  # subdl 후보 없음
     assert main.process_movie(None, 1) == "skipped"
     assert statuses == [("skipped", None)]
 
