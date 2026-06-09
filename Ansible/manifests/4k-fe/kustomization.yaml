@@ -10,4 +10,4 @@ resources:
 
 images:
   - name: ghcr.io/sanggyoon/4k-fe
-    newTag: "97a6469"
+    newTag: "e921a51"
