@@ -28,7 +28,7 @@ export default function LoginPage() {
       }
       // 원래 가려던 목적지(next)로 복귀, 없으면 매니저 페이지로
       const next = new URLSearchParams(window.location.search).get('next');
-      router.replace(next && next.startsWith('/') ? next : '/movie_list');
+      router.replace(next && next.startsWith('/') ? next : '/manager');
       router.refresh();
     } catch {
       setError('로그인 중 오류가 발생했습니다.');

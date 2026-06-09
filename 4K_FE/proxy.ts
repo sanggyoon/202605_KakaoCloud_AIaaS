@@ -1,5 +1,5 @@
 // 매니저 페이지/관리 API 인증 게이트.
-// /movie_list 페이지와 /api/manager/movies/* API는 로그인(세션 쿠키)이 있어야 접근 가능.
+// /manager·/movie_list 페이지와 /api/manager/movies·stats API는 로그인(세션 쿠키)이 있어야 접근 가능.
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { SESSION_COOKIE, isValidSession } from '@/app/lib/auth';
@@ -13,7 +13,7 @@ export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
   // 관리 API는 JSON 401로 응답 (페이지 리다이렉트 대신)
-  if (pathname.startsWith('/api/manager/movies')) {
+  if (pathname.startsWith('/api/manager/movies') || pathname.startsWith('/api/manager/stats')) {
     return NextResponse.json({ detail: '인증이 필요합니다.' }, { status: 401 });
   }
 
@@ -24,5 +24,13 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/movie_list', '/movie_list/:path*', '/api/manager/movies', '/api/manager/movies/:path*'],
+  matcher: [
+    '/manager',
+    '/manager/:path*',
+    '/movie_list',
+    '/movie_list/:path*',
+    '/api/manager/movies',
+    '/api/manager/movies/:path*',
+    '/api/manager/stats',
+  ],
 };
