@@ -163,3 +163,29 @@ export function addRecentId(tmdbId: number): void {
 export function removeRecentId(tmdbId: number): void {
   localStorage.setItem(RECENT_KEY, JSON.stringify(getRecentIds().filter((id) => id !== tmdbId)));
 }
+
+// 공개 서비스 방문 비콘 — 브라우저당 하루 1회만 전송(fire-and-forget).
+// localStorage에 방문자 UUID와 마지막 방문일(YYYY-MM-DD)을 저장해 중복 전송을 막는다.
+export function logVisit(): void {
+  if (typeof window === 'undefined') return;
+  try {
+    const today = new Date().toISOString().slice(0, 10);
+    if (localStorage.getItem('4k_last_visit') === today) return;
+
+    let visitorId = localStorage.getItem('4k_visitor_id');
+    if (!visitorId) {
+      visitorId = crypto.randomUUID();
+      localStorage.setItem('4k_visitor_id', visitorId);
+    }
+    localStorage.setItem('4k_last_visit', today);
+
+    fetch('/api/visit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ visitor_id: visitorId }),
+      keepalive: true,
+    }).catch(() => {});
+  } catch {
+    /* localStorage 접근 불가 등은 무시 */
+  }
+}

@@ -13,6 +13,7 @@ import {
   addRecentId,
   removeRecentId,
   fetchPreferredMovies,
+  logVisit,
 } from '@/app/lib/data';
 import Image from 'next/image';
 import PosterCard from '@/app/components/PosterCard';
@@ -26,6 +27,11 @@ const PAGE_SIZE = 120;
 
 export default function Dashboard() {
   const router = useRouter();
+
+  useEffect(() => {
+    logVisit();
+  }, []);
+
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);

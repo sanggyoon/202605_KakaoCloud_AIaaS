@@ -2,6 +2,8 @@
 
 // 온보딩 랜딩 페이지 — 서비스 소개 후 /dashboard로 진입시키는 진입점
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { logVisit } from '@/app/lib/data';
 import BackgroundThread from '@/app/components/BackgroundThread';
 
 const FEATURES = [
@@ -70,6 +72,10 @@ const FEATURES = [
 
 export default function OnboardingPage() {
   const router = useRouter();
+
+  useEffect(() => {
+    logVisit();
+  }, []);
 
   return (
     <div
