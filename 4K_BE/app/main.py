@@ -2,13 +2,16 @@
 4K Cinema Manager API
 TMDB 영화 목록 조회 + Supabase 추가/삭제
 """
+import json
 import os
 import httpx
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 
 from app import tmdb_common as tc
+from app import backfill_popular as bf
 
 # 로컬 개발 편의: .env 자동 로드.
 # 실제 운영(쿠버네티스)에서는 환경변수가 직접 주입되며, load_dotenv는
@@ -166,6 +169,20 @@ async def recent_movies(limit: int = 50):
         if r.status_code != 200:
             raise HTTPException(status_code=502, detail=f"Supabase 조회 실패: {r.text[:200]}")
         return {"movies": r.json()}
+
+
+@app.post("/api/movies/backfill")
+async def backfill_now():
+    """매니저 페이지 '신규 100개 추가' 버튼 — CronJob과 동일한 backfill을 즉시 실행하고
+    진행 상황을 NDJSON 스트림으로 흘려보낸다 (각 줄이 progress/done 이벤트 JSON)."""
+    max_new, max_pages, rate_delay = bf.config_from_env()
+
+    async def stream():
+        async with httpx.AsyncClient(timeout=20, verify=False) as client:
+            async for ev in bf.backfill_events(client, max_new, max_pages, rate_delay):
+                yield json.dumps(ev, ensure_ascii=False) + "\n"
+
+    return StreamingResponse(stream(), media_type="application/x-ndjson")
 
 
 @app.get("/api/movies/{tmdb_id}/detail")

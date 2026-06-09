@@ -29,6 +29,14 @@ export default function MovieListPage() {
   const [activeQuery, setActiveQuery] = useState('');
   // 상세/편집 모달 대상
   const [detail, setDetail] = useState<{ tmdb_id: number; title: string } | null>(null);
+  // backfill(신규 100개 추가) 진행 상태
+  const [backfill, setBackfill] = useState<{
+    running: boolean;
+    processed: number;
+    target: number;
+    title: string | null;
+    done: { added: number; failed: number } | null;
+  } | null>(null);
 
   const fetchMovies = useCallback(async (p: number, q: string) => {
     setLoading(true);
@@ -55,6 +63,41 @@ export default function MovieListPage() {
   const runSearch = (q: string) => {
     setPage(1);
     setActiveQuery(q.trim());
+  };
+
+  // 신규 100개 수동 추가 — CronJob과 동일한 backfill을 즉시 실행, NDJSON 진행 스트림 소비
+  const runBackfill = async () => {
+    if (backfill?.running) return;
+    setBackfill({ running: true, processed: 0, target: 100, title: null, done: null });
+    try {
+      const res = await fetch('/api/manager/movies/backfill', { method: 'POST' });
+      if (!res.ok || !res.body) throw new Error('backfill 시작 실패');
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buf = '';
+      let doneEv: { added: number; failed: number } | null = null;
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += decoder.decode(value, { stream: true });
+        const lines = buf.split('\n');
+        buf = lines.pop() ?? '';
+        for (const line of lines) {
+          if (!line.trim()) continue;
+          const ev = JSON.parse(line);
+          if (ev.type === 'progress') {
+            setBackfill((s) => (s ? { ...s, processed: ev.processed, target: ev.target, title: ev.title } : s));
+          } else if (ev.type === 'done') {
+            doneEv = { added: ev.added, failed: (ev.failed ?? []).length };
+          }
+        }
+      }
+      setBackfill((s) => (s ? { ...s, running: false, done: doneEv ?? { added: 0, failed: 0 } } : s));
+      // 새로 추가된 영화의 in_db 배지를 반영하기 위해 현재 목록 갱신
+      fetchMovies(page, activeQuery);
+    } catch {
+      setBackfill((s) => (s ? { ...s, running: false, done: { added: 0, failed: 0 } } : s));
+    }
   };
 
   // 로그아웃 — 세션 쿠키 삭제 후 로그인 페이지로
@@ -188,6 +231,22 @@ export default function MovieListPage() {
           </button>
           <div style={{ width: 1, height: 16, background: 'rgba(255,255,255,0.1)', margin: '0 4px' }} />
           <button
+            onClick={runBackfill}
+            disabled={backfill?.running}
+            title="TMDB 인기작 중 DB에 없는 영화를 최대 100개 추가 (3시 자동 작업과 동일)"
+            style={{
+              padding: '8px 14px',
+              background: backfill?.running ? 'rgba(255,255,255,0.06)' : 'color-mix(in oklch, var(--accent) 20%, transparent)',
+              border: 'none', borderRadius: 7,
+              color: backfill?.running ? 'rgba(255,255,255,0.4)' : 'var(--accent)',
+              fontSize: 12, fontWeight: 700, fontFamily: 'inherit',
+              cursor: backfill?.running ? 'default' : 'pointer', whiteSpace: 'nowrap',
+            }}
+          >
+            {backfill?.running ? '추가 중…' : '신규 100개 추가'}
+          </button>
+          <div style={{ width: 1, height: 16, background: 'rgba(255,255,255,0.1)', margin: '0 4px' }} />
+          <button
             onClick={handleLogout}
             title="로그아웃"
             style={{
@@ -203,6 +262,37 @@ export default function MovieListPage() {
           </button>
         </div>
       </header>
+
+      {/* Backfill 진행 배너 */}
+      {backfill && (
+        <div style={{ padding: '14px 64px', borderBottom: '1px solid rgba(255,255,255,0.06)', background: 'rgba(255,255,255,0.02)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+            <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)' }}>
+              {backfill.running
+                ? `신규 영화 추가 중… ${backfill.processed} / ${backfill.target}${backfill.title ? ` — ${backfill.title}` : ''}`
+                : `완료 — 신규 ${backfill.done?.added ?? 0}개 추가${backfill.done?.failed ? `, 실패 ${backfill.done.failed}개` : ''}`}
+            </span>
+            {!backfill.running && (
+              <button
+                onClick={() => setBackfill(null)}
+                style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', cursor: 'pointer', fontSize: 12, fontFamily: 'inherit' }}
+              >
+                닫기
+              </button>
+            )}
+          </div>
+          <div style={{ height: 6, borderRadius: 999, background: 'rgba(255,255,255,0.08)', overflow: 'hidden' }}>
+            <div
+              style={{
+                height: '100%',
+                width: `${Math.min(100, Math.round(((backfill.running ? backfill.processed : backfill.done?.added ?? 0) / Math.max(1, backfill.target)) * 100))}%`,
+                background: backfill.running ? 'var(--accent)' : 'rgba(34,197,94,0.85)',
+                transition: 'width 0.3s ease',
+              }}
+            />
+          </div>
+        </div>
+      )}
 
       {/* Movie Grid */}
       <main style={{ padding: '32px 64px 60px' }}>

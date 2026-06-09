@@ -87,3 +87,16 @@ async def test_respects_max_pages():
     )
     result = await _run(handler, max_new=100, max_pages=1)
     assert result["added"] == 2       # page 1만 처리
+
+
+async def test_backfill_events_streams_progress_then_done():
+    handler = _make_handler(existing_ids=set(), discover_pages={1: [{"id": 10}, {"id": 11}]})
+    events = []
+    async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as c:
+        async for ev in bf.backfill_events(c, max_new=2, max_pages=10, rate_delay=0):
+            events.append(ev)
+    progress = [e for e in events if e["type"] == "progress"]
+    done = [e for e in events if e["type"] == "done"]
+    assert len(progress) == 2
+    assert progress[-1]["processed"] == 2 and progress[-1]["target"] == 2
+    assert len(done) == 1 and done[0]["added"] == 2 and done[0]["failed"] == []
