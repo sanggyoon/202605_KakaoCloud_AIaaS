@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argo-workflows
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: https://argoproj.github.io/argo-helm
+      chart: argo-workflows
+      targetRevision: "0.45.4"   # ← helm search repo argo/argo-workflows 출력값으로 교체
+      helm:
+        valueFiles:
+          - $values/Ansible/values/values-argo-workflows.yaml
+    - repoURL: https://github.com/sanggyoon/202605_KakaoCloud_AIaaS.git
+      targetRevision: main
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argo
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
