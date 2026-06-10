@@ -12,17 +12,17 @@ from subtitle_parse.scenes import split_scenes, split_method, config_from_env
 from subtitle_parse.embed import embed_texts
 
 
-def parse_one(client, sub: dict, gap_ms: int, sim_threshold: float, min_lines: int) -> int:
+def parse_one(client, sub: dict, gap_ms: int, sim_threshold: float, min_lines: int, min_ms: int) -> int:
     """자막 1편을 파싱해 scenes/dialogues upsert. 반환: 씬 개수."""
     cues = parse_srt(sub["raw_text"])
     if not cues:
         raise ValueError("파싱된 cue 없음")
     feats = line_features(cues)
     emb = embed_texts([c.text for c in cues])
-    groups = split_scenes(feats, emb, gap_ms, sim_threshold, min_lines)
+    groups = split_scenes(feats, emb, gap_ms, sim_threshold, min_lines, min_ms)
 
     total = feats[-1]["end_ms"] or 1
-    method = split_method(gap_ms, sim_threshold)
+    method = split_method(gap_ms, sim_threshold, min_ms)
     scene_rows = []
     for si, g in enumerate(groups):
         first, last = feats[g[0]], feats[g[-1]]
@@ -56,7 +56,7 @@ def run() -> None:
     import os
     if not os.getenv("AI_DATABASE_URL"):
         raise SystemExit("AI_DATABASE_URL 환경변수가 필요합니다 (vm5).")
-    gap_ms, sim_threshold, min_lines = config_from_env()
+    gap_ms, sim_threshold, min_lines, min_ms = config_from_env()
     counts = {"done": 0, "failed": 0}
     with httpx.Client(timeout=60, verify=False) as client:
         targets = db.fetch_targets(client)
@@ -65,7 +65,7 @@ def run() -> None:
             if not sub:
                 continue
             try:
-                k = parse_one(client, sub, gap_ms, sim_threshold, min_lines)
+                k = parse_one(client, sub, gap_ms, sim_threshold, min_lines, min_ms)
                 db.set_parse_state(client, tmdb_id, "done")
                 counts["done"] += 1
                 print(f"[{n}/{len(targets)}] tmdb={tmdb_id} scenes={k}")
