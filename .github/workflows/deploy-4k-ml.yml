@@ -46,6 +46,8 @@ jobs:
           tags: |
             ${{ env.IMAGE }}:${{ steps.vars.outputs.sha }}
             ${{ env.IMAGE }}:latest
+          secrets: |
+            hf_token=${{ secrets.HF_TOKEN }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
