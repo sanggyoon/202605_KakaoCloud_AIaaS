@@ -11,7 +11,7 @@ spec:
   templates:
     - name: main
       container:
-        image: ghcr.io/sanggyoon/4k-ml:latest
+        image: ghcr.io/sanggyoon/4k-ml:1b0fa9f
         command: ["python", "-m", "labeling.label_scenes"]
         envFrom:
           - secretRef:
