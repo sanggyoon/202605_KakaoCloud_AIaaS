@@ -1,0 +1,24 @@
+# 자막 파싱(C)을 vm5 GPU에서 실행. 제출: argo submit --from workflowtemplate/subtitle-parse -n ai
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: subtitle-parse
+  namespace: ai
+spec:
+  serviceAccountName: argo-workflow
+  podSpecPatch: |
+    runtimeClassName: nvidia
+  entrypoint: main
+  templates:
+    - name: main
+      nodeSelector:
+        workload: gpu
+      container:
+        image: ghcr.io/sanggyoon/4k-ml:latest   # CI가 sha로 bump
+        command: ["python", "-m", "subtitle_parse.parse_subtitles"]
+        envFrom:
+          - secretRef:
+              name: 4k-ml-secrets
+        resources:
+          limits:
+            nvidia.com/gpu: 1
