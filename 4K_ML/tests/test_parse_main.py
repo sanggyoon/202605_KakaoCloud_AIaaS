@@ -25,8 +25,9 @@ def test_parse_one_builds_scenes_and_dialogues(monkeypatch):
     monkeypatch.setattr(main.db, "upsert_scenes", fake_upsert_scenes)
     monkeypatch.setattr(main.db, "upsert_dialogues", fake_upsert_dialogues)
 
+    # min_ms를 작게(1000) 두어 첫 3줄(≈3초) 후 큰 gap에서 분할되게 함
     n = main.parse_one(None, {"id": 7, "tmdb_id": 7, "raw_text": SRT},
-                       gap_ms=3000, sim_threshold=0.5, min_lines=3)
+                       gap_ms=3000, sim_threshold=0.5, min_lines=3, min_ms=1000)
 
     assert n == 2
     assert [s["scene_index"] for s in posted["scenes"]] == [0, 1]
@@ -43,4 +44,4 @@ def test_parse_one_raises_on_empty(monkeypatch):
     import pytest
     with pytest.raises(ValueError):
         main.parse_one(None, {"id": 1, "tmdb_id": 1, "raw_text": "garbage"},
-                       gap_ms=3000, sim_threshold=0.5, min_lines=3)
+                       gap_ms=3000, sim_threshold=0.5, min_lines=3, min_ms=1000)
