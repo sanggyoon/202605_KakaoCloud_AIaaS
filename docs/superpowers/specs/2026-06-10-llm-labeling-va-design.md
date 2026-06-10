@@ -28,8 +28,7 @@ Dominance는 신뢰도·활용도 대비 복잡도가 커서 제외(향후 model
 | 배치 단위 | **영화 1편 = 요청 1개** | 영화 전체(씬 ~60개)를 한 콜에 넣어 영화 내 상대 순서를 정확히 잡음 |
 | 점수 축 | **Valence + Arousal** | Arousal=클라이맥스 핵심축, Valence=감정 텍스처. Dominance 제외 |
 | 스케일 | **0.0~1.0 절대 앵커** (둘 다) | 영화 간 일관성 → student 라벨 노이즈↓. 서비스의 "영화 내 강조"는 표시단계 정규화로 별도 처리 |
-| 출력 형태 | **씬당 `{scene_index, arousal, valence, reason}`** | `reason`으로 사람이 라벨 스팟체크 가능 |
-| reason 언어 | **영어** | 자막이 영어, LLM 일관성·토큰 효율 |
+| 출력 형태 | **씬당 `{scene_index, arousal, valence}`** | 숫자만 저장(2025-06-10 변경: reason 제거). thinking 비활성 + reason 미수집이라 라벨 품질 약간 하락 가능 — 이상 시 thinking 활성화로 보정 |
 | 진행도·발화 피처 | **라벨에 넣지 않음** | student가 추론 시 직접 쓰는 입력. teacher는 순수 서사 긴장도만 판단 |
 | 멱등성 | `processing_status.label_state` | 이미 `done`인 영화 스킵 |
 | 실행 | Argo WorkflowTemplate (vm5, **GPU 불필요** — API 바운드) | 파싱과 동일 패턴 |
@@ -122,7 +121,7 @@ scenes_id=123, score=0.30, model_version='llm-va-v1::valence'
     0.5 neutral (factual, ordinary conversation)
     1.0 very positive (joy, triumph, love, reconciliation)
   ```
-  + 지시: 영화 전체를 보고 절대 앵커로 채점, 각 씬에 두 축 점수와 한 줄 영어 reason 반환.
+  + 지시: 영화 전체를 보고 절대 앵커로 채점, 각 씬에 두 축 점수(0~1) 반환.
 
 - `build_user_message(scenes: list[dict]) -> str`
   씬을 `[scene_index] text...` 형식으로 인덱스와 함께 직렬화.
@@ -133,12 +132,11 @@ scenes_id=123, score=0.30, model_version='llm-va-v1::valence'
    "required":["scenes"],
    "properties":{"scenes":{"type":"array","items":{
      "type":"object","additionalProperties":false,
-     "required":["scene_index","arousal","valence","reason"],
+     "required":["scene_index","arousal","valence"],
      "properties":{
        "scene_index":{"type":"integer"},
        "arousal":{"type":"number"},
-       "valence":{"type":"number"},
-       "reason":{"type":"string"}}}}}}
+       "valence":{"type":"number"}}}}}}
   ```
   (JSON 스키마는 min/max 수치 제약 미지원 → 0~1 범위는 클라이언트에서 clamp 검증.)
 
@@ -175,8 +173,8 @@ Anthropic 공식 SDK 사용(`from anthropic import Anthropic`, `messages.batches
 ## 5. 비용 (확정)
 
 - 입력 ~2.1M tok × $3/M = ~$6.3
-- 출력 ~0.5M tok × $15/M = ~$7.5 — 출력은 씬당 `reason` 텍스트가 지배. 2축이라도 숫자 하나만 더 붙어 증가 미미.
-- 표준 ~$14 → **Batch -50% → ~$7 / 1회** (대사량 많은 영화 섞이면 상한 ~$9).
+- 출력: reason 제거로 씬당 숫자 2개만 → ~0.1M tok × $15/M = ~$1.5
+- 표준 ~$8 → **Batch -50% → ~$4 / 1회**.
 - 파이프라인 전체에서 토큰 비용이 드는 유일한 단계(E/F/G는 self-host).
 
 ---
@@ -194,8 +192,8 @@ Anthropic 공식 SDK 사용(`from anthropic import Anthropic`, `messages.batches
 
 ## 7. 테스트 (TDD)
 
-- `test_label_prompt.py` — `build_user_message`가 scene_index 포함 직렬화; `OUTPUT_SCHEMA` 형태.
-- `test_label_batch.py` — `build_requests`가 영화당 1요청, custom_id=tmdb_id, 모델/스키마 세팅; `collect`가 succeeded JSON 파싱·errored 처리(SDK 모킹).
+- `test_label_prompt.py` — `build_user_message`가 scene_index 포함 직렬화; `OUTPUT_SCHEMA`에 arousal/valence만(reason 없음).
+- `test_label_batch.py` — `build_requests`가 영화당 1요청, custom_id=tmdb_id, 모델/스키마 세팅; `collect`가 succeeded JSON(arousal/valence) 파싱·errored 처리(SDK 모킹).
 - `test_label_db.py` — `fetch_label_targets` 필터(parse done & label!=done), `upsert_scene_scores` on_conflict 파라미터, `ensure_model_versions` payload (httpx 모킹).
 - `test_label_main.py` — `run()`이 모킹된 batch/db로 씬당 2행(arousal/valence) 적재 + clamp + label_state 전이(파싱 `test_parse_main` 패턴).
 
