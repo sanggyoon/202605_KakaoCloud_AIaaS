@@ -1,0 +1,18 @@
+# LLM 라벨링(D)을 vm5에서 실행. GPU 불필요(API 바운드).
+# 제출: argo submit --from workflowtemplate/llm-labeling -n ai
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: llm-labeling
+  namespace: ai
+spec:
+  serviceAccountName: argo-workflow
+  entrypoint: main
+  templates:
+    - name: main
+      container:
+        image: ghcr.io/sanggyoon/4k-ml:latest
+        command: ["python", "-m", "labeling.label_scenes"]
+        envFrom:
+          - secretRef:
+              name: 4k-ml-secrets

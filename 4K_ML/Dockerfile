@@ -19,6 +19,7 @@ RUN --mount=type=secret,id=hf_token \
 
 # 코드 (ML 변환 모듈)
 COPY subtitle_parse/ ./subtitle_parse/
+COPY labeling/ ./labeling/
 COPY db/ ./db/
 COPY generate_vectors/ ./generate_vectors/
 
