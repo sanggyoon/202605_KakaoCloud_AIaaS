@@ -7,8 +7,15 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# all-MiniLM 모델을 이미지에 굽기 (런타임 HuggingFace 다운로드 제거)
-RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')"
+# all-MiniLM 모델을 이미지에 굽기 (런타임 HuggingFace 다운로드 제거).
+# HF가 CI 공용 IP에 429를 주는 경우가 있어: (1) HF_TOKEN 시크릿이 있으면 인증, (2) 재시도.
+RUN --mount=type=secret,id=hf_token \
+    sh -c 'if [ -s /run/secrets/hf_token ]; then export HF_TOKEN="$(cat /run/secrets/hf_token)"; fi; \
+    for i in 1 2 3 4 5; do \
+      python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer(\"sentence-transformers/all-MiniLM-L6-v2\")" && exit 0; \
+      echo "HF 다운로드 재시도 $i/5 — 20초 대기"; sleep 20; \
+    done; \
+    echo "HF 모델 다운로드 5회 실패"; exit 1'
 
 # 코드 (ML 변환 모듈)
 COPY subtitle_parse/ ./subtitle_parse/
