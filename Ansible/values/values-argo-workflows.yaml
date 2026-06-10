@@ -1,11 +1,9 @@
-# Argo Workflows helm values — ArgoCD가 $values로 참조.
+# Argo Workflows helm values — ArgoCD가 $values로 참조. (chart 1.0.14 / app v4.0.5)
 singleNamespace: false        # 클러스터 범위: ai 등 다른 ns의 워크플로 실행 허용
 crds:
   install: true
-  keep: true
 server:
   enabled: true
   authModes:
     - server                  # basic-auth 인그레스가 게이트, 서버는 자체 SA 사용
-  extraArgs:
-    - --secure=false          # nginx가 TLS 종단 → 서버는 HTTP(2746)
+  secure: false               # nginx가 TLS 종단 → 서버는 HTTP(2746)

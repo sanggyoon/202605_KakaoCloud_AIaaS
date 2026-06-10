@@ -8,7 +8,7 @@ spec:
   sources:
     - repoURL: https://argoproj.github.io/argo-helm
       chart: argo-workflows
-      targetRevision: "0.45.4"   # ← helm search repo argo/argo-workflows 출력값으로 교체
+      targetRevision: "1.0.14"   # 차트 버전 (Argo Workflows app v4.0.5)
       helm:
         valueFiles:
           - $values/Ansible/values/values-argo-workflows.yaml
