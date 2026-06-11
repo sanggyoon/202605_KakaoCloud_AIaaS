@@ -219,28 +219,35 @@ async def collect_events(client: httpx.AsyncClient, max_new: int, rate_delay: fl
             continue
         prev_retry = (info or {}).get("retry", 0)
         title = None
+        result = "skipped"
+        err = None
         try:
             chosen = choose(await search(client, tmdb_id))
             if chosen is None:
                 await set_status(client, tmdb_id, "skipped")
                 skipped += 1
+                result = "skipped"
             else:
                 title = chosen.get("release_name")
                 raw = await download_and_extract(client, chosen.get("url") or "")
                 if not raw.strip():
                     await set_status(client, tmdb_id, "failed", "empty srt", retry_count=prev_retry + 1)
                     failed.append(tmdb_id)
+                    result, err = "failed", "empty srt"
                 else:
                     await save_subtitle(client, tmdb_id, chosen, raw)
                     await set_status(client, tmdb_id, "done")
                     added += 1
+                    result = "added"
         except SubdlRateLimit:
             break
         except Exception as e:  # noqa: BLE001
             await set_status(client, tmdb_id, "failed", str(e)[:500], retry_count=prev_retry + 1)
             failed.append(tmdb_id)
+            result, err = "failed", str(e)[:200]
         processed += 1
-        yield {"type": "progress", "processed": processed, "target": max_new, "title": title}
+        yield {"type": "progress", "processed": processed, "target": max_new,
+               "tmdb_id": tmdb_id, "title": title, "result": result, "error": err}
         if rate_delay:
             await asyncio.sleep(rate_delay)
 
