@@ -12,3 +12,5 @@ psycopg[binary]==3.2.3
 pytest==8.3.4
 sentence-transformers==3.3.1
 anthropic==0.109.1
+transformers==4.46.3
+safetensors==0.4.5
