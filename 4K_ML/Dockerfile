@@ -17,9 +17,19 @@ RUN --mount=type=secret,id=hf_token \
     done; \
     echo "HF 모델 다운로드 5회 실패"; exit 1'
 
+# roberta-base도 이미지에 굽기 (학습 시 런타임 HF 다운로드 제거).
+RUN --mount=type=secret,id=hf_token \
+    sh -c 'if [ -s /run/secrets/hf_token ]; then export HF_TOKEN="$(cat /run/secrets/hf_token)"; fi; \
+    for i in 1 2 3 4 5; do \
+      python -c "from transformers import RobertaModel, RobertaTokenizerFast; RobertaModel.from_pretrained(\"roberta-base\"); RobertaTokenizerFast.from_pretrained(\"roberta-base\")" && exit 0; \
+      echo "HF roberta 재시도 $i/5 — 20초 대기"; sleep 20; \
+    done; \
+    echo "roberta-base 다운로드 5회 실패"; exit 1'
+
 # 코드 (ML 변환 모듈)
 COPY subtitle_parse/ ./subtitle_parse/
 COPY labeling/ ./labeling/
+COPY train/ ./train/
 COPY db/ ./db/
 COPY generate_vectors/ ./generate_vectors/
 
