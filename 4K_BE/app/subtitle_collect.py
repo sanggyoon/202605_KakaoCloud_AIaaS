@@ -252,3 +252,34 @@ async def collect_events(client: httpx.AsyncClient, max_new: int, rate_delay: fl
             await asyncio.sleep(rate_delay)
 
     yield {"type": "done", "added": added, "skipped": skipped, "failed": failed}
+
+
+# ── CLI 진입점 (CronJob) ──────────────────────────────────────────
+
+async def run(client: httpx.AsyncClient) -> dict:
+    """collect_events를 끝까지 소비. 진행 출력 + 최종 요약 반환 (CronJob/배치 진입점)."""
+    max_new, rate_delay = config_from_env()
+    summary = {"added": 0, "skipped": 0, "failed": []}
+    async for ev in collect_events(client, max_new, rate_delay):
+        if ev["type"] == "progress":
+            print(f"[subtitle] {ev['processed']}/{ev['target']} "
+                  f"tmdb={ev['tmdb_id']} {ev['result']}"
+                  + (f" {ev['title']}" if ev.get("title") else "")
+                  + (f" — {ev['error']}" if ev.get("error") else ""))
+        elif ev["type"] == "done":
+            summary = {"added": ev["added"], "skipped": ev["skipped"], "failed": ev["failed"]}
+    print(f"[subtitle] 완료: 신규 {summary['added']}, 스킵 {summary['skipped']}, "
+          f"실패 {len(summary['failed'])}: {summary['failed']}")
+    return summary
+
+
+async def main() -> None:
+    from dotenv import load_dotenv
+    base = os.path.dirname(os.path.dirname(__file__))  # 4K_BE/
+    load_dotenv(os.path.join(base, ".env"))
+    async with httpx.AsyncClient(timeout=60, verify=False) as client:
+        await run(client)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
