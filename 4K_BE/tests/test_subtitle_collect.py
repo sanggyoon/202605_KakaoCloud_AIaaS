@@ -78,10 +78,17 @@ async def test_search_parses_and_ratelimit(monkeypatch):
 
 
 async def test_download_and_extract(monkeypatch):
+    monkeypatch.setenv("SUBDL_API_KEY", "k")
     zb = _zip_bytes()
-    client = _client(lambda req: httpx.Response(200, content=zb))
-    text = await sc.download_and_extract(client, "/subtitle/1-2.zip")
+    seen = {}
+
+    def handler(req: httpx.Request) -> httpx.Response:
+        seen["url"] = str(req.url)
+        return httpx.Response(200, content=zb)
+
+    text = await sc.download_and_extract(_client(handler), "/subtitle/1-2.zip")
     assert "Hi" in text
+    assert "api_key=k" in seen["url"]
 
 
 def _set_env(monkeypatch):

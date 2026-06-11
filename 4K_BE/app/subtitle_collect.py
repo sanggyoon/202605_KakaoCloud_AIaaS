@@ -123,7 +123,8 @@ async def search(client: httpx.AsyncClient, tmdb_id: int) -> list[dict]:
 
 async def download_and_extract(client: httpx.AsyncClient, url_path: str) -> str:
     url = url_path if url_path.startswith("http") else f"{SUBDL_DL}{url_path}"
-    r = await client.get(url)
+    # api_key를 실어야 유료 등급 다운로드 한도가 적용됨(없으면 IP 기준 무료 300/일).
+    r = await client.get(url, params={"api_key": _subdl_key()})
     if r.status_code == 429:
         raise SubdlRateLimit("subdl download 429")
     r.raise_for_status()
