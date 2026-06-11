@@ -241,3 +241,50 @@ async def test_collect_events_respects_max_new(monkeypatch):
     events = [ev async for ev in sc.collect_events(client, max_new=2, rate_delay=0)]
     assert events[-1]["added"] == 2
     assert sum(1 for e in events if e["type"] == "progress") == 2
+
+
+async def test_collect_progress_has_result_fields(monkeypatch):
+    _set_env(monkeypatch)
+    zb = _zip_bytes()
+
+    def handler(req: httpx.Request) -> httpx.Response:
+        u = str(req.url)
+        if "data.test/rest/v1/movies" in u:
+            return httpx.Response(200, json=[{"tmdb_id": 100}])
+        if "ai.test/rest/v1/processing_status" in u and req.method == "GET":
+            return httpx.Response(200, json=[])
+        if "api.subdl.com" in u:
+            return httpx.Response(200, json={"status": True,
+                "subtitles": [{"url": "/s.zip", "release_name": "R", "hi": True, "language": "EN"}]})
+        if "dl.subdl.com" in u:
+            return httpx.Response(200, content=zb)
+        return httpx.Response(201, json=[])
+
+    events = [ev async for ev in sc.collect_events(_client(handler), max_new=100, rate_delay=0)]
+    prog = [e for e in events if e["type"] == "progress"]
+    assert prog[0]["tmdb_id"] == 100
+    assert prog[0]["result"] == "added"
+    assert prog[0]["title"] == "R"
+    assert "error" in prog[0]
+
+
+async def test_run_collect_consumes_to_done(monkeypatch):
+    _set_env(monkeypatch)
+    zb = _zip_bytes()
+    monkeypatch.setenv("SUBTITLE_MAX_NEW", "5")
+
+    def handler(req: httpx.Request) -> httpx.Response:
+        u = str(req.url)
+        if "data.test/rest/v1/movies" in u:
+            return httpx.Response(200, json=[{"tmdb_id": 100}])
+        if "ai.test/rest/v1/processing_status" in u and req.method == "GET":
+            return httpx.Response(200, json=[])
+        if "api.subdl.com" in u:
+            return httpx.Response(200, json={"status": True,
+                "subtitles": [{"url": "/s.zip", "release_name": "R", "hi": True, "language": "EN"}]})
+        if "dl.subdl.com" in u:
+            return httpx.Response(200, content=zb)
+        return httpx.Response(201, json=[])
+
+    summary = await sc.run(_client(handler))
+    assert summary["added"] == 1

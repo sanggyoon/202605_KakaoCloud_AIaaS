@@ -69,7 +69,8 @@ async def backfill_events(client: httpx.AsyncClient, max_new: int, max_pages: in
                 if len(batch) >= BATCH_SIZE:
                     await flush()
                 yield {"type": "progress", "processed": processed, "target": max_new,
-                       "page": page, "title": movie.get("title")}
+                       "page": page, "tmdb_id": tid, "title": movie.get("title"),
+                       "result": "added", "error": None}
             else:
                 failed.append(tid)
             if processed >= max_new:

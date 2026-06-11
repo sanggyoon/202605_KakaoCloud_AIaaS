@@ -9,61 +9,71 @@ interface Stats {
   movies: { total: number; with_graph: number; without_graph: number };
 }
 
+// BE 잡 레지스트리 상태 + 폴링용 running 플래그
 interface Job {
+  state: 'idle' | 'running' | 'done' | 'failed';
   running: boolean;
   processed: number;
   target: number;
-  title: string | null;
-  done: { added: number; failed: number } | null;
+  added: number;
+  skipped: number;
+  failed: number[];
+  log: string[];
+  error: string | null;
 }
 
-// NDJSON 진행 스트림 소비 — backfill·collect 공통
-async function streamJob(
-  endpoint: string,
+function _failedJob(error: string): Job {
+  return { state: 'failed', running: false, processed: 0, target: 0,
+    added: 0, skipped: 0, failed: [], log: [], error };
+}
+
+// 백그라운드 잡 시작 후 GET /api/manager/jobs/{type}를 폴링 — backfill·collect 공통
+async function startAndPoll(
+  startUrl: string,
+  jobType: string,
   setJob: React.Dispatch<React.SetStateAction<Job | null>>,
-  onComplete?: () => void,
+  onDone?: () => void,
 ) {
-  setJob({ running: true, processed: 0, target: 100, title: null, done: null });
   try {
-    const res = await fetch(endpoint, { method: 'POST' });
-    if (!res.ok || !res.body) throw new Error('시작 실패');
-    const reader = res.body.getReader();
-    const decoder = new TextDecoder();
-    let buf = '';
-    let doneEv: { added: number; failed: number } | null = null;
-    for (;;) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      buf += decoder.decode(value, { stream: true });
-      const lines = buf.split('\n');
-      buf = lines.pop() ?? '';
-      for (const line of lines) {
-        if (!line.trim()) continue;
-        const ev = JSON.parse(line);
-        if (ev.type === 'progress') {
-          setJob((s) => (s ? { ...s, processed: ev.processed, target: ev.target, title: ev.title } : s));
-        } else if (ev.type === 'done') {
-          doneEv = { added: ev.added, failed: (ev.failed ?? []).length };
-        }
-      }
-    }
-    setJob((s) => (s ? { ...s, running: false, done: doneEv ?? { added: 0, failed: 0 } } : s));
-    onComplete?.();
-  } catch {
-    setJob((s) => (s ? { ...s, running: false, done: { added: 0, failed: 0 } } : s));
+    const res = await fetch(startUrl, { method: 'POST' });
+    if (!res.ok) throw new Error(`시작 실패 (${res.status})`);
+    const data = await res.json();
+    setJob({ ...data, running: data.state === 'running' });
+  } catch (e) {
+    setJob(_failedJob(String(e)));
+    return;
   }
+  const poll = setInterval(async () => {
+    try {
+      const r = await fetch(`/api/manager/jobs/${jobType}`, { cache: 'no-store' });
+      if (!r.ok) return;
+      const data = await r.json();
+      const running = data.state === 'running';
+      setJob({ ...data, running });
+      if (!running) {
+        clearInterval(poll);
+        onDone?.();
+      }
+    } catch {
+      /* 폴링 일시 실패는 무시하고 다음 틱에 재시도 */
+    }
+  }, 1500);
 }
 
 function JobBanner({ job, label, onClose }: { job: Job; label: string; onClose: () => void }) {
-  const pct = Math.min(100, Math.round(
-    ((job.running ? job.processed : job.done?.added ?? 0) / Math.max(1, job.target)) * 100));
+  const pct = Math.min(100, Math.round((job.processed / Math.max(1, job.target)) * 100));
+  const barColor = job.state === 'failed'
+    ? 'rgba(239,68,68,0.85)'
+    : job.running ? 'var(--accent)' : 'rgba(34,197,94,0.85)';
   return (
     <div style={{ padding: '14px 0', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
         <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)' }}>
           {job.running
-            ? `${label} 중… ${job.processed} / ${job.target}${job.title ? ` — ${job.title}` : ''}`
-            : `완료 — 신규 ${job.done?.added ?? 0}개${job.done?.failed ? `, 실패 ${job.done.failed}개` : ''}`}
+            ? `${label} 중… ${job.processed} / ${job.target}`
+            : job.state === 'failed'
+              ? `${label} 실패`
+              : `${label} 완료 — 신규 ${job.added} · 스킵 ${job.skipped} · 실패 ${job.failed.length}`}
         </span>
         {!job.running && (
           <button onClick={onClose}
@@ -73,9 +83,21 @@ function JobBanner({ job, label, onClose }: { job: Job; label: string; onClose: 
         )}
       </div>
       <div style={{ height: 6, borderRadius: 999, background: 'rgba(255,255,255,0.08)', overflow: 'hidden' }}>
-        <div style={{ height: '100%', width: `${pct}%`,
-          background: job.running ? 'var(--accent)' : 'rgba(34,197,94,0.85)', transition: 'width 0.3s ease' }} />
+        <div style={{ height: '100%', width: `${pct}%`, background: barColor, transition: 'width 0.3s ease' }} />
       </div>
+      {job.error && (
+        <div style={{ marginTop: 8, fontSize: 12, color: 'rgb(239,120,120)' }}>에러: {job.error}</div>
+      )}
+      {job.log.length > 0 && (
+        <pre style={{
+          marginTop: 8, maxHeight: 180, overflow: 'auto',
+          background: 'rgba(0,0,0,0.35)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 8,
+          padding: 10, fontSize: 11, lineHeight: 1.5, color: 'rgba(255,255,255,0.6)',
+          fontFamily: 'var(--font-mono, monospace)', whiteSpace: 'pre-wrap',
+        }}>
+          {job.log.slice(-200).join('\n')}
+        </pre>
+      )}
     </div>
   );
 }
@@ -84,9 +106,11 @@ export default function ManagerPage() {
   const router = useRouter();
   const [stats, setStats] = useState<Stats | null>(null);
   const [statsLoading, setStatsLoading] = useState(true);
-  // backfill(신규 100개 추가) / collect(자막 데이터 수집) 진행 상태
+  // backfill(영화 수집) / collect(자막 수집) 진행 상태
   const [backfill, setBackfill] = useState<Job | null>(null);
   const [collect, setCollect] = useState<Job | null>(null);
+  // 영화 수집 개수
+  const [backfillN, setBackfillN] = useState(100);
   // 자막 수집 가능한(종료 상태 아닌) 영화 수 + 입력 개수
   const [remaining, setRemaining] = useState<number | null>(null);
   const [collectN, setCollectN] = useState(50);
@@ -120,17 +144,18 @@ export default function ManagerPage() {
     fetchRemaining();
   }, []);
 
-  // 신규 100개 수동 추가 — backfill 스트림 소비
+  // 영화 수집 — 입력한 개수만큼 백그라운드 잡 시작 후 폴링
   const runBackfill = () => {
     if (backfill?.running) return;
-    streamJob('/api/manager/movies/backfill', setBackfill, fetchStats);
+    const n = Math.max(1, Math.min(backfillN, 2000));
+    startAndPoll(`/api/manager/movies/backfill?limit=${n}`, 'movie', setBackfill, fetchStats);
   };
 
-  // 자막 데이터 수집 — 입력한 개수만큼, collect 스트림 소비
+  // 자막 수집 — 입력한 개수만큼 백그라운드 잡 시작 후 폴링
   const runCollect = () => {
     if (collect?.running) return;
     const n = Math.max(1, Math.min(collectN, remaining ?? collectN));
-    streamJob(`/api/manager/subtitles/collect?limit=${n}`, setCollect, () => {
+    startAndPoll(`/api/manager/subtitles/collect?limit=${n}`, 'subtitle', setCollect, () => {
       fetchStats();
       fetchRemaining();
     });
@@ -204,13 +229,31 @@ export default function ManagerPage() {
         {/* 기능 버튼 */}
         <section>
           <h2 style={sectionTitle}>기능</h2>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14 }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, alignItems: 'flex-start' }}>
             <button onClick={() => router.push('/movie_list')} style={actionBtn(false)}>
               영화 정보 리스트 →
             </button>
-            <button onClick={runBackfill} disabled={backfill?.running} style={actionBtn(!!backfill?.running)}>
-              {backfill?.running ? '추가 중…' : '새로운 영화 100개 추가'}
-            </button>
+
+            {/* 영화 정보 수집 */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <input
+                  type="number"
+                  min={1}
+                  max={2000}
+                  value={backfillN}
+                  onChange={(e) => setBackfillN(Math.max(1, Number(e.target.value) || 1))}
+                  disabled={backfill?.running}
+                  style={numInput}
+                />
+                <button onClick={runBackfill} disabled={backfill?.running} style={actionBtn(!!backfill?.running)}>
+                  {backfill?.running ? '추가 중…' : '영화 정보 수집'}
+                </button>
+              </div>
+              <span style={hintText}>인기순으로 신규 영화 추가</span>
+            </div>
+
+            {/* 자막 데이터 수집 */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <input
@@ -220,20 +263,17 @@ export default function ManagerPage() {
                   value={collectN}
                   onChange={(e) => setCollectN(Math.max(1, Number(e.target.value) || 1))}
                   disabled={collect?.running}
-                  style={{
-                    width: 72, padding: '13px 10px', borderRadius: 10,
-                    background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
-                    color: 'var(--fg)', fontSize: 14, fontFamily: 'inherit', outline: 'none',
-                  }}
+                  style={numInput}
                 />
                 <button onClick={runCollect} disabled={collect?.running || remaining === 0} style={actionBtn(!!collect?.running || remaining === 0)}>
                   {collect?.running ? '수집 중…' : '자막 데이터 수집'}
                 </button>
               </div>
-              <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', paddingLeft: 2 }}>
+              <span style={hintText}>
                 {remaining === null ? '최대 —' : `최대 ${remaining.toLocaleString('ko-KR')}개 수집 가능`}
               </span>
             </div>
+
             <button
               disabled
               title="추후 개발된 모델로 동작 예정"
@@ -244,8 +284,8 @@ export default function ManagerPage() {
           </div>
         </section>
 
-        {/* 진행 배너 (backfill / collect) */}
-        {backfill && <JobBanner job={backfill} label="신규 영화 추가" onClose={() => setBackfill(null)} />}
+        {/* 진행 패널 (backfill / collect) — 진행도·로그·에러 */}
+        {backfill && <JobBanner job={backfill} label="영화 수집" onClose={() => setBackfill(null)} />}
         {collect && <JobBanner job={collect} label="자막 수집" onClose={() => setCollect(null)} />}
       </main>
     </div>
@@ -276,6 +316,16 @@ const cardGrid: React.CSSProperties = {
   display: 'grid',
   gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
   gap: 16,
+};
+
+const numInput: React.CSSProperties = {
+  width: 80, padding: '13px 10px', borderRadius: 10,
+  background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
+  color: 'var(--fg)', fontSize: 14, fontFamily: 'inherit', outline: 'none',
+};
+
+const hintText: React.CSSProperties = {
+  fontSize: 11, color: 'rgba(255,255,255,0.4)', paddingLeft: 2,
 };
 
 function actionBtn(disabled: boolean): React.CSSProperties {

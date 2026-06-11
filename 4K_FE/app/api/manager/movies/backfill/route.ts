@@ -1,15 +1,14 @@
-// 매니저 '신규 100개 추가' — BE backfill을 트리거하고 NDJSON 진행 스트림을 그대로 전달.
+// 매니저 영화 수집 — BE 백그라운드 잡 시작(JSON 반환). 진행은 /api/manager/jobs/movie 폴링.
 export const dynamic = 'force-dynamic';
 
 const BE_URL = process.env.BE_INTERNAL_URL ?? 'http://localhost:8000';
 
-export async function POST() {
-  const res = await fetch(`${BE_URL}/api/movies/backfill`, { method: 'POST' });
-  return new Response(res.body, {
+export async function POST(request: Request) {
+  const limit = new URL(request.url).searchParams.get('limit');
+  const qs = limit ? `?limit=${encodeURIComponent(limit)}` : '';
+  const res = await fetch(`${BE_URL}/api/movies/backfill${qs}`, { method: 'POST' });
+  return new Response(await res.text(), {
     status: res.status,
-    headers: {
-      'Content-Type': 'application/x-ndjson; charset=utf-8',
-      'Cache-Control': 'no-store, no-transform',
-    },
+    headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
   });
 }

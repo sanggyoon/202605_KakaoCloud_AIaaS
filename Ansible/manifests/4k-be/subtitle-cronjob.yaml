@@ -1,10 +1,10 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: movie-backfill
+  name: subtitle-collect
   namespace: be
 spec:
-  schedule: "0 18 * * *"          # UTC 18:00 = KST 03:00
+  schedule: "0 19 * * *"          # UTC 19:00 = KST 04:00
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
@@ -17,14 +17,14 @@ spec:
           nodeSelector:
             workload: app
           containers:
-            - name: movie-backfill
+            - name: subtitle-collect
               image: ghcr.io/sanggyoon/4k-be:latest
-              command: ["python", "-m", "app.backfill_popular"]
+              command: ["python", "-m", "app.subtitle_collect"]
               envFrom:
                 - secretRef:
                     name: 4k-be-secrets
               env:
-                - name: BACKFILL_MAX_NEW
+                - name: SUBTITLE_MAX_NEW
                   value: "300"
               resources:
                 requests:
