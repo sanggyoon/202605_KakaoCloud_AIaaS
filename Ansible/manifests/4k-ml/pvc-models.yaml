@@ -1,0 +1,13 @@
+# 학습 산출물 저장용 PVC (vm5 local-path). train이 쓰고 KServe(F)가 읽음.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ml-models
+  namespace: ai
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 10Gi

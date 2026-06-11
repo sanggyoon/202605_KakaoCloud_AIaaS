@@ -1,0 +1,35 @@
+# RoBERTa 학습(E)을 vm5 GPU에서 실행. 산출물은 ml-models PVC(/models)에 저장.
+# 제출: argo submit --from workflowtemplate/train-roberta -n ai
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: train-roberta
+  namespace: ai
+spec:
+  serviceAccountName: argo-workflow
+  podSpecPatch: |
+    runtimeClassName: nvidia
+  entrypoint: main
+  volumes:
+    - name: models
+      persistentVolumeClaim:
+        claimName: ml-models
+  templates:
+    - name: main
+      nodeSelector:
+        workload: gpu
+      container:
+        image: ghcr.io/sanggyoon/4k-ml:latest
+        command: ["python", "-m", "train.train_model"]
+        env:
+          - name: MODEL_OUT_DIR
+            value: /models/roberta-va-v1
+        envFrom:
+          - secretRef:
+              name: 4k-ml-secrets
+        volumeMounts:
+          - name: models
+            mountPath: /models
+        resources:
+          limits:
+            nvidia.com/gpu: 1
