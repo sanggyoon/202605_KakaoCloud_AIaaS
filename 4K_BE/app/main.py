@@ -15,6 +15,7 @@ from fastapi.responses import StreamingResponse
 from app import tmdb_common as tc
 from app import backfill_popular as bf
 from app import subtitle_collect as sc
+from app import jobs
 
 # 로컬 개발 편의: .env 자동 로드.
 # 실제 운영(쿠버네티스)에서는 환경변수가 직접 주입되며, load_dotenv는
@@ -175,32 +176,25 @@ async def recent_movies(limit: int = 50):
 
 
 @app.post("/api/movies/backfill")
-async def backfill_now():
-    """매니저 페이지 '신규 100개 추가' 버튼 — CronJob과 동일한 backfill을 즉시 실행하고
-    진행 상황을 NDJSON 스트림으로 흘려보낸다 (각 줄이 progress/done 이벤트 JSON)."""
-    max_new, max_pages, rate_delay = bf.config_from_env()
-
-    async def stream():
-        async with httpx.AsyncClient(timeout=20, verify=False) as client:
-            async for ev in bf.backfill_events(client, max_new, max_pages, rate_delay):
-                yield json.dumps(ev, ensure_ascii=False) + "\n"
-
-    return StreamingResponse(stream(), media_type="application/x-ndjson")
+async def backfill_now(limit: int | None = None):
+    """매니저 영화 수집 — 백그라운드 잡 시작, 즉시 잡 상태 반환. limit=수량(미지정 시 env)."""
+    default_max, max_pages, rate_delay = bf.config_from_env()
+    max_new = default_max if limit is None else max(1, min(limit, 2000))
+    return jobs.start("movie", lambda client: bf.backfill_events(client, max_new, max_pages, rate_delay))
 
 
 @app.post("/api/subtitles/collect")
 async def subtitles_collect(limit: int | None = None):
-    """매니저 '자막 데이터 수집' — 자막 없는 영화를 최대 limit편 수집하며
-    진행 상황을 NDJSON 스트림으로 흘려보낸다. limit 미지정 시 env 기본값."""
+    """매니저 자막 수집 — 백그라운드 잡 시작, 즉시 잡 상태 반환. limit=수량(미지정 시 env)."""
     default_max, rate_delay = sc.config_from_env()
     max_new = default_max if limit is None else max(1, min(limit, 2000))
+    return jobs.start("subtitle", lambda client: sc.collect_events(client, max_new, rate_delay))
 
-    async def stream():
-        async with httpx.AsyncClient(timeout=60, verify=False) as client:
-            async for ev in sc.collect_events(client, max_new, rate_delay):
-                yield json.dumps(ev, ensure_ascii=False) + "\n"
 
-    return StreamingResponse(stream(), media_type="application/x-ndjson")
+@app.get("/api/jobs/{job_type}")
+async def job_status(job_type: str):
+    """매니저 폴링용 — 수동 수집 잡의 진행도/로그/에러."""
+    return jobs.get(job_type)
 
 
 @app.get("/api/subtitles/remaining")
