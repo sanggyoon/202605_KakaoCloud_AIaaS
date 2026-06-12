@@ -6,70 +6,6 @@ import { useEffect } from 'react';
 import { logVisit } from '@/app/lib/data';
 import BackgroundThread from '@/app/components/BackgroundThread';
 
-const FEATURES = [
-  {
-    icon: (
-      <svg
-        width="22"
-        height="22"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="white"
-        strokeWidth="2.2"
-      >
-        <path
-          d="M22 12h-4l-3 9L9 3l-3 9H2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    ),
-    title: '도파민 흐름 분석',
-    desc: '자막 데이터를 AI로 분석하여 영화의 긴장감 곡선과 클라이맥스를 시각화합니다.',
-  },
-  {
-    icon: (
-      <svg
-        width="22"
-        height="22"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="white"
-        strokeWidth="2.2"
-      >
-        <polyline
-          points="23 6 13.5 15.5 8.5 10.5 1 18"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <polyline
-          points="17 6 23 6 23 12"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    ),
-    title: '클라이맥스 매칭',
-    desc: '당신의 현재 기분과 완벽하게 맞아 떨어지는 가장 짜릿한 절정의 영화를 찾아냅니다.',
-  },
-  {
-    icon: (
-      <svg
-        width="22"
-        height="22"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="white"
-        strokeWidth="2.2"
-      >
-        <polygon points="5 3 19 12 5 21 5 3" strokeLinejoin="round" />
-      </svg>
-    ),
-    title: '즉시 몰입 셔플',
-    desc: '무엇을 볼지 고민되나요? 애니메이션과 함께 최적의 영화를 단 1초 만에 픽해드립니다.',
-  },
-];
-
 export default function OnboardingPage() {
   const router = useRouter();
 
@@ -168,48 +104,20 @@ export default function OnboardingPage() {
           CLIMAX-BASED RECOMMENDATION
         </p>
 
-        {/* Feature cards */}
-        <div className="feature-grid">
-          {FEATURES.map((card) => (
-            <div
-              key={card.title}
-              style={{
-                background: 'rgba(255,255,255,0.025)',
-                border: '1px solid rgba(255,255,255,0.07)',
-                borderRadius: 16,
-                padding: '28px 20px',
-                textAlign: 'center',
-              }}
-            >
-              <div
-                style={{
-                  width: 52,
-                  height: 52,
-                  borderRadius: '50%',
-                  background:
-                    'color-mix(in oklch, var(--accent) 20%, transparent)',
-                  display: 'grid',
-                  placeItems: 'center',
-                  margin: '0 auto 16px',
-                }}
-              >
-                {card.icon}
-              </div>
-              <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 8 }}>
-                {card.title}
-              </div>
-              <div
-                style={{
-                  fontSize: 12,
-                  color: 'rgba(255,255,255,0.48)',
-                  lineHeight: 1.7,
-                }}
-              >
-                {card.desc}
-              </div>
-            </div>
-          ))}
-        </div>
+        {/* 서비스 태그라인 */}
+        <p
+          style={{
+            fontSize: 'clamp(18px, 4vw, 26px)',
+            fontWeight: 600,
+            lineHeight: 1.5,
+            color: 'rgba(255,255,255,0.82)',
+            margin: '0 auto 52px',
+            maxWidth: 520,
+            letterSpacing: '-0.01em',
+          }}
+        >
+          한 편의 감정을 데이터로 그리다
+        </p>
 
         {/* CTA button */}
         <button
