@@ -30,7 +30,14 @@ export default function OnboardingPage() {
       }}
     >
       {/* BackgroundThread — WebGL 실 애니메이션 배경 */}
-      <div style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 0,
+          pointerEvents: 'none',
+        }}
+      >
         <BackgroundThread
           color={[0.482, 0.38, 1]}
           amplitude={1.5}
@@ -117,14 +124,18 @@ export default function OnboardingPage() {
             fontFamily: 'var(--font-serif-ko), serif',
           }}
         >
-          <span className="tagline-word" style={{ animationDelay: '0.1s' }}>한 편의 </span>
-          <span className="tagline-word" style={{ animationDelay: '0.35s' }}>
-            <em className="tagline-key">감정</em>을{' '}
+          <span className="tagline-word" style={{ animationDelay: '0.2s' }}>
+            한 편의{' '}
+          </span>{' '}
+          <span className="tagline-word" style={{ animationDelay: '0.45s' }}>
+            <em className="tagline-key">감정</em>을
+          </span>{' '}
+          <span className="tagline-word" style={{ animationDelay: '0.7s' }}>
+            <em className="tagline-key">데이터</em>로
+          </span>{' '}
+          <span className="tagline-word" style={{ animationDelay: '0.95s' }}>
+            그리다
           </span>
-          <span className="tagline-word" style={{ animationDelay: '0.6s' }}>
-            <em className="tagline-key">데이터</em>로{' '}
-          </span>
-          <span className="tagline-word" style={{ animationDelay: '0.85s' }}>그리다</span>
         </p>
 
         {/* CTA button */}
