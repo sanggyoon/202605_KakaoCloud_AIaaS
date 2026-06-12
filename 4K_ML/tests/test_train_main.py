@@ -55,7 +55,8 @@ def test_run_trains_and_saves(monkeypatch, tmp_path):
     assert (out / "model.safetensors").exists()
     # metrics 기록 + 키 존재
     assert upserts["mv"] == tm.MODEL_VERSION
-    for k in ("mae_arousal", "mae_valence", "spearman_movie_arousal", "n_test"):
+    for k in ("mae_arousal", "mae_valence", "spearman_movie_arousal",
+              "spearman_movie_valence", "n_test"):
         assert k in metrics
     # split이 영화단위로 저장됐는지
     split = json.loads((out / "split.json").read_text())
