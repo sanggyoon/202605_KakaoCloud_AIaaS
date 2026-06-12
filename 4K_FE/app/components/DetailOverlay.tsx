@@ -3,6 +3,7 @@
 // 영화 상세 오버레이 — 포스터, 시놉시스, 트레일러, 클라이맥스 그래프, 유사 영화 추천
 import { useState, useEffect } from 'react';
 import { Movie, posterUrl, genreList, castList, fetchVector, fetchPreferredMovies, fetchMovieVectors } from '@/app/lib/data';
+import { climaxMetrics, topPeaks } from '@/app/lib/climax';
 
 // DTW distance: Float64Array 플랫 배열로 메모리 효율화, O(n*m) 시간
 function dtwDistance(a: number[], b: number[]): number {
@@ -42,6 +43,9 @@ export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailO
   const [vectorLoading, setVectorLoading] = useState(true);
   const [similar, setSimilar] = useState<Movie[]>([]);
   const [similarLoading, setSimilarLoading] = useState(true);
+
+  const metrics = vector ? climaxMetrics(vector) : null;
+  const peaks = vector ? topPeaks(vector, 3) : [];
 
   // ESC 키 → 오버레이 닫고 대시보드로 복귀
   useEffect(() => {
@@ -132,13 +136,30 @@ export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailO
             ))}
           </div>
 
-          {/* 클라이맥스(피크) 그래프 — 자막 분석 기반 긴장감 곡선 */}
+          {/* 클라이맥스 지표 + 그래프 + 피크 범례 */}
           <section style={{ marginTop: 40 }}>
             <h3 style={sectionLabel}>CLIMAX GRAPH</h3>
+
+            {metrics && (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginTop: 12 }}>
+                {[
+                  { k: '클라이맥스 강도', v: `${metrics.intensity}`, suf: ' / 10' },
+                  { k: '절정 위치', v: `${metrics.peakPositionPct}%`, suf: ' 지점' },
+                  { k: '긴장 피크', v: `${metrics.peakCount}`, suf: '회' },
+                ].map((c) => (
+                  <div key={c.k} style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 10, padding: '16px 18px' }}>
+                    <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.12em', fontWeight: 700 }}>{c.k}</div>
+                    <div style={{ marginTop: 8, fontFamily: 'var(--font-playfair), serif', fontWeight: 800, fontSize: 30, color: 'var(--fg)' }}>
+                      {c.v}<span style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.4)' }}>{c.suf}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
             <div style={{
-              marginTop: 10, height: 300, borderRadius: 8,
-              background: 'rgba(0,0,0,0.3)',
-              border: '1px solid rgba(255,255,255,0.06)',
+              marginTop: 12, height: 300, borderRadius: 8,
+              background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.06)',
               overflow: 'hidden',
               display: vectorLoading || !vector ? 'grid' : 'block',
               placeItems: 'center',
@@ -146,11 +167,22 @@ export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailO
               {vectorLoading ? (
                 <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.2)', letterSpacing: '0.1em' }}>로딩 중...</span>
               ) : vector ? (
-                <ClimaxGraph data={vector} height={300} />
+                <ClimaxGraph data={vector} height={300} markers={peaks.map((p, i) => ({ index: p.index, label: String(i + 1) }))} />
               ) : (
                 <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.2)', letterSpacing: '0.1em' }}>준비중</span>
               )}
             </div>
+
+            {vector && peaks.length > 0 && (
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 18, marginTop: 14 }}>
+                {peaks.map((p, i) => (
+                  <div key={p.index} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <span style={{ width: 20, height: 20, borderRadius: '50%', background: 'var(--accent)', color: '#0a0a0f', display: 'grid', placeItems: 'center', fontSize: 10, fontWeight: 800 }}>{i + 1}</span>
+                    <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.7)' }}>{p.label} · 강도 {p.valuePct}%</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </section>
         </div>
 
