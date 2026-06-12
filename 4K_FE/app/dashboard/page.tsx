@@ -21,6 +21,7 @@ import FilterBar from '@/app/components/FilterBar';
 import DetailOverlay from '@/app/components/DetailOverlay';
 import RandomModal from '@/app/components/RandomModal';
 import Tutorial from '@/app/components/Tutorial';
+import BackgroundThread from '@/app/components/BackgroundThread';
 
 // 한 번에 가져올 영화 수 — 서버사이드 필터링으로 Supabase가 조건 적용 후 이 단위로 반환
 const PAGE_SIZE = 120;
@@ -227,6 +228,16 @@ export default function Dashboard() {
         position: 'relative',
       }}
     >
+      {/* 고정 배경 — 온보딩과 동일한 움직이는 실 애니메이션(스크롤해도 고정) */}
+      <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', opacity: 0.5 }}>
+        <BackgroundThread
+          color={[0.482, 0.38, 1]}
+          amplitude={1.1}
+          distance={0.4}
+          enableMouseInteraction={false}
+        />
+      </div>
+
       {/* ambient spotlight */}
       <div
         style={{
