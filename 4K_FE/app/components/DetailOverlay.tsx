@@ -3,7 +3,7 @@
 // 영화 상세 오버레이 — 포스터, 시놉시스, 트레일러, 클라이맥스 그래프, 유사 영화 추천
 import { useState, useEffect } from 'react';
 import { Movie, posterUrl, genreList, castList, fetchVector, fetchPreferredMovies, fetchMovieVectors } from '@/app/lib/data';
-import { cosineSimilarity, climaxMetrics, topPeaks } from '@/app/lib/climax';
+import { cosineSimilarity, climaxDescriptor } from '@/app/lib/climax';
 
 import ClimaxGraph from '@/app/components/ClimaxGraph';
 import MiniGraph from '@/app/components/MiniGraph';
@@ -26,9 +26,6 @@ export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailO
   const [vectorLoading, setVectorLoading] = useState(true);
   const [similar, setSimilar] = useState<{ movie: Movie; vector: number[]; matchPct: number }[]>([]);
   const [similarLoading, setSimilarLoading] = useState(true);
-
-  const metrics = vector ? climaxMetrics(vector) : null;
-  const peaks = vector ? topPeaks(vector, 3) : [];
 
   // ESC 키 → 오버레이 닫고 대시보드로 복귀
   useEffect(() => {
@@ -120,30 +117,18 @@ export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailO
             ))}
           </div>
 
-          {/* 클라이맥스 지표 + 그래프 + 피크 범례 */}
+          {/* 클라이맥스 곡선 */}
           <section style={{ marginTop: 40 }}>
-            <h3 style={sectionLabel}>CLIMAX GRAPH</h3>
-
-            {metrics && (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginTop: 12 }}>
-                {[
-                  { k: '클라이맥스 강도', v: `${metrics.intensity}`, suf: ' / 10' },
-                  { k: '절정 위치', v: `${metrics.peakPositionPct}%`, suf: ' 지점' },
-                  { k: '긴장 피크', v: `${metrics.peakCount}`, suf: '회' },
-                ].map((c) => (
-                  <div key={c.k} style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 10, padding: '16px 18px' }}>
-                    <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.12em', fontWeight: 700 }}>{c.k}</div>
-                    <div style={{ marginTop: 8, fontFamily: 'var(--font-playfair), serif', fontWeight: 800, fontSize: 30, color: 'var(--fg)' }}>
-                      {c.v}<span style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.4)' }}>{c.suf}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+              <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.28em', color: 'var(--accent)' }}>CLIMAX CURVE</span>
+              <span style={{ flex: 1, height: 1, background: 'linear-gradient(90deg, rgba(123,97,255,0.5), rgba(123,97,255,0))' }} />
+              <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.1em' }}>자막·장면 AI 분석</span>
+            </div>
 
             <div style={{
-              marginTop: 12, height: 300, borderRadius: 8,
-              background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.06)',
+              marginTop: 18, height: 320, borderRadius: 12,
+              background: 'radial-gradient(120% 100% at 70% 0%, rgba(123,97,255,0.10), rgba(0,0,0,0.35) 70%)',
+              border: '1px solid rgba(255,255,255,0.06)',
               overflow: 'hidden',
               display: vectorLoading || !vector ? 'grid' : 'block',
               placeItems: 'center',
@@ -151,22 +136,11 @@ export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailO
               {vectorLoading ? (
                 <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.2)', letterSpacing: '0.1em' }}>로딩 중...</span>
               ) : vector ? (
-                <ClimaxGraph data={vector} height={300} markers={peaks.map((p, i) => ({ index: p.index, label: String(i + 1) }))} />
+                <ClimaxGraph data={vector} height={320} />
               ) : (
                 <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.2)', letterSpacing: '0.1em' }}>준비중</span>
               )}
             </div>
-
-            {vector && peaks.length > 0 && (
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 18, marginTop: 14 }}>
-                {peaks.map((p, i) => (
-                  <div key={p.index} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <span style={{ width: 20, height: 20, borderRadius: '50%', background: 'var(--accent)', color: '#0a0a0f', display: 'grid', placeItems: 'center', fontSize: 10, fontWeight: 800 }}>{i + 1}</span>
-                    <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.7)' }}>{p.label} · 강도 {p.valuePct}%</span>
-                  </div>
-                ))}
-              </div>
-            )}
           </section>
         </div>
 
@@ -181,53 +155,58 @@ export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailO
                 </span>
               )}
             </h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
               {similarLoading
                 ? Array.from({ length: 4 }).map((_, i) => (
-                    <div key={i} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 10, padding: 10, height: 72, opacity: 0.5 }} />
+                    <div key={i} style={{ height: 108, borderTop: i === 0 ? 'none' : '1px solid rgba(255,255,255,0.06)', opacity: 0.4 }} />
                   ))
-                : similar.map(({ movie: m, vector: simVec, matchPct }) => {
+                : similar.map(({ movie: m, vector: simVec, matchPct }, idx) => {
                 const simImg = posterUrl(m.poster_path);
                 const simGenres = genreList(m.genre).slice(0, 2);
+                const desc = climaxDescriptor(simVec);
                 return (
                   <button
                     key={m.tmdb_id}
                     onClick={() => onSelectMovie(m)}
                     style={{
-                      background: 'rgba(255,255,255,0.03)',
-                      border: '1px solid rgba(255,255,255,0.08)',
-                      borderRadius: 10, padding: 12,
+                      background: 'transparent', border: 'none',
+                      borderTop: idx === 0 ? 'none' : '1px solid rgba(255,255,255,0.07)',
+                      padding: '20px 4px',
                       cursor: 'pointer', color: 'inherit', fontFamily: 'inherit', textAlign: 'left',
-                      display: 'flex', gap: 14, alignItems: 'center',
-                      transition: 'background 0.2s, border-color 0.2s',
+                      display: 'flex', gap: 18, alignItems: 'center',
+                      transition: 'background 0.2s',
                     }}
-                    onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.06)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.14)'; }}
-                    onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.03)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.08)'; }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.03)'; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = 'transparent'; }}
                   >
                     {/* MATCH % */}
-                    <div style={{ flexShrink: 0, width: 52, textAlign: 'center' }}>
-                      <div style={{ fontFamily: 'var(--font-playfair), serif', fontWeight: 800, fontSize: 24, color: 'var(--accent)', lineHeight: 1 }}>{matchPct}</div>
-                      <div style={{ fontSize: 8, fontWeight: 700, letterSpacing: '0.12em', color: 'rgba(255,255,255,0.4)', marginTop: 3 }}>MATCH %</div>
+                    <div style={{ flexShrink: 0, width: 66, textAlign: 'center' }}>
+                      <span style={{ fontFamily: 'var(--font-playfair), serif', fontWeight: 800, fontSize: 38, color: '#fff', lineHeight: 1 }}>{matchPct}</span>
+                      <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent)', marginLeft: 2 }}>%</span>
                     </div>
                     {/* 포스터 */}
-                    <div style={{ width: 44, flexShrink: 0, aspectRatio: '2/3', borderRadius: 6, overflow: 'hidden', background: '#111218', position: 'relative' }}>
+                    <div style={{ width: 56, flexShrink: 0, aspectRatio: '2/3', borderRadius: 7, overflow: 'hidden', background: '#111218', position: 'relative' }}>
                       {simImg ? (
                         <img src={simImg} alt={m.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
                       ) : (
-                        <div style={{ position: 'absolute', inset: 0, display: 'grid', placeItems: 'center' }}><span style={{ fontSize: 16 }}>🎬</span></div>
+                        <div style={{ position: 'absolute', inset: 0, display: 'grid', placeItems: 'center' }}><span style={{ fontSize: 18 }}>🎬</span></div>
                       )}
                     </div>
-                    {/* 제목·메타 */}
-                    <div style={{ flexShrink: 0, width: 150, minWidth: 0 }}>
-                      <div style={{ fontSize: 13, fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', lineHeight: 1.3 }}>{m.title}</div>
-                      <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.45)', marginTop: 4 }}>
-                        {m.release_year}{simGenres.length ? ` · ${simGenres.join(' · ')}` : ''}
+                    {/* 제목·메타(연도·장르·곡선 설명) */}
+                    <div style={{ flexShrink: 0, width: 240, minWidth: 0 }}>
+                      <div style={{ fontSize: 17, fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', lineHeight: 1.3 }}>{m.title}</div>
+                      <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.42)', marginTop: 6, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {m.release_year}{simGenres.length ? ` · ${simGenres.join(' · ')}` : ''}{desc ? `  ·  ${desc}` : ''}
                       </div>
                     </div>
-                    {/* 미니그래프(해당 영화 실선 + 현재 영화 점선) */}
-                    <div style={{ flex: 1, minWidth: 80, height: 48 }}>
-                      <MiniGraph data={simVec} reference={vector ?? undefined} height={48} />
+                    {/* 미니그래프 */}
+                    <div style={{ flex: 1, minWidth: 80, height: 60 }}>
+                      <MiniGraph data={simVec} height={60} />
                     </div>
+                    {/* chevron */}
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="2" style={{ flexShrink: 0 }}>
+                      <path d="m9 18 6-6-6-6" />
+                    </svg>
                   </button>
                 );
               })}

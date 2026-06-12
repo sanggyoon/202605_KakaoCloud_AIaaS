@@ -98,3 +98,33 @@ export function topPeaks(v: number[], n = 3): TopPeak[] {
     return { index: idx, valuePct: Math.round(display[idx]), label: `${prefix} ${desc}` };
   });
 }
+
+// 곡선 형태를 한 줄 한국어로 요약 (정점 위치 중심 + 상승 패턴·피크 수)
+export function climaxDescriptor(v: number[]): string {
+  if (v.length < 3) return '';
+  const m = climaxMetrics(v);
+  const ds = toDisplayScale(v);
+  const n = ds.length;
+  const third = Math.max(1, Math.floor(n / 3));
+  const avg = (a: number, b: number) => {
+    let s = 0;
+    for (let i = a; i < b; i++) s += ds[i];
+    return s / (b - a);
+  };
+  const early = avg(0, third);
+  const late = avg(n - third, n);
+  const rise = late - early;
+  const pos = m.peakPositionPct;
+
+  if (pos >= 66) {
+    if (rise > 12 && early < 45) return '잔잔하다 마지막에 폭발';
+    if (rise > 8) return '후반으로 갈수록 고조되는 곡선';
+    return '후반 집중형 절정';
+  }
+  if (pos < 33) {
+    if (early > late + 10) return '초반 폭발 후 잦아드는 곡선';
+    return '초반부터 달아오르는 곡선';
+  }
+  if (m.peakCount >= 7) return '쉴 틈 없는 다중 클라이맥스';
+  return '중반 정점의 산형 곡선';
+}
