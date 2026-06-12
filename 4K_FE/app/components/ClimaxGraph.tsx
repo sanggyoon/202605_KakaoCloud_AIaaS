@@ -1,8 +1,10 @@
 'use client';
 
+import { useRef, useState } from 'react';
 import { toDisplayScale } from '@/app/lib/climax';
 
-// 클라이맥스 곡선 — 영화별 min/max 정규화 + 네온 글로우, 최고 정점에 PEAK 마커
+// 클라이맥스 곡선 — 영화별 min/max 정규화 + 네온 글로우.
+// 마우스 호버 시 십자선(진행도/피크)과 해당 지점 값 툴팁 표시.
 interface ClimaxGraphProps {
   data: number[];
   height?: number;
@@ -23,6 +25,7 @@ export default function ClimaxGraph({ data, height = 380 }: ClimaxGraphProps) {
   const toY = (val: number) => padY + innerH - ((val - min) / range) * innerH;
   const toX = (i: number) => padX + (i / (data.length - 1)) * innerW;
 
+  const display = toDisplayScale(data);
   const pts = data.map((val, i) => [toX(i), toY(val)]);
 
   // cubic bezier — 인접 점의 중간 x를 제어점으로
@@ -33,15 +36,32 @@ export default function ClimaxGraph({ data, height = 380 }: ClimaxGraphProps) {
   }
   const fillD = `${d} L${padX + innerW},${H} L${padX},${H} Z`;
 
-  // 최고 정점 → PEAK 마커
-  let argmax = 0;
-  for (let i = 1; i < data.length; i++) if (data[i] > data[argmax]) argmax = i;
-  const peakPct = Math.round(toDisplayScale(data)[argmax]);
-  const peakLeft = (toX(argmax) / W) * 100;
-  const peakTop = (toY(data[argmax]) / H) * 100;
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [hover, setHover] = useState<number | null>(null);
+
+  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = containerRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const fx = Math.min(1, Math.max(0, (e.clientX - rect.left) / rect.width));
+    setHover(Math.round(fx * (data.length - 1)));
+  };
+
+  // 호버 지점 좌표/값
+  const hx = hover !== null ? (toX(hover) / W) * 100 : 0;
+  const hy = hover !== null ? (toY(data[hover]) / H) * 100 : 0;
+  const progress = hover !== null ? Math.round((hover / (data.length - 1)) * 100) : 0;
+  const peakPct = hover !== null ? Math.round(display[hover]) : 0;
+  const tipLeft = Math.min(86, Math.max(14, hx));
+  const tipBelow = hy < 16;
 
   return (
-    <div style={{ position: 'relative', width: '100%', height }}>
+    <div
+      ref={containerRef}
+      onMouseMove={onMove}
+      onMouseLeave={() => setHover(null)}
+      style={{ position: 'relative', width: '100%', height, cursor: 'crosshair' }}
+    >
       <svg
         viewBox={`0 0 ${W} ${H}`}
         preserveAspectRatio="none"
@@ -73,29 +93,40 @@ export default function ClimaxGraph({ data, height = 380 }: ClimaxGraphProps) {
         />
       </svg>
 
-      {/* PEAK 정점 — 빛나는 점 */}
-      <div
-        style={{
-          position: 'absolute', left: `${peakLeft}%`, top: `${peakTop}%`,
-          transform: 'translate(-50%, -50%)', pointerEvents: 'none',
-          width: 13, height: 13, borderRadius: '50%',
-          background: '#fff',
-          boxShadow: '0 0 18px 5px rgba(123,97,255,0.85), 0 0 6px 1px var(--accent)',
-        }}
-      />
-      {/* PEAK 라벨 */}
-      <div
-        style={{
-          position: 'absolute', left: `${peakLeft}%`, top: `${peakTop}%`,
-          transform: 'translate(-50%, calc(-100% - 18px))',
-          textAlign: 'center', pointerEvents: 'none', whiteSpace: 'nowrap',
-        }}
-      >
-        <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.24em', color: 'var(--accent)' }}>PEAK</div>
-        <div style={{ fontFamily: 'var(--font-playfair), serif', fontWeight: 800, fontSize: 26, color: '#fff', lineHeight: 1.05 }}>
-          {peakPct}%
-        </div>
-      </div>
+      {hover !== null && (
+        <>
+          {/* 세로선 — 진행도 축 */}
+          <div style={{ position: 'absolute', left: `${hx}%`, top: 0, bottom: 0, width: 1, background: 'rgba(123,97,255,0.45)', pointerEvents: 'none' }} />
+          {/* 가로선 — 피크 축 */}
+          <div style={{ position: 'absolute', top: `${hy}%`, left: 0, right: 0, height: 1, background: 'rgba(123,97,255,0.45)', pointerEvents: 'none' }} />
+          {/* 교차점 */}
+          <div style={{
+            position: 'absolute', left: `${hx}%`, top: `${hy}%`, transform: 'translate(-50%, -50%)',
+            width: 11, height: 11, borderRadius: '50%', background: '#fff',
+            boxShadow: '0 0 14px 4px rgba(123,97,255,0.85)', pointerEvents: 'none',
+          }} />
+          {/* 툴팁 */}
+          <div style={{
+            position: 'absolute', left: `${tipLeft}%`, top: `${hy}%`,
+            transform: tipBelow ? 'translate(-50%, 16px)' : 'translate(-50%, calc(-100% - 16px))',
+            pointerEvents: 'none', whiteSpace: 'nowrap',
+            background: 'rgba(15,14,22,0.92)', border: '1px solid rgba(123,97,255,0.4)',
+            borderRadius: 8, padding: '8px 12px', backdropFilter: 'blur(4px)',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.5)',
+          }}>
+            <div style={{ display: 'flex', gap: 14 }}>
+              <div>
+                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', color: 'rgba(255,255,255,0.4)' }}>진행도</div>
+                <div style={{ fontSize: 16, fontWeight: 800, color: '#fff', lineHeight: 1.2 }}>{progress}%</div>
+              </div>
+              <div>
+                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', color: 'var(--accent)' }}>피크</div>
+                <div style={{ fontSize: 16, fontWeight: 800, color: 'var(--accent)', lineHeight: 1.2 }}>{peakPct}%</div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
