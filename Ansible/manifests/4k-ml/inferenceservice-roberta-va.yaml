@@ -1,0 +1,38 @@
+# roberta-va 서빙 — KServe RawDeployment, CPU, ml-models PVC를 /mnt/models로 직접 마운트.
+# (custom 컨테이너라 storageUri 대신 PVC 볼륨 직접 마운트가 단순/확실.)
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  name: roberta-va
+  namespace: ai
+  annotations:
+    serving.kserve.io/deploymentMode: RawDeployment
+spec:
+  predictor:
+    nodeSelector:
+      workload: gpu          # ml-models PVC가 vm5(local-path)라 vm5 고정. GPU는 요청 안 함.
+    containers:
+      - name: kserve-container
+        image: ghcr.io/sanggyoon/4k-ml:latest
+        command: ["python", "-m", "serving.serve"]
+        env:
+          - name: MODEL_DIR
+            value: /mnt/models
+        envFrom:
+          - secretRef:
+              name: 4k-ml-secrets
+        volumeMounts:
+          - name: models
+            mountPath: /mnt/models
+            subPath: roberta-va-v1
+        resources:
+          requests:
+            cpu: "1"
+            memory: 2Gi
+          limits:
+            cpu: "2"
+            memory: 4Gi
+    volumes:
+      - name: models
+        persistentVolumeClaim:
+          claimName: ml-models
