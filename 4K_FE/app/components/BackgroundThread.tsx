@@ -226,7 +226,10 @@ const Threads: React.FC<ThreadsProps> = ({
       if (container.contains(gl.canvas)) container.removeChild(gl.canvas);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
-  }, [color, amplitude, distance, enableMouseInteraction]);
+    // 배열 참조가 아닌 값으로 비교 — 인라인 color={[...]} 를 넘겨도 매 리렌더마다
+    // 캔버스를 재생성(흰 깜빡임)하지 않도록 한다.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [color[0], color[1], color[2], amplitude, distance, enableMouseInteraction]);
 
   return (
     <div ref={containerRef} className="w-full h-full relative" {...rest} />

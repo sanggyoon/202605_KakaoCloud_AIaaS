@@ -26,6 +26,10 @@ import BackgroundThread from '@/app/components/BackgroundThread';
 // 한 번에 가져올 영화 수 — 서버사이드 필터링으로 Supabase가 조건 적용 후 이 단위로 반환
 const PAGE_SIZE = 120;
 
+// 안정적인 참조 — 인라인 배열이면 리렌더(카드 호버 등)마다 새 참조가 되어
+// BackgroundThread의 useEffect가 재실행→캔버스 재생성→흰 깜빡임이 발생한다.
+const THREAD_COLOR: [number, number, number] = [0.482, 0.38, 1];
+
 export default function Dashboard() {
   const router = useRouter();
 
@@ -238,7 +242,7 @@ export default function Dashboard() {
       }}>
         <div style={{ position: 'absolute', inset: 0, opacity: 0.68 }}>
           <BackgroundThread
-            color={[0.482, 0.38, 1]}
+            color={THREAD_COLOR}
             amplitude={1.1}
             distance={0.4}
             enableMouseInteraction={false}
