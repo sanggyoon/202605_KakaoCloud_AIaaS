@@ -19,7 +19,7 @@ spec:
       nodeSelector:
         workload: gpu
       container:
-        image: ghcr.io/sanggyoon/4k-ml:39bf667
+        image: ghcr.io/sanggyoon/4k-ml:a9661d1
         command: ["python", "-m", "train.train_model"]
         env:
           - name: MODEL_OUT_DIR
