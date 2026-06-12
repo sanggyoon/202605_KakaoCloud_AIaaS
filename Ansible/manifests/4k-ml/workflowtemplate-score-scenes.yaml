@@ -1,0 +1,21 @@
+# 배치 스코어링(F) — KServe predict 호출 → scene_scores 적재. GPU 불필요.
+# 제출: argo submit --from workflowtemplate/score-scenes -n ai
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: score-scenes
+  namespace: ai
+spec:
+  serviceAccountName: argo-workflow
+  entrypoint: main
+  templates:
+    - name: main
+      container:
+        image: ghcr.io/sanggyoon/4k-ml:latest
+        command: ["python", "-m", "serving.score_scenes"]
+        env:
+          - name: KSERVE_PREDICT_URL
+            value: http://roberta-va-predictor.ai.svc.cluster.local/v1/models/roberta-va:predict
+        envFrom:
+          - secretRef:
+              name: 4k-ml-secrets
