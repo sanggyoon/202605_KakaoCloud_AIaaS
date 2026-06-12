@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter_Tight, Playfair_Display, JetBrains_Mono } from "next/font/google";
+import { Inter_Tight, Playfair_Display, JetBrains_Mono, Nanum_Myeongjo } from "next/font/google";
 import "./globals.css";
 
 const interTight = Inter_Tight({
@@ -20,6 +20,12 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["500", "600", "700"],
 });
 
+const nanumMyeongjo = Nanum_Myeongjo({
+  variable: "--font-serif-ko",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
+
 export const metadata: Metadata = {
   title: "Peakly — Climax-based Movie Recommendation",
   description: "클라이맥스 그래프를 분석해 비슷한 영화를 추천하는 서비스",
@@ -34,7 +40,7 @@ export default function RootLayout({
   return (
     <html
       lang="ko"
-      className={`${interTight.variable} ${playfair.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`${interTight.variable} ${playfair.variable} ${jetbrainsMono.variable} ${nanumMyeongjo.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

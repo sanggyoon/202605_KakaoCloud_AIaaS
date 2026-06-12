@@ -104,19 +104,27 @@ export default function OnboardingPage() {
           CLIMAX-BASED RECOMMENDATION
         </p>
 
-        {/* 서비스 태그라인 */}
+        {/* 서비스 태그라인 — 세리프 + 단어 순차 등장 + 핵심어 글로우 */}
         <p
           style={{
-            fontSize: 'clamp(18px, 4vw, 26px)',
-            fontWeight: 600,
+            fontSize: 'clamp(20px, 4.4vw, 30px)',
+            fontWeight: 700,
             lineHeight: 1.5,
-            color: 'rgba(255,255,255,0.82)',
+            color: 'rgba(255,255,255,0.9)',
             margin: '0 auto 52px',
-            maxWidth: 520,
+            maxWidth: 560,
             letterSpacing: '-0.01em',
+            fontFamily: 'var(--font-serif-ko), serif',
           }}
         >
-          한 편의 감정을 데이터로 그리다
+          <span className="tagline-word" style={{ animationDelay: '0.1s' }}>한 편의 </span>
+          <span className="tagline-word" style={{ animationDelay: '0.35s' }}>
+            <em className="tagline-key">감정</em>을{' '}
+          </span>
+          <span className="tagline-word" style={{ animationDelay: '0.6s' }}>
+            <em className="tagline-key">데이터</em>로{' '}
+          </span>
+          <span className="tagline-word" style={{ animationDelay: '0.85s' }}>그리다</span>
         </p>
 
         {/* CTA button */}
