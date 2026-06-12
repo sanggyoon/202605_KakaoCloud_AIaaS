@@ -228,8 +228,12 @@ export default function Dashboard() {
         position: 'relative',
       }}
     >
-      {/* 고정 배경 — 온보딩과 동일한 움직이는 실 애니메이션(스크롤해도 고정) */}
-      <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', opacity: 0.5 }}>
+      {/* 고정 배경 — 온보딩과 동일한 움직이는 실 애니메이션(스크롤해도 고정).
+          translateZ로 GPU 레이어 승격 → 스크롤 중 흰 깜빡임(합성 repaint) 방지 */}
+      <div style={{
+        position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', opacity: 0.68,
+        transform: 'translateZ(0)', backfaceVisibility: 'hidden', willChange: 'transform',
+      }}>
         <BackgroundThread
           color={[0.482, 0.38, 1]}
           amplitude={1.1}
