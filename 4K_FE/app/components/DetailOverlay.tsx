@@ -126,7 +126,7 @@ export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailO
             </div>
 
             <div style={{
-              marginTop: 18, height: 320, borderRadius: 12,
+              marginTop: 18, height: 380, borderRadius: 12,
               background: 'radial-gradient(120% 100% at 70% 0%, rgba(123,97,255,0.10), rgba(0,0,0,0.35) 70%)',
               border: '1px solid rgba(255,255,255,0.06)',
               overflow: 'hidden',
@@ -136,7 +136,7 @@ export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailO
               {vectorLoading ? (
                 <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.2)', letterSpacing: '0.1em' }}>로딩 중...</span>
               ) : vector ? (
-                <ClimaxGraph data={vector} height={320} />
+                <ClimaxGraph data={vector} height={380} />
               ) : (
                 <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.2)', letterSpacing: '0.1em' }}>준비중</span>
               )}
@@ -158,7 +158,7 @@ export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailO
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               {similarLoading
                 ? Array.from({ length: 4 }).map((_, i) => (
-                    <div key={i} style={{ height: 108, borderTop: i === 0 ? 'none' : '1px solid rgba(255,255,255,0.06)', opacity: 0.4 }} />
+                    <div key={i} style={{ height: 124, borderTop: i === 0 ? 'none' : '1px solid rgba(255,255,255,0.06)', opacity: 0.4 }} />
                   ))
                 : similar.map(({ movie: m, vector: simVec, matchPct }, idx) => {
                 const simImg = posterUrl(m.poster_path);
@@ -171,7 +171,7 @@ export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailO
                     style={{
                       background: 'transparent', border: 'none',
                       borderTop: idx === 0 ? 'none' : '1px solid rgba(255,255,255,0.07)',
-                      padding: '20px 4px',
+                      padding: '26px 4px',
                       cursor: 'pointer', color: 'inherit', fontFamily: 'inherit', textAlign: 'left',
                       display: 'flex', gap: 18, alignItems: 'center',
                       transition: 'background 0.2s',
@@ -185,7 +185,7 @@ export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailO
                       <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent)', marginLeft: 2 }}>%</span>
                     </div>
                     {/* 포스터 */}
-                    <div style={{ width: 56, flexShrink: 0, aspectRatio: '2/3', borderRadius: 7, overflow: 'hidden', background: '#111218', position: 'relative' }}>
+                    <div style={{ width: 64, flexShrink: 0, aspectRatio: '2/3', borderRadius: 7, overflow: 'hidden', background: '#111218', position: 'relative' }}>
                       {simImg ? (
                         <img src={simImg} alt={m.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
                       ) : (
@@ -200,8 +200,8 @@ export default function DetailOverlay({ movie, onClose, onSelectMovie }: DetailO
                       </div>
                     </div>
                     {/* 미니그래프 */}
-                    <div style={{ flex: 1, minWidth: 80, height: 60 }}>
-                      <MiniGraph data={simVec} height={60} />
+                    <div style={{ flex: 1, minWidth: 80, height: 76 }}>
+                      <MiniGraph data={simVec} height={76} />
                     </div>
                     {/* chevron */}
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="2" style={{ flexShrink: 0 }}>

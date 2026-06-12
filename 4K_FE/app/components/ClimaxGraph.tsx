@@ -8,11 +8,11 @@ interface ClimaxGraphProps {
   height?: number;
 }
 
-export default function ClimaxGraph({ data, height = 320 }: ClimaxGraphProps) {
+export default function ClimaxGraph({ data, height = 380 }: ClimaxGraphProps) {
   const W = 600;
   const H = height;
   const padX = 8;
-  const padY = 30;
+  const padY = 64;
   const innerW = W - padX * 2;
   const innerH = H - padY * 2;
 
