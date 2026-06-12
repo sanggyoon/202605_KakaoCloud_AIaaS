@@ -59,12 +59,15 @@ KServe는 **추론 엔드포인트만** 담당하고 DB 적재는 배치 잡이 
 
 ### 4.2 커스텀 predictor (`4K_ML/serving/`)
 
-- `predictor.py` — `VAPredictor(kserve.Model)`:
-  - `__init__(name)`: name="roberta-va", `self.ready=False`
-  - `load()`: `MODEL_DIR`(기본 `/mnt/models`)에서 config/scaler/tokenizer/weights 로드, `HybridRobertaRegressor` 구성+state_dict 로드(`safetensors`), `.eval()`, CPU. `self.model_version=config["model_version"]`, `self.max_len=config["max_len"]`, `self.ready=True`.
-  - `predict(payload, headers=None)`: `instances` 각 항목(원본 씬 필드) → `compute_features`(train.features 재사용) → `Scaler.transform` → 토크나이즈(max_len) → 배치 forward → `[{"arousal":a,"valence":v}, ...]`. 반환 `{"predictions":[...], "model_version": self.model_version}`.
-- `serve.py` — `kserve.ModelServer().start([VAPredictor("roberta-va")])` 진입점(`python -m serving.serve`).
-- 의존성: `kserve` 추가(`4K_ML/requirements.txt`). 이미지 = **기존 4k-ml**(train 패키지·roberta-base 베이킹 포함) + `COPY serving/`.
+> **구현 노트(2026-06-12 변경):** kserve SDK는 `numpy<2`·`httpx<0.27`을 강제해 우리 ML 스택(numpy 2·scipy 1.17·transformers)과 빌드 충돌 → **kserve SDK 대신 FastAPI로 KServe V1 프로토콜을 직접 구현**. KServe RawDeployment 커스텀 컨테이너는 프로토콜을 8080에서 서빙하면 충분하므로 아키텍처는 동일.
+
+- `predict_core.py`(kserve 비의존): `load_artifacts(model_dir)`, `score_instances(model, scaler, tok, max_len, instances)` — 원본 씬 필드 → `compute_features`+`Scaler.transform`+토크나이즈+forward → `[{arousal,valence}]`(0~1 clamp).
+- `predictor.py` — `create_app(loader)` FastAPI 앱:
+  - startup에서 `MODEL_DIR`(기본 `/mnt/models`) 로드(config/scaler/tokenizer/weights, `HybridRobertaRegressor`+state_dict, CPU).
+  - `GET /v1/models/roberta-va` → `{"ready": bool}` (readiness 프로브).
+  - `POST /v1/models/roberta-va:predict` → `{"predictions":[...], "model_version":...}`.
+- `serve.py` — `uvicorn.run(app, host=0.0.0.0, port=8080)` 진입점(`python -m serving.serve`).
+- 의존성: `fastapi`+`uvicorn` 추가(`kserve` 미사용). 이미지 = **기존 4k-ml**(train 패키지·roberta-base 베이킹 포함) + `COPY serving/`.
 - 재사용: `train.features.compute_features`/`Scaler`, `train.model.HybridRobertaRegressor`/`build_encoder` → **학습과 동일 변환** 보장.
 
 ### 4.3 InferenceService 매니페스트
