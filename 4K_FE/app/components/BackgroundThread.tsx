@@ -139,7 +139,8 @@ const Threads: React.FC<ThreadsProps> = ({
     if (!containerRef.current) return;
     const container = containerRef.current;
 
-    const renderer = new Renderer({ alpha: true });
+    // preserveDrawingBuffer: 빠른 스크롤 시 합성과 어긋나 빈(흰) 버퍼가 노출되는 깜빡임 방지
+    const renderer = new Renderer({ alpha: true, preserveDrawingBuffer: true });
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 0);
     gl.enable(gl.BLEND);

@@ -229,17 +229,21 @@ export default function Dashboard() {
       }}
     >
       {/* 고정 배경 — 온보딩과 동일한 움직이는 실 애니메이션(스크롤해도 고정).
-          translateZ로 GPU 레이어 승격 → 스크롤 중 흰 깜빡임(합성 repaint) 방지 */}
+          불투명 다크 배경을 깔아 빠른 스크롤 중 캔버스가 빈 흰 프레임을 보여도 흰색이 노출되지 않게 함.
+          translateZ로 GPU 레이어 승격. */}
       <div style={{
-        position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', opacity: 0.68,
+        position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none',
+        background: 'var(--bg)',
         transform: 'translateZ(0)', backfaceVisibility: 'hidden', willChange: 'transform',
       }}>
-        <BackgroundThread
-          color={[0.482, 0.38, 1]}
-          amplitude={1.1}
-          distance={0.4}
-          enableMouseInteraction={false}
-        />
+        <div style={{ position: 'absolute', inset: 0, opacity: 0.68 }}>
+          <BackgroundThread
+            color={[0.482, 0.38, 1]}
+            amplitude={1.1}
+            distance={0.4}
+            enableMouseInteraction={false}
+          />
+        </div>
       </div>
 
       {/* ambient spotlight */}
