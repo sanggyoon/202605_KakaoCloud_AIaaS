@@ -68,7 +68,7 @@ export default function Dashboard() {
     if (offset > 0) setLoadingMore(true);
 
     // 연도·장르·비선호 조건을 쿼리 파라미터로 서버에 전달
-    let url = `${SUPABASE_URL}/rest/v1/movies?select=*&limit=${PAGE_SIZE}&offset=${offset}&order=release_year.desc,id.desc`;
+    let url = `${SUPABASE_URL}/rest/v1/movies?select=*&limit=${PAGE_SIZE}&offset=${offset}&order=has_vector.desc,release_year.desc,id.desc`;
     url += `&release_year=gte.${filters.yearRange[0]}&release_year=lte.${filters.yearRange[1]}`;
     if (filters.genre !== 'All') {
       url += `&genre=ilike.*${encodeURIComponent(filters.genre)}*`;

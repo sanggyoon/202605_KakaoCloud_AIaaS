@@ -5,9 +5,10 @@ interface MiniGraphProps {
   data: number[];
   color?: string;
   height?: number;
+  reference?: number[];   // 비교용 점선 곡선(현재 영화)
 }
 
-export default function MiniGraph({ data, color = 'var(--accent)', height = 40 }: MiniGraphProps) {
+export default function MiniGraph({ data, color = 'var(--accent)', height = 40, reference }: MiniGraphProps) {
   const width = 140;
   const padX = 2;
   const innerW = width - padX * 2;
@@ -24,12 +25,27 @@ export default function MiniGraph({ data, color = 'var(--accent)', height = 40 }
     d += ` C${cpx},${p0[1]} ${cpx},${p1[1]} ${p1[0]},${p1[1]}`;
   }
 
+  // reference 곡선 경로(있을 때만)
+  let refD = '';
+  if (reference && reference.length > 1) {
+    const rpts = reference.map((v, i) => [padX + (i / (reference.length - 1)) * innerW, 2 + innerH - (v / 100) * innerH]);
+    refD = `M${rpts[0][0]},${rpts[0][1]}`;
+    for (let i = 0; i < rpts.length - 1; i++) {
+      const cpx = (rpts[i][0] + rpts[i + 1][0]) / 2;
+      refD += ` C${cpx},${rpts[i][1]} ${cpx},${rpts[i + 1][1]} ${rpts[i + 1][0]},${rpts[i + 1][1]}`;
+    }
+  }
+
   return (
     <svg
       viewBox={`0 0 ${width} ${height}`}
       preserveAspectRatio="none"
       style={{ width: '100%', height: '100%', display: 'block' }}
     >
+      {refD && (
+        <path d={refD} fill="none" stroke="rgba(255,255,255,0.28)" strokeWidth="1.2"
+              strokeDasharray="3 3" strokeLinecap="round" />
+      )}
       {/* 곡선 아래 채움 영역 */}
       <path d={`${d} L${padX + innerW},${height} L${padX},${height} Z`} fill={color} fillOpacity="0.15" />
       {/* 곡선 선 */}
