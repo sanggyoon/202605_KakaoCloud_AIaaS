@@ -1,9 +1,7 @@
-"""KServe ModelServer 진입점 — `python -m serving.serve`."""
-import kserve
+"""커스텀 predictor 컨테이너 진입점 — uvicorn으로 FastAPI 앱 서빙(:8080)."""
+import uvicorn
 
-from serving.predictor import VAPredictor
+from serving.predictor import app
 
 if __name__ == "__main__":
-    model = VAPredictor("roberta-va")
-    model.load()
-    kserve.ModelServer().start([model])
+    uvicorn.run(app, host="0.0.0.0", port=8080)

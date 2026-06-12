@@ -14,7 +14,10 @@ spec:
     containers:
       - name: kserve-container
         image: ghcr.io/sanggyoon/4k-ml:latest
-        command: ["python", "-m", "serving.serve"]
+        command: ["python", "-m", "serving.serve"]   # FastAPI(uvicorn) :8080, KServe V1 프로토콜
+        ports:
+          - containerPort: 8080
+            protocol: TCP
         env:
           - name: MODEL_DIR
             value: /mnt/models
@@ -25,6 +28,13 @@ spec:
           - name: models
             mountPath: /mnt/models
             subPath: roberta-va-v1
+        readinessProbe:
+          httpGet:
+            path: /v1/models/roberta-va
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          failureThreshold: 12
         resources:
           requests:
             cpu: "1"
