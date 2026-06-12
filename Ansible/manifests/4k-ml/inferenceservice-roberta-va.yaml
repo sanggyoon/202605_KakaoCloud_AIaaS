@@ -21,6 +21,10 @@ spec:
         env:
           - name: MODEL_DIR
             value: /mnt/models
+          - name: OMP_NUM_THREADS      # torch CPU 추론 스레드 = 코어 수에 맞춤(속도↑)
+            value: "6"
+          - name: MKL_NUM_THREADS
+            value: "6"
         envFrom:
           - secretRef:
               name: 4k-ml-secrets
@@ -37,11 +41,11 @@ spec:
           failureThreshold: 12
         resources:
           requests:
-            cpu: "1"
+            cpu: "2"
             memory: 2Gi
           limits:
-            cpu: "2"
-            memory: 4Gi
+            cpu: "6"
+            memory: 6Gi
     volumes:
       - name: models
         persistentVolumeClaim:
