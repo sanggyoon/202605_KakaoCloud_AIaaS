@@ -142,14 +142,16 @@ def run(out_dir=None, model_name="roberta-base", max_epochs=10, batch_size=16,
                 "mae_valence": evaluate.mae(preds[:, 1], true[:, 1]),
                 "spearman_movie_arousal": evaluate.movie_spearman(
                     list(preds[:, 0]), list(true[:, 0]), mids),
+                "spearman_movie_valence": evaluate.movie_spearman(
+                    list(preds[:, 1]), list(true[:, 1]), mids),
                 "pearson_arousal": evaluate.pearson(preds[:, 0], true[:, 0]),
                 "pearson_valence": evaluate.pearson(preds[:, 1], true[:, 1]),
                 "n_test": len(te_rec),
             }
         else:
             metrics = {"mae_arousal": None, "mae_valence": None,
-                       "spearman_movie_arousal": None, "pearson_arousal": None,
-                       "pearson_valence": None, "n_test": 0}
+                       "spearman_movie_arousal": None, "spearman_movie_valence": None,
+                       "pearson_arousal": None, "pearson_valence": None, "n_test": 0}
 
         _save(out_dir, model, tok, scaler,
               {"train": tr, "val": va, "test": te},
