@@ -364,6 +364,29 @@ async def _count(client: httpx.AsyncClient, table: str, params: dict) -> int:
     return _parse_count(r.headers.get("content-range"))
 
 
+@app.get("/api/active-model")
+async def active_model():
+    """현재 활성 모델 base 버전. vm5 model_versions.active=true 의 base(::없는) 버전."""
+    url = os.getenv("AI_DATABASE_URL", "")
+    key = os.getenv("AI_DATABASE_KEY", "")
+    if url and key:
+        headers = {"apikey": key, "Authorization": f"Bearer {key}"}
+        bu = os.getenv("AI_BASIC_USER")
+        auth = (bu, os.getenv("AI_BASIC_PASS", "")) if bu else None
+        async with httpx.AsyncClient(timeout=15, verify=False) as client:
+            r = await client.get(
+                f"{url}/rest/v1/model_versions",
+                params={"select": "model_version", "active": "eq.true"},
+                headers=headers, auth=auth,
+            )
+            if r.status_code in (200, 206):
+                for row in r.json():
+                    mv = row.get("model_version", "")
+                    if mv and "::" not in mv:
+                        return {"version": mv}
+    return {"version": "roberta-va-v1"}  # 폴백
+
+
 PROC_STATES = ["subtitle_state", "parse_state", "label_state", "score_state", "vector_state"]
 
 
