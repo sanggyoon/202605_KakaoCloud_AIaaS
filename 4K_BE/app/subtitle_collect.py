@@ -195,6 +195,38 @@ async def set_status(client: httpx.AsyncClient, tmdb_id: int, state: str,
         raise RuntimeError(f"status upsert 실패 {r.status_code}: {r.text[:200]}")
 
 
+async def collect_one(client: httpx.AsyncClient, tmdb_id: int) -> dict:
+    """단건 강제 자막 재수집(상태 게이트 무시). {'state':..., 'message':...}."""
+    try:
+        chosen = choose(await search(client, tmdb_id))
+        if chosen is None:
+            await set_status(client, tmdb_id, "skipped")
+            return {"state": "skipped", "message": "영어 자막 없음"}
+        raw = await download_and_extract(client, chosen.get("url") or "")
+        if not raw.strip():
+            await set_status(client, tmdb_id, "failed", "empty srt")
+            return {"state": "failed", "message": "빈 자막 파일"}
+        await save_subtitle(client, tmdb_id, chosen, raw)
+        await set_status(client, tmdb_id, "done")
+        return {"state": "done", "message": chosen.get("release_name") or "수집 완료"}
+    except SubdlRateLimit:
+        return {"state": "failed", "message": "subdl 호출 한도 초과"}
+    except Exception as e:  # noqa: BLE001
+        await set_status(client, tmdb_id, "failed", str(e)[:500])
+        return {"state": "failed", "message": str(e)[:200]}
+
+
+async def reset_downstream(client: httpx.AsyncClient, tmdb_id: int) -> None:
+    """parse/score/vector 상태를 pending으로 리셋(label 유지) → 재처리 유도."""
+    row = {"tmdb_id": tmdb_id, "parse_state": "pending", "score_state": "pending",
+           "vector_state": "pending", "updated_at": datetime.now(timezone.utc).isoformat()}
+    r = await client.post(f"{ai_url()}/rest/v1/processing_status",
+                          params={"on_conflict": "tmdb_id"}, json=[row],
+                          headers=ai_headers(write=True), auth=_ai_auth())
+    if r.status_code not in (200, 201, 204):
+        raise RuntimeError(f"reset 실패 {r.status_code}: {r.text[:200]}")
+
+
 # ── 이벤트 제너레이터 ─────────────────────────────────────────────
 
 async def collect_events(client: httpx.AsyncClient, max_new: int, rate_delay: float):
