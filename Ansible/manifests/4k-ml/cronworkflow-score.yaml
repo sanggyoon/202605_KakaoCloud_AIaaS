@@ -6,7 +6,7 @@ metadata:
   namespace: ai
 spec:
   schedules:
-    - "20 * * * *"
+    - "30 */6 * * *"   # 6시간마다, 파싱 20분 뒤
   concurrencyPolicy: Forbid
   startingDeadlineSeconds: 300
   successfulJobsHistoryLimit: 3
