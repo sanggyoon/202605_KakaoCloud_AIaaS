@@ -1,0 +1,32 @@
+# GPU 인프로세스 배치 스코어링(수동). 대량 백필용. 활성모델을 PVC에서 로드해 GPU 추론.
+# 제출: argo submit --from workflowtemplate/score-scenes-gpu -n ai
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: score-scenes-gpu
+  namespace: ai
+spec:
+  serviceAccountName: argo-workflow
+  podSpecPatch: |
+    runtimeClassName: nvidia
+  entrypoint: main
+  volumes:
+    - name: models
+      persistentVolumeClaim:
+        claimName: ml-models
+  templates:
+    - name: main
+      nodeSelector:
+        workload: gpu
+      container:
+        image: ghcr.io/sanggyoon/4k-ml:0de3796
+        command: ["python", "-m", "serving.score_scenes_gpu"]
+        envFrom:
+          - secretRef:
+              name: 4k-ml-secrets
+        volumeMounts:
+          - name: models
+            mountPath: /models
+        resources:
+          limits:
+            nvidia.com/gpu: 1
