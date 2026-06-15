@@ -2,15 +2,16 @@
 
 import { useRef, useState } from 'react';
 import { toDisplayScale } from '@/app/lib/climax';
+import { valenceGradientStops, valenceToUnit, valenceColorAt } from '@/app/lib/color';
 
-// 클라이맥스 곡선 — 영화별 min/max 정규화 + 네온 글로우.
-// 마우스 호버 시 십자선(진행도/피크)과 해당 지점 값 툴팁 표시.
+// arousal=높이, valence=색(있을 때). 호버 시 십자선 + 진행도/피크/분위기 툴팁.
 interface ClimaxGraphProps {
-  data: number[];
+  data: number[];        // arousal
+  valence?: number[];    // valence (색)
   height?: number;
 }
 
-export default function ClimaxGraph({ data, height = 380 }: ClimaxGraphProps) {
+export default function ClimaxGraph({ data, valence, height = 380 }: ClimaxGraphProps) {
   const W = 600;
   const H = height;
   const padX = 8;
@@ -21,14 +22,10 @@ export default function ClimaxGraph({ data, height = 380 }: ClimaxGraphProps) {
   const min = Math.min(...data);
   const max = Math.max(...data);
   const range = max - min || 1;
-
   const toY = (val: number) => padY + innerH - ((val - min) / range) * innerH;
   const toX = (i: number) => padX + (i / (data.length - 1)) * innerW;
 
-  const display = toDisplayScale(data);
   const pts = data.map((val, i) => [toX(i), toY(val)]);
-
-  // cubic bezier — 인접 점의 중간 x를 제어점으로
   let d = `M${pts[0][0]},${pts[0][1]}`;
   for (let i = 0; i < pts.length - 1; i++) {
     const cpx = (pts[i][0] + pts[i + 1][0]) / 2;
@@ -36,9 +33,12 @@ export default function ClimaxGraph({ data, height = 380 }: ClimaxGraphProps) {
   }
   const fillD = `${d} L${padX + innerW},${H} L${padX},${H} Z`;
 
+  const stops = valence ? valenceGradientStops(valence) : [];
+  const vUnit = valence ? valenceToUnit(valence) : [];
+  const stroke = stops.length ? 'url(#cgValence)' : 'var(--accent)';
+
   const containerRef = useRef<HTMLDivElement>(null);
   const [hover, setHover] = useState<number | null>(null);
-
   const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const el = containerRef.current;
     if (!el) return;
@@ -47,11 +47,13 @@ export default function ClimaxGraph({ data, height = 380 }: ClimaxGraphProps) {
     setHover(Math.round(fx * (data.length - 1)));
   };
 
-  // 호버 지점 좌표/값
   const hx = hover !== null ? (toX(hover) / W) * 100 : 0;
   const hy = hover !== null ? (toY(data[hover]) / H) * 100 : 0;
   const progress = hover !== null ? Math.round((hover / (data.length - 1)) * 100) : 0;
-  const peakPct = hover !== null ? Math.round(display[hover]) : 0;
+  const peakPct = hover !== null ? Math.round(toDisplayScale(data)[hover]) : 0;
+  const moodU = hover !== null && vUnit.length ? vUnit[hover] : null;
+  const moodColor = moodU !== null ? valenceColorAt(moodU) : '#fff';
+  const moodLabel = moodU === null ? '' : moodU < 0.33 ? '어두움' : moodU < 0.66 ? '중립' : '밝음';
   const tipLeft = Math.min(86, Math.max(14, hx));
   const tipBelow = hy < 16;
 
@@ -72,6 +74,13 @@ export default function ClimaxGraph({ data, height = 380 }: ClimaxGraphProps) {
             <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.32" />
             <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.015" />
           </linearGradient>
+          {stops.length > 0 && (
+            <linearGradient id="cgValence" x1="0" y1="0" x2="1" y2="0">
+              {stops.map((s, i) => (
+                <stop key={i} offset={`${(s.offset * 100).toFixed(1)}%`} stopColor={s.color} />
+              ))}
+            </linearGradient>
+          )}
           <filter id="cgGlow" x="-20%" y="-50%" width="140%" height="200%">
             <feGaussianBlur stdDeviation="3" result="b" />
             <feMerge>
@@ -85,7 +94,7 @@ export default function ClimaxGraph({ data, height = 380 }: ClimaxGraphProps) {
         <path
           d={d}
           fill="none"
-          stroke="var(--accent)"
+          stroke={stroke}
           strokeWidth="2.4"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -95,26 +104,20 @@ export default function ClimaxGraph({ data, height = 380 }: ClimaxGraphProps) {
 
       {hover !== null && (
         <>
-          {/* 세로선 — 진행도 축 */}
           <div style={{ position: 'absolute', left: `${hx}%`, top: 0, bottom: 0, width: 1, background: 'rgba(123,97,255,0.45)', pointerEvents: 'none' }} />
-          {/* 가로선 — 피크 축 */}
           <div style={{ position: 'absolute', top: `${hy}%`, left: 0, right: 0, height: 1, background: 'rgba(123,97,255,0.45)', pointerEvents: 'none' }} />
-          {/* 교차점 */}
-          <div style={{
-            position: 'absolute', left: `${hx}%`, top: `${hy}%`, transform: 'translate(-50%, -50%)',
-            width: 11, height: 11, borderRadius: '50%', background: '#fff',
-            boxShadow: '0 0 14px 4px rgba(123,97,255,0.85)', pointerEvents: 'none',
-          }} />
-          {/* 툴팁 */}
-          <div style={{
-            position: 'absolute', left: `${tipLeft}%`, top: `${hy}%`,
-            transform: tipBelow ? 'translate(-50%, 16px)' : 'translate(-50%, calc(-100% - 16px))',
-            pointerEvents: 'none', whiteSpace: 'nowrap',
-            background: 'rgba(15,14,22,0.92)', border: '1px solid rgba(123,97,255,0.4)',
-            borderRadius: 8, padding: '8px 12px', backdropFilter: 'blur(4px)',
-            boxShadow: '0 4px 16px rgba(0,0,0,0.5)',
-          }}>
-            <div style={{ display: 'flex', gap: 14 }}>
+          <div style={{ position: 'absolute', left: `${hx}%`, top: `${hy}%`, transform: 'translate(-50%, -50%)', width: 11, height: 11, borderRadius: '50%', background: moodColor, boxShadow: `0 0 14px 4px ${moodColor}`, pointerEvents: 'none' }} />
+          <div
+            style={{
+              position: 'absolute', left: `${tipLeft}%`, top: `${hy}%`,
+              transform: tipBelow ? 'translate(-50%, 16px)' : 'translate(-50%, calc(-100% - 16px))',
+              pointerEvents: 'none', whiteSpace: 'nowrap',
+              background: 'rgba(15,14,22,0.92)', border: '1px solid rgba(123,97,255,0.4)',
+              borderRadius: 8, padding: '8px 12px', backdropFilter: 'blur(4px)',
+              boxShadow: '0 4px 16px rgba(0,0,0,0.5)',
+            }}
+          >
+            <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
               <div>
                 <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', color: 'rgba(255,255,255,0.4)' }}>진행도</div>
                 <div style={{ fontSize: 16, fontWeight: 800, color: '#fff', lineHeight: 1.2 }}>{progress}%</div>
@@ -123,6 +126,15 @@ export default function ClimaxGraph({ data, height = 380 }: ClimaxGraphProps) {
                 <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', color: 'var(--accent)' }}>피크</div>
                 <div style={{ fontSize: 16, fontWeight: 800, color: 'var(--accent)', lineHeight: 1.2 }}>{peakPct}%</div>
               </div>
+              {moodU !== null && (
+                <div>
+                  <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', color: 'rgba(255,255,255,0.4)' }}>분위기</div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginTop: 2 }}>
+                    <span style={{ width: 11, height: 11, borderRadius: '50%', background: moodColor }} />
+                    <span style={{ fontSize: 13, fontWeight: 700, color: '#fff' }}>{moodLabel}</span>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </>
