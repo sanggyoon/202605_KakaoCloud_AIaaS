@@ -111,7 +111,7 @@ export async function fetchMovieVectors(tmdbIds: number[]): Promise<Map<number, 
   if (tmdbIds.length === 0) return map;
   try {
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/movie_vectors?tmdb_id=in.(${tmdbIds.join(',')})&select=tmdb_id,vector`,
+      `${SUPABASE_URL}/rest/v1/movie_vectors?tmdb_id=in.(${tmdbIds.join(',')})&vector_version=eq.roberta-va-v1::arousal&select=tmdb_id,vector`,
       { headers: { apikey: SUPABASE_ANON_KEY } },
     );
     if (!res.ok) return map;
@@ -129,7 +129,7 @@ export async function fetchMovieVectors(tmdbIds: number[]): Promise<Map<number, 
 export async function fetchVector(tmdbId: number): Promise<number[] | null> {
   try {
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/movie_vectors?tmdb_id=eq.${tmdbId}&select=vector&limit=1`,
+      `${SUPABASE_URL}/rest/v1/movie_vectors?tmdb_id=eq.${tmdbId}&vector_version=eq.roberta-va-v1::arousal&select=vector&limit=1`,
       { headers: { apikey: SUPABASE_ANON_KEY } },
     );
     if (!res.ok) return null;
