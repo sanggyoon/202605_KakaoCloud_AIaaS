@@ -144,13 +144,35 @@ export async function fetchVector(tmdbId: number): Promise<number[] | null> {
   }
 }
 
+// 활성 모델 버전 — vm4 app_config 미러에서 1회 읽어 캐시. 실패 시 폴백.
+let _activeVersion: string | null = null;
+export async function getActiveVersion(): Promise<string> {
+  if (_activeVersion) return _activeVersion;
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/app_config?key=eq.active_model_version&select=value&limit=1`,
+      { headers: { apikey: SUPABASE_ANON_KEY } },
+    );
+    if (res.ok) {
+      const rows = (await res.json()) as { value: string }[];
+      if (rows.length && rows[0].value) {
+        _activeVersion = rows[0].value;
+        return _activeVersion;
+      }
+    }
+  } catch { /* empty */ }
+  _activeVersion = 'roberta-va-v1';
+  return _activeVersion;
+}
+
 // arousal+valence 두 축을 함께 fetch (상세용)
 export async function fetchVectorPair(
   tmdbId: number,
 ): Promise<{ arousal: number[]; valence: number[] } | null> {
   try {
+    const av = await getActiveVersion();
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/movie_vectors?tmdb_id=eq.${tmdbId}&vector_version=in.(roberta-va-v1::arousal,roberta-va-v1::valence)&select=vector_version,vector`,
+      `${SUPABASE_URL}/rest/v1/movie_vectors?tmdb_id=eq.${tmdbId}&vector_version=in.(${av}::arousal,${av}::valence)&select=vector_version,vector`,
       { headers: { apikey: SUPABASE_ANON_KEY } },
     );
     if (!res.ok) return null;
@@ -175,8 +197,9 @@ export async function fetchMovieVectorPairs(
   const map = new Map<number, { arousal: number[]; valence: number[] }>();
   if (tmdbIds.length === 0) return map;
   try {
+    const av = await getActiveVersion();
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/movie_vectors?tmdb_id=in.(${tmdbIds.join(',')})&vector_version=in.(roberta-va-v1::arousal,roberta-va-v1::valence)&select=tmdb_id,vector_version,vector`,
+      `${SUPABASE_URL}/rest/v1/movie_vectors?tmdb_id=in.(${tmdbIds.join(',')})&vector_version=in.(${av}::arousal,${av}::valence)&select=tmdb_id,vector_version,vector`,
       { headers: { apikey: SUPABASE_ANON_KEY } },
     );
     if (!res.ok) return map;
