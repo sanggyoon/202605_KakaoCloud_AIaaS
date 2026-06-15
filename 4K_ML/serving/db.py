@@ -31,12 +31,59 @@ def _get(client: httpx.Client, table: str, params: dict) -> list[dict]:
     return r.json()
 
 
+def _get_all(client: httpx.Client, table: str, params: dict) -> list[dict]:
+    """페이지네이션 fetch (대형 테이블용)."""
+    out: list[dict] = []
+    offset = 0
+    while True:
+        rows = _get(client, table, {**params, "limit": "1000", "offset": str(offset)})
+        out.extend(rows)
+        if len(rows) < 1000:
+            break
+        offset += 1000
+    return out
+
+
+def fetch_active_version(client: httpx.Client) -> str:
+    """vm5 model_versions.active=true 의 base 버전(::없는). 없으면 roberta-va-v1."""
+    rows = _get(client, "model_versions", {"select": "model_version", "active": "eq.true"})
+    for r in rows:
+        mv = r.get("model_version", "")
+        if mv and "::" not in mv:
+            return mv
+    return "roberta-va-v1"
+
+
+def select_score_targets(parse_done: set, scene_to_movie: dict, scored_scene_ids: set) -> list:
+    """파싱완료 & 현재 씬 중 활성버전 점수가 하나라도 빠진 영화. (순수)"""
+    movie_scenes: dict = {}
+    for sid, tmdb in scene_to_movie.items():
+        movie_scenes.setdefault(tmdb, []).append(sid)
+    targets = []
+    for tmdb, sids in movie_scenes.items():
+        if tmdb not in parse_done:
+            continue
+        if any(sid not in scored_scene_ids for sid in sids):
+            targets.append(tmdb)
+    return targets
+
+
 def fetch_score_targets(client: httpx.Client) -> list[int]:
-    """parse_state='done' & score_state!='done'인 tmdb_id."""
-    rows = _get(client, "processing_status",
-                {"select": "tmdb_id,parse_state,score_state", "limit": "1000000"})
-    return [r["tmdb_id"] for r in rows
-            if r.get("parse_state") == "done" and r.get("score_state") != "done"]
+    """활성버전 점수가 빠진 파싱완료 영화 (데이터 결산, 스테일 자동 치유)."""
+    mv = fetch_active_version(client)
+    status = _get_all(client, "processing_status", {"select": "tmdb_id,parse_state"})
+    parse_done = {r["tmdb_id"] for r in status if r.get("parse_state") == "done"}
+    subs = _get_all(client, "subtitles", {"select": "id,tmdb_id"})
+    sub_map = {r["id"]: r["tmdb_id"] for r in subs}
+    scenes = _get_all(client, "scenes", {"select": "id,subtitles_id"})
+    scene_to_movie = {
+        r["id"]: sub_map.get(r["subtitles_id"])
+        for r in scenes if sub_map.get(r["subtitles_id"]) is not None
+    }
+    scored = _get_all(client, "scene_scores",
+                      {"select": "scenes_id", "model_version": f"eq.{mv}::arousal"})
+    scored_ids = {r["scenes_id"] for r in scored}
+    return select_score_targets(parse_done, scene_to_movie, scored_ids)
 
 
 def fetch_movie_scenes_for_scoring(client: httpx.Client, tmdb_id: int) -> list[dict]:
