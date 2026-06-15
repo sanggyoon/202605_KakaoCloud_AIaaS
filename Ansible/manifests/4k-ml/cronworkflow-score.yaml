@@ -1,0 +1,15 @@
+# P1 자동화 — 매시 :20 스코어(활성버전 점수 빠진 영화 결산). 겹침 금지.
+apiVersion: argoproj.io/v1alpha1
+kind: CronWorkflow
+metadata:
+  name: score-hourly
+  namespace: ai
+spec:
+  schedule: "20 * * * *"
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 300
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  workflowSpec:
+    workflowTemplateRef:
+      name: score-scenes

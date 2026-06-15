@@ -1,0 +1,15 @@
+# P1 자동화 — 매시 :40 벡터(활성 점수 있는데 활성벡터 없는 영화 증분). 겹침 금지.
+apiVersion: argoproj.io/v1alpha1
+kind: CronWorkflow
+metadata:
+  name: vector-hourly
+  namespace: ai
+spec:
+  schedule: "40 * * * *"
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 300
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  workflowSpec:
+    workflowTemplateRef:
+      name: generate-vectors
