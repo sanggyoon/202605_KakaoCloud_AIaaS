@@ -7,11 +7,11 @@ import {
   posterUrl,
   genreList,
   castList,
-  fetchVector,
+  fetchVectorPair,
   fetchPreferredMovies,
-  fetchMovieVectors,
+  fetchMovieVectorPairs,
 } from '@/app/lib/data';
-import { cosineSimilarity, climaxDescriptor } from '@/app/lib/climax';
+import { cosineSimilarity, climaxDescriptor, meanCenter } from '@/app/lib/climax';
 
 import ClimaxGraph from '@/app/components/ClimaxGraph';
 import MiniGraph from '@/app/components/MiniGraph';
@@ -38,10 +38,11 @@ export default function DetailOverlay({
   const genres = genreList(movie.genre);
   const cast = castList(movie.actors);
 
-  const [vector, setVector] = useState<number[] | null>(null);
+  const [vector, setVector] = useState<number[] | null>(null);   // arousal(높이)
+  const [valence, setValence] = useState<number[] | null>(null); // valence(색)
   const [vectorLoading, setVectorLoading] = useState(true);
   const [similar, setSimilar] = useState<
-    { movie: Movie; vector: number[]; matchPct: number }[]
+    { movie: Movie; arousal: number[]; valence: number[]; matchPct: number }[]
   >([]);
   const [similarLoading, setSimilarLoading] = useState(true);
 
@@ -58,53 +59,67 @@ export default function DetailOverlay({
   // pgvector 50개 후보 → 벡터 일괄 fetch → DTW 정밀 비교 → 상위 4개
   useEffect(() => {
     setVector(null);
+    setValence(null);
     setVectorLoading(true);
     setSimilar([]);
     setSimilarLoading(true);
 
     Promise.all([
-      fetchVector(movie.tmdb_id),
+      fetchVectorPair(movie.tmdb_id),
       fetchPreferredMovies([movie.tmdb_id], [], 50),
-    ]).then(async ([queryVec, rawCandidates]) => {
-      setVector(queryVec);
+    ]).then(async ([pair, rawCandidates]) => {
+      setVector(pair?.arousal ?? null);
+      setValence(pair && pair.valence.length ? pair.valence : null);
       setVectorLoading(false);
 
-      // 현재 영화 자신은 후보에서 제외
       const candidates = rawCandidates.filter(
         (m: Movie) => m.tmdb_id !== movie.tmdb_id,
       );
-
-      if (candidates.length === 0) {
-        setSimilarLoading(false);
-        return;
-      }
-
-      if (!queryVec) {
+      if (candidates.length === 0 || !pair) {
         setSimilar([]);
         setSimilarLoading(false);
         return;
       }
 
-      // 후보 벡터 일괄 fetch → 코사인 유사도 내림차순 상위 4
-      const vecMap = await fetchMovieVectors(
+      // 후보 arousal+valence 쌍 → 0.5·arousal + 0.5·valence 코사인 상위 4
+      const pairMap = await fetchMovieVectorPairs(
         candidates.map((m: Movie) => m.tmdb_id),
       );
+      const qArousal = pair.arousal;
+      const qValenceC = pair.valence.length ? meanCenter(pair.valence) : null;
+
       const ranked = candidates
         .map((m: Movie) => {
-          const cv = vecMap.get(m.tmdb_id);
-          return cv
-            ? { movie: m, vector: cv, sim: cosineSimilarity(queryVec, cv) }
-            : null;
+          const cp = pairMap.get(m.tmdb_id);
+          if (!cp) return null;
+          const aSim = cosineSimilarity(qArousal, cp.arousal);
+          const vSim =
+            qValenceC && cp.valence.length
+              ? cosineSimilarity(qValenceC, meanCenter(cp.valence))
+              : aSim; // valence 없으면 arousal로 대체(가중 왜곡 방지)
+          return {
+            movie: m,
+            arousal: cp.arousal,
+            valence: cp.valence,
+            sim: 0.5 * aSim + 0.5 * vSim,
+          };
         })
         .filter(
-          (x): x is { movie: Movie; vector: number[]; sim: number } =>
-            x !== null,
+          (
+            x,
+          ): x is {
+            movie: Movie;
+            arousal: number[];
+            valence: number[];
+            sim: number;
+          } => x !== null,
         )
         .sort((a, b) => b.sim - a.sim)
         .slice(0, 4)
         .map((x) => ({
           movie: x.movie,
-          vector: x.vector,
+          arousal: x.arousal,
+          valence: x.valence,
           matchPct: Math.round(x.sim * 100),
         }));
 
@@ -279,7 +294,7 @@ export default function DetailOverlay({
                   로딩 중...
                 </span>
               ) : vector ? (
-                <ClimaxGraph data={vector} height={380} />
+                <ClimaxGraph data={vector} valence={valence ?? undefined} height={380} />
               ) : (
                 <span
                   style={{
@@ -292,6 +307,14 @@ export default function DetailOverlay({
                 </span>
               )}
             </div>
+
+            {vector && valence && valence.length > 0 && (
+              <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', gap: 10 }}>
+                <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', whiteSpace: 'nowrap' }}>어두운 분위기</span>
+                <span style={{ flex: 1, height: 8, borderRadius: 4, background: 'linear-gradient(90deg, #2dd4bf, #7b61ff, #ff6ec7)' }} />
+                <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', whiteSpace: 'nowrap' }}>밝은 분위기</span>
+              </div>
+            )}
           </section>
         </div>
 
@@ -332,7 +355,7 @@ export default function DetailOverlay({
                       />
                     ))
                   : similar.map(
-                      ({ movie: m, vector: simVec, matchPct }, idx) => {
+                      ({ movie: m, arousal: simVec, valence: simVal, matchPct }, idx) => {
                         const simImg = posterUrl(m.poster_path);
                         const simGenres = genreList(m.genre).slice(0, 2);
                         const desc = climaxDescriptor(simVec);
@@ -470,7 +493,7 @@ export default function DetailOverlay({
                             </div>
                             {/* 미니그래프 */}
                             <div style={{ flex: 1, minWidth: 80, height: 76 }}>
-                              <MiniGraph data={simVec} height={76} />
+                              <MiniGraph data={simVec} valence={simVal} height={76} />
                             </div>
                             {/* chevron */}
                             <svg
