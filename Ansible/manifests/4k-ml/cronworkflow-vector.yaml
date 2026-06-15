@@ -5,7 +5,8 @@ metadata:
   name: vector-hourly
   namespace: ai
 spec:
-  schedule: "40 * * * *"
+  schedules:
+    - "40 * * * *"
   concurrencyPolicy: Forbid
   startingDeadlineSeconds: 300
   successfulJobsHistoryLimit: 3

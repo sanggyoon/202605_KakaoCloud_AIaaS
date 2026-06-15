@@ -5,7 +5,8 @@ metadata:
   name: score-hourly
   namespace: ai
 spec:
-  schedule: "20 * * * *"
+  schedules:
+    - "20 * * * *"
   concurrencyPolicy: Forbid
   startingDeadlineSeconds: 300
   successfulJobsHistoryLimit: 3

@@ -5,7 +5,8 @@ metadata:
   name: parse-hourly
   namespace: ai
 spec:
-  schedule: "5 * * * *"
+  schedules:
+    - "5 * * * *"
   concurrencyPolicy: Forbid
   startingDeadlineSeconds: 300
   successfulJobsHistoryLimit: 3
