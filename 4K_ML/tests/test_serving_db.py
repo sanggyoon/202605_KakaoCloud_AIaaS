@@ -18,12 +18,28 @@ def test_fetch_score_targets(monkeypatch):
     _env(monkeypatch)
 
     def handler(req):
-        return httpx.Response(200, json=[
-            {"tmdb_id": 1, "parse_state": "done", "score_state": "pending"},
-            {"tmdb_id": 2, "parse_state": "done", "score_state": "done"},
-            {"tmdb_id": 3, "parse_state": "pending", "score_state": "pending"},
-        ])
+        url = str(req.url)
+        if "/rest/v1/model_versions" in url:
+            return httpx.Response(200, json=[{"model_version": "roberta-va-v1"}])
+        if "/rest/v1/processing_status" in url:
+            return httpx.Response(200, json=[
+                {"tmdb_id": 1, "parse_state": "done"},
+                {"tmdb_id": 2, "parse_state": "done"},
+                {"tmdb_id": 3, "parse_state": "pending"},
+            ])
+        if "/rest/v1/subtitles" in url:
+            return httpx.Response(200, json=[
+                {"id": 10, "tmdb_id": 1}, {"id": 20, "tmdb_id": 2}, {"id": 30, "tmdb_id": 3},
+            ])
+        if "/rest/v1/scenes" in url:
+            return httpx.Response(200, json=[
+                {"id": 100, "subtitles_id": 10}, {"id": 200, "subtitles_id": 20}, {"id": 300, "subtitles_id": 30},
+            ])
+        if "/rest/v1/scene_scores" in url:
+            return httpx.Response(200, json=[{"scenes_id": 200}])  # 영화2만 점수 보유
+        return httpx.Response(404)
 
+    # 영화1: 파싱완료+점수없음→타깃, 영화2: 점수보유→제외, 영화3: 파싱미완→제외
     assert db.fetch_score_targets(_client(handler)) == [1]
 
 
