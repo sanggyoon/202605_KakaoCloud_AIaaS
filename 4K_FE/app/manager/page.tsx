@@ -132,6 +132,7 @@ export default function ManagerPage() {
   // 자막 수집 가능한(종료 상태 아닌) 영화 수 + 입력 개수
   const [remaining, setRemaining] = useState<number | null>(null);
   const [collectN, setCollectN] = useState(50);
+  const [activeModel, setActiveModel] = useState<{ version: string; metrics: Record<string, number> } | null>(null);
 
   const fetchStats = async () => {
     setStatsLoading(true);
@@ -160,6 +161,10 @@ export default function ManagerPage() {
   useEffect(() => {
     fetchStats();
     fetchRemaining();
+    fetch('/api/manager/active-model', { cache: 'no-store' })
+      .then((r) => r.json())
+      .then((d) => setActiveModel(d))
+      .catch(() => {});
   }, []);
 
   // 영화 수집 — 입력한 개수만큼 백그라운드 잡 시작 후 폴링
@@ -231,6 +236,17 @@ export default function ManagerPage() {
             <StatCard label="한 달 (30일)" value={fmt(stats?.visitors.month)} />
             <StatCard label="1주일 (7일)" value={fmt(stats?.visitors.week)} />
             <StatCard label="하루 (오늘)" value={fmt(stats?.visitors.day)} />
+          </div>
+        </section>
+
+        {/* 활성 모델 + 지표 */}
+        <section>
+          <h2 style={sectionTitle}>활성 모델</h2>
+          <div style={cardGrid}>
+            <StatCard label="버전" value={activeModel?.version ?? '—'} accent />
+            <StatCard label="Spearman (arousal)" value={fmtMetric(activeModel?.metrics?.spearman_movie_arousal)} />
+            <StatCard label="MAE (arousal)" value={fmtMetric(activeModel?.metrics?.mae_arousal)} />
+            <StatCard label="Spearman (valence)" value={fmtMetric(activeModel?.metrics?.spearman_movie_valence)} />
           </div>
         </section>
 
@@ -351,6 +367,10 @@ export default function ManagerPage() {
       </main>
     </div>
   );
+}
+
+function fmtMetric(n: number | undefined): string {
+  return typeof n === 'number' ? n.toFixed(3) : '—';
 }
 
 function StatCard({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
