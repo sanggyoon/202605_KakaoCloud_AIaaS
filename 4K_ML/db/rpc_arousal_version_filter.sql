@@ -1,0 +1,26 @@
+-- G(임베딩) 후속: vm4 추천 RPC가 movie_vectors에서 arousal 버전만 보도록 수정.
+-- 배경: movie_vectors에 rule-v1 / roberta-va-v1::arousal / ::valence 가 공존하게 됨.
+--       버전 필터가 없으면 후보 검색(코사인)이 여러 버전을 섞어 깨진다.
+--
+-- 적용 위치: vm4(data.peakly.art) Supabase Studio → SQL Editor.
+--
+-- ─────────────────────────────────────────────────────────────
+-- STEP 1) 현재 함수 정의 덤프 (먼저 실행해 실제 본문/별칭 확인)
+-- ─────────────────────────────────────────────────────────────
+-- SELECT pg_get_functiondef(oid)
+-- FROM pg_proc
+-- WHERE proname IN ('find_preferred_movies', 'find_similar_movies');
+--
+-- ─────────────────────────────────────────────────────────────
+-- STEP 2) 본문 내 movie_vectors 참조 WHERE/JOIN 에 아래 조건을 AND 로 추가
+--   AND <movie_vectors 별칭>.vector_version = 'roberta-va-v1::arousal'
+-- (쿼리 벡터 조회 + 후보 벡터 조회 양쪽 모두. 별칭은 실제 정의에 맞춤)
+--
+-- ─────────────────────────────────────────────────────────────
+-- STEP 3) 아래에 덤프+수정한 CREATE OR REPLACE FUNCTION 전문을 붙여 넣고 실행.
+--         (실제 본문 확보 후 채움 — 추측 금지)
+-- ─────────────────────────────────────────────────────────────
+
+-- <<< find_preferred_movies — 수정된 정의 (STEP 1 덤프 후 채움) >>>
+
+-- <<< find_similar_movies — 수정된 정의 (STEP 1 덤프 후 채움) >>>
