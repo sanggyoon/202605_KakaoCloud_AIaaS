@@ -144,6 +144,57 @@ export async function fetchVector(tmdbId: number): Promise<number[] | null> {
   }
 }
 
+// arousal+valence 두 축을 함께 fetch (상세용)
+export async function fetchVectorPair(
+  tmdbId: number,
+): Promise<{ arousal: number[]; valence: number[] } | null> {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/movie_vectors?tmdb_id=eq.${tmdbId}&vector_version=in.(roberta-va-v1::arousal,roberta-va-v1::valence)&select=vector_version,vector`,
+      { headers: { apikey: SUPABASE_ANON_KEY } },
+    );
+    if (!res.ok) return null;
+    const rows = (await res.json()) as { vector_version: string; vector: string | number[] }[];
+    let arousal: number[] | null = null;
+    let valence: number[] = [];
+    for (const r of rows) {
+      const v = Array.isArray(r.vector) ? r.vector : (JSON.parse(r.vector as string) as number[]);
+      if (r.vector_version.endsWith('::arousal')) arousal = v;
+      else if (r.vector_version.endsWith('::valence')) valence = v;
+    }
+    return arousal ? { arousal, valence } : null;
+  } catch {
+    return null;
+  }
+}
+
+// 여러 영화의 arousal+valence 쌍 (유사 후보용). arousal 없는 영화는 제외.
+export async function fetchMovieVectorPairs(
+  tmdbIds: number[],
+): Promise<Map<number, { arousal: number[]; valence: number[] }>> {
+  const map = new Map<number, { arousal: number[]; valence: number[] }>();
+  if (tmdbIds.length === 0) return map;
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/movie_vectors?tmdb_id=in.(${tmdbIds.join(',')})&vector_version=in.(roberta-va-v1::arousal,roberta-va-v1::valence)&select=tmdb_id,vector_version,vector`,
+      { headers: { apikey: SUPABASE_ANON_KEY } },
+    );
+    if (!res.ok) return map;
+    const rows = (await res.json()) as { tmdb_id: number; vector_version: string; vector: string | number[] }[];
+    for (const r of rows) {
+      const v = Array.isArray(r.vector) ? r.vector : (JSON.parse(r.vector as string) as number[]);
+      const cur = map.get(r.tmdb_id) ?? { arousal: [], valence: [] };
+      if (r.vector_version.endsWith('::arousal')) cur.arousal = v;
+      else if (r.vector_version.endsWith('::valence')) cur.valence = v;
+      map.set(r.tmdb_id, cur);
+    }
+    for (const [k, val] of map) if (val.arousal.length === 0) map.delete(k);
+    return map;
+  } catch {
+    return map;
+  }
+}
+
 // 최근 본 영화 tmdb_id 관리 (localStorage)
 const RECENT_KEY = '4k_recent_ids';
 
