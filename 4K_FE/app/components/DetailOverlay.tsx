@@ -154,7 +154,7 @@ export default function DetailOverlay({
           >
             <path d="m15 18-6-6 6-6" />
           </svg>
-          뒤로 가기{'('} esc {')'}
+          뒤로 가기{' ('} esc {')'}
         </button>
 
         {/* 단일 컬럼 레이아웃 (포스터 없음) */}

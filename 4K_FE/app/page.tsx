@@ -131,7 +131,7 @@ export default function OnboardingPage() {
             <em className="tagline-key">감정</em>을
           </span>{' '}
           <span className="tagline-word" style={{ animationDelay: '0.7s' }}>
-            <em className="tagline-key">데이터</em>로
+            <em className="tagline-key">선</em>으로
           </span>{' '}
           <span className="tagline-word" style={{ animationDelay: '0.95s' }}>
             그리다
