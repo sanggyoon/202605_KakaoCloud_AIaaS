@@ -14,7 +14,7 @@ spec:
       nodeSelector:
         workload: gpu
       container:
-        image: ghcr.io/sanggyoon/4k-ml:0de3796
+        image: ghcr.io/sanggyoon/4k-ml:19789fc
         command: ["python", "-m", "subtitle_parse.parse_subtitles"]
         envFrom:
           - secretRef:
