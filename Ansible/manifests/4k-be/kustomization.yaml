@@ -11,4 +11,4 @@ resources:
 
 images:
   - name: ghcr.io/sanggyoon/4k-be
-    newTag: "0de3796"
+    newTag: "bddc83e"
