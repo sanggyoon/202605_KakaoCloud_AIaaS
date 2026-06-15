@@ -128,3 +128,10 @@ export function climaxDescriptor(v: number[]): string {
   if (m.peakCount >= 7) return '쉴 틈 없는 다중 클라이맥스';
   return '중반 정점의 산형 곡선';
 }
+
+// 평균 중심화 — raw(전부 양수) 벡터의 코사인 변별력 확보(=피어슨 상관)
+export function meanCenter(v: number[]): number[] {
+  if (v.length === 0) return [];
+  const mean = v.reduce((s, x) => s + x, 0) / v.length;
+  return v.map((x) => x - mean);
+}
