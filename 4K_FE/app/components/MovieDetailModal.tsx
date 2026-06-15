@@ -22,28 +22,15 @@ interface MovieMeta {
   has_vector?: boolean | null;
 }
 
-interface VectorRow {
-  vector?: string | number[] | null;
-  vector_version?: string | null;
-  normalization?: string | null;
-  smoothing_method?: string | null;
+interface ProcessingInfo {
+  states?: Record<string, string | number | null>;
+  counts?: { scenes?: number; dialogues?: number; scores_active?: number };
 }
 
 interface DetailResponse {
   movie: MovieMeta | null;
-  vector: VectorRow | null;
+  processing?: ProcessingInfo;
   detail?: string; // 에러 메시지 (FastAPI HTTPException)
-}
-
-// pgvector REST 응답("[0.1,...]" 문자열 또는 배열)을 number[]로 변환
-function parseVector(raw: string | number[] | null | undefined): number[] {
-  if (!raw) return [];
-  if (Array.isArray(raw)) return raw;
-  try {
-    return JSON.parse(raw) as number[];
-  } catch {
-    return [];
-  }
 }
 
 // 수정 가능한 텍스트 메타데이터 필드 (라벨, 멀티라인 여부)
@@ -76,11 +63,11 @@ export default function MovieDetailModal({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [meta, setMeta] = useState<MovieMeta | null>(null);
-  const [vectorRow, setVectorRow] = useState<VectorRow | null>(null);
+  const [processing, setProcessing] = useState<ProcessingInfo | null>(null);
+  const [reprocessing, setReprocessing] = useState(false);
 
   // 수정 폼 상태 — 모든 값은 문자열로 다룬 뒤 저장 시 변환
   const [form, setForm] = useState<Record<string, string>>({});
-  const [vectorText, setVectorText] = useState('');
 
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState<string | null>(null);
@@ -97,7 +84,7 @@ export default function MovieDetailModal({
         return;
       }
       setMeta(data.movie);
-      setVectorRow(data.vector);
+      setProcessing(data.processing ?? null);
 
       // 폼 초기화
       const initial: Record<string, string> = {};
@@ -106,9 +93,6 @@ export default function MovieDetailModal({
         initial[key as string] = v == null ? '' : String(v);
       }
       setForm(initial);
-
-      const vec = parseVector(data.vector?.vector);
-      setVectorText(vec.length ? JSON.stringify(vec) : '');
     } catch {
       setError('상세 정보를 불러오지 못했습니다.');
     } finally {
@@ -155,26 +139,7 @@ export default function MovieDetailModal({
         }
       }
 
-      const payload: { movie: Record<string, unknown>; vector?: number[] } = { movie };
-
-      // 벡터가 입력되어 있으면 파싱해서 함께 전송
-      const vt = vectorText.trim();
-      if (vt !== '') {
-        let parsed: unknown;
-        try {
-          parsed = JSON.parse(vt);
-        } catch {
-          setSaveMsg('벡터는 JSON 숫자 배열이어야 합니다. 예: [0.1, -0.2, ...]');
-          setSaving(false);
-          return;
-        }
-        if (!Array.isArray(parsed) || !parsed.every((x) => typeof x === 'number')) {
-          setSaveMsg('벡터는 숫자만 담긴 배열이어야 합니다.');
-          setSaving(false);
-          return;
-        }
-        payload.vector = parsed as number[];
-      }
+      const payload = { movie };
 
       const res = await fetch(`/api/manager/movies/${tmdbId}`, {
         method: 'PATCH',
@@ -224,8 +189,27 @@ export default function MovieDetailModal({
     }
   };
 
+  const handleReprocess = async () => {
+    if (!window.confirm('subdl에서 자막을 강제로 다시 받고, 파싱·스코어·벡터를 재처리 대기로 되돌립니다. 계속할까요?')) return;
+    setReprocessing(true);
+    setSaveMsg(null);
+    try {
+      const res = await fetch(`/api/manager/movies/${tmdbId}/reprocess`, { method: 'POST' });
+      const data = await res.json();
+      if (!res.ok) {
+        setSaveMsg(data.detail ?? '재처리에 실패했습니다.');
+        return;
+      }
+      setSaveMsg(`자막: ${data.subtitle} — ${data.message ?? ''} ✓`);
+      await load();
+    } catch {
+      setSaveMsg('재처리 중 오류가 발생했습니다.');
+    } finally {
+      setReprocessing(false);
+    }
+  };
+
   const img = posterUrl(meta?.poster_path ?? form.poster_path);
-  const vecPreview = parseVector(vectorRow?.vector);
 
   return (
     <div
@@ -296,10 +280,12 @@ export default function MovieDetailModal({
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8, fontSize: 12, color: 'rgba(255,255,255,0.6)' }}>
                   <Badge label="벡터" value={meta?.has_vector ? '있음 ✓' : '없음'} ok={!!meta?.has_vector} />
-                  <KV k="벡터 버전" v={vectorRow?.vector_version ?? '—'} />
-                  <KV k="정규화" v={vectorRow?.normalization ?? '—'} />
-                  <KV k="스무딩" v={vectorRow?.smoothing_method ?? '—'} />
-                  <KV k="차원 수" v={vecPreview.length ? `${vecPreview.length}` : '—'} />
+                  <KV k="자막" v={String(processing?.states?.subtitle_state ?? '—')} />
+                  <KV k="파싱" v={String(processing?.states?.parse_state ?? '—')} />
+                  <KV k="라벨" v={String(processing?.states?.label_state ?? '—')} />
+                  <KV k="스코어" v={String(processing?.states?.score_state ?? '—')} />
+                  <KV k="벡터화" v={String(processing?.states?.vector_state ?? '—')} />
+                  <KV k="씬/대사/점수" v={`${processing?.counts?.scenes ?? 0} / ${processing?.counts?.dialogues ?? 0} / ${processing?.counts?.scores_active ?? 0}`} />
                 </div>
               </div>
 
@@ -338,26 +324,6 @@ export default function MovieDetailModal({
                   ))}
                 </div>
               </Section>
-
-              {/* 클라이맥스 벡터 (씬 스코어 시계열) 수정 */}
-              <Section title="클라이맥스 벡터 (씬 스코어 시계열)">
-                <p style={{ margin: '0 0 8px', fontSize: 11, color: 'rgba(255,255,255,0.35)', lineHeight: 1.5 }}>
-                  씬 스코어를 시계열 처리·정규화한 {vecPreview.length || 200}차원 벡터입니다.
-                  JSON 숫자 배열 형식으로 직접 수정할 수 있습니다.
-                </p>
-                <textarea
-                  value={vectorText}
-                  onChange={(e) => setVectorText(e.target.value)}
-                  rows={6}
-                  placeholder="[0.12, -0.34, ...]"
-                  style={{
-                    ...inputStyle,
-                    fontFamily: 'var(--font-mono), monospace',
-                    fontSize: 11, lineHeight: 1.5, resize: 'vertical',
-                    whiteSpace: 'pre', overflowWrap: 'normal', overflowX: 'auto',
-                  }}
-                />
-              </Section>
             </div>
           )}
         </div>
@@ -383,6 +349,20 @@ export default function MovieDetailModal({
             }}>
               <span style={{ fontSize: 13 }}>↻</span>
               {refreshing ? 'TMDB 갱신 중...' : 'TMDB에서 갱신'}
+            </button>
+
+            {/* 단건 재처리: 자막 강제 재수집 + 다운스트림 리셋 */}
+            <button onClick={handleReprocess} disabled={reprocessing || saving || refreshing} style={{
+              display: 'flex', alignItems: 'center', gap: 6,
+              padding: '8px 14px', borderRadius: 7, marginLeft: 8,
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.12)',
+              color: 'rgba(255,255,255,0.8)', fontSize: 12, fontWeight: 600,
+              fontFamily: 'inherit', cursor: (reprocessing || saving || refreshing) ? 'not-allowed' : 'pointer',
+              opacity: (reprocessing || saving || refreshing) ? 0.5 : 1,
+            }}>
+              <span style={{ fontSize: 13 }}>⟳</span>
+              {reprocessing ? '재처리 중...' : '이 영화 다시 처리 (자막 재수집)'}
             </button>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
