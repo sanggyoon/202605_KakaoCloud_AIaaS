@@ -226,7 +226,80 @@ async def movie_detail(tmdb_id: int):
         )
         vector_row = v_r.json()[0] if v_r.status_code == 200 and v_r.json() else None
 
-        return {"movie": movie_rows[0], "vector": vector_row}
+        processing = await _movie_processing(client, tmdb_id)
+        return {"movie": movie_rows[0], "vector": vector_row, "processing": processing}
+
+
+@app.post("/api/movies/{tmdb_id}/reprocess")
+async def reprocess_movie(tmdb_id: int):
+    """단건 자막 강제 재수집 → 성공 시 parse/score/vector 리셋(크론·GPU가 재처리)."""
+    async with httpx.AsyncClient(timeout=120, verify=False) as client:
+        result = await sc.collect_one(client, tmdb_id)
+        if result["state"] == "done":
+            await sc.reset_downstream(client, tmdb_id)
+        return {"subtitle": result["state"], "message": result["message"]}
+
+
+async def _active_base(client: httpx.AsyncClient) -> str:
+    url = os.getenv("AI_DATABASE_URL", "")
+    key = os.getenv("AI_DATABASE_KEY", "")
+    h = {"apikey": key, "Authorization": f"Bearer {key}"}
+    bu = os.getenv("AI_BASIC_USER")
+    auth = (bu, os.getenv("AI_BASIC_PASS", "")) if bu else None
+    r = await client.get(f"{url}/rest/v1/model_versions",
+                         params={"select": "model_version", "active": "eq.true"},
+                         headers=h, auth=auth)
+    if r.status_code in (200, 206):
+        for row in r.json():
+            mv = row.get("model_version", "")
+            if mv and "::" not in mv:
+                return mv
+    return "roberta-va-v1"
+
+
+async def _movie_processing(client: httpx.AsyncClient, tmdb_id: int) -> dict:
+    """vm5: 한 영화의 상태(5개+retry) + 개수(scenes/dialogues/활성 score)."""
+    url = os.getenv("AI_DATABASE_URL", "")
+    key = os.getenv("AI_DATABASE_KEY", "")
+    if not url or not key:
+        return {}
+    h = {"apikey": key, "Authorization": f"Bearer {key}"}
+    bu = os.getenv("AI_BASIC_USER")
+    auth = (bu, os.getenv("AI_BASIC_PASS", "")) if bu else None
+
+    async def _count(table, params):
+        ch = {**h, "Prefer": "count=exact", "Range-Unit": "items", "Range": "0-0"}
+        r = await client.get(f"{url}/rest/v1/{table}", params={"select": "id", **params},
+                             headers=ch, auth=auth)
+        return _parse_count(r.headers.get("content-range")) if r.status_code in (200, 206) else 0
+
+    ps = await client.get(f"{url}/rest/v1/processing_status",
+                          params={"select": "subtitle_state,parse_state,label_state,score_state,vector_state,retry_count",
+                                  "tmdb_id": f"eq.{tmdb_id}", "limit": "1"}, headers=h, auth=auth)
+    states = (ps.json()[0] if ps.status_code in (200, 206) and ps.json() else {})
+
+    subs = await client.get(f"{url}/rest/v1/subtitles",
+                            params={"select": "id", "tmdb_id": f"eq.{tmdb_id}", "limit": "1"},
+                            headers=h, auth=auth)
+    sid = subs.json()[0]["id"] if subs.status_code in (200, 206) and subs.json() else None
+    scenes = dialogues = scores_active = 0
+    if sid is not None:
+        scenes = await _count("scenes", {"subtitles_id": f"eq.{sid}"})
+        dialogues = await _count("dialogues", {"subtitles_id": f"eq.{sid}"})
+        sc_rows = await client.get(f"{url}/rest/v1/scenes",
+                                   params={"select": "id", "subtitles_id": f"eq.{sid}", "limit": "100000"},
+                                   headers=h, auth=auth)
+        ids = [r["id"] for r in (sc_rows.json() if sc_rows.status_code in (200, 206) else [])]
+        if ids:
+            mv = await _active_base(client)
+            in_list = ",".join(str(i) for i in ids)
+            ss = await client.get(f"{url}/rest/v1/scene_scores",
+                                  params={"select": "scenes_id", "scenes_id": f"in.({in_list})",
+                                          "model_version": f"eq.{mv}::arousal", "limit": "100000"},
+                                  headers=h, auth=auth)
+            scores_active = len(ss.json()) if ss.status_code in (200, 206) else 0
+    return {"states": states, "counts": {"scenes": scenes, "dialogues": dialogues,
+                                         "scores_active": scores_active}}
 
 
 # movies 테이블에서 클라이언트가 수정할 수 있는 컬럼 화이트리스트
@@ -376,15 +449,15 @@ async def active_model():
         async with httpx.AsyncClient(timeout=15, verify=False) as client:
             r = await client.get(
                 f"{url}/rest/v1/model_versions",
-                params={"select": "model_version", "active": "eq.true"},
+                params={"select": "model_version,metrics", "active": "eq.true"},
                 headers=headers, auth=auth,
             )
             if r.status_code in (200, 206):
                 for row in r.json():
                     mv = row.get("model_version", "")
                     if mv and "::" not in mv:
-                        return {"version": mv}
-    return {"version": "roberta-va-v1"}  # 폴백
+                        return {"version": mv, "metrics": row.get("metrics") or {}}
+    return {"version": "roberta-va-v1", "metrics": {}}  # 폴백
 
 
 PROC_STATES = ["subtitle_state", "parse_state", "label_state", "score_state", "vector_state"]
