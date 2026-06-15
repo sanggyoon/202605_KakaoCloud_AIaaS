@@ -7,7 +7,7 @@ def test_build_rows_arousal_required_valence_optional():
     flat = [(i / 4, 0.5) for i in range(5)]
     ar = {100: peak, 200: peak, 300: [(0.0, 0.5)] * 5}  # 300은 arousal 평탄→스킵
     va = {100: peak, 200: flat, 300: peak}
-    rows, done = build_rows(ar, va)
+    rows, done = build_rows(ar, va, "roberta-va-v1")
 
     versions = {(r["tmdb_id"], r["vector_version"]) for r in rows}
     # 100: arousal+valence 둘 다

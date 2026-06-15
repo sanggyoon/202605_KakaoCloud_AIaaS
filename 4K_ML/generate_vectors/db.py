@@ -119,6 +119,69 @@ def set_has_vector(client: httpx.Client, tmdb_ids: list[int]) -> None:
             raise RuntimeError(f"vm4 has_vector 실패 {r.status_code}: {r.text[:300]}")
 
 
+def fetch_active_version(client: httpx.Client) -> str:
+    """vm5 model_versions.active=true base 버전. 없으면 roberta-va-v1."""
+    url, _ = _ai()
+    r = client.get(f"{url}/rest/v1/model_versions",
+                   params={"select": "model_version", "active": "eq.true"},
+                   headers=_ai_headers(), auth=_ai_auth(), timeout=60)
+    if r.status_code in (200, 206):
+        for row in r.json():
+            mv = row.get("model_version", "")
+            if mv and "::" not in mv:
+                return mv
+    return "roberta-va-v1"
+
+
+def fetch_vectored_tmdbs(client: httpx.Client, version_axis: str) -> set:
+    """vm4 movie_vectors에 해당 버전이 이미 있는 tmdb_id 집합."""
+    url, key = _data()
+    headers = {"apikey": key, "Authorization": f"Bearer {key}"}
+    out: set = set()
+    offset = 0
+    while True:
+        r = client.get(f"{url}/rest/v1/movie_vectors",
+                       params={"select": "tmdb_id", "vector_version": f"eq.{version_axis}",
+                               "limit": 1000, "offset": offset},
+                       headers=headers, auth=_data_auth(), timeout=60)
+        if r.status_code not in (200, 206):
+            break
+        rows = r.json()
+        out.update(x["tmdb_id"] for x in rows)
+        if len(rows) < 1000:
+            break
+        offset += 1000
+    return out
+
+
+def reconcile_has_vector(client: httpx.Client, active_tmdbs: set) -> None:
+    """vm4 movies.has_vector 보정. has_vector=true 인데 활성벡터 없는 영화 → false."""
+    url, key = _data()
+    headers = {"apikey": key, "Authorization": f"Bearer {key}"}
+    rows: list[dict] = []
+    offset = 0
+    while True:
+        r = client.get(f"{url}/rest/v1/movies",
+                       params={"select": "tmdb_id", "has_vector": "eq.true",
+                               "limit": 1000, "offset": offset},
+                       headers=headers, auth=_data_auth(), timeout=60)
+        if r.status_code not in (200, 206):
+            break
+        batch = r.json()
+        rows.extend(batch)
+        if len(batch) < 1000:
+            break
+        offset += 1000
+    stale = [r["tmdb_id"] for r in rows if r["tmdb_id"] not in active_tmdbs]
+    for i in range(0, len(stale), BATCH_SIZE):
+        chunk = stale[i:i + BATCH_SIZE]
+        ids = ",".join(str(t) for t in chunk)
+        client.patch(f"{url}/rest/v1/movies",
+                     params={"tmdb_id": f"in.({ids})"},
+                     json={"has_vector": False},
+                     headers=_data_headers(), auth=_data_auth(), timeout=60)
+
+
 def set_vector_state(client: httpx.Client, tmdb_ids: list[int]) -> None:
     """vm5 processing_status.vector_state='done' 배치 (멱등 원장)."""
     url, _ = _ai()
