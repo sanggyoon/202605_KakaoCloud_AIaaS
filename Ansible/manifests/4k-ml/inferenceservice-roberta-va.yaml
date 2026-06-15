@@ -13,7 +13,7 @@ spec:
       workload: gpu          # ml-models PVC가 vm5(local-path)라 vm5 고정. GPU는 요청 안 함.
     containers:
       - name: kserve-container
-        image: ghcr.io/sanggyoon/4k-ml:b3d3458
+        image: ghcr.io/sanggyoon/4k-ml:0de3796
         command: ["python", "-m", "serving.serve"]   # FastAPI(uvicorn) :8080, KServe V1 프로토콜
         ports:
           - containerPort: 8080
