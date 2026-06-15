@@ -6,8 +6,26 @@ import { useRouter } from 'next/navigation';
 
 interface Stats {
   visitors: { total: number; month: number; week: number; day: number };
-  movies: { total: number; with_graph: number; without_graph: number };
+  processing: Record<string, Record<string, number>>;
 }
+
+// vm5 processing_status 단계 + 상태값 표시 라벨
+const PROC_STAGES: { key: string; label: string }[] = [
+  { key: 'subtitle_state', label: '자막 수집' },
+  { key: 'parse_state', label: '파싱' },
+  { key: 'label_state', label: 'LLM 라벨링' },
+  { key: 'score_state', label: '스코어링' },
+  { key: 'vector_state', label: '벡터 생성' },
+];
+const STATE_LABELS: Record<string, string> = {
+  done: '완료', failed: '실패', skipped: '스킵', pending: '대기',
+};
+const STATE_BG: Record<string, string> = {
+  done: 'rgba(45,212,191,0.12)',
+  failed: 'rgba(255,95,162,0.14)',
+  skipped: 'rgba(255,255,255,0.04)',
+  pending: 'rgba(123,97,255,0.12)',
+};
 
 // BE 잡 레지스트리 상태 + 폴링용 running 플래그
 interface Job {
@@ -216,14 +234,57 @@ export default function ManagerPage() {
           </div>
         </section>
 
-        {/* 영화 데이터 통계 */}
+        {/* 처리 현황 (vm5 processing_status 단계별 상태값) */}
         <section>
-          <h2 style={sectionTitle}>영화 데이터</h2>
-          <div style={cardGrid}>
-            <StatCard label="전체 영화" value={fmt(stats?.movies.total)} />
-            <StatCard label="그래프 있음" value={fmt(stats?.movies.with_graph)} accent />
-            <StatCard label="그래프 없음" value={fmt(stats?.movies.without_graph)} />
-          </div>
+          <h2 style={sectionTitle}>처리 현황</h2>
+          {statsLoading ? (
+            <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 13 }}>로딩 중…</div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {PROC_STAGES.map(({ key, label }) => {
+                const counts = stats?.processing?.[key] ?? {};
+                const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+                return (
+                  <div
+                    key={key}
+                    style={{
+                      background: 'rgba(255,255,255,0.02)',
+                      border: '1px solid rgba(255,255,255,0.06)',
+                      borderRadius: 12,
+                      padding: '16px 20px',
+                    }}
+                  >
+                    <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 10 }}>{label}</div>
+                    {entries.length === 0 ? (
+                      <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)' }}>데이터 없음</span>
+                    ) : (
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                        {entries.map(([state, n]) => (
+                          <span
+                            key={state}
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'baseline',
+                              gap: 6,
+                              padding: '6px 12px',
+                              borderRadius: 8,
+                              background: STATE_BG[state] ?? 'rgba(255,255,255,0.05)',
+                              border: '1px solid rgba(255,255,255,0.08)',
+                            }}
+                          >
+                            <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.6)', fontWeight: 600 }}>
+                              {STATE_LABELS[state] ?? state}
+                            </span>
+                            <span style={{ fontSize: 16, fontWeight: 800 }}>{n.toLocaleString('ko-KR')}</span>
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </section>
 
         {/* 기능 버튼 */}

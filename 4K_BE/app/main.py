@@ -364,9 +364,43 @@ async def _count(client: httpx.AsyncClient, table: str, params: dict) -> int:
     return _parse_count(r.headers.get("content-range"))
 
 
+PROC_STATES = ["subtitle_state", "parse_state", "label_state", "score_state", "vector_state"]
+
+
+async def _processing_counts(client: httpx.AsyncClient) -> dict:
+    """vm5 processing_status의 단계별 상태값 개수 집계 (null은 pending으로 버킷)."""
+    url = os.getenv("AI_DATABASE_URL", "")
+    key = os.getenv("AI_DATABASE_KEY", "")
+    if not url or not key:
+        return {}
+    headers = {"apikey": key, "Authorization": f"Bearer {key}"}
+    bu = os.getenv("AI_BASIC_USER")
+    auth = (bu, os.getenv("AI_BASIC_PASS", "")) if bu else None
+    result: dict = {s: {} for s in PROC_STATES}
+    offset, page = 0, 1000
+    while True:
+        r = await client.get(
+            f"{url}/rest/v1/processing_status",
+            params={"select": ",".join(PROC_STATES), "limit": page, "offset": offset},
+            headers=headers,
+            auth=auth,
+        )
+        if r.status_code not in (200, 206):
+            break
+        rows = r.json()
+        for row in rows:
+            for s in PROC_STATES:
+                v = row.get(s) or "pending"
+                result[s][v] = result[s].get(v, 0) + 1
+        if len(rows) < page:
+            break
+        offset += page
+    return result
+
+
 @app.get("/api/stats")
 async def stats():
-    """매니저 모니터링용 집계 — 방문자(기간별) + 영화 데이터(그래프 유무)."""
+    """매니저 모니터링용 집계 — 방문자(기간별) + vm5 처리 현황(단계별 상태값 개수)."""
     now = datetime.now(timezone.utc)
     day_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
     week_start = now - timedelta(days=7)
@@ -377,14 +411,9 @@ async def stats():
         month_v = await _count(client, "visits", {"created_at": f"gte.{month_start.isoformat()}"})
         week_v = await _count(client, "visits", {"created_at": f"gte.{week_start.isoformat()}"})
         day_v = await _count(client, "visits", {"created_at": f"gte.{day_start.isoformat()}"})
-        total_m = await _count(client, "movies", {})
-        with_graph = await _count(client, "movies", {"has_vector": "eq.true"})
+        processing = await _processing_counts(client)
 
     return {
         "visitors": {"total": total_v, "month": month_v, "week": week_v, "day": day_v},
-        "movies": {
-            "total": total_m,
-            "with_graph": with_graph,
-            "without_graph": total_m - with_graph,
-        },
+        "processing": processing,
     }

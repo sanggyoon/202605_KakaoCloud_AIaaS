@@ -42,12 +42,17 @@ def test_log_visit_requires_visitor_id(monkeypatch):
 
 
 def test_stats_returns_counts(monkeypatch):
+    monkeypatch.setenv("AI_DATABASE_URL", "http://vm5")
+    monkeypatch.setenv("AI_DATABASE_KEY", "k")
+
     def handler(req: httpx.Request) -> httpx.Response:
         url = str(req.url)
-        if "/rest/v1/movies" in url and "has_vector=eq.true" in url:
-            return httpx.Response(206, json=[], headers={"Content-Range": "0-0/30"})
-        if "/rest/v1/movies" in url:
-            return httpx.Response(206, json=[], headers={"Content-Range": "0-0/100"})
+        if "/rest/v1/processing_status" in url:
+            return httpx.Response(200, json=[
+                {"subtitle_state": "done", "parse_state": "done", "label_state": "done", "score_state": "done", "vector_state": "done"},
+                {"subtitle_state": "done", "parse_state": "done", "label_state": "done", "score_state": "done", "vector_state": "pending"},
+                {"subtitle_state": "skipped", "parse_state": None, "label_state": None, "score_state": None, "vector_state": None},
+            ])
         if "/rest/v1/visits" in url:
             return httpx.Response(206, json=[], headers={"Content-Range": "0-0/42"})
         return httpx.Response(404)
@@ -59,17 +64,22 @@ def test_stats_returns_counts(monkeypatch):
     data = res.json()
     assert data["visitors"]["total"] == 42
     assert data["visitors"]["day"] == 42
-    assert data["movies"]["total"] == 100
-    assert data["movies"]["with_graph"] == 30
-    assert data["movies"]["without_graph"] == 70
+    p = data["processing"]
+    assert p["subtitle_state"]["done"] == 2
+    assert p["subtitle_state"]["skipped"] == 1
+    assert p["vector_state"]["done"] == 1
+    assert p["vector_state"]["pending"] == 2  # 1 pending + 1 null→pending
 
 
-def test_stats_handles_missing_content_range(monkeypatch):
+def test_stats_handles_missing_ai_env(monkeypatch):
+    monkeypatch.delenv("AI_DATABASE_URL", raising=False)
+    monkeypatch.delenv("AI_DATABASE_KEY", raising=False)
+
     def handler(req: httpx.Request) -> httpx.Response:
-        return httpx.Response(200, json=[])  # Content-Range 없음
+        return httpx.Response(200, json=[])  # visits만; AI env 없으면 processing은 {}
 
     _patch_client(monkeypatch, handler)
     client = TestClient(main.app)
     res = client.get("/api/stats")
     assert res.status_code == 200
-    assert res.json()["movies"]["total"] == 0
+    assert res.json()["processing"] == {}
