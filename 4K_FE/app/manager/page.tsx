@@ -263,11 +263,15 @@ export default function ManagerPage() {
                 style={{ ...actionBtn(rangeLoading || vStart > vEnd), padding: '8px 10px', fontSize: 12 }}>
                 {rangeLoading ? '조회 중…' : '기간 방문자'}
               </button>
-              {rangeCount !== null && (
-                <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.7)', fontWeight: 700, lineHeight: 1.4 }}>
-                  {vStart} ~ {vEnd}<br />{rangeCount.toLocaleString('ko-KR')}명
-                </span>
-              )}
+            </div>
+            <div style={{ ...card, justifyContent: 'center' }}>
+              <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.45)', fontWeight: 600 }}>기간 방문자</span>
+              <span style={{ fontSize: 30, fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--accent)' }}>
+                {rangeCount !== null ? rangeCount.toLocaleString('ko-KR') : '—'}
+              </span>
+              <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)' }}>
+                {rangeCount !== null ? `${vStart} ~ ${vEnd}` : '날짜 선택 후 조회'}
+              </span>
             </div>
           </div>
         </section>
@@ -276,11 +280,14 @@ export default function ManagerPage() {
         <div style={panelGrid}>
           <section style={card}>
             <h2 style={sectionTitle}>처리 현황</h2>
-            <p style={panelDesc}>자막 → 파싱 → 라벨 → 스코어 → 벡터 단계별 처리 건수</p>
+            <p style={panelDesc}>
+              자막 → 파싱 → 라벨 → 스코어 → 벡터 단계별 처리 건수
+              {' · '}전체 영화 {Object.values(stats?.processing?.subtitle_state ?? {}).reduce((a, b) => a + b, 0).toLocaleString('ko-KR')}개
+            </p>
             {statsLoading ? (
               <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 13 }}>로딩 중…</div>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 10 }}>
                 {PROC_STAGES.map(({ key, label }) => {
                   const counts = stats?.processing?.[key] ?? {};
                   const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
@@ -307,9 +314,10 @@ export default function ManagerPage() {
             <p style={panelDesc}>모니터링·인프라 콘솔과 DB 바로가기</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               <LinkRow label="영화 정보 리스트" desc="DB 영화 목록·편집" onClick={() => router.push('/movie_list')} />
+              <LinkRow label="Understand Everything" desc="코드베이스 지식 그래프" href="https://understand.peakly.art" />
               <LinkRow label="Grafana" desc="메트릭 대시보드" href="https://grafana.peakly.art" />
               <LinkRow label="ArgoCD" desc="배포 (GitOps)" href="https://argocd.peakly.art" />
-              <LinkRow label="Argo Workflow" desc="워크플로 실행" href="https://workflow.peakly.art" />
+              <LinkRow label="Argo Workflow" desc="워크플로 실행" href="https://workflows.peakly.art" />
               <LinkRow label="SVC DB" desc="서비스 DB (vm4)" href="https://data.peakly.art" />
               <LinkRow label="AI DB" desc="AI DB (vm5)" href="https://ai.peakly.art" />
             </div>
@@ -365,8 +373,8 @@ function fmtMetric(n: number | undefined): string {
 function StatCard({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
   return (
     <div style={{
-      background: 'rgba(255,255,255,0.02)',
-      border: '1px solid rgba(255,255,255,0.06)',
+      background: 'rgba(255,255,255,0.045)',
+      border: '1px solid rgba(255,255,255,0.10)',
       borderRadius: 12, padding: '20px 22px',
       display: 'flex', flexDirection: 'column', gap: 8,
     }}>
@@ -389,7 +397,7 @@ function LinkRow({ label, desc, href, onClick }: { label: string; desc: string; 
   const style: React.CSSProperties = {
     display: 'flex', alignItems: 'center', textAlign: 'left',
     padding: '12px 14px', borderRadius: 10,
-    background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)',
+    background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)',
     cursor: 'pointer', textDecoration: 'none', fontFamily: 'inherit',
   };
   return href ? (
@@ -453,8 +461,8 @@ const cardGrid: React.CSSProperties = {
 };
 
 const card: React.CSSProperties = {
-  background: 'rgba(255,255,255,0.02)',
-  border: '1px solid rgba(255,255,255,0.06)',
+  background: 'rgba(255,255,255,0.045)',
+  border: '1px solid rgba(255,255,255,0.10)',
   borderRadius: 12,
   padding: '20px 22px',
   display: 'flex',
