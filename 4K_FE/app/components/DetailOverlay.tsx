@@ -133,8 +133,7 @@ export default function DetailOverlay({
       style={{
         position: 'fixed',
         inset: 0,
-        background: 'rgba(0,0,0,0.88)',
-        backdropFilter: 'blur(14px)',
+        background: 'rgba(8,9,13,0.97)',
         zIndex: 90,
         overflow: 'auto',
         animation: 'fadeIn 0.25s ease',
@@ -172,8 +171,24 @@ export default function DetailOverlay({
           뒤로 가기{' ('} esc {')'}
         </button>
 
-        {/* 단일 컬럼 레이아웃 (포스터 없음) */}
         <div>
+          {/* 상단: 포스터(좌) + 정보(우) */}
+          <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', alignItems: 'flex-start', marginBottom: 8 }}>
+            {/* 포스터 */}
+            <div style={{ width: 200, flexShrink: 0, aspectRatio: '2 / 3', borderRadius: 12, overflow: 'hidden', background: '#111218', position: 'relative' }}>
+              {movie.poster_path ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`}
+                  alt={movie.title}
+                  style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              ) : (
+                <div style={{ position: 'absolute', inset: 0, display: 'grid', placeItems: 'center', fontSize: 32 }}>🎬</div>
+              )}
+            </div>
+            {/* 정보 */}
+            <div style={{ flex: '1 1 320px', minWidth: 0 }}>
           {/* 메타 · 제목 · 장르 */}
           <div
             style={{
@@ -237,6 +252,8 @@ export default function DetailOverlay({
               </span>
             ))}
           </div>
+            </div>{/* /정보 */}
+          </div>{/* /상단 2단 */}
 
           {/* 클라이맥스 곡선 */}
           <section style={{ marginTop: 40 }}>
