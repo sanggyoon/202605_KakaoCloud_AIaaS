@@ -247,167 +247,112 @@ export default function ManagerPage() {
         </button>
       </header>
 
-      <main style={{ padding: '32px 64px 60px', display: 'flex', flexDirection: 'column', gap: 36 }}>
-        {/* 방문자 통계 */}
+      <main style={{ padding: '32px 64px 60px', display: 'flex', flexDirection: 'column', gap: 28 }}>
+        {/* 1) 방문자 + 기간 조회 */}
         <section>
-          <h2 style={sectionTitle}>방문자 통계</h2>
+          <h2 style={sectionTitle}>방문자</h2>
           <div style={cardGrid}>
             <StatCard label="누적 방문" value={fmt(stats?.visitors.total)} />
-            <StatCard label="한 달 (30일)" value={fmt(stats?.visitors.month)} />
-            <StatCard label="1주일 (7일)" value={fmt(stats?.visitors.week)} />
-            <StatCard label="하루 (오늘)" value={fmt(stats?.visitors.day)} />
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 14, flexWrap: 'wrap' }}>
-            <input type="date" value={vStart} max={vEnd} onChange={(e) => setVStart(e.target.value)} style={numInput} />
-            <span style={{ color: 'rgba(255,255,255,0.4)' }}>~</span>
-            <input type="date" value={vEnd} min={vStart} max={_today} onChange={(e) => setVEnd(e.target.value)} style={numInput} />
-            <button onClick={fetchRange} disabled={rangeLoading || vStart > vEnd} style={actionBtn(rangeLoading || vStart > vEnd)}>
-              {rangeLoading ? '조회 중…' : '기간 방문자 조회'}
-            </button>
-            {rangeCount !== null && (
-              <span style={{ fontSize: 14, fontWeight: 700 }}>
-                {rangeCount.toLocaleString('ko-KR')}명
-              </span>
-            )}
+            <StatCard label="30일 방문" value={fmt(stats?.visitors.month)} />
+            <StatCard label="7일 방문" value={fmt(stats?.visitors.week)} />
+            <StatCard label="하루 방문" value={fmt(stats?.visitors.day)} />
+            <div style={{ ...card, gap: 7 }}>
+              <input type="date" value={vStart} max={vEnd} onChange={(e) => setVStart(e.target.value)} style={dateInput} />
+              <input type="date" value={vEnd} min={vStart} max={_today} onChange={(e) => setVEnd(e.target.value)} style={dateInput} />
+              <button onClick={fetchRange} disabled={rangeLoading || vStart > vEnd}
+                style={{ ...actionBtn(rangeLoading || vStart > vEnd), padding: '8px 10px', fontSize: 12 }}>
+                {rangeLoading ? '조회 중…' : '기간 방문자'}
+              </button>
+              {rangeCount !== null && (
+                <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.7)', fontWeight: 700, lineHeight: 1.4 }}>
+                  {vStart} ~ {vEnd}<br />{rangeCount.toLocaleString('ko-KR')}명
+                </span>
+              )}
+            </div>
           </div>
         </section>
 
-        {/* 활성 모델 + 지표 */}
+        {/* 2) 처리 현황 | 바로가기 */}
+        <div style={panelGrid}>
+          <section style={card}>
+            <h2 style={sectionTitle}>처리 현황</h2>
+            <p style={panelDesc}>자막 → 파싱 → 라벨 → 스코어 → 벡터 단계별 처리 건수</p>
+            {statsLoading ? (
+              <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 13 }}>로딩 중…</div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                {PROC_STAGES.map(({ key, label }) => {
+                  const counts = stats?.processing?.[key] ?? {};
+                  const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+                  return (
+                    <div key={key} style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+                      <span style={{ width: 76, flexShrink: 0, fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.7)' }}>{label}</span>
+                      {entries.length === 0 ? (
+                        <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)' }}>—</span>
+                      ) : entries.map(([state, n]) => (
+                        <span key={state} style={{ display: 'inline-flex', alignItems: 'baseline', gap: 5, padding: '4px 9px', borderRadius: 7, background: STATE_BG[state] ?? 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                          <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.6)', fontWeight: 600 }}>{STATE_LABELS[state] ?? state}</span>
+                          <span style={{ fontSize: 14, fontWeight: 800 }}>{n.toLocaleString('ko-KR')}</span>
+                        </span>
+                      ))}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </section>
+
+          <section style={card}>
+            <h2 style={sectionTitle}>바로가기</h2>
+            <p style={panelDesc}>모니터링·인프라 콘솔과 DB 바로가기</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              <LinkRow label="영화 정보 리스트" desc="DB 영화 목록·편집" onClick={() => router.push('/movie_list')} />
+              <LinkRow label="Grafana" desc="메트릭 대시보드" href="https://grafana.peakly.art" />
+              <LinkRow label="ArgoCD" desc="배포 (GitOps)" href="https://argocd.peakly.art" />
+              <LinkRow label="Argo Workflow" desc="워크플로 실행" href="https://workflow.peakly.art" />
+              <LinkRow label="SVC DB" desc="서비스 DB (vm4)" href="https://data.peakly.art" />
+              <LinkRow label="AI DB" desc="AI DB (vm5)" href="https://ai.peakly.art" />
+            </div>
+          </section>
+        </div>
+
+        {/* 3) 활성 모델 */}
         <section>
           <h2 style={sectionTitle}>활성 모델</h2>
-          <div style={cardGrid}>
-            <StatCard label="버전" value={activeModel?.version ?? '—'} accent />
-            <StatCard label="Spearman · arousal" value={fmtMetric(activeModel?.metrics?.spearman_movie_arousal)} accent />
-            <StatCard label="MAE · arousal" value={fmtMetric(activeModel?.metrics?.mae_arousal)} accent />
-          </div>
-          <div style={{ marginTop: 8, fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>
-            valence — Spearman {fmtMetric(activeModel?.metrics?.spearman_movie_valence)} · MAE {fmtMetric(activeModel?.metrics?.mae_valence)}
-          </div>
-        </section>
-
-        {/* 처리 현황 (vm5 processing_status 단계별 상태값) */}
-        <section>
-          <h2 style={sectionTitle}>처리 현황</h2>
-          {statsLoading ? (
-            <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 13 }}>로딩 중…</div>
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              {PROC_STAGES.map(({ key, label }) => {
-                const counts = stats?.processing?.[key] ?? {};
-                const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-                return (
-                  <div
-                    key={key}
-                    style={{
-                      background: 'rgba(255,255,255,0.02)',
-                      border: '1px solid rgba(255,255,255,0.06)',
-                      borderRadius: 12,
-                      padding: '16px 20px',
-                    }}
-                  >
-                    <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 10 }}>{label}</div>
-                    {entries.length === 0 ? (
-                      <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)' }}>데이터 없음</span>
-                    ) : (
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-                        {entries.map(([state, n]) => (
-                          <span
-                            key={state}
-                            style={{
-                              display: 'inline-flex',
-                              alignItems: 'baseline',
-                              gap: 6,
-                              padding: '6px 12px',
-                              borderRadius: 8,
-                              background: STATE_BG[state] ?? 'rgba(255,255,255,0.05)',
-                              border: '1px solid rgba(255,255,255,0.08)',
-                            }}
-                          >
-                            <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.6)', fontWeight: 600 }}>
-                              {STATE_LABELS[state] ?? state}
-                            </span>
-                            <span style={{ fontSize: 16, fontWeight: 800 }}>{n.toLocaleString('ko-KR')}</span>
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+          <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+            <div style={{ ...card, flex: '1 1 220px', justifyContent: 'center' }}>
+              <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.45)', fontWeight: 600 }}>모델 버전</span>
+              <span style={{ fontSize: 28, fontWeight: 800, color: 'var(--accent)', letterSpacing: '-0.02em' }}>{activeModel?.version ?? '—'}</span>
             </div>
-          )}
-        </section>
-
-        {/* 기능 버튼 */}
-        <section>
-          <h2 style={sectionTitle}>기능</h2>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, alignItems: 'flex-start' }}>
-            {/* 영화 정보 수집 */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <input
-                  type="number"
-                  min={1}
-                  max={2000}
-                  value={backfillN}
-                  onChange={(e) => setBackfillN(Math.max(1, Number(e.target.value) || 1))}
-                  disabled={backfill?.running}
-                  style={numInput}
-                />
-                <button onClick={runBackfill} disabled={backfill?.running} style={actionBtn(!!backfill?.running)}>
-                  {backfill?.running ? '추가 중…' : '영화 정보 수집'}
-                </button>
-              </div>
-              <span style={hintText}>인기순으로 신규 영화 추가</span>
+            <div style={{ flex: '2 1 360px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+              <StatCard label="MAE · arousal" value={fmtMetric(activeModel?.metrics?.mae_arousal)} accent />
+              <StatCard label="MAE · valence" value={fmtMetric(activeModel?.metrics?.mae_valence)} />
+              <StatCard label="Spearman · arousal" value={fmtMetric(activeModel?.metrics?.spearman_movie_arousal)} accent />
+              <StatCard label="Spearman · valence" value={fmtMetric(activeModel?.metrics?.spearman_movie_valence)} />
             </div>
-
-            {/* 자막 데이터 수집 */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <input
-                  type="number"
-                  min={1}
-                  max={remaining ?? undefined}
-                  value={collectN}
-                  onChange={(e) => setCollectN(Math.max(1, Number(e.target.value) || 1))}
-                  disabled={collect?.running}
-                  style={numInput}
-                />
-                <button onClick={runCollect} disabled={collect?.running || remaining === 0} style={actionBtn(!!collect?.running || remaining === 0)}>
-                  {collect?.running ? '수집 중…' : '자막 데이터 수집'}
-                </button>
-              </div>
-              <span style={hintText}>
-                {remaining === null ? '최대 —' : `최대 ${remaining.toLocaleString('ko-KR')}개 수집 가능`}
-              </span>
-            </div>
-
           </div>
         </section>
 
-        {/* 바로가기 */}
-        <section>
-          <h2 style={sectionTitle}>바로가기</h2>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
-            <button onClick={() => router.push('/movie_list')} style={actionBtn(false)}>영화 정보 리스트 →</button>
-            {[
-              { label: 'Grafana', href: 'https://grafana.peakly.art' },
-              { label: 'ArgoCD', href: 'https://argocd.peakly.art' },
-              { label: 'Argo Workflow', href: 'https://workflow.peakly.art' },
-              { label: 'SVC DB (data)', href: 'https://data.peakly.art' },
-              { label: 'AI DB (ai)', href: 'https://ai.peakly.art' },
-            ].map((l) => (
-              <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer"
-                 style={{ ...actionBtn(false), textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
-                {l.label} ↗
-              </a>
-            ))}
-          </div>
-        </section>
+        {/* 4) 영화 메타 데이터 수집 */}
+        <CollectCard
+          title="영화 메타 데이터 수집"
+          desc="tmdb 인기도 순으로 새로운 영화 메타 데이터를 수집합니다."
+          n={backfillN} setN={setBackfillN} nMax={2000}
+          running={!!backfill?.running} onRun={runBackfill}
+          runLabel={backfill?.running ? '추가 중…' : '메타 데이터 수집'}
+          job={backfill} onCloseJob={() => setBackfill(null)} jobLabel="영화 수집"
+        />
 
-        {/* 진행 패널 (backfill / collect) — 진행도·로그·에러 */}
-        {backfill && <JobBanner job={backfill} label="영화 수집" onClose={() => setBackfill(null)} />}
-        {collect && <JobBanner job={collect} label="자막 수집" onClose={() => setCollect(null)} />}
+        {/* 5) 자막 데이터 수집 */}
+        <CollectCard
+          title="자막 데이터 수집"
+          desc="subdl에서 자막 데이터가 없는 영화의 자막을 수집합니다."
+          n={collectN} setN={setCollectN} nMax={remaining ?? undefined}
+          running={!!collect?.running} disabled={remaining === 0} onRun={runCollect}
+          runLabel={collect?.running ? '수집 중…' : '자막 데이터 수집'}
+          hint={remaining === null ? '최대 —' : `최대 ${remaining.toLocaleString('ko-KR')}개 수집 가능`}
+          job={collect} onCloseJob={() => setCollect(null)} jobLabel="자막 수집"
+        />
       </main>
     </div>
   );
@@ -431,6 +376,70 @@ function StatCard({ label, value, accent }: { label: string; value: string; acce
   );
 }
 
+function LinkRow({ label, desc, href, onClick }: { label: string; desc: string; href?: string; onClick?: () => void }) {
+  const inner = (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, width: '100%' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 2, minWidth: 0 }}>
+        <span style={{ fontSize: 14, fontWeight: 700, color: 'var(--fg)' }}>{label}</span>
+        <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)' }}>{desc}</span>
+      </div>
+      <span style={{ color: 'var(--accent)', fontSize: 14 }}>{href ? '↗' : '→'}</span>
+    </div>
+  );
+  const style: React.CSSProperties = {
+    display: 'flex', alignItems: 'center', textAlign: 'left',
+    padding: '12px 14px', borderRadius: 10,
+    background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)',
+    cursor: 'pointer', textDecoration: 'none', fontFamily: 'inherit',
+  };
+  return href ? (
+    <a href={href} target="_blank" rel="noopener noreferrer" style={style}>{inner}</a>
+  ) : (
+    <button onClick={onClick} style={{ ...style, width: '100%' }}>{inner}</button>
+  );
+}
+
+function CollectCard(props: {
+  title: string; desc: string;
+  n: number; setN: (v: number) => void; nMax?: number;
+  running: boolean; disabled?: boolean; onRun: () => void; runLabel: string; hint?: string;
+  job: Job | null; onCloseJob: () => void; jobLabel: string;
+}) {
+  return (
+    <section style={card}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
+        <div style={{ minWidth: 0 }}>
+          <h2 style={{ ...sectionTitle, margin: '0 0 4px' }}>{props.title}</h2>
+          <p style={{ margin: 0, fontSize: 12, color: 'rgba(255,255,255,0.45)' }}>{props.desc}</p>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <input
+            type="number" min={1} max={props.nMax} value={props.n}
+            onChange={(e) => props.setN(Math.max(1, Number(e.target.value) || 1))}
+            disabled={props.running} style={numInput}
+          />
+          <button onClick={props.onRun} disabled={props.running || props.disabled}
+            style={actionBtn(props.running || !!props.disabled)}>
+            {props.runLabel}
+          </button>
+        </div>
+      </div>
+      {props.hint && <span style={hintText}>{props.hint}</span>}
+      <div style={{ marginTop: 4 }}>
+        {props.job ? (
+          <JobBanner job={props.job} label={props.jobLabel} onClose={props.onCloseJob} />
+        ) : (
+          <div style={{ padding: '18px', borderRadius: 10, background: 'rgba(255,255,255,0.02)',
+                        border: '1px dashed rgba(255,255,255,0.08)', textAlign: 'center',
+                        fontSize: 12, color: 'rgba(255,255,255,0.3)' }}>
+            진행 중인 작업 없음 (로그)
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
 const sectionTitle: React.CSSProperties = {
   margin: '0 0 14px', fontSize: 13, fontWeight: 700,
   letterSpacing: '0.08em', textTransform: 'uppercase',
@@ -441,6 +450,33 @@ const cardGrid: React.CSSProperties = {
   display: 'grid',
   gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
   gap: 16,
+};
+
+const card: React.CSSProperties = {
+  background: 'rgba(255,255,255,0.02)',
+  border: '1px solid rgba(255,255,255,0.06)',
+  borderRadius: 12,
+  padding: '20px 22px',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 10,
+};
+
+const panelGrid: React.CSSProperties = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
+  gap: 16,
+};
+
+const panelDesc: React.CSSProperties = {
+  margin: '-4px 0 6px', fontSize: 12, color: 'rgba(255,255,255,0.4)', lineHeight: 1.5,
+};
+
+const dateInput: React.CSSProperties = {
+  padding: '7px 9px', borderRadius: 8,
+  background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
+  color: 'var(--fg)', fontSize: 12, fontFamily: 'inherit', outline: 'none',
+  colorScheme: 'dark',
 };
 
 const numInput: React.CSSProperties = {
