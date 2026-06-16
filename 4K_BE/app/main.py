@@ -381,9 +381,31 @@ async def add_movie(tmdb_id: int):
         return {"ok": True, "tmdb_id": tmdb_id, "title": movie["title"]}
 
 
+async def _reset_processing(client: httpx.AsyncClient, tmdb_id: int) -> None:
+    """vm5 processing_status를 pending으로 리셋(best-effort)."""
+    url = os.getenv("AI_DATABASE_URL", "")
+    key = os.getenv("AI_DATABASE_KEY", "")
+    if not url or not key:
+        return
+    h = {"apikey": key, "Authorization": f"Bearer {key}",
+         "Content-Type": "application/json",
+         "Prefer": "resolution=merge-duplicates,return=minimal"}
+    bu = os.getenv("AI_BASIC_USER")
+    auth = (bu, os.getenv("AI_BASIC_PASS", "")) if bu else None
+    row = {"tmdb_id": tmdb_id, "subtitle_state": "pending", "parse_state": "pending",
+           "label_state": "pending", "score_state": "pending", "vector_state": "pending",
+           "retry_count": 0, "error": None,
+           "updated_at": datetime.now(timezone.utc).isoformat()}
+    try:
+        await client.post(f"{url}/rest/v1/processing_status",
+                          params={"on_conflict": "tmdb_id"}, json=[row], headers=h, auth=auth)
+    except Exception:  # noqa: BLE001 — best-effort
+        pass
+
+
 @app.delete("/api/movies/{tmdb_id}")
 async def delete_movie(tmdb_id: int):
-    """Supabase에서 영화 삭제"""
+    """vm4 movies 삭제 + vm4 movie_vectors 삭제 + vm5 processing_status pending 리셋."""
     async with httpx.AsyncClient(timeout=15, verify=False) as client:
         sb_r = await client.delete(
             f"{DATA_URL}/rest/v1/movies",
@@ -392,6 +414,16 @@ async def delete_movie(tmdb_id: int):
         )
         if sb_r.status_code not in (200, 204):
             raise HTTPException(status_code=500, detail=f"Supabase 삭제 실패: {sb_r.text[:200]}")
+
+        # vm4 벡터 삭제 (best-effort)
+        try:
+            await client.delete(f"{DATA_URL}/rest/v1/movie_vectors",
+                                params={"tmdb_id": f"eq.{tmdb_id}"}, headers=tc.sb_headers())
+        except Exception:  # noqa: BLE001
+            pass
+
+        # vm5 처리상태 pending 리셋 (best-effort)
+        await _reset_processing(client, tmdb_id)
 
         return {"ok": True, "tmdb_id": tmdb_id}
 
