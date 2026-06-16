@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react';
 import { toDisplayScale } from '@/app/lib/climax';
 import { valenceGradientStops, valenceToUnit, valenceColorAt } from '@/app/lib/color';
+import { catmullRomPath } from '@/app/lib/svgPath';
 
 // arousal=높이, valence=색(있을 때). 호버 시 십자선 + 진행도/피크/분위기 툴팁.
 interface ClimaxGraphProps {
@@ -26,11 +27,7 @@ export default function ClimaxGraph({ data, valence, height = 380 }: ClimaxGraph
   const toX = (i: number) => padX + (i / (data.length - 1)) * innerW;
 
   const pts = data.map((val, i) => [toX(i), toY(val)]);
-  let d = `M${pts[0][0]},${pts[0][1]}`;
-  for (let i = 0; i < pts.length - 1; i++) {
-    const cpx = (pts[i][0] + pts[i + 1][0]) / 2;
-    d += ` C${cpx},${pts[i][1]} ${cpx},${pts[i + 1][1]} ${pts[i + 1][0]},${pts[i + 1][1]}`;
-  }
+  const d = catmullRomPath(pts);
   const fillD = `${d} L${padX + innerW},${H} L${padX},${H} Z`;
 
   const stops = valence ? valenceGradientStops(valence) : [];
@@ -98,6 +95,7 @@ export default function ClimaxGraph({ data, valence, height = 380 }: ClimaxGraph
           strokeWidth="2.4"
           strokeLinecap="round"
           strokeLinejoin="round"
+          vectorEffect="non-scaling-stroke"
           filter="url(#cgGlow)"
         />
       </svg>

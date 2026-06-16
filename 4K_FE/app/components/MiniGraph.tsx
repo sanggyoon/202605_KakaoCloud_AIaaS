@@ -3,6 +3,7 @@
 import { useId } from 'react';
 import { toDisplayScale } from '@/app/lib/climax';
 import { valenceGradientStops } from '@/app/lib/color';
+import { catmullRomPath } from '@/app/lib/svgPath';
 
 // arousal=높이(고정 display 스케일), valence=색(있을 때).
 interface MiniGraphProps {
@@ -21,11 +22,7 @@ export default function MiniGraph({ data, valence, color = 'var(--accent)', heig
   const ds = toDisplayScale(data);
   const pts = data.map((_, i) => [padX + (i / (data.length - 1)) * innerW, 2 + innerH - (ds[i] / 100) * innerH]);
 
-  let d = `M${pts[0][0]},${pts[0][1]}`;
-  for (let i = 0; i < pts.length - 1; i++) {
-    const cpx = (pts[i][0] + pts[i + 1][0]) / 2;
-    d += ` C${cpx},${pts[i][1]} ${cpx},${pts[i + 1][1]} ${pts[i + 1][0]},${pts[i + 1][1]}`;
-  }
+  const d = catmullRomPath(pts);
 
   const stops = valence ? valenceGradientStops(valence) : [];
   const stroke = stops.length ? `url(#${gid})` : color;
@@ -45,7 +42,7 @@ export default function MiniGraph({ data, valence, color = 'var(--accent)', heig
       {/* 곡선 아래 채움 */}
       <path d={`${d} L${padX + innerW},${height} L${padX},${height} Z`} fill={fill} fillOpacity="0.12" />
       {/* 곡선 선 */}
-      <path d={d} fill="none" stroke={stroke} strokeWidth="1.6" strokeLinecap="round" />
+      <path d={d} fill="none" stroke={stroke} strokeWidth="1.6" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
     </svg>
   );
 }
