@@ -133,6 +133,26 @@ export default function ManagerPage() {
   const [remaining, setRemaining] = useState<number | null>(null);
   const [collectN, setCollectN] = useState(50);
   const [activeModel, setActiveModel] = useState<{ version: string; metrics: Record<string, number> } | null>(null);
+  const _today = new Date().toISOString().slice(0, 10);
+  const _monthAgo = new Date(Date.now() - 30 * 86400000).toISOString().slice(0, 10);
+  const [vStart, setVStart] = useState(_monthAgo);
+  const [vEnd, setVEnd] = useState(_today);
+  const [rangeCount, setRangeCount] = useState<number | null>(null);
+  const [rangeLoading, setRangeLoading] = useState(false);
+
+  const fetchRange = async () => {
+    if (vStart > vEnd) return;
+    setRangeLoading(true);
+    try {
+      const res = await fetch(`/api/manager/visits/range?start=${vStart}&end=${vEnd}`, { cache: 'no-store' });
+      const d = await res.json();
+      setRangeCount(typeof d.count === 'number' ? d.count : null);
+    } catch {
+      setRangeCount(null);
+    } finally {
+      setRangeLoading(false);
+    }
+  };
 
   const fetchStats = async () => {
     setStatsLoading(true);
@@ -237,6 +257,19 @@ export default function ManagerPage() {
             <StatCard label="1주일 (7일)" value={fmt(stats?.visitors.week)} />
             <StatCard label="하루 (오늘)" value={fmt(stats?.visitors.day)} />
           </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 14, flexWrap: 'wrap' }}>
+            <input type="date" value={vStart} max={vEnd} onChange={(e) => setVStart(e.target.value)} style={numInput} />
+            <span style={{ color: 'rgba(255,255,255,0.4)' }}>~</span>
+            <input type="date" value={vEnd} min={vStart} max={_today} onChange={(e) => setVEnd(e.target.value)} style={numInput} />
+            <button onClick={fetchRange} disabled={rangeLoading || vStart > vEnd} style={actionBtn(rangeLoading || vStart > vEnd)}>
+              {rangeLoading ? '조회 중…' : '기간 방문자 조회'}
+            </button>
+            {rangeCount !== null && (
+              <span style={{ fontSize: 14, fontWeight: 700 }}>
+                {rangeCount.toLocaleString('ko-KR')}명
+              </span>
+            )}
+          </div>
         </section>
 
         {/* 활성 모델 + 지표 */}
@@ -244,9 +277,11 @@ export default function ManagerPage() {
           <h2 style={sectionTitle}>활성 모델</h2>
           <div style={cardGrid}>
             <StatCard label="버전" value={activeModel?.version ?? '—'} accent />
-            <StatCard label="Spearman (arousal)" value={fmtMetric(activeModel?.metrics?.spearman_movie_arousal)} />
-            <StatCard label="MAE (arousal)" value={fmtMetric(activeModel?.metrics?.mae_arousal)} />
-            <StatCard label="Spearman (valence)" value={fmtMetric(activeModel?.metrics?.spearman_movie_valence)} />
+            <StatCard label="Spearman · arousal" value={fmtMetric(activeModel?.metrics?.spearman_movie_arousal)} accent />
+            <StatCard label="MAE · arousal" value={fmtMetric(activeModel?.metrics?.mae_arousal)} accent />
+          </div>
+          <div style={{ marginTop: 8, fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>
+            valence — Spearman {fmtMetric(activeModel?.metrics?.spearman_movie_valence)} · MAE {fmtMetric(activeModel?.metrics?.mae_valence)}
           </div>
         </section>
 
@@ -307,10 +342,6 @@ export default function ManagerPage() {
         <section>
           <h2 style={sectionTitle}>기능</h2>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, alignItems: 'flex-start' }}>
-            <button onClick={() => router.push('/movie_list')} style={actionBtn(false)}>
-              영화 정보 리스트 →
-            </button>
-
             {/* 영화 정보 수집 */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -351,13 +382,26 @@ export default function ManagerPage() {
               </span>
             </div>
 
-            <button
-              disabled
-              title="추후 개발된 모델로 동작 예정"
-              style={{ ...actionBtn(true), cursor: 'not-allowed' }}
-            >
-              영화 데이터 스코어링 (준비 중)
-            </button>
+          </div>
+        </section>
+
+        {/* 바로가기 */}
+        <section>
+          <h2 style={sectionTitle}>바로가기</h2>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+            <button onClick={() => router.push('/movie_list')} style={actionBtn(false)}>영화 정보 리스트 →</button>
+            {[
+              { label: 'Grafana', href: 'https://grafana.peakly.art' },
+              { label: 'ArgoCD', href: 'https://argocd.peakly.art' },
+              { label: 'Argo Workflow', href: 'https://workflow.peakly.art' },
+              { label: 'SVC DB (data)', href: 'https://data.peakly.art' },
+              { label: 'AI DB (ai)', href: 'https://ai.peakly.art' },
+            ].map((l) => (
+              <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer"
+                 style={{ ...actionBtn(false), textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
+                {l.label} ↗
+              </a>
+            ))}
           </div>
         </section>
 
