@@ -526,6 +526,23 @@ async def _processing_counts(client: httpx.AsyncClient) -> dict:
     return result
 
 
+@app.get("/api/visits/range")
+async def visits_range(start: str, end: str):
+    """기간 [start, end] (YYYY-MM-DD, 양끝 포함) 방문자 수."""
+    try:
+        s = datetime.strptime(start, "%Y-%m-%d").date()
+        e = datetime.strptime(end, "%Y-%m-%d").date()
+    except ValueError:
+        raise HTTPException(status_code=400, detail="날짜 형식은 YYYY-MM-DD")
+    if s > e:
+        raise HTTPException(status_code=400, detail="시작일이 종료일보다 늦습니다")
+    e_plus = e + timedelta(days=1)
+    cond = f"(created_at.gte.{s.isoformat()}T00:00:00,created_at.lt.{e_plus.isoformat()}T00:00:00)"
+    async with httpx.AsyncClient(timeout=15, verify=False) as client:
+        count = await _count(client, "visits", {"and": cond})
+    return {"start": start, "end": end, "count": count}
+
+
 @app.get("/api/stats")
 async def stats():
     """매니저 모니터링용 집계 — 방문자(기간별) + vm5 처리 현황(단계별 상태값 개수)."""
