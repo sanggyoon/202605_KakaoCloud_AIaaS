@@ -15,6 +15,8 @@
 | 3 | 외부 링크 버튼 | Grafana/ArgoCD/ArgoWorkflow/SVC DB/AI DB 새 탭 링크 섹션 |
 | 4 | DB 삭제 시 처리상태도 리셋 확인 | **현재 안 됨** → DELETE가 vm4 벡터 삭제 + vm5 processing_status pending 리셋 |
 | 5 | 수집 수량 배선 확인 | **정상**(버그 아님). backfillN→backfill, collectN→collect 분리. 50개는 중복 제외 후 실제 새 영화 수 → 변경 없음 |
+| 6 | 기간 지정 방문자 수 | 시작·종료 날짜 입력 → 그 기간 방문자 수 조회(BE 범위 카운트 + FE 날짜 UI) |
+| 7 | '영화 정보 리스트' 버튼 이동 | "기능" 섹션 → "바로가기(링크)" 섹션으로 이동(내부 라우트 유지) |
 
 외부 링크 URL(모두 https): `grafana.peakly.art`, `argocd.peakly.art`, `workflow.peakly.art`, `data.peakly.art`, `ai.peakly.art`.
 
@@ -43,9 +45,19 @@
   - 그 아래 작은 보조 줄: `valence — Spearman {…} · MAE {…}` (흐린 텍스트, 소수 3자리).
 - `fmtMetric` 재사용.
 
-### 3.3 외부 링크 섹션 (#3)
-- 새 `<section>` "바로가기": 링크 버튼 5개(`<a target="_blank" rel="noopener noreferrer">`), 라벨+URL. `cardGrid` 스타일 재사용 또는 칩 형태.
-- 항목: Grafana, ArgoCD, Argo Workflow, SVC DB(data), AI DB(ai).
+### 3.3 외부 링크 섹션 (#3·#7)
+- 새 `<section>` "바로가기": 외부 5개(`<a target="_blank" rel="noopener noreferrer">` 새 탭) + **내부 '영화 정보 리스트'**(버튼 `router.push('/movie_list')`, #7 이동). `cardGrid`/칩 스타일.
+- 외부 항목: Grafana, ArgoCD, Argo Workflow, SVC DB(data), AI DB(ai).
+- "기능" 섹션에서 '영화 정보 리스트 →' 버튼 제거(#7).
+
+### 3.4 기간 지정 방문자 수 (#6)
+- "방문자 통계" 섹션에 날짜 범위 UI: `<input type="date">` 2개(시작/종료) + "조회" 버튼 → `/api/manager/visits/range?start=&end=` 호출 → 결과 수 표시.
+- 기본값: 시작=30일 전, 종료=오늘. 잘못된 범위(시작>종료)면 버튼 비활성/메시지.
+
+### 3.5 BE 방문자 범위 엔드포인트 (#6)
+- `GET /api/visits/range?start=YYYY-MM-DD&end=YYYY-MM-DD` → `{start, end, count}`.
+- `_count(client, "visits", {"and": f"(created_at.gte.{start}T00:00:00,created_at.lt.{end+1d}T00:00:00)"})` (종료일 포함 위해 end+1일 미만). 날짜 파싱 실패 시 400.
+- Next 프록시 `app/api/manager/visits/range/route.ts`(GET, querystring 전달).
 
 ---
 
