@@ -2,8 +2,10 @@
 4K Cinema Manager API
 TMDB 영화 목록 조회 + Supabase 추가/삭제
 """
+import hashlib
 import json
 import os
+import secrets
 from datetime import datetime, timedelta, timezone
 
 import httpx
@@ -562,3 +564,63 @@ async def stats():
         "visitors": {"total": total_v, "month": month_v, "week": week_v, "day": day_v},
         "processing": processing,
     }
+
+
+# ── 고객별 API 키 (vm4 api_keys, service_role) ──────────────────
+@app.post("/api/api-keys")
+async def create_api_key(payload: dict):
+    name = (payload or {}).get("name", "").strip()
+    if not name:
+        raise HTTPException(status_code=400, detail="name이 필요합니다")
+    plaintext = f"peakly_{secrets.token_urlsafe(24)}"
+    key_hash = hashlib.sha256(plaintext.encode()).hexdigest()
+    key_prefix = plaintext[:12]
+    async with httpx.AsyncClient(timeout=15, verify=False) as client:
+        r = await client.post(
+            f"{DATA_URL}/rest/v1/api_keys",
+            json=[{"name": name, "key_hash": key_hash, "key_prefix": key_prefix}],
+            headers={**tc.sb_headers(), "Prefer": "return=representation"},
+        )
+        if r.status_code not in (200, 201):
+            raise HTTPException(status_code=500, detail=f"키 저장 실패: {r.text[:200]}")
+        row = r.json()[0]
+    return {
+        "id": row["id"],
+        "name": row["name"],
+        "key": plaintext,          # 평문은 이 응답에서만 1회 노출
+        "key_prefix": row["key_prefix"],
+        "created_at": row["created_at"],
+    }
+
+
+@app.get("/api/api-keys")
+async def list_api_keys():
+    async with httpx.AsyncClient(timeout=15, verify=False) as client:
+        r = await client.get(
+            f"{DATA_URL}/rest/v1/api_keys",
+            params={
+                "select": "id,name,key_prefix,active,created_at,last_used_at",
+                "order": "created_at.desc",
+            },
+            headers=tc.sb_headers(),
+        )
+        if r.status_code not in (200, 206):
+            raise HTTPException(status_code=500, detail=f"키 목록 실패: {r.text[:200]}")
+        return r.json()
+
+
+@app.delete("/api/api-keys/{key_id}")
+async def revoke_api_key(key_id: int):
+    async with httpx.AsyncClient(timeout=15, verify=False) as client:
+        r = await client.patch(
+            f"{DATA_URL}/rest/v1/api_keys",
+            params={"id": f"eq.{key_id}"},
+            json={"active": False},
+            headers={**tc.sb_headers(), "Prefer": "return=representation"},
+        )
+        if r.status_code not in (200, 204):
+            raise HTTPException(status_code=500, detail=f"키 폐기 실패: {r.text[:200]}")
+        rows = r.json() if r.text else []
+        if not rows:
+            raise HTTPException(status_code=404, detail="키를 찾을 수 없습니다")
+    return {"ok": True, "id": key_id}
