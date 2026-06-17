@@ -37,8 +37,13 @@ function FilterRow({
           color: 'rgba(255,255,255,0.5)',
           width: 90,
           flexShrink: 0,
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: 6,
         }}
       >
+        {/* 선호 식별 점 (보라) */}
+        <span style={{ width: 6, height: 6, borderRadius: 999, background: 'var(--accent)', flexShrink: 0 }} />
         {label.toUpperCase()}
       </span>
       <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
@@ -49,11 +54,12 @@ function FilterRow({
               key={opt}
               onClick={() => onChange(opt)}
               style={{
+                // 미선택에도 보라 틴트를 줘 '선호' 그룹임을 드러낸다
                 padding: '5px 11px',
                 background: active
                   ? 'color-mix(in oklch, var(--accent) 18%, transparent)'
-                  : 'rgba(255,255,255,0.04)',
-                border: `1px solid ${active ? 'color-mix(in oklch, var(--accent) 40%, transparent)' : 'rgba(255,255,255,0.08)'}`,
+                  : 'color-mix(in oklch, var(--accent) 6%, transparent)',
+                border: `1px solid ${active ? 'color-mix(in oklch, var(--accent) 40%, transparent)' : 'color-mix(in oklch, var(--accent) 18%, transparent)'}`,
                 borderRadius: 999,
                 color: active ? 'var(--accent)' : 'rgba(255,255,255,0.75)',
                 fontSize: 11,
@@ -93,8 +99,13 @@ function MultiFilterRow({
           color: 'rgba(255,255,255,0.5)',
           width: 90,
           flexShrink: 0,
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: 6,
         }}
       >
+        {/* 비선호 식별 점 (빨강) */}
+        <span style={{ width: 6, height: 6, borderRadius: 999, background: '#ff7070', flexShrink: 0 }} />
         {label.toUpperCase()}
       </span>
       <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
@@ -109,11 +120,12 @@ function MultiFilterRow({
                 )
               }
               style={{
+                // 미선택에도 빨강 틴트를 줘 '비선호' 그룹임을 드러낸다
                 padding: '5px 11px',
                 background: active
                   ? 'rgba(255,80,80,0.15)'
-                  : 'rgba(255,255,255,0.04)',
-                border: `1px solid ${active ? 'rgba(255,100,100,0.45)' : 'rgba(255,255,255,0.08)'}`,
+                  : 'rgba(255,80,80,0.05)',
+                border: `1px solid ${active ? 'rgba(255,100,100,0.45)' : 'rgba(255,100,100,0.18)'}`,
                 borderRadius: 999,
                 color: active ? '#ff7070' : 'rgba(255,255,255,0.75)',
                 fontSize: 11,
