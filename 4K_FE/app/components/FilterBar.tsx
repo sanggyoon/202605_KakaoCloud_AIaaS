@@ -280,10 +280,11 @@ function YearRangeRow({
   const pctFrom = ((from - min) / range) * 100;
   const pctTo = ((to - min) / range) * 100;
 
-  // 드래그 중에만 window 이벤트 등록 — 마우스가 track 밖으로 나가도 추적 가능
+  // 드래그 중에만 window 이벤트 등록 — 포인터가 track 밖으로 나가도 추적 가능.
+  // PointerEvent를 써서 마우스·터치·펜을 한 번에 처리(모바일 터치 드래그 지원).
   useEffect(() => {
     if (!dragging) return;
-    const onMove = (e: MouseEvent) => {
+    const onMove = (e: PointerEvent) => {
       const el = trackRef.current;
       if (!el) return;
       const r = el.getBoundingClientRect();
@@ -293,11 +294,11 @@ function YearRangeRow({
       else onChange([from, Math.max(v, from)]);
     };
     const onUp = () => setDragging(null);
-    window.addEventListener('mousemove', onMove);
-    window.addEventListener('mouseup', onUp);
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup', onUp);
     return () => {
-      window.removeEventListener('mousemove', onMove);
-      window.removeEventListener('mouseup', onUp);
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', onUp);
     };
   }, [dragging, from, to, min, max, range, onChange]);
 
@@ -332,11 +333,13 @@ function YearRangeRow({
         />
         <div
           ref={trackRef}
+          className="year-track"
           style={{
             position: 'relative',
             flex: 1,
             height: 28,
             cursor: 'pointer',
+            touchAction: 'none', // 드래그 중 페이지 스크롤 방지(모바일)
           }}
         >
           {/* 배경 track */}
@@ -393,7 +396,12 @@ function YearRangeRow({
             return (
               <div
                 key={key}
-                onMouseDown={() => setDragging(key)}
+                className="year-handle"
+                onPointerDown={(e) => {
+                  // 포인터 캡처로 손가락/커서가 핸들 밖으로 나가도 추적 유지
+                  e.currentTarget.setPointerCapture(e.pointerId);
+                  setDragging(key);
+                }}
                 style={{
                   position: 'absolute',
                   left: `${pct}%`,
@@ -405,6 +413,7 @@ function YearRangeRow({
                   border: '2px solid #08090d',
                   transform: 'translate(-50%, -50%)',
                   cursor: 'grab',
+                  touchAction: 'none',
                   boxShadow:
                     dragging === key
                       ? '0 0 0 6px color-mix(in oklch, var(--accent) 25%, transparent)'

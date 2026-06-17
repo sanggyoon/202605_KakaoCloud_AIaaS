@@ -186,6 +186,12 @@ input::placeholder {
 @media (max-width: 1023px) { .filter-bar-inner { padding: 16px 32px 18px; } }
 @media (max-width: 639px)  { .filter-bar-inner { padding: 14px 16px 16px; } }
 
+/* 연도 범위 슬라이더 — 모바일에서 트랙/핸들을 키워 터치 조작을 쉽게 */
+@media (max-width: 639px) {
+  .year-track { height: 40px !important; }
+  .year-handle { width: 26px !important; height: 26px !important; }
+}
+
 /* 온보딩 태그라인 단어 순차 등장 */
 @keyframes taglineUp {
   to { opacity: 1; transform: translateY(0); }
