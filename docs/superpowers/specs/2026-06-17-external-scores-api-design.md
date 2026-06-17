@@ -91,7 +91,7 @@ scene_scores(score, model_version in (av::arousal, av::valence))`.
    응답에서 `::`가 없는 base 버전을 고른다. 실패/없음 시 폴백 `roberta-va-v1`.
    결과를 `av`라 한다.
 2. **scenes 조회**:
-   `GET {AI_DATABASE_URL}/rest/v1/scenes?select=id,scene_index,progress_ratio,start_ms,subtitles!inner(tmdb_id)&subtitles.tmdb_id=eq.{X}&order=scene_index.asc`
+   `GET {AI_DATABASE_URL}/rest/v1/scenes?select=id,scene_index,progress_ratio,subtitles!inner(tmdb_id)&subtitles.tmdb_id=eq.{X}&order=scene_index.asc`
    - 0행 → subtitles에 해당 영화 없음 → **404**.
 3. **scene_scores 조회**:
    `GET {AI_DATABASE_URL}/rest/v1/scene_scores?select=scenes_id,score,model_version&scenes_id=in.({ids})&model_version=in.({av}::arousal,{av}::valence)`
@@ -99,7 +99,7 @@ scene_scores(score, model_version in (av::arousal, av::valence))`.
 4. **서버 병합·정렬**:
    - `scenes_id → { arousal?, valence? }` 맵을 만든다.
    - 기준 타임라인 = **arousal 점수가 있는 scene**을 scene_index 순으로 정렬한 것.
-   - 각 출력 배열(`arousal`/`valence`/`progress_ratio`/`start_ms`)을 그 순서대로
+   - 각 출력 배열(`arousal`/`valence`/`progress_ratio`)을 그 순서대로
      채운다. 같은 scene에 valence 점수가 없으면 `valence` 배열의 해당 위치는
      `null`(정상 케이스에선 arousal/valence가 쌍으로 생성되어 발생하지 않음).
 
@@ -115,8 +115,7 @@ scene_scores(score, model_version in (av::arousal, av::valence))`.
   "length": 1280,
   "arousal": [0.12, 0.34, "..."],
   "valence": [-0.05, 0.21, "..."],
-  "progress_ratio": [0.0, 0.0008, "..."],
-  "start_ms": [0, 1200, "..."]
+  "progress_ratio": [0.0, 0.0008, "..."]
 }
 ```
 
