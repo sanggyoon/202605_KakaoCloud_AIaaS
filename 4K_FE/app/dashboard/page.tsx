@@ -51,6 +51,11 @@ export default function Dashboard() {
     typeof window === 'undefined' ? [] : getRecentIds(),
   );
   const [search, setSearch] = useState('');
+  // 검색어를 fetch 콜백/페이지네이션에서 항상 최신값으로 참조하기 위한 ref
+  const searchRef = useRef('');
+  useEffect(() => {
+    searchRef.current = search;
+  }, [search]);
   const [filterOpen, setFilterOpen] = useState(false);
   // draft: 편집 중인 필터 상태 / applied: 실제 목록에 적용된 필터 상태
   const [draft, setDraft] = useState<Filters>(INITIAL_FILTERS);
@@ -83,6 +88,13 @@ export default function Dashboard() {
     }
     for (const g of filters.dislikeGenres) {
       url += `&genre=not.ilike.*${encodeURIComponent(g)}*`;
+    }
+    // 제목 검색은 svc db 전체를 대상으로 서버에서 OR ilike — 로드된 목록이 아니라
+    // DB 전체에서 찾고, has_vector 우선 정렬이 검색 결과에도 그대로 적용된다.
+    const q = searchRef.current.trim();
+    if (q) {
+      const enc = encodeURIComponent(q);
+      url += `&or=(title.ilike.*${enc}*,original_title.ilike.*${enc}*)`;
     }
 
     fetch(url, { headers: { apikey: SUPABASE_ANON_KEY } })
@@ -124,6 +136,26 @@ export default function Dashboard() {
       fetchMovies(0, applied);
     }
   }, [applied, fetchMovies]);
+
+  // 검색어 변경 → svc db 전체 재조회(디바운스 300ms). 첫 마운트는 위 applied effect가
+  // 이미 초기 로드하므로 건너뛴다. 벡터 모드(선호/비선호)는 RPC 결과를 클라이언트에서 검색.
+  const searchMountRef = useRef(true);
+  useEffect(() => {
+    if (searchMountRef.current) {
+      searchMountRef.current = false;
+      return;
+    }
+    if (appliedRef.current.likes.length > 0 || appliedRef.current.dislikes.length > 0) return;
+    const t = setTimeout(() => {
+      isFetchingRef.current = false;
+      setMovies([]);
+      offsetRef.current = 0;
+      setHasMore(true);
+      setLoading(true);
+      fetchMovies(0, appliedRef.current);
+    }, 300);
+    return () => clearTimeout(t);
+  }, [search, fetchMovies]);
 
   // sentinel 요소가 뷰포트에 진입하면 다음 페이지 fetch — appliedRef로 현재 필터 참조
   useEffect(() => {
