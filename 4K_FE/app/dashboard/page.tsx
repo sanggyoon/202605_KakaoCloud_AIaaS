@@ -63,7 +63,7 @@ export default function Dashboard() {
   // localStorage에서 lazy 초기화 — 완료 기록이 있으면 null(튜토리얼 숨김)
   const [tutorialStep, setTutorialStep] = useState<number | null>(() => {
     if (typeof window === 'undefined') return null;
-    return localStorage.getItem('4k_tutorial_done') === '1' ? null : 0;
+    return localStorage.getItem('peakly_tutorial_done') === '1' ? null : 0;
   });
 
   // Supabase REST API에서 서버사이드 필터 조건을 포함해 PAGE_SIZE 단위로 fetch
@@ -143,7 +143,7 @@ export default function Dashboard() {
 
   const closeTutorial = () => {
     setTutorialStep(null);
-    localStorage.setItem('4k_tutorial_done', '1');
+    localStorage.setItem('peakly_tutorial_done', '1');
   };
 
   const handleOpenDetail = (m: Movie) => {
@@ -207,10 +207,6 @@ export default function Dashboard() {
     .filter((m): m is Movie => Boolean(m))
     .slice(0, 10);
 
-  // 튜토리얼 step 1~2에서는 헤더를 backdrop보다 위에 노출해 강조
-  const isHeaderHighlighted = tutorialStep === 1 || tutorialStep === 2;
-  const headerZIndex = isHeaderHighlighted ? 50 : 5;
-
   // 스크롤 300px 이상이면 맨 위로 버튼 표시
   const [showTopBtn, setShowTopBtn] = useState(false);
   useEffect(() => {
@@ -270,7 +266,7 @@ export default function Dashboard() {
         style={{
           position: 'sticky',
           top: 0,
-          zIndex: headerZIndex,
+          zIndex: 5,
           transition: 'z-index 0s',
         }}
       >
