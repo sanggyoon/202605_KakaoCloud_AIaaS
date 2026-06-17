@@ -2,7 +2,6 @@
 
 // Peakly 온보딩 튜토리얼 — 중앙 모달 캐러셀(5단계) + 단계별 자체 완결형 데모.
 // 데모는 라이브 데이터를 fetch하지 않고 정적 더미/SVG로 구성한다.
-import { useState } from 'react';
 import MiniGraph from './MiniGraph';
 
 interface TutorialProps {
@@ -201,12 +200,87 @@ function DemoDetail() {
 
 export default function Tutorial({ step, onNext, onSkip, onComplete }: TutorialProps) {
   const current = STEPS[step];
-  // 임시 렌더 — Task 3에서 교체
+  const isLast = step === STEPS.length - 1;
+
+  const demo = [
+    <DemoWelcome key="w" />,
+    <DemoGraph key="g" />,
+    <DemoFilters key="f" />,
+    <DemoRandom key="r" />,
+    <DemoDetail key="d" />,
+  ][step];
+
   return (
-    <div data-tutorial-placeholder style={{ position: 'fixed', inset: 0, zIndex: 41 }}>
-      {current.title}
-      <button onClick={step === STEPS.length - 1 ? onComplete : onNext}>{current.action}</button>
-      <button onClick={onSkip}>스킵</button>
-    </div>
+    <>
+      {/* Backdrop */}
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.72)', zIndex: 40 }}
+      />
+
+      {/* Modal */}
+      <div style={{
+        position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+        zIndex: 41, width: 'min(344px, calc(100vw - 32px))',
+        background: 'linear-gradient(160deg, rgba(22,18,40,0.98) 0%, rgba(10,9,18,0.98) 100%)',
+        border: '1px solid rgba(123,97,255,0.22)', borderRadius: 18,
+        padding: '26px 22px 22px',
+        boxShadow: '0 24px 80px rgba(0,0,0,0.6), 0 0 60px color-mix(in oklch, var(--accent) 10%, transparent)',
+        animation: 'fadeIn 0.22s ease', textAlign: 'center',
+      }}>
+        {/* Step label */}
+        <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: '0.2em', color: 'var(--accent)', marginBottom: 12 }}>
+          {current.label}
+        </div>
+
+        {/* Title */}
+        <h2 style={{ margin: '0 0 9px', fontSize: 19, fontWeight: 800, letterSpacing: '-0.02em' }}>
+          {current.title}
+        </h2>
+
+        {/* Description */}
+        <p style={{ margin: '0 0 16px', fontSize: 12.5, color: 'rgba(255,255,255,0.58)', lineHeight: 1.6 }}>
+          {current.desc}
+        </p>
+
+        {/* Demo */}
+        {demo}
+
+        {/* Progress dots */}
+        <div style={{ display: 'flex', gap: 5, justifyContent: 'center', marginBottom: 16 }}>
+          {STEPS.map((_, i) => (
+            <span key={i} style={{
+              width: i === step ? 18 : 6, height: 6, borderRadius: 9,
+              background: i === step ? 'var(--accent)' : 'rgba(255,255,255,0.2)',
+              transition: 'width 0.2s, background 0.2s',
+            }} />
+          ))}
+        </div>
+
+        {/* Footer buttons */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+          <button
+            onClick={onSkip}
+            style={{
+              background: 'none', border: 'none', cursor: 'pointer',
+              color: 'rgba(255,255,255,0.4)', fontSize: 13, fontWeight: 500,
+              padding: '4px 8px', fontFamily: 'inherit',
+            }}
+          >스킵</button>
+          <button
+            onClick={isLast ? onComplete : onNext}
+            style={{
+              flex: 1, padding: '13px 20px', background: 'var(--accent)',
+              border: 'none', borderRadius: 10, color: 'black', fontSize: 14, fontWeight: 700,
+              cursor: 'pointer', fontFamily: 'inherit',
+              boxShadow: '0 4px 20px color-mix(in oklch, var(--accent) 30%, transparent)',
+              transition: 'opacity 0.15s',
+            }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = '0.88'; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = '1'; }}
+          >{current.action}</button>
+        </div>
+      </div>
+    </>
   );
 }
