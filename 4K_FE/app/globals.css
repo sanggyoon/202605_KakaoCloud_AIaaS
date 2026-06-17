@@ -38,6 +38,18 @@ html, body {
   .climax-grow { animation: none !important; }
 }
 
+/* 디테일 그래프 — 왼쪽에서 오른쪽으로 그려지는 wipe (마운트 시 1회) */
+@keyframes cgDraw {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+.cg-draw {
+  animation: cgDraw 1.1s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cg-draw { animation: none !important; }
+}
+
 button {
   font-family: inherit;
 }
