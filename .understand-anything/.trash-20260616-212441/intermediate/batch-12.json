@@ -1,0 +1,32 @@
+{
+  "nodes": [
+    {
+      "id": "service:4K_ML/Dockerfile",
+      "type": "service",
+      "name": "Dockerfile",
+      "filePath": "4K_ML/Dockerfile",
+      "summary": "4K ML 파이프라인용 컨테이너 이미지 빌드 정의. PyTorch+CUDA 베이스 위에 의존성을 설치하고 all-MiniLM 및 roberta-base 모델을 이미지에 미리 굽어(bake) 런타임 HuggingFace 다운로드를 제거하며, ML 변환 모듈 디렉터리들을 복사한다.",
+      "tags": ["containerization", "infrastructure", "deployment", "machine-learning", "cuda"],
+      "complexity": "moderate",
+      "languageNotes": "ENTRYPOINT가 없어 Argo WorkflowTemplate가 `python -m <module>`로 단계별 실행을 지정한다. BuildKit `--mount=type=secret`로 HF_TOKEN을 안전하게 주입하고 429 대응 재시도 루프를 사용한다."
+    },
+    {
+      "id": "service:4K_ML/.dockerignore",
+      "type": "service",
+      "name": ".dockerignore",
+      "filePath": "4K_ML/.dockerignore",
+      "summary": "Docker 빌드 컨텍스트에서 제외할 파일 패턴을 정의하여 이미지 크기와 빌드 캐시 무효화를 줄이는 무시 목록.",
+      "tags": ["containerization", "infrastructure", "build-system"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "service:4K_ML/.dockerignore",
+      "target": "service:4K_ML/Dockerfile",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

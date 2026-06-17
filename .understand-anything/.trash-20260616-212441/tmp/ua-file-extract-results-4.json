@@ -1,0 +1,1735 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 12,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "4K_ML/subtitle_parse/__init__.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 1,
+      "nonEmptyLines": 0,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/subtitle_parse/db.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 73,
+      "nonEmptyLines": 56,
+      "functions": [
+        {
+          "name": "_ai",
+          "startLine": 8,
+          "endLine": 9,
+          "params": []
+        },
+        {
+          "name": "_auth",
+          "startLine": 12,
+          "endLine": 14,
+          "params": []
+        },
+        {
+          "name": "_headers",
+          "startLine": 17,
+          "endLine": 24,
+          "params": [
+            "write",
+            "representation"
+          ]
+        },
+        {
+          "name": "fetch_targets",
+          "startLine": 27,
+          "endLine": 35,
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "fetch_subtitle",
+          "startLine": 38,
+          "endLine": 45,
+          "params": [
+            "client",
+            "tmdb_id"
+          ]
+        },
+        {
+          "name": "upsert_scenes",
+          "startLine": 48,
+          "endLine": 55,
+          "params": [
+            "client",
+            "rows"
+          ]
+        },
+        {
+          "name": "upsert_dialogues",
+          "startLine": 58,
+          "endLine": 63,
+          "params": [
+            "client",
+            "rows"
+          ]
+        },
+        {
+          "name": "set_parse_state",
+          "startLine": 66,
+          "endLine": 73,
+          "params": [
+            "client",
+            "tmdb_id",
+            "state",
+            "error"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "_ai",
+          "line": 8,
+          "isDefault": false
+        },
+        {
+          "name": "_auth",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "_headers",
+          "line": 17,
+          "isDefault": false
+        },
+        {
+          "name": "fetch_targets",
+          "line": 27,
+          "isDefault": false
+        },
+        {
+          "name": "fetch_subtitle",
+          "line": 38,
+          "isDefault": false
+        },
+        {
+          "name": "upsert_scenes",
+          "line": 48,
+          "isDefault": false
+        },
+        {
+          "name": "upsert_dialogues",
+          "line": 58,
+          "isDefault": false
+        },
+        {
+          "name": "set_parse_state",
+          "line": 66,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_ai",
+          "callee": "os.getenv",
+          "lineNumber": 9
+        },
+        {
+          "caller": "_ai",
+          "callee": "os.getenv",
+          "lineNumber": 9
+        },
+        {
+          "caller": "_auth",
+          "callee": "os.getenv",
+          "lineNumber": 13
+        },
+        {
+          "caller": "_auth",
+          "callee": "os.getenv",
+          "lineNumber": 14
+        },
+        {
+          "caller": "_headers",
+          "callee": "_ai",
+          "lineNumber": 18
+        },
+        {
+          "caller": "fetch_targets",
+          "callee": "_ai",
+          "lineNumber": 29
+        },
+        {
+          "caller": "fetch_targets",
+          "callee": "client.get",
+          "lineNumber": 30
+        },
+        {
+          "caller": "fetch_targets",
+          "callee": "_headers",
+          "lineNumber": 32
+        },
+        {
+          "caller": "fetch_targets",
+          "callee": "_auth",
+          "lineNumber": 32
+        },
+        {
+          "caller": "fetch_targets",
+          "callee": "r.raise_for_status",
+          "lineNumber": 33
+        },
+        {
+          "caller": "fetch_targets",
+          "callee": "r.json",
+          "lineNumber": 34
+        },
+        {
+          "caller": "fetch_targets",
+          "callee": "row.get",
+          "lineNumber": 35
+        },
+        {
+          "caller": "fetch_targets",
+          "callee": "row.get",
+          "lineNumber": 35
+        },
+        {
+          "caller": "fetch_subtitle",
+          "callee": "_ai",
+          "lineNumber": 39
+        },
+        {
+          "caller": "fetch_subtitle",
+          "callee": "client.get",
+          "lineNumber": 40
+        },
+        {
+          "caller": "fetch_subtitle",
+          "callee": "_headers",
+          "lineNumber": 42
+        },
+        {
+          "caller": "fetch_subtitle",
+          "callee": "_auth",
+          "lineNumber": 42
+        },
+        {
+          "caller": "fetch_subtitle",
+          "callee": "r.raise_for_status",
+          "lineNumber": 43
+        },
+        {
+          "caller": "fetch_subtitle",
+          "callee": "r.json",
+          "lineNumber": 44
+        },
+        {
+          "caller": "upsert_scenes",
+          "callee": "_ai",
+          "lineNumber": 49
+        },
+        {
+          "caller": "upsert_scenes",
+          "callee": "client.post",
+          "lineNumber": 50
+        },
+        {
+          "caller": "upsert_scenes",
+          "callee": "_headers",
+          "lineNumber": 51
+        },
+        {
+          "caller": "upsert_scenes",
+          "callee": "_auth",
+          "lineNumber": 52
+        },
+        {
+          "caller": "upsert_scenes",
+          "callee": "RuntimeError",
+          "lineNumber": 54
+        },
+        {
+          "caller": "upsert_scenes",
+          "callee": "r.json",
+          "lineNumber": 55
+        },
+        {
+          "caller": "upsert_dialogues",
+          "callee": "_ai",
+          "lineNumber": 59
+        },
+        {
+          "caller": "upsert_dialogues",
+          "callee": "client.post",
+          "lineNumber": 60
+        },
+        {
+          "caller": "upsert_dialogues",
+          "callee": "_headers",
+          "lineNumber": 61
+        },
+        {
+          "caller": "upsert_dialogues",
+          "callee": "_auth",
+          "lineNumber": 61
+        },
+        {
+          "caller": "upsert_dialogues",
+          "callee": "RuntimeError",
+          "lineNumber": 63
+        },
+        {
+          "caller": "set_parse_state",
+          "callee": "_ai",
+          "lineNumber": 67
+        },
+        {
+          "caller": "set_parse_state",
+          "callee": "datetime.now(timezone.utc).isoformat",
+          "lineNumber": 69
+        },
+        {
+          "caller": "set_parse_state",
+          "callee": "datetime.now",
+          "lineNumber": 69
+        },
+        {
+          "caller": "set_parse_state",
+          "callee": "client.post",
+          "lineNumber": 70
+        },
+        {
+          "caller": "set_parse_state",
+          "callee": "_headers",
+          "lineNumber": 71
+        },
+        {
+          "caller": "set_parse_state",
+          "callee": "_auth",
+          "lineNumber": 71
+        },
+        {
+          "caller": "set_parse_state",
+          "callee": "RuntimeError",
+          "lineNumber": 73
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 8,
+        "functionCount": 8,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/subtitle_parse/embed.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 19,
+      "nonEmptyLines": 14,
+      "functions": [
+        {
+          "name": "_get_model",
+          "startLine": 7,
+          "endLine": 12,
+          "params": []
+        },
+        {
+          "name": "embed_texts",
+          "startLine": 15,
+          "endLine": 19,
+          "params": [
+            "texts"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "_get_model",
+          "line": 7,
+          "isDefault": false
+        },
+        {
+          "name": "embed_texts",
+          "line": 15,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_get_model",
+          "callee": "SentenceTransformer",
+          "lineNumber": 11
+        },
+        {
+          "caller": "embed_texts",
+          "callee": "np.zeros",
+          "lineNumber": 17
+        },
+        {
+          "caller": "embed_texts",
+          "callee": "_get_model().encode",
+          "lineNumber": 18
+        },
+        {
+          "caller": "embed_texts",
+          "callee": "_get_model",
+          "lineNumber": 18
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/subtitle_parse/features.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 24,
+      "nonEmptyLines": 22,
+      "functions": [
+        {
+          "name": "line_features",
+          "startLine": 5,
+          "endLine": 24,
+          "params": [
+            "cues"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "line_features",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "line_features",
+          "callee": "out.append",
+          "lineNumber": 13
+        },
+        {
+          "caller": "line_features",
+          "callee": "len",
+          "lineNumber": 18
+        },
+        {
+          "caller": "line_features",
+          "callee": "len",
+          "lineNumber": 19
+        },
+        {
+          "caller": "line_features",
+          "callee": "c.text.split",
+          "lineNumber": 19
+        },
+        {
+          "caller": "line_features",
+          "callee": "max",
+          "lineNumber": 20
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/subtitle_parse/parse_subtitles.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 80,
+      "nonEmptyLines": 70,
+      "functions": [
+        {
+          "name": "parse_one",
+          "startLine": 15,
+          "endLine": 52,
+          "params": [
+            "client",
+            "sub",
+            "gap_ms",
+            "sim_threshold",
+            "min_lines",
+            "min_ms"
+          ]
+        },
+        {
+          "name": "run",
+          "startLine": 55,
+          "endLine": 76,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "parse_one",
+          "line": 15,
+          "isDefault": false
+        },
+        {
+          "name": "run",
+          "line": 55,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "parse_one",
+          "callee": "parse_srt",
+          "lineNumber": 17
+        },
+        {
+          "caller": "parse_one",
+          "callee": "ValueError",
+          "lineNumber": 19
+        },
+        {
+          "caller": "parse_one",
+          "callee": "line_features",
+          "lineNumber": 20
+        },
+        {
+          "caller": "parse_one",
+          "callee": "embed_texts",
+          "lineNumber": 21
+        },
+        {
+          "caller": "parse_one",
+          "callee": "split_scenes",
+          "lineNumber": 22
+        },
+        {
+          "caller": "parse_one",
+          "callee": "split_method",
+          "lineNumber": 25
+        },
+        {
+          "caller": "parse_one",
+          "callee": "enumerate",
+          "lineNumber": 27
+        },
+        {
+          "caller": "parse_one",
+          "callee": "scene_rows.append",
+          "lineNumber": 30
+        },
+        {
+          "caller": "parse_one",
+          "callee": "\" \".join",
+          "lineNumber": 34
+        },
+        {
+          "caller": "parse_one",
+          "callee": "len",
+          "lineNumber": 35
+        },
+        {
+          "caller": "parse_one",
+          "callee": "db.upsert_scenes",
+          "lineNumber": 37
+        },
+        {
+          "caller": "parse_one",
+          "callee": "enumerate",
+          "lineNumber": 41
+        },
+        {
+          "caller": "parse_one",
+          "callee": "dialogue_rows.append",
+          "lineNumber": 44
+        },
+        {
+          "caller": "parse_one",
+          "callee": "db.upsert_dialogues",
+          "lineNumber": 51
+        },
+        {
+          "caller": "parse_one",
+          "callee": "len",
+          "lineNumber": 52
+        },
+        {
+          "caller": "run",
+          "callee": "os.getenv",
+          "lineNumber": 57
+        },
+        {
+          "caller": "run",
+          "callee": "SystemExit",
+          "lineNumber": 58
+        },
+        {
+          "caller": "run",
+          "callee": "config_from_env",
+          "lineNumber": 59
+        },
+        {
+          "caller": "run",
+          "callee": "httpx.Client",
+          "lineNumber": 61
+        },
+        {
+          "caller": "run",
+          "callee": "db.fetch_targets",
+          "lineNumber": 62
+        },
+        {
+          "caller": "run",
+          "callee": "enumerate",
+          "lineNumber": 63
+        },
+        {
+          "caller": "run",
+          "callee": "db.fetch_subtitle",
+          "lineNumber": 64
+        },
+        {
+          "caller": "run",
+          "callee": "parse_one",
+          "lineNumber": 68
+        },
+        {
+          "caller": "run",
+          "callee": "db.set_parse_state",
+          "lineNumber": 69
+        },
+        {
+          "caller": "run",
+          "callee": "print",
+          "lineNumber": 71
+        },
+        {
+          "caller": "run",
+          "callee": "len",
+          "lineNumber": 71
+        },
+        {
+          "caller": "run",
+          "callee": "db.set_parse_state",
+          "lineNumber": 73
+        },
+        {
+          "caller": "run",
+          "callee": "str",
+          "lineNumber": 73
+        },
+        {
+          "caller": "run",
+          "callee": "print",
+          "lineNumber": 75
+        },
+        {
+          "caller": "run",
+          "callee": "len",
+          "lineNumber": 75
+        },
+        {
+          "caller": "run",
+          "callee": "print",
+          "lineNumber": 76
+        }
+      ],
+      "metrics": {
+        "importCount": 6,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/subtitle_parse/scenes.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 61,
+      "nonEmptyLines": 48,
+      "functions": [
+        {
+          "name": "config_from_env",
+          "startLine": 11,
+          "endLine": 17,
+          "params": []
+        },
+        {
+          "name": "split_method",
+          "startLine": 20,
+          "endLine": 21,
+          "params": [
+            "gap_ms",
+            "sim_threshold",
+            "min_ms"
+          ]
+        },
+        {
+          "name": "_cosine",
+          "startLine": 24,
+          "endLine": 28,
+          "params": [
+            "a",
+            "b"
+          ]
+        },
+        {
+          "name": "split_scenes",
+          "startLine": 31,
+          "endLine": 61,
+          "params": [
+            "features",
+            "embeddings",
+            "gap_ms",
+            "sim_threshold",
+            "min_lines",
+            "min_ms"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "config_from_env",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "split_method",
+          "line": 20,
+          "isDefault": false
+        },
+        {
+          "name": "_cosine",
+          "line": 24,
+          "isDefault": false
+        },
+        {
+          "name": "split_scenes",
+          "line": 31,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "config_from_env",
+          "callee": "int",
+          "lineNumber": 13
+        },
+        {
+          "caller": "config_from_env",
+          "callee": "os.getenv",
+          "lineNumber": 13
+        },
+        {
+          "caller": "config_from_env",
+          "callee": "float",
+          "lineNumber": 14
+        },
+        {
+          "caller": "config_from_env",
+          "callee": "os.getenv",
+          "lineNumber": 14
+        },
+        {
+          "caller": "config_from_env",
+          "callee": "int",
+          "lineNumber": 15
+        },
+        {
+          "caller": "config_from_env",
+          "callee": "os.getenv",
+          "lineNumber": 15
+        },
+        {
+          "caller": "config_from_env",
+          "callee": "int",
+          "lineNumber": 16
+        },
+        {
+          "caller": "config_from_env",
+          "callee": "os.getenv",
+          "lineNumber": 16
+        },
+        {
+          "caller": "_cosine",
+          "callee": "float",
+          "lineNumber": 25
+        },
+        {
+          "caller": "_cosine",
+          "callee": "np.linalg.norm",
+          "lineNumber": 25
+        },
+        {
+          "caller": "_cosine",
+          "callee": "float",
+          "lineNumber": 25
+        },
+        {
+          "caller": "_cosine",
+          "callee": "np.linalg.norm",
+          "lineNumber": 25
+        },
+        {
+          "caller": "_cosine",
+          "callee": "float",
+          "lineNumber": 28
+        },
+        {
+          "caller": "_cosine",
+          "callee": "np.dot",
+          "lineNumber": 28
+        },
+        {
+          "caller": "split_scenes",
+          "callee": "len",
+          "lineNumber": 38
+        },
+        {
+          "caller": "split_scenes",
+          "callee": "embeddings[0].astype(float).copy",
+          "lineNumber": 43
+        },
+        {
+          "caller": "split_scenes",
+          "callee": "embeddings[0].astype",
+          "lineNumber": 43
+        },
+        {
+          "caller": "split_scenes",
+          "callee": "range",
+          "lineNumber": 44
+        },
+        {
+          "caller": "split_scenes",
+          "callee": "features[i].get",
+          "lineNumber": 45
+        },
+        {
+          "caller": "split_scenes",
+          "callee": "len",
+          "lineNumber": 47
+        },
+        {
+          "caller": "split_scenes",
+          "callee": "_cosine",
+          "lineNumber": 48
+        },
+        {
+          "caller": "split_scenes",
+          "callee": "len",
+          "lineNumber": 51
+        },
+        {
+          "caller": "split_scenes",
+          "callee": "scenes.append",
+          "lineNumber": 54
+        },
+        {
+          "caller": "split_scenes",
+          "callee": "embeddings[i].astype(float).copy",
+          "lineNumber": 56
+        },
+        {
+          "caller": "split_scenes",
+          "callee": "embeddings[i].astype",
+          "lineNumber": 56
+        },
+        {
+          "caller": "split_scenes",
+          "callee": "current.append",
+          "lineNumber": 58
+        },
+        {
+          "caller": "split_scenes",
+          "callee": "scenes.append",
+          "lineNumber": 60
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 4,
+        "functionCount": 4,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/subtitle_parse/srt.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 45,
+      "nonEmptyLines": 38,
+      "functions": [
+        {
+          "name": "_ts_to_ms",
+          "startLine": 17,
+          "endLine": 22,
+          "params": [
+            "ts"
+          ]
+        },
+        {
+          "name": "parse_srt",
+          "startLine": 25,
+          "endLine": 45,
+          "params": [
+            "raw_text"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "Cue",
+          "startLine": 10,
+          "endLine": 14,
+          "methods": [],
+          "properties": [
+            "index",
+            "start_ms",
+            "end_ms",
+            "text"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Cue",
+          "line": 9,
+          "isDefault": false
+        },
+        {
+          "name": "_ts_to_ms",
+          "line": 17,
+          "isDefault": false
+        },
+        {
+          "name": "parse_srt",
+          "line": 25,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_ts_to_ms",
+          "callee": "_TIME.search",
+          "lineNumber": 18
+        },
+        {
+          "caller": "_ts_to_ms",
+          "callee": "int",
+          "lineNumber": 21
+        },
+        {
+          "caller": "_ts_to_ms",
+          "callee": "m.groups",
+          "lineNumber": 21
+        },
+        {
+          "caller": "parse_srt",
+          "callee": "re.split",
+          "lineNumber": 27
+        },
+        {
+          "caller": "parse_srt",
+          "callee": "raw_text.strip",
+          "lineNumber": 27
+        },
+        {
+          "caller": "parse_srt",
+          "callee": "block.splitlines",
+          "lineNumber": 30
+        },
+        {
+          "caller": "parse_srt",
+          "callee": "ln.strip",
+          "lineNumber": 30
+        },
+        {
+          "caller": "parse_srt",
+          "callee": "next",
+          "lineNumber": 31
+        },
+        {
+          "caller": "parse_srt",
+          "callee": "enumerate",
+          "lineNumber": 31
+        },
+        {
+          "caller": "parse_srt",
+          "callee": "lines[timing_i].split",
+          "lineNumber": 34
+        },
+        {
+          "caller": "parse_srt",
+          "callee": "len",
+          "lineNumber": 35
+        },
+        {
+          "caller": "parse_srt",
+          "callee": "_ts_to_ms",
+          "lineNumber": 37
+        },
+        {
+          "caller": "parse_srt",
+          "callee": "_ts_to_ms",
+          "lineNumber": 37
+        },
+        {
+          "caller": "parse_srt",
+          "callee": "\" \".join(_TAG.sub(\"\", t) for t in lines[timing_i + 1:]).strip",
+          "lineNumber": 40
+        },
+        {
+          "caller": "parse_srt",
+          "callee": "\" \".join",
+          "lineNumber": 40
+        },
+        {
+          "caller": "parse_srt",
+          "callee": "_TAG.sub",
+          "lineNumber": 40
+        },
+        {
+          "caller": "parse_srt",
+          "callee": "cues.append",
+          "lineNumber": 43
+        },
+        {
+          "caller": "parse_srt",
+          "callee": "Cue",
+          "lineNumber": 43
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 2,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "4K_ML/tests/test_features.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 22,
+      "nonEmptyLines": 18,
+      "functions": [
+        {
+          "name": "test_features_basic",
+          "startLine": 5,
+          "endLine": 18,
+          "params": []
+        },
+        {
+          "name": "test_empty",
+          "startLine": 21,
+          "endLine": 22,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "test_features_basic",
+          "line": 5,
+          "isDefault": false
+        },
+        {
+          "name": "test_empty",
+          "line": 21,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "test_features_basic",
+          "callee": "Cue",
+          "lineNumber": 7
+        },
+        {
+          "caller": "test_features_basic",
+          "callee": "Cue",
+          "lineNumber": 8
+        },
+        {
+          "caller": "test_features_basic",
+          "callee": "line_features",
+          "lineNumber": 10
+        },
+        {
+          "caller": "test_features_basic",
+          "callee": "len",
+          "lineNumber": 13
+        },
+        {
+          "caller": "test_features_basic",
+          "callee": "abs",
+          "lineNumber": 18
+        },
+        {
+          "caller": "test_empty",
+          "callee": "line_features",
+          "lineNumber": 22
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/tests/test_parse_db.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 54,
+      "nonEmptyLines": 37,
+      "functions": [
+        {
+          "name": "_client",
+          "startLine": 6,
+          "endLine": 7,
+          "params": [
+            "handler"
+          ]
+        },
+        {
+          "name": "_env",
+          "startLine": 10,
+          "endLine": 12,
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_fetch_targets_filters",
+          "startLine": 15,
+          "endLine": 25,
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_upsert_scenes_returns_rows",
+          "startLine": 28,
+          "endLine": 40,
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_set_parse_state_posts",
+          "startLine": 43,
+          "endLine": 54,
+          "params": [
+            "monkeypatch"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "_client",
+          "line": 6,
+          "isDefault": false
+        },
+        {
+          "name": "_env",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "test_fetch_targets_filters",
+          "line": 15,
+          "isDefault": false
+        },
+        {
+          "name": "test_upsert_scenes_returns_rows",
+          "line": 28,
+          "isDefault": false
+        },
+        {
+          "name": "test_set_parse_state_posts",
+          "line": 43,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_client",
+          "callee": "httpx.Client",
+          "lineNumber": 7
+        },
+        {
+          "caller": "_client",
+          "callee": "httpx.MockTransport",
+          "lineNumber": 7
+        },
+        {
+          "caller": "_env",
+          "callee": "monkeypatch.setenv",
+          "lineNumber": 11
+        },
+        {
+          "caller": "_env",
+          "callee": "monkeypatch.setenv",
+          "lineNumber": 12
+        },
+        {
+          "caller": "test_fetch_targets_filters",
+          "callee": "_env",
+          "lineNumber": 16
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 19
+        },
+        {
+          "caller": "test_fetch_targets_filters",
+          "callee": "db.fetch_targets",
+          "lineNumber": 25
+        },
+        {
+          "caller": "test_fetch_targets_filters",
+          "callee": "_client",
+          "lineNumber": 25
+        },
+        {
+          "caller": "test_upsert_scenes_returns_rows",
+          "callee": "_env",
+          "lineNumber": 29
+        },
+        {
+          "caller": "handler",
+          "callee": "str",
+          "lineNumber": 33
+        },
+        {
+          "caller": "handler",
+          "callee": "req.headers.get",
+          "lineNumber": 34
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 35
+        },
+        {
+          "caller": "test_upsert_scenes_returns_rows",
+          "callee": "db.upsert_scenes",
+          "lineNumber": 37
+        },
+        {
+          "caller": "test_upsert_scenes_returns_rows",
+          "callee": "_client",
+          "lineNumber": 37
+        },
+        {
+          "caller": "test_set_parse_state_posts",
+          "callee": "_env",
+          "lineNumber": 44
+        },
+        {
+          "caller": "handler",
+          "callee": "json.loads",
+          "lineNumber": 49
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 50
+        },
+        {
+          "caller": "test_set_parse_state_posts",
+          "callee": "db.set_parse_state",
+          "lineNumber": 52
+        },
+        {
+          "caller": "test_set_parse_state_posts",
+          "callee": "_client",
+          "lineNumber": 52
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 5,
+        "functionCount": 5,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/tests/test_parse_main.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 47,
+      "nonEmptyLines": 35,
+      "functions": [
+        {
+          "name": "test_parse_one_builds_scenes_and_dialogues",
+          "startLine": 13,
+          "endLine": 39,
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_parse_one_raises_on_empty",
+          "startLine": 42,
+          "endLine": 47,
+          "params": [
+            "monkeypatch"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "test_parse_one_builds_scenes_and_dialogues",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "test_parse_one_raises_on_empty",
+          "line": 42,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "test_parse_one_builds_scenes_and_dialogues",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 14
+        },
+        {
+          "caller": "test_parse_one_builds_scenes_and_dialogues",
+          "callee": "np.ones",
+          "lineNumber": 14
+        },
+        {
+          "caller": "test_parse_one_builds_scenes_and_dialogues",
+          "callee": "len",
+          "lineNumber": 14
+        },
+        {
+          "caller": "test_parse_one_builds_scenes_and_dialogues",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 25
+        },
+        {
+          "caller": "test_parse_one_builds_scenes_and_dialogues",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 26
+        },
+        {
+          "caller": "test_parse_one_builds_scenes_and_dialogues",
+          "callee": "main.parse_one",
+          "lineNumber": 29
+        },
+        {
+          "caller": "test_parse_one_raises_on_empty",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 43
+        },
+        {
+          "caller": "test_parse_one_raises_on_empty",
+          "callee": "np.ones",
+          "lineNumber": 43
+        },
+        {
+          "caller": "test_parse_one_raises_on_empty",
+          "callee": "len",
+          "lineNumber": 43
+        },
+        {
+          "caller": "test_parse_one_raises_on_empty",
+          "callee": "pytest.raises",
+          "lineNumber": 45
+        },
+        {
+          "caller": "test_parse_one_raises_on_empty",
+          "callee": "main.parse_one",
+          "lineNumber": 46
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/tests/test_scenes.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 54,
+      "nonEmptyLines": 34,
+      "functions": [
+        {
+          "name": "_f",
+          "startLine": 9,
+          "endLine": 10,
+          "params": [
+            "start",
+            "end",
+            "gap"
+          ]
+        },
+        {
+          "name": "_split",
+          "startLine": 14,
+          "endLine": 15,
+          "params": [
+            "feats",
+            "emb",
+            "gap_ms",
+            "sim",
+            "min_lines",
+            "min_ms"
+          ]
+        },
+        {
+          "name": "test_gap_boundary_gated_by_min_ms",
+          "startLine": 18,
+          "endLine": 21,
+          "params": []
+        },
+        {
+          "name": "test_semantic_boundary_when_long_enough",
+          "startLine": 24,
+          "endLine": 27,
+          "params": []
+        },
+        {
+          "name": "test_semantic_ignored_when_scene_too_short",
+          "startLine": 30,
+          "endLine": 33,
+          "params": []
+        },
+        {
+          "name": "test_single_scene_when_similar_and_small_gaps",
+          "startLine": 36,
+          "endLine": 38,
+          "params": []
+        },
+        {
+          "name": "test_min_lines_also_gates",
+          "startLine": 41,
+          "endLine": 44,
+          "params": []
+        },
+        {
+          "name": "test_empty",
+          "startLine": 47,
+          "endLine": 48,
+          "params": []
+        },
+        {
+          "name": "test_config_defaults",
+          "startLine": 51,
+          "endLine": 54,
+          "params": [
+            "monkeypatch"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "_f",
+          "line": 9,
+          "isDefault": false
+        },
+        {
+          "name": "_split",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "test_gap_boundary_gated_by_min_ms",
+          "line": 18,
+          "isDefault": false
+        },
+        {
+          "name": "test_semantic_boundary_when_long_enough",
+          "line": 24,
+          "isDefault": false
+        },
+        {
+          "name": "test_semantic_ignored_when_scene_too_short",
+          "line": 30,
+          "isDefault": false
+        },
+        {
+          "name": "test_single_scene_when_similar_and_small_gaps",
+          "line": 36,
+          "isDefault": false
+        },
+        {
+          "name": "test_min_lines_also_gates",
+          "line": 41,
+          "isDefault": false
+        },
+        {
+          "name": "test_empty",
+          "line": 47,
+          "isDefault": false
+        },
+        {
+          "name": "test_config_defaults",
+          "line": 51,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_split",
+          "callee": "split_scenes",
+          "lineNumber": 15
+        },
+        {
+          "caller": "_split",
+          "callee": "np.array",
+          "lineNumber": 15
+        },
+        {
+          "caller": "test_gap_boundary_gated_by_min_ms",
+          "callee": "_f",
+          "lineNumber": 20
+        },
+        {
+          "caller": "test_gap_boundary_gated_by_min_ms",
+          "callee": "_f",
+          "lineNumber": 20
+        },
+        {
+          "caller": "test_gap_boundary_gated_by_min_ms",
+          "callee": "_f",
+          "lineNumber": 20
+        },
+        {
+          "caller": "test_gap_boundary_gated_by_min_ms",
+          "callee": "_split",
+          "lineNumber": 21
+        },
+        {
+          "caller": "test_semantic_boundary_when_long_enough",
+          "callee": "_f",
+          "lineNumber": 26
+        },
+        {
+          "caller": "test_semantic_boundary_when_long_enough",
+          "callee": "_f",
+          "lineNumber": 26
+        },
+        {
+          "caller": "test_semantic_boundary_when_long_enough",
+          "callee": "_f",
+          "lineNumber": 26
+        },
+        {
+          "caller": "test_semantic_boundary_when_long_enough",
+          "callee": "_f",
+          "lineNumber": 26
+        },
+        {
+          "caller": "test_semantic_boundary_when_long_enough",
+          "callee": "_split",
+          "lineNumber": 27
+        },
+        {
+          "caller": "test_semantic_ignored_when_scene_too_short",
+          "callee": "_f",
+          "lineNumber": 32
+        },
+        {
+          "caller": "test_semantic_ignored_when_scene_too_short",
+          "callee": "_f",
+          "lineNumber": 32
+        },
+        {
+          "caller": "test_semantic_ignored_when_scene_too_short",
+          "callee": "_split",
+          "lineNumber": 33
+        },
+        {
+          "caller": "test_single_scene_when_similar_and_small_gaps",
+          "callee": "_f",
+          "lineNumber": 37
+        },
+        {
+          "caller": "test_single_scene_when_similar_and_small_gaps",
+          "callee": "_f",
+          "lineNumber": 37
+        },
+        {
+          "caller": "test_single_scene_when_similar_and_small_gaps",
+          "callee": "_f",
+          "lineNumber": 37
+        },
+        {
+          "caller": "test_single_scene_when_similar_and_small_gaps",
+          "callee": "_split",
+          "lineNumber": 38
+        },
+        {
+          "caller": "test_min_lines_also_gates",
+          "callee": "_f",
+          "lineNumber": 43
+        },
+        {
+          "caller": "test_min_lines_also_gates",
+          "callee": "_f",
+          "lineNumber": 43
+        },
+        {
+          "caller": "test_min_lines_also_gates",
+          "callee": "_split",
+          "lineNumber": 44
+        },
+        {
+          "caller": "test_empty",
+          "callee": "split_scenes",
+          "lineNumber": 48
+        },
+        {
+          "caller": "test_empty",
+          "callee": "np.zeros",
+          "lineNumber": 48
+        },
+        {
+          "caller": "test_config_defaults",
+          "callee": "monkeypatch.delenv",
+          "lineNumber": 53
+        },
+        {
+          "caller": "test_config_defaults",
+          "callee": "config_from_env",
+          "lineNumber": 54
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 9,
+        "functionCount": 9,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/tests/test_srt.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 42,
+      "nonEmptyLines": 30,
+      "functions": [
+        {
+          "name": "test_parses_two_cues",
+          "startLine": 13,
+          "endLine": 18,
+          "params": []
+        },
+        {
+          "name": "test_joins_multiline_and_strips_tags",
+          "startLine": 21,
+          "endLine": 23,
+          "params": []
+        },
+        {
+          "name": "test_keeps_sdh_brackets",
+          "startLine": 26,
+          "endLine": 28,
+          "params": []
+        },
+        {
+          "name": "test_skips_malformed_block_and_reindexes",
+          "startLine": 31,
+          "endLine": 37,
+          "params": []
+        },
+        {
+          "name": "test_skips_empty_text_cue",
+          "startLine": 40,
+          "endLine": 42,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "test_parses_two_cues",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "test_joins_multiline_and_strips_tags",
+          "line": 21,
+          "isDefault": false
+        },
+        {
+          "name": "test_keeps_sdh_brackets",
+          "line": 26,
+          "isDefault": false
+        },
+        {
+          "name": "test_skips_malformed_block_and_reindexes",
+          "line": 31,
+          "isDefault": false
+        },
+        {
+          "name": "test_skips_empty_text_cue",
+          "line": 40,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "test_parses_two_cues",
+          "callee": "parse_srt",
+          "lineNumber": 14
+        },
+        {
+          "caller": "test_parses_two_cues",
+          "callee": "Cue",
+          "lineNumber": 16
+        },
+        {
+          "caller": "test_parses_two_cues",
+          "callee": "Cue",
+          "lineNumber": 17
+        },
+        {
+          "caller": "test_joins_multiline_and_strips_tags",
+          "callee": "parse_srt",
+          "lineNumber": 23
+        },
+        {
+          "caller": "test_keeps_sdh_brackets",
+          "callee": "parse_srt",
+          "lineNumber": 28
+        },
+        {
+          "caller": "test_skips_malformed_block_and_reindexes",
+          "callee": "parse_srt",
+          "lineNumber": 35
+        },
+        {
+          "caller": "test_skips_empty_text_cue",
+          "callee": "parse_srt",
+          "lineNumber": 42
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 5,
+        "functionCount": 5,
+        "classCount": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,577 @@
+{
+  "nodes": [
+    {
+      "id": "file:4K_FE/app/components/BackgroundThread.tsx",
+      "type": "file",
+      "name": "BackgroundThread.tsx",
+      "filePath": "4K_FE/app/components/BackgroundThread.tsx",
+      "summary": "OGL(WebGL) 기반 셰이더 애니메이션으로 영화 추천 페이지의 흐르는 실(thread) 배경 효과를 렌더링하는 React 클라이언트 컴포넌트.",
+      "tags": ["component", "webgl", "animation", "background", "client-component"],
+      "complexity": "complex",
+      "languageNotes": "OGL Renderer와 커스텀 GLSL fragment shader, requestAnimationFrame 루프, useEffect cleanup으로 WebGL 컨텍스트를 해제한다."
+    },
+    {
+      "id": "function:4K_FE/app/components/BackgroundThread.tsx:Threads",
+      "type": "function",
+      "name": "Threads",
+      "filePath": "4K_FE/app/components/BackgroundThread.tsx",
+      "lineRange": [128, 237],
+      "summary": "OGL 렌더러를 초기화하고 셰이더 uniform과 마우스 인터랙션을 매 프레임 갱신하며 실 애니메이션을 그리는 컴포넌트 함수.",
+      "tags": ["component", "webgl", "animation", "render-loop"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:4K_FE/app/components/ClimaxGraph.tsx",
+      "type": "file",
+      "name": "ClimaxGraph.tsx",
+      "filePath": "4K_FE/app/components/ClimaxGraph.tsx",
+      "summary": "영화의 감정 기복(arousal/valence) 시계열을 Catmull-Rom 곡선과 valence 그라데이션으로 시각화하고 호버 인터랙션을 제공하는 SVG 클라이맥스 그래프 컴포넌트.",
+      "tags": ["component", "data-visualization", "svg", "chart", "interactive"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/components/ClimaxGraph.tsx:ClimaxGraph",
+      "type": "function",
+      "name": "ClimaxGraph",
+      "filePath": "4K_FE/app/components/ClimaxGraph.tsx",
+      "lineRange": [15, 142],
+      "summary": "데이터 포인트를 좌표로 변환해 곡선 path와 valence 그라데이션을 그리고 마우스 호버 위치의 값을 표시하는 SVG 그래프 렌더 함수.",
+      "tags": ["component", "data-visualization", "svg", "interactive"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:4K_FE/app/components/DetailOverlay.tsx",
+      "type": "file",
+      "name": "DetailOverlay.tsx",
+      "filePath": "4K_FE/app/components/DetailOverlay.tsx",
+      "summary": "선택한 영화의 상세 정보, 클라이맥스 그래프, 코사인 유사도 기반 추천 영화를 보여주는 대형 오버레이 모달 컴포넌트.",
+      "tags": ["component", "modal", "overlay", "recommendation", "data-visualization"],
+      "complexity": "complex",
+      "languageNotes": "fetchVectorPair/fetchMovieVectorPairs로 벡터를 가져와 cosineSimilarity와 meanCenter로 유사 영화를 정렬하는 클라이언트 측 추천 로직을 포함한다."
+    },
+    {
+      "id": "function:4K_FE/app/components/DetailOverlay.tsx:DetailOverlay",
+      "type": "function",
+      "name": "DetailOverlay",
+      "filePath": "4K_FE/app/components/DetailOverlay.tsx",
+      "lineRange": [33, 650],
+      "summary": "영화 벡터/valence를 비동기 로드하고 유사도 점수로 추천 후보를 산출하며 상세 UI와 클라이맥스 그래프를 렌더링하는 오버레이 함수.",
+      "tags": ["component", "modal", "recommendation", "async", "data-fetching"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:4K_FE/app/components/FilterBar.tsx",
+      "type": "file",
+      "name": "FilterBar.tsx",
+      "filePath": "4K_FE/app/components/FilterBar.tsx",
+      "summary": "장르/연도 범위/선호·비선호 영화 등 추천 필터 조건을 입력받는 사이드 패널 컴포넌트로, 여러 하위 행(row) 위젯과 커스텀 연도 슬라이더를 포함한다.",
+      "tags": ["component", "filter", "form", "ui-controls", "client-component"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:4K_FE/app/components/FilterBar.tsx:FilterBar",
+      "type": "function",
+      "name": "FilterBar",
+      "filePath": "4K_FE/app/components/FilterBar.tsx",
+      "lineRange": [518, 683],
+      "summary": "검색어, 장르, 연도 범위, 선호/비선호 목록을 묶어 필터 초안(draft)을 구성하고 검색/초기화 액션을 노출하는 메인 필터 패널 함수.",
+      "tags": ["component", "filter", "form", "ui-controls"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:4K_FE/app/components/FilterBar.tsx:YearRangeRow",
+      "type": "function",
+      "name": "YearRangeRow",
+      "filePath": "4K_FE/app/components/FilterBar.tsx",
+      "lineRange": [248, 415],
+      "summary": "드래그 가능한 듀얼 핸들 트랙으로 시작/종료 연도 범위를 선택하는 커스텀 슬라이더 위젯.",
+      "tags": ["component", "slider", "ui-controls", "interactive"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:4K_FE/app/components/FilterBar.tsx:PrefRow",
+      "type": "function",
+      "name": "PrefRow",
+      "filePath": "4K_FE/app/components/FilterBar.tsx",
+      "lineRange": [418, 516],
+      "summary": "선택된 선호/비선호 영화 ID들을 칩 형태로 표시하고 개별 제거를 지원하는 행 위젯.",
+      "tags": ["component", "ui-controls", "filter"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/components/FilterBar.tsx:YearStepper",
+      "type": "function",
+      "name": "YearStepper",
+      "filePath": "4K_FE/app/components/FilterBar.tsx",
+      "lineRange": [135, 245],
+      "summary": "증감 버튼으로 연도 값을 조정하는 스테퍼 위젯으로 min/max 경계 내 클램핑을 수행한다.",
+      "tags": ["component", "ui-controls", "stepper"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:4K_FE/app/components/FilterBar.tsx:FilterRow",
+      "type": "function",
+      "name": "FilterRow",
+      "filePath": "4K_FE/app/components/FilterBar.tsx",
+      "lineRange": [19, 72],
+      "summary": "라벨과 단일 선택 옵션 버튼 그룹을 렌더링하는 필터 행 위젯.",
+      "tags": ["component", "ui-controls", "filter"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/components/FilterBar.tsx:MultiFilterRow",
+      "type": "function",
+      "name": "MultiFilterRow",
+      "filePath": "4K_FE/app/components/FilterBar.tsx",
+      "lineRange": [75, 132],
+      "summary": "다중 선택 토글 옵션 그룹을 렌더링하는 필터 행 위젯.",
+      "tags": ["component", "ui-controls", "filter", "multi-select"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_FE/app/components/MiniGraph.tsx",
+      "type": "file",
+      "name": "MiniGraph.tsx",
+      "filePath": "4K_FE/app/components/MiniGraph.tsx",
+      "summary": "포스터 카드 등에 삽입되는 소형 SVG 클라이맥스 곡선 미니 그래프로 valence 그라데이션을 표현한다.",
+      "tags": ["component", "data-visualization", "svg", "chart"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_FE/app/components/MiniGraph.tsx:MiniGraph",
+      "type": "function",
+      "name": "MiniGraph",
+      "filePath": "4K_FE/app/components/MiniGraph.tsx",
+      "lineRange": [16, 48],
+      "summary": "데이터를 Catmull-Rom path로 변환하고 valence 그라데이션을 적용해 컴팩트한 곡선을 그리는 미니 그래프 함수.",
+      "tags": ["component", "data-visualization", "svg"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_FE/app/components/MovieDetailModal.tsx",
+      "type": "file",
+      "name": "MovieDetailModal.tsx",
+      "filePath": "4K_FE/app/components/MovieDetailModal.tsx",
+      "summary": "관리자용 영화 상세 편집 모달로 메타데이터를 조회·수정하고 저장/새로고침/재처리(reprocess) API를 호출한다.",
+      "tags": ["component", "modal", "admin", "data-fetching", "form"],
+      "complexity": "complex",
+      "languageNotes": "REST fetch로 영화 메타를 로드하고 NUM_FIELDS/TEXT_FIELDS 폼 검증 후 PATCH/POST로 저장하는 CRUD 패턴."
+    },
+    {
+      "id": "function:4K_FE/app/components/MovieDetailModal.tsx:MovieDetailModal",
+      "type": "function",
+      "name": "MovieDetailModal",
+      "filePath": "4K_FE/app/components/MovieDetailModal.tsx",
+      "lineRange": [54, 400],
+      "summary": "영화 메타를 로드하고 편집 폼 상태를 관리하며 저장·새로고침·재처리 핸들러를 통해 백엔드와 상호작용하는 관리자 모달 함수.",
+      "tags": ["component", "modal", "admin", "crud", "async"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:4K_FE/app/components/PosterCard.tsx",
+      "type": "file",
+      "name": "PosterCard.tsx",
+      "filePath": "4K_FE/app/components/PosterCard.tsx",
+      "summary": "3D 틸트·글레어 호버 효과와 장르 태그, 선호 토글 버튼을 갖춘 영화 포스터 카드 컴포넌트.",
+      "tags": ["component", "card", "poster", "interactive", "hover-effect"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:4K_FE/app/components/PosterCard.tsx:PosterCard",
+      "type": "function",
+      "name": "PosterCard",
+      "filePath": "4K_FE/app/components/PosterCard.tsx",
+      "lineRange": [19, 329],
+      "summary": "마우스 위치 기반 3D 회전과 글레어를 계산하고 포스터·장르·선호 토글 UI를 렌더링하는 카드 함수.",
+      "tags": ["component", "card", "interactive", "hover-effect"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:4K_FE/app/components/RandomModal.tsx",
+      "type": "file",
+      "name": "RandomModal.tsx",
+      "filePath": "4K_FE/app/components/RandomModal.tsx",
+      "summary": "서버에서 무작위 영화를 가져와 슬롯머신 셔플 애니메이션으로 한 편을 추천하는 랜덤 영화 추천 모달.",
+      "tags": ["component", "modal", "random", "animation", "data-fetching"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/components/RandomModal.tsx:RandomModal",
+      "type": "function",
+      "name": "RandomModal",
+      "filePath": "4K_FE/app/components/RandomModal.tsx",
+      "lineRange": [35, 192],
+      "summary": "셔플 인터벌 애니메이션과 서버 fetch 결과를 결합해 무작위 추천 영화를 선택·표시하는 모달 함수.",
+      "tags": ["component", "modal", "random", "animation"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:4K_FE/app/components/RandomModal.tsx:fetchRandomFromServer",
+      "type": "function",
+      "name": "fetchRandomFromServer",
+      "filePath": "4K_FE/app/components/RandomModal.tsx",
+      "lineRange": [13, 33],
+      "summary": "전체 영화 개수를 조회한 뒤 무작위 offset으로 한 편을 가져오는 Supabase REST 호출 헬퍼.",
+      "tags": ["data-fetching", "utility", "random", "async"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_FE/app/components/Tutorial.tsx",
+      "type": "file",
+      "name": "Tutorial.tsx",
+      "filePath": "4K_FE/app/components/Tutorial.tsx",
+      "summary": "신규 사용자에게 핵심 기능을 단계별로 안내하는 온보딩 튜토리얼 오버레이 컴포넌트.",
+      "tags": ["component", "tutorial", "onboarding", "overlay"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/components/Tutorial.tsx:Tutorial",
+      "type": "function",
+      "name": "Tutorial",
+      "filePath": "4K_FE/app/components/Tutorial.tsx",
+      "lineRange": [68, 225],
+      "summary": "현재 단계에 맞는 안내 카드와 다음/건너뛰기/완료 액션을 렌더링하는 튜토리얼 함수.",
+      "tags": ["component", "tutorial", "onboarding"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:4K_FE/app/dashboard/page.tsx",
+      "type": "file",
+      "name": "page.tsx",
+      "filePath": "4K_FE/app/dashboard/page.tsx",
+      "summary": "영화 추천 메인 대시보드 페이지로 무한 스크롤 영화 목록, 필터 검색, 선호 관리, 상세 오버레이, 랜덤 추천, 튜토리얼을 통합 조율한다.",
+      "tags": ["entry-point", "page", "dashboard", "data-fetching", "state-management"],
+      "complexity": "complex",
+      "languageNotes": "IntersectionObserver 기반 무한 스크롤과 Supabase REST 페이지네이션, localStorage 기반 최근 본 영화/튜토리얼 상태를 결합한다."
+    },
+    {
+      "id": "function:4K_FE/app/dashboard/page.tsx:Dashboard",
+      "type": "function",
+      "name": "Dashboard",
+      "filePath": "4K_FE/app/dashboard/page.tsx",
+      "lineRange": [33, 687],
+      "summary": "영화 목록 fetch·필터·선호 토글·무한 스크롤·모달 오케스트레이션을 담당하는 대시보드 페이지 함수.",
+      "tags": ["page", "dashboard", "state-management", "data-fetching"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:4K_FE/app/lib/climax.ts",
+      "type": "file",
+      "name": "climax.ts",
+      "filePath": "4K_FE/app/lib/climax.ts",
+      "summary": "감정 시계열 분석 유틸리티로 코사인 유사도, z-score 정규화, 피크 검출, 클라이맥스 지표 및 설명 텍스트 생성을 제공한다.",
+      "tags": ["utility", "analytics", "math", "signal-processing"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/lib/climax.ts:cosineSimilarity",
+      "type": "function",
+      "name": "cosineSimilarity",
+      "filePath": "4K_FE/app/lib/climax.ts",
+      "lineRange": [3, 14],
+      "summary": "두 수치 벡터 간 코사인 유사도를 계산하는 함수로 추천 정렬에 사용된다.",
+      "tags": ["utility", "math", "similarity"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_FE/app/lib/climax.ts:countPeaks",
+      "type": "function",
+      "name": "countPeaks",
+      "filePath": "4K_FE/app/lib/climax.ts",
+      "lineRange": [34, 52],
+      "summary": "시계열에서 임계값을 넘는 국소 최대(피크) 개수를 세는 함수.",
+      "tags": ["utility", "signal-processing", "math"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/lib/climax.ts:topPeaks",
+      "type": "function",
+      "name": "topPeaks",
+      "filePath": "4K_FE/app/lib/climax.ts",
+      "lineRange": [80, 100],
+      "summary": "가장 두드러진 상위 피크 지점들을 추출하는 함수.",
+      "tags": ["utility", "signal-processing", "math"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/lib/climax.ts:climaxDescriptor",
+      "type": "function",
+      "name": "climaxDescriptor",
+      "filePath": "4K_FE/app/lib/climax.ts",
+      "lineRange": [103, 130],
+      "summary": "클라이맥스 패턴을 사람이 읽을 수 있는 설명 텍스트로 변환하는 함수.",
+      "tags": ["utility", "analytics", "text-generation"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/lib/climax.ts:climaxMetrics",
+      "type": "function",
+      "name": "climaxMetrics",
+      "filePath": "4K_FE/app/lib/climax.ts",
+      "lineRange": [60, 71],
+      "summary": "시계열로부터 피크 수 등 클라이맥스 관련 지표를 산출하는 함수.",
+      "tags": ["utility", "analytics", "math"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/lib/color.ts",
+      "type": "file",
+      "name": "color.ts",
+      "filePath": "4K_FE/app/lib/color.ts",
+      "summary": "valence 값을 색상으로 매핑하는 유틸리티로 그래프 그라데이션 stop과 보간 색상을 생성한다.",
+      "tags": ["utility", "color", "data-visualization"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_FE/app/lib/color.ts:valenceGradientStops",
+      "type": "function",
+      "name": "valenceGradientStops",
+      "filePath": "4K_FE/app/lib/color.ts",
+      "lineRange": [42, 52],
+      "summary": "valence 시계열을 SVG 그라데이션 stop 배열로 변환하는 함수.",
+      "tags": ["utility", "color", "svg"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_FE/app/lib/data.ts",
+      "type": "file",
+      "name": "data.ts",
+      "filePath": "4K_FE/app/lib/data.ts",
+      "summary": "Supabase REST 기반 데이터 액세스 계층으로 영화/벡터 fetch, 추천 후보 조회, 포스터·장르 헬퍼, 최근 본 영화 localStorage 관리, 방문 로깅을 제공한다.",
+      "tags": ["data-access", "api-client", "service", "utility", "supabase"],
+      "complexity": "complex",
+      "languageNotes": "SUPABASE_URL/ANON_KEY 상수와 다수의 fetch 헬퍼, INITIAL_FILTERS/GENRES 등 공유 상수를 한 모듈에서 export하는 데이터 레이어."
+    },
+    {
+      "id": "function:4K_FE/app/lib/data.ts:fetchPreferredMovies",
+      "type": "function",
+      "name": "fetchPreferredMovies",
+      "filePath": "4K_FE/app/lib/data.ts",
+      "lineRange": [71, 87],
+      "summary": "선호/비선호 ID 기반으로 추천 후보 영화 목록을 가져오는 데이터 fetch 함수.",
+      "tags": ["data-fetching", "recommendation", "async", "supabase"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/lib/data.ts:fetchMovieVectorPairs",
+      "type": "function",
+      "name": "fetchMovieVectorPairs",
+      "filePath": "4K_FE/app/lib/data.ts",
+      "lineRange": [194, 219],
+      "summary": "여러 영화의 arousal/valence 벡터 쌍을 한 번에 가져오는 fetch 함수.",
+      "tags": ["data-fetching", "vector", "async", "supabase"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/lib/data.ts:fetchVectorPair",
+      "type": "function",
+      "name": "fetchVectorPair",
+      "filePath": "4K_FE/app/lib/data.ts",
+      "lineRange": [169, 191],
+      "summary": "단일 영화의 활성 버전 arousal/valence 벡터 쌍을 조회하는 fetch 함수.",
+      "tags": ["data-fetching", "vector", "async", "supabase"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/lib/data.ts:logVisit",
+      "type": "function",
+      "name": "logVisit",
+      "filePath": "4K_FE/app/lib/data.ts",
+      "lineRange": [243, 265],
+      "summary": "페이지 방문 이벤트를 백엔드에 기록하는 로깅 함수.",
+      "tags": ["logging", "analytics", "async"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/lib/data.ts:fetchMovieVectors",
+      "type": "function",
+      "name": "fetchMovieVectors",
+      "filePath": "4K_FE/app/lib/data.ts",
+      "lineRange": [109, 125],
+      "summary": "영화의 벡터 데이터를 가져오는 fetch 함수.",
+      "tags": ["data-fetching", "vector", "async", "supabase"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/lib/data.ts:getActiveVersion",
+      "type": "function",
+      "name": "getActiveVersion",
+      "filePath": "4K_FE/app/lib/data.ts",
+      "lineRange": [149, 166],
+      "summary": "영화의 현재 활성 분석 버전을 조회하는 fetch 함수.",
+      "tags": ["data-fetching", "versioning", "async"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_FE/app/lib/svgPath.ts",
+      "type": "file",
+      "name": "svgPath.ts",
+      "filePath": "4K_FE/app/lib/svgPath.ts",
+      "summary": "포인트 배열을 부드러운 Catmull-Rom 스플라인 SVG path 문자열로 변환하는 단일 유틸리티 함수 모듈.",
+      "tags": ["utility", "svg", "geometry", "data-visualization"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/movie_list/page.tsx",
+      "type": "file",
+      "name": "page.tsx",
+      "filePath": "4K_FE/app/movie_list/page.tsx",
+      "summary": "페이지네이션 기반 영화 목록을 보여주고 관리자용 상세 편집 모달을 여는 영화 리스트 페이지.",
+      "tags": ["page", "list", "pagination", "data-fetching", "admin"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:4K_FE/app/movie_list/page.tsx:MovieListPage",
+      "type": "function",
+      "name": "MovieListPage",
+      "filePath": "4K_FE/app/movie_list/page.tsx",
+      "lineRange": [19, 306],
+      "summary": "영화 목록을 페이지 단위로 조회·표시하고 항목 클릭 시 상세 모달을 여는 리스트 페이지 함수.",
+      "tags": ["page", "list", "pagination", "data-fetching"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:4K_FE/app/movie_list/recent/page.tsx",
+      "type": "file",
+      "name": "page.tsx",
+      "filePath": "4K_FE/app/movie_list/recent/page.tsx",
+      "summary": "사용자가 최근 본 영화 목록을 localStorage 기반으로 표시하는 페이지.",
+      "tags": ["page", "list", "recent", "local-storage"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/movie_list/recent/page.tsx:RecentPage",
+      "type": "function",
+      "name": "RecentPage",
+      "filePath": "4K_FE/app/movie_list/recent/page.tsx",
+      "lineRange": [17, 95],
+      "summary": "최근 본 영화 ID를 불러와 해당 영화들을 조회·렌더링하는 페이지 함수.",
+      "tags": ["page", "list", "recent", "data-fetching"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_FE/app/page.tsx",
+      "type": "file",
+      "name": "page.tsx",
+      "filePath": "4K_FE/app/page.tsx",
+      "summary": "서비스 진입 시 노출되는 온보딩/랜딩 페이지로 배경 효과와 함께 대시보드로의 진입을 안내한다.",
+      "tags": ["entry-point", "page", "landing", "onboarding"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/page.tsx:OnboardingPage",
+      "type": "function",
+      "name": "OnboardingPage",
+      "filePath": "4K_FE/app/page.tsx",
+      "lineRange": [9, 189],
+      "summary": "배경 애니메이션과 인트로 콘텐츠를 렌더링하고 방문 로깅 후 대시보드로 유도하는 랜딩 페이지 함수.",
+      "tags": ["page", "landing", "onboarding"],
+      "complexity": "complex"
+    }
+  ],
+  "edges": [
+    {"source": "file:4K_FE/app/components/BackgroundThread.tsx", "target": "function:4K_FE/app/components/BackgroundThread.tsx:Threads", "type": "contains", "direction": "forward", "weight": 1.0},
+
+    {"source": "file:4K_FE/app/components/ClimaxGraph.tsx", "target": "function:4K_FE/app/components/ClimaxGraph.tsx:ClimaxGraph", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/components/ClimaxGraph.tsx", "target": "function:4K_FE/app/components/ClimaxGraph.tsx:ClimaxGraph", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_FE/app/components/ClimaxGraph.tsx", "target": "file:4K_FE/app/lib/climax.ts", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_FE/app/components/ClimaxGraph.tsx", "target": "file:4K_FE/app/lib/color.ts", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_FE/app/components/ClimaxGraph.tsx", "target": "file:4K_FE/app/lib/svgPath.ts", "type": "imports", "direction": "forward", "weight": 0.7},
+
+    {"source": "file:4K_FE/app/components/DetailOverlay.tsx", "target": "function:4K_FE/app/components/DetailOverlay.tsx:DetailOverlay", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/components/DetailOverlay.tsx", "target": "function:4K_FE/app/components/DetailOverlay.tsx:DetailOverlay", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_FE/app/components/DetailOverlay.tsx", "target": "file:4K_FE/app/components/ClimaxGraph.tsx", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_FE/app/components/DetailOverlay.tsx", "target": "file:4K_FE/app/components/MiniGraph.tsx", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_FE/app/components/DetailOverlay.tsx", "target": "file:4K_FE/app/lib/climax.ts", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_FE/app/components/DetailOverlay.tsx", "target": "file:4K_FE/app/lib/data.ts", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "function:4K_FE/app/components/DetailOverlay.tsx:DetailOverlay", "target": "function:4K_FE/app/lib/data.ts:fetchVectorPair", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_FE/app/components/DetailOverlay.tsx:DetailOverlay", "target": "function:4K_FE/app/lib/data.ts:fetchPreferredMovies", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_FE/app/components/DetailOverlay.tsx:DetailOverlay", "target": "function:4K_FE/app/lib/data.ts:fetchMovieVectorPairs", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_FE/app/components/DetailOverlay.tsx:DetailOverlay", "target": "function:4K_FE/app/lib/climax.ts:cosineSimilarity", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_FE/app/components/DetailOverlay.tsx:DetailOverlay", "target": "function:4K_FE/app/lib/climax.ts:climaxDescriptor", "type": "calls", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:4K_FE/app/components/FilterBar.tsx", "target": "function:4K_FE/app/components/FilterBar.tsx:FilterBar", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/components/FilterBar.tsx", "target": "function:4K_FE/app/components/FilterBar.tsx:FilterBar", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_FE/app/components/FilterBar.tsx", "target": "function:4K_FE/app/components/FilterBar.tsx:YearRangeRow", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/components/FilterBar.tsx", "target": "function:4K_FE/app/components/FilterBar.tsx:PrefRow", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/components/FilterBar.tsx", "target": "function:4K_FE/app/components/FilterBar.tsx:YearStepper", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/components/FilterBar.tsx", "target": "function:4K_FE/app/components/FilterBar.tsx:FilterRow", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/components/FilterBar.tsx", "target": "function:4K_FE/app/components/FilterBar.tsx:MultiFilterRow", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/components/FilterBar.tsx", "target": "file:4K_FE/app/lib/data.ts", "type": "imports", "direction": "forward", "weight": 0.7},
+
+    {"source": "file:4K_FE/app/components/MiniGraph.tsx", "target": "function:4K_FE/app/components/MiniGraph.tsx:MiniGraph", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/components/MiniGraph.tsx", "target": "function:4K_FE/app/components/MiniGraph.tsx:MiniGraph", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_FE/app/components/MiniGraph.tsx", "target": "file:4K_FE/app/lib/climax.ts", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_FE/app/components/MiniGraph.tsx", "target": "file:4K_FE/app/lib/color.ts", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_FE/app/components/MiniGraph.tsx", "target": "file:4K_FE/app/lib/svgPath.ts", "type": "imports", "direction": "forward", "weight": 0.7},
+
+    {"source": "file:4K_FE/app/components/MovieDetailModal.tsx", "target": "function:4K_FE/app/components/MovieDetailModal.tsx:MovieDetailModal", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/components/MovieDetailModal.tsx", "target": "function:4K_FE/app/components/MovieDetailModal.tsx:MovieDetailModal", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_FE/app/components/MovieDetailModal.tsx", "target": "file:4K_FE/app/lib/data.ts", "type": "imports", "direction": "forward", "weight": 0.7},
+
+    {"source": "file:4K_FE/app/components/PosterCard.tsx", "target": "function:4K_FE/app/components/PosterCard.tsx:PosterCard", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/components/PosterCard.tsx", "target": "function:4K_FE/app/components/PosterCard.tsx:PosterCard", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_FE/app/components/PosterCard.tsx", "target": "file:4K_FE/app/lib/data.ts", "type": "imports", "direction": "forward", "weight": 0.7},
+
+    {"source": "file:4K_FE/app/components/RandomModal.tsx", "target": "function:4K_FE/app/components/RandomModal.tsx:RandomModal", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/components/RandomModal.tsx", "target": "function:4K_FE/app/components/RandomModal.tsx:RandomModal", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_FE/app/components/RandomModal.tsx", "target": "function:4K_FE/app/components/RandomModal.tsx:fetchRandomFromServer", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/components/RandomModal.tsx", "target": "file:4K_FE/app/lib/data.ts", "type": "imports", "direction": "forward", "weight": 0.7},
+
+    {"source": "file:4K_FE/app/components/Tutorial.tsx", "target": "function:4K_FE/app/components/Tutorial.tsx:Tutorial", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/components/Tutorial.tsx", "target": "function:4K_FE/app/components/Tutorial.tsx:Tutorial", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_FE/app/components/Tutorial.tsx", "target": "file:4K_FE/app/components/MiniGraph.tsx", "type": "imports", "direction": "forward", "weight": 0.7},
+
+    {"source": "file:4K_FE/app/dashboard/page.tsx", "target": "function:4K_FE/app/dashboard/page.tsx:Dashboard", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/dashboard/page.tsx", "target": "function:4K_FE/app/dashboard/page.tsx:Dashboard", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_FE/app/dashboard/page.tsx", "target": "file:4K_FE/app/components/BackgroundThread.tsx", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_FE/app/dashboard/page.tsx", "target": "file:4K_FE/app/components/DetailOverlay.tsx", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_FE/app/dashboard/page.tsx", "target": "file:4K_FE/app/components/FilterBar.tsx", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_FE/app/dashboard/page.tsx", "target": "file:4K_FE/app/components/PosterCard.tsx", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_FE/app/dashboard/page.tsx", "target": "file:4K_FE/app/components/RandomModal.tsx", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_FE/app/dashboard/page.tsx", "target": "file:4K_FE/app/components/Tutorial.tsx", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_FE/app/dashboard/page.tsx", "target": "file:4K_FE/app/lib/data.ts", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "function:4K_FE/app/dashboard/page.tsx:Dashboard", "target": "function:4K_FE/app/lib/data.ts:fetchPreferredMovies", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_FE/app/dashboard/page.tsx:Dashboard", "target": "function:4K_FE/app/lib/data.ts:logVisit", "type": "calls", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:4K_FE/app/lib/climax.ts", "target": "function:4K_FE/app/lib/climax.ts:cosineSimilarity", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/lib/climax.ts", "target": "function:4K_FE/app/lib/climax.ts:cosineSimilarity", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_FE/app/lib/climax.ts", "target": "function:4K_FE/app/lib/climax.ts:countPeaks", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/lib/climax.ts", "target": "function:4K_FE/app/lib/climax.ts:topPeaks", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/lib/climax.ts", "target": "function:4K_FE/app/lib/climax.ts:topPeaks", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_FE/app/lib/climax.ts", "target": "function:4K_FE/app/lib/climax.ts:climaxDescriptor", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/lib/climax.ts", "target": "function:4K_FE/app/lib/climax.ts:climaxDescriptor", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_FE/app/lib/climax.ts", "target": "function:4K_FE/app/lib/climax.ts:climaxMetrics", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/lib/climax.ts", "target": "function:4K_FE/app/lib/climax.ts:climaxMetrics", "type": "exports", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:4K_FE/app/lib/color.ts", "target": "function:4K_FE/app/lib/color.ts:valenceGradientStops", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/lib/color.ts", "target": "function:4K_FE/app/lib/color.ts:valenceGradientStops", "type": "exports", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:4K_FE/app/lib/data.ts", "target": "function:4K_FE/app/lib/data.ts:fetchPreferredMovies", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/lib/data.ts", "target": "function:4K_FE/app/lib/data.ts:fetchPreferredMovies", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_FE/app/lib/data.ts", "target": "function:4K_FE/app/lib/data.ts:fetchMovieVectorPairs", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/lib/data.ts", "target": "function:4K_FE/app/lib/data.ts:fetchMovieVectorPairs", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_FE/app/lib/data.ts", "target": "function:4K_FE/app/lib/data.ts:fetchVectorPair", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/lib/data.ts", "target": "function:4K_FE/app/lib/data.ts:fetchVectorPair", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_FE/app/lib/data.ts", "target": "function:4K_FE/app/lib/data.ts:logVisit", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/lib/data.ts", "target": "function:4K_FE/app/lib/data.ts:logVisit", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_FE/app/lib/data.ts", "target": "function:4K_FE/app/lib/data.ts:fetchMovieVectors", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/lib/data.ts", "target": "function:4K_FE/app/lib/data.ts:fetchMovieVectors", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_FE/app/lib/data.ts", "target": "function:4K_FE/app/lib/data.ts:getActiveVersion", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/lib/data.ts", "target": "function:4K_FE/app/lib/data.ts:getActiveVersion", "type": "exports", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:4K_FE/app/movie_list/page.tsx", "target": "function:4K_FE/app/movie_list/page.tsx:MovieListPage", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/movie_list/page.tsx", "target": "function:4K_FE/app/movie_list/page.tsx:MovieListPage", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_FE/app/movie_list/page.tsx", "target": "file:4K_FE/app/components/MovieDetailModal.tsx", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_FE/app/movie_list/page.tsx", "target": "file:4K_FE/app/lib/data.ts", "type": "imports", "direction": "forward", "weight": 0.7},
+
+    {"source": "file:4K_FE/app/movie_list/recent/page.tsx", "target": "function:4K_FE/app/movie_list/recent/page.tsx:RecentPage", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/movie_list/recent/page.tsx", "target": "function:4K_FE/app/movie_list/recent/page.tsx:RecentPage", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_FE/app/movie_list/recent/page.tsx", "target": "file:4K_FE/app/lib/data.ts", "type": "imports", "direction": "forward", "weight": 0.7},
+
+    {"source": "file:4K_FE/app/page.tsx", "target": "function:4K_FE/app/page.tsx:OnboardingPage", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/page.tsx", "target": "function:4K_FE/app/page.tsx:OnboardingPage", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_FE/app/page.tsx", "target": "file:4K_FE/app/components/BackgroundThread.tsx", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_FE/app/page.tsx", "target": "file:4K_FE/app/lib/data.ts", "type": "imports", "direction": "forward", "weight": 0.7}
+  ]
+}

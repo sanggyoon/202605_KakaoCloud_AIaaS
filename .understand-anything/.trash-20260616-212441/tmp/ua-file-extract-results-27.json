@@ -1,0 +1,784 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 14,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "aws/terraform/alb.tf",
+      "language": "terraform",
+      "fileCategory": "infra",
+      "totalLines": 100,
+      "nonEmptyLines": 86,
+      "resources": [
+        {
+          "name": "aws_acm_certificate.alb",
+          "kind": "aws_acm_certificate",
+          "startLine": 9,
+          "endLine": 16
+        },
+        {
+          "name": "aws_route53_record.cert_validation",
+          "kind": "aws_route53_record",
+          "startLine": 19,
+          "endLine": 34
+        },
+        {
+          "name": "aws_acm_certificate_validation.alb",
+          "kind": "aws_acm_certificate_validation",
+          "startLine": 36,
+          "endLine": 39
+        },
+        {
+          "name": "aws_lb.app",
+          "kind": "aws_lb",
+          "startLine": 42,
+          "endLine": 50
+        },
+        {
+          "name": "aws_lb_target_group.app",
+          "kind": "aws_lb_target_group",
+          "startLine": 53,
+          "endLine": 70
+        },
+        {
+          "name": "aws_lb_listener.https",
+          "kind": "aws_lb_listener",
+          "startLine": 73,
+          "endLine": 84
+        },
+        {
+          "name": "aws_lb_listener.http_redirect",
+          "kind": "aws_lb_listener",
+          "startLine": 87,
+          "endLine": 100
+        },
+        {
+          "name": "data.aws_route53_zone.main",
+          "kind": "data.aws_route53_zone",
+          "startLine": 2,
+          "endLine": 5
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0,
+        "resourceCount": 8
+      }
+    },
+    {
+      "path": "aws/terraform/asg.tf",
+      "language": "terraform",
+      "fileCategory": "infra",
+      "totalLines": 32,
+      "nonEmptyLines": 27,
+      "resources": [
+        {
+          "name": "aws_autoscaling_group.app",
+          "kind": "aws_autoscaling_group",
+          "startLine": 2,
+          "endLine": 32
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0,
+        "resourceCount": 1
+      }
+    },
+    {
+      "path": "aws/terraform/compute.tf",
+      "language": "terraform",
+      "fileCategory": "infra",
+      "totalLines": 43,
+      "nonEmptyLines": 36,
+      "resources": [
+        {
+          "name": "aws_launch_template.app",
+          "kind": "aws_launch_template",
+          "startLine": 7,
+          "endLine": 43
+        },
+        {
+          "name": "data.aws_ssm_parameter.al2023",
+          "kind": "data.aws_ssm_parameter",
+          "startLine": 2,
+          "endLine": 4
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0,
+        "resourceCount": 2
+      }
+    },
+    {
+      "path": "aws/terraform/db.tf",
+      "language": "terraform",
+      "fileCategory": "infra",
+      "totalLines": 98,
+      "nonEmptyLines": 85,
+      "resources": [
+        {
+          "name": "aws_security_group.db",
+          "kind": "aws_security_group",
+          "startLine": 5,
+          "endLine": 40
+        },
+        {
+          "name": "aws_iam_role.db",
+          "kind": "aws_iam_role",
+          "startLine": 43,
+          "endLine": 46
+        },
+        {
+          "name": "aws_iam_role_policy_attachment.db_ssm_core",
+          "kind": "aws_iam_role_policy_attachment",
+          "startLine": 48,
+          "endLine": 51
+        },
+        {
+          "name": "aws_iam_role_policy.db_ssm_read",
+          "kind": "aws_iam_role_policy",
+          "startLine": 53,
+          "endLine": 57
+        },
+        {
+          "name": "aws_iam_instance_profile.db",
+          "kind": "aws_iam_instance_profile",
+          "startLine": 59,
+          "endLine": 62
+        },
+        {
+          "name": "aws_ebs_volume.db_data",
+          "kind": "aws_ebs_volume",
+          "startLine": 65,
+          "endLine": 71
+        },
+        {
+          "name": "aws_instance.db",
+          "kind": "aws_instance",
+          "startLine": 73,
+          "endLine": 92
+        },
+        {
+          "name": "aws_volume_attachment.db_data",
+          "kind": "aws_volume_attachment",
+          "startLine": 94,
+          "endLine": 98
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0,
+        "resourceCount": 8
+      }
+    },
+    {
+      "path": "aws/terraform/dns.tf",
+      "language": "terraform",
+      "fileCategory": "infra",
+      "totalLines": 82,
+      "nonEmptyLines": 69,
+      "resources": [
+        {
+          "name": "aws_route53_record.app_primary",
+          "kind": "aws_route53_record",
+          "startLine": 13,
+          "endLine": 27
+        },
+        {
+          "name": "aws_route53_record.app_secondary",
+          "kind": "aws_route53_record",
+          "startLine": 30,
+          "endLine": 47
+        },
+        {
+          "name": "aws_route53_record.data_primary",
+          "kind": "aws_route53_record",
+          "startLine": 52,
+          "endLine": 64
+        },
+        {
+          "name": "aws_route53_record.data_secondary",
+          "kind": "aws_route53_record",
+          "startLine": 67,
+          "endLine": 82
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0,
+        "resourceCount": 4
+      }
+    },
+    {
+      "path": "aws/terraform/dr_trigger.tf",
+      "language": "terraform",
+      "fileCategory": "infra",
+      "totalLines": 102,
+      "nonEmptyLines": 89,
+      "resources": [
+        {
+          "name": "aws_route53_health_check.kakao",
+          "kind": "aws_route53_health_check",
+          "startLine": 4,
+          "endLine": 14
+        },
+        {
+          "name": "aws_iam_role.dr_lambda",
+          "kind": "aws_iam_role",
+          "startLine": 34,
+          "endLine": 37
+        },
+        {
+          "name": "aws_iam_role_policy_attachment.dr_lambda_logs",
+          "kind": "aws_iam_role_policy_attachment",
+          "startLine": 39,
+          "endLine": 42
+        },
+        {
+          "name": "aws_iam_role_policy.dr_lambda",
+          "kind": "aws_iam_role_policy",
+          "startLine": 57,
+          "endLine": 61
+        },
+        {
+          "name": "aws_lambda_function.dr_controller",
+          "kind": "aws_lambda_function",
+          "startLine": 64,
+          "endLine": 82
+        },
+        {
+          "name": "aws_cloudwatch_event_rule.dr_tick",
+          "kind": "aws_cloudwatch_event_rule",
+          "startLine": 85,
+          "endLine": 88
+        },
+        {
+          "name": "aws_cloudwatch_event_target.dr_tick",
+          "kind": "aws_cloudwatch_event_target",
+          "startLine": 90,
+          "endLine": 94
+        },
+        {
+          "name": "aws_lambda_permission.dr_tick",
+          "kind": "aws_lambda_permission",
+          "startLine": 96,
+          "endLine": 102
+        },
+        {
+          "name": "data.archive_file.dr_controller",
+          "kind": "data.archive_file",
+          "startLine": 17,
+          "endLine": 21
+        },
+        {
+          "name": "data.aws_iam_policy_document.lambda_assume",
+          "kind": "data.aws_iam_policy_document",
+          "startLine": 24,
+          "endLine": 32
+        },
+        {
+          "name": "data.aws_iam_policy_document.dr_lambda",
+          "kind": "data.aws_iam_policy_document",
+          "startLine": 44,
+          "endLine": 55
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0,
+        "resourceCount": 11
+      }
+    },
+    {
+      "path": "aws/terraform/iam.tf",
+      "language": "terraform",
+      "fileCategory": "infra",
+      "totalLines": 47,
+      "nonEmptyLines": 42,
+      "resources": [
+        {
+          "name": "aws_iam_role.app",
+          "kind": "aws_iam_role",
+          "startLine": 12,
+          "endLine": 16
+        },
+        {
+          "name": "aws_iam_role_policy_attachment.ssm_core",
+          "kind": "aws_iam_role_policy_attachment",
+          "startLine": 19,
+          "endLine": 22
+        },
+        {
+          "name": "aws_iam_role_policy.ssm_read",
+          "kind": "aws_iam_role_policy",
+          "startLine": 38,
+          "endLine": 42
+        },
+        {
+          "name": "aws_iam_instance_profile.app",
+          "kind": "aws_iam_instance_profile",
+          "startLine": 44,
+          "endLine": 47
+        },
+        {
+          "name": "data.aws_iam_policy_document.ec2_assume",
+          "kind": "data.aws_iam_policy_document",
+          "startLine": 2,
+          "endLine": 10
+        },
+        {
+          "name": "data.aws_iam_policy_document.ssm_read",
+          "kind": "data.aws_iam_policy_document",
+          "startLine": 25,
+          "endLine": 36
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0,
+        "resourceCount": 6
+      }
+    },
+    {
+      "path": "aws/terraform/network.tf",
+      "language": "terraform",
+      "fileCategory": "infra",
+      "totalLines": 63,
+      "nonEmptyLines": 52,
+      "resources": [
+        {
+          "name": "aws_vpc.main",
+          "kind": "aws_vpc",
+          "startLine": 2,
+          "endLine": 8
+        },
+        {
+          "name": "aws_internet_gateway.main",
+          "kind": "aws_internet_gateway",
+          "startLine": 10,
+          "endLine": 13
+        },
+        {
+          "name": "aws_subnet.public",
+          "kind": "aws_subnet",
+          "startLine": 16,
+          "endLine": 27
+        },
+        {
+          "name": "aws_subnet.private",
+          "kind": "aws_subnet",
+          "startLine": 32,
+          "endLine": 42
+        },
+        {
+          "name": "aws_route_table.public",
+          "kind": "aws_route_table",
+          "startLine": 45,
+          "endLine": 54
+        },
+        {
+          "name": "aws_route_table_association.public",
+          "kind": "aws_route_table_association",
+          "startLine": 56,
+          "endLine": 60
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0,
+        "resourceCount": 6
+      }
+    },
+    {
+      "path": "aws/terraform/outputs.tf",
+      "language": "terraform",
+      "fileCategory": "infra",
+      "totalLines": 70,
+      "nonEmptyLines": 57,
+      "definitions": [
+        {
+          "name": "vpc_id",
+          "kind": "output",
+          "fields": [],
+          "startLine": 1,
+          "endLine": 4
+        },
+        {
+          "name": "vpc_cidr",
+          "kind": "output",
+          "fields": [],
+          "startLine": 6,
+          "endLine": 9
+        },
+        {
+          "name": "public_subnet_ids",
+          "kind": "output",
+          "fields": [],
+          "startLine": 11,
+          "endLine": 14
+        },
+        {
+          "name": "private_subnet_ids",
+          "kind": "output",
+          "fields": [],
+          "startLine": 16,
+          "endLine": 19
+        },
+        {
+          "name": "db_public_ip",
+          "kind": "output",
+          "fields": [],
+          "startLine": 22,
+          "endLine": 25
+        },
+        {
+          "name": "alb_dns_name",
+          "kind": "output",
+          "fields": [],
+          "startLine": 27,
+          "endLine": 30
+        },
+        {
+          "name": "alb_zone_id",
+          "kind": "output",
+          "fields": [],
+          "startLine": 32,
+          "endLine": 35
+        },
+        {
+          "name": "target_group_arn",
+          "kind": "output",
+          "fields": [],
+          "startLine": 37,
+          "endLine": 40
+        },
+        {
+          "name": "app_security_group_id",
+          "kind": "output",
+          "fields": [],
+          "startLine": 42,
+          "endLine": 45
+        },
+        {
+          "name": "asg_name",
+          "kind": "output",
+          "fields": [],
+          "startLine": 47,
+          "endLine": 50
+        },
+        {
+          "name": "kakao_health_check_id",
+          "kind": "output",
+          "fields": [],
+          "startLine": 52,
+          "endLine": 55
+        },
+        {
+          "name": "dr_controller_function",
+          "kind": "output",
+          "fields": [],
+          "startLine": 57,
+          "endLine": 60
+        },
+        {
+          "name": "db_instance_id",
+          "kind": "output",
+          "fields": [],
+          "startLine": 62,
+          "endLine": 65
+        },
+        {
+          "name": "db_private_ip",
+          "kind": "output",
+          "fields": [],
+          "startLine": 67,
+          "endLine": 70
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 14,
+        "resourceCount": 0
+      }
+    },
+    {
+      "path": "aws/terraform/postgrest.tf",
+      "language": "terraform",
+      "fileCategory": "infra",
+      "totalLines": 47,
+      "nonEmptyLines": 40,
+      "resources": [
+        {
+          "name": "aws_lb_target_group.postgrest",
+          "kind": "aws_lb_target_group",
+          "startLine": 6,
+          "endLine": 23
+        },
+        {
+          "name": "aws_lb_target_group_attachment.postgrest",
+          "kind": "aws_lb_target_group_attachment",
+          "startLine": 26,
+          "endLine": 30
+        },
+        {
+          "name": "aws_lb_listener_rule.data",
+          "kind": "aws_lb_listener_rule",
+          "startLine": 33,
+          "endLine": 47
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0,
+        "resourceCount": 3
+      }
+    },
+    {
+      "path": "aws/terraform/providers.tf",
+      "language": "terraform",
+      "fileCategory": "infra",
+      "totalLines": 12,
+      "nonEmptyLines": 11,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0,
+        "resourceCount": 0
+      }
+    },
+    {
+      "path": "aws/terraform/security.tf",
+      "language": "terraform",
+      "fileCategory": "infra",
+      "totalLines": 86,
+      "nonEmptyLines": 78,
+      "resources": [
+        {
+          "name": "aws_security_group.alb",
+          "kind": "aws_security_group",
+          "startLine": 2,
+          "endLine": 30
+        },
+        {
+          "name": "aws_security_group.app",
+          "kind": "aws_security_group",
+          "startLine": 33,
+          "endLine": 62
+        },
+        {
+          "name": "aws_security_group.bastion",
+          "kind": "aws_security_group",
+          "startLine": 65,
+          "endLine": 86
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0,
+        "resourceCount": 3
+      }
+    },
+    {
+      "path": "aws/terraform/variables.tf",
+      "language": "terraform",
+      "fileCategory": "infra",
+      "totalLines": 122,
+      "nonEmptyLines": 103,
+      "definitions": [
+        {
+          "name": "region",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 1,
+          "endLine": 5
+        },
+        {
+          "name": "project",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 7,
+          "endLine": 11
+        },
+        {
+          "name": "vpc_cidr",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 13,
+          "endLine": 20
+        },
+        {
+          "name": "azs",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 22,
+          "endLine": 26
+        },
+        {
+          "name": "public_subnet_cidrs",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 28,
+          "endLine": 32
+        },
+        {
+          "name": "private_subnet_cidrs",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 34,
+          "endLine": 38
+        },
+        {
+          "name": "domain_name",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 43,
+          "endLine": 47
+        },
+        {
+          "name": "admin_cidrs",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 49,
+          "endLine": 56
+        },
+        {
+          "name": "instance_type",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 58,
+          "endLine": 62
+        },
+        {
+          "name": "ssm_prefix",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 64,
+          "endLine": 68
+        },
+        {
+          "name": "compose_version",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 70,
+          "endLine": 74
+        },
+        {
+          "name": "asg_min",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 76,
+          "endLine": 80
+        },
+        {
+          "name": "asg_desired",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 82,
+          "endLine": 86
+        },
+        {
+          "name": "asg_max",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 88,
+          "endLine": 92
+        },
+        {
+          "name": "health_check_grace_period",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 94,
+          "endLine": 98
+        },
+        {
+          "name": "kakao_ip",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 100,
+          "endLine": 104
+        },
+        {
+          "name": "asg_dr_capacity",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 106,
+          "endLine": 110
+        },
+        {
+          "name": "db_instance_type",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 112,
+          "endLine": 116
+        },
+        {
+          "name": "db_data_volume_size",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 118,
+          "endLine": 122
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 19,
+        "resourceCount": 0
+      }
+    },
+    {
+      "path": "aws/terraform/versions.tf",
+      "language": "terraform",
+      "fileCategory": "infra",
+      "totalLines": 24,
+      "nonEmptyLines": 22,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0,
+        "resourceCount": 0
+      }
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "gitCommitHash": "e52435473e04f9d75df5586f550960da94c429b1",
-  "generatedAt": "2026-06-08T05:25:42.727Z",
+  "gitCommitHash": "44ca06bdd39eb8f7f92e199d4e095bb9a8475e04",
+  "generatedAt": "2026-06-16T12:24:30.385Z",
   "files": {
     ".github/workflows/deploy-4k-be.yml": {
       "filePath": ".github/workflows/deploy-4k-be.yml",
@@ -23,6 +23,16 @@
       "totalLines": 65,
       "hasStructuralAnalysis": true
     },
+    ".github/workflows/deploy-4k-ml.yml": {
+      "filePath": ".github/workflows/deploy-4k-ml.yml",
+      "contentHash": "9dfc7895ecbbd4dcae251a0e7e33d0788c7dc6d6780d2385c9c080709b675c99",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 79,
+      "hasStructuralAnalysis": true
+    },
     "4K_BE/.python-version": {
       "filePath": "4K_BE/.python-version",
       "contentHash": "61141e9590171b900fdf709e7ea8f050d5c2a69198d4a4a1977d7c45186307e5",
@@ -33,26 +43,201 @@
       "totalLines": 2,
       "hasStructuralAnalysis": false
     },
-    "4K_BE/app/main.py": {
-      "filePath": "4K_BE/app/main.py",
-      "contentHash": "a0ce50242d4e8ea08f8a16023de468b232895c9a44b7a89025f5deecce609e56",
+    "4K_BE/app/__init__.py": {
+      "filePath": "4K_BE/app/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "4K_BE/app/backfill_popular.py": {
+      "filePath": "4K_BE/app/backfill_popular.py",
+      "contentHash": "c37d8323b982108a5965f5285ba9c4286a3dffbe2392b2bdc69887ba79a47270",
       "functions": [
         {
-          "name": "_sb_headers",
+          "name": "config_from_env",
           "params": [],
-          "returnType": "dict",
+          "returnType": "tuple[int, int, float]",
           "exported": true,
           "lineCount": 7
         },
         {
-          "name": "_pick_trailer",
+          "name": "backfill_events",
           "params": [
-            "videos"
+            "client",
+            "max_new",
+            "max_pages",
+            "rate_delay"
           ],
-          "returnType": "str | None",
+          "returnType": "AsyncIterator[dict]",
           "exported": true,
-          "lineCount": 12
+          "lineCount": 55
         },
+        {
+          "name": "run_backfill",
+          "params": [
+            "client",
+            "max_new",
+            "max_pages",
+            "rate_delay"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "main",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 11
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "asyncio",
+          "specifiers": [
+            "asyncio"
+          ]
+        },
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "typing",
+          "specifiers": [
+            "AsyncIterator"
+          ]
+        },
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        },
+        {
+          "source": "dotenv",
+          "specifiers": [
+            "load_dotenv"
+          ]
+        },
+        {
+          "source": "app",
+          "specifiers": [
+            "tc"
+          ]
+        }
+      ],
+      "exports": [
+        "config_from_env",
+        "backfill_events",
+        "run_backfill",
+        "main"
+      ],
+      "totalLines": 114,
+      "hasStructuralAnalysis": true
+    },
+    "4K_BE/app/jobs.py": {
+      "filePath": "4K_BE/app/jobs.py",
+      "contentHash": "f54b4147fb5cd2eaedd959be70dbd724385e39a0af24398e076ddec52012085a",
+      "functions": [
+        {
+          "name": "_now",
+          "params": [],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "_idle",
+          "params": [],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "get",
+          "params": [
+            "job_type"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "_log_line",
+          "params": [
+            "ev"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "_run",
+          "params": [
+            "job_type",
+            "factory"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 20
+        },
+        {
+          "name": "start",
+          "params": [
+            "job_type",
+            "factory"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 10
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "asyncio",
+          "specifiers": [
+            "asyncio"
+          ]
+        },
+        {
+          "source": "datetime",
+          "specifiers": [
+            "datetime",
+            "timezone"
+          ]
+        },
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        }
+      ],
+      "exports": [
+        "_now",
+        "_idle",
+        "get",
+        "_log_line",
+        "_run",
+        "start"
+      ],
+      "totalLines": 73,
+      "hasStructuralAnalysis": true
+    },
+    "4K_BE/app/main.py": {
+      "filePath": "4K_BE/app/main.py",
+      "contentHash": "78928c1a34c1ea717a218cdc7a841512066bb62845faa45173f796a44812abba",
+      "functions": [
         {
           "name": "health",
           "params": [],
@@ -77,12 +262,77 @@
           "lineCount": 53
         },
         {
+          "name": "recent_movies",
+          "params": [
+            "limit"
+          ],
+          "exported": true,
+          "lineCount": 16
+        },
+        {
+          "name": "backfill_now",
+          "params": [
+            "limit"
+          ],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "subtitles_collect",
+          "params": [
+            "limit"
+          ],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "job_status",
+          "params": [
+            "job_type"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "subtitles_remaining",
+          "params": [],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
           "name": "movie_detail",
           "params": [
             "tmdb_id"
           ],
           "exported": true,
-          "lineCount": 22
+          "lineCount": 23
+        },
+        {
+          "name": "reprocess_movie",
+          "params": [
+            "tmdb_id"
+          ],
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "_active_base",
+          "params": [
+            "client"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "_movie_processing",
+          "params": [
+            "client",
+            "tmdb_id"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 43
         },
         {
           "name": "update_movie",
@@ -99,7 +349,17 @@
             "tmdb_id"
           ],
           "exported": true,
-          "lineCount": 56
+          "lineCount": 31
+        },
+        {
+          "name": "_reset_processing",
+          "params": [
+            "client",
+            "tmdb_id"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 20
         },
         {
           "name": "delete_movie",
@@ -107,15 +367,87 @@
             "tmdb_id"
           ],
           "exported": true,
-          "lineCount": 12
+          "lineCount": 22
+        },
+        {
+          "name": "log_visit",
+          "params": [
+            "payload"
+          ],
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "_parse_count",
+          "params": [
+            "content_range"
+          ],
+          "returnType": "int",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "_count",
+          "params": [
+            "client",
+            "table",
+            "params"
+          ],
+          "returnType": "int",
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "active_model",
+          "params": [],
+          "exported": true,
+          "lineCount": 20
+        },
+        {
+          "name": "_processing_counts",
+          "params": [
+            "client"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 29
+        },
+        {
+          "name": "visits_range",
+          "params": [
+            "start",
+            "end"
+          ],
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "stats",
+          "params": [],
+          "exported": true,
+          "lineCount": 18
         }
       ],
       "classes": [],
       "imports": [
         {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
           "source": "os",
           "specifiers": [
             "os"
+          ]
+        },
+        {
+          "source": "datetime",
+          "specifiers": [
+            "datetime",
+            "timedelta",
+            "timezone"
           ]
         },
         {
@@ -142,20 +474,483 @@
           "specifiers": [
             "CORSMiddleware"
           ]
+        },
+        {
+          "source": "fastapi.responses",
+          "specifiers": [
+            "StreamingResponse"
+          ]
+        },
+        {
+          "source": "app",
+          "specifiers": [
+            "tc"
+          ]
+        },
+        {
+          "source": "app",
+          "specifiers": [
+            "bf"
+          ]
+        },
+        {
+          "source": "app",
+          "specifiers": [
+            "sc"
+          ]
+        },
+        {
+          "source": "app",
+          "specifiers": [
+            "jobs"
+          ]
         }
       ],
       "exports": [
-        "_sb_headers",
-        "_pick_trailer",
         "health",
         "list_movies",
         "search_movies",
+        "recent_movies",
+        "backfill_now",
+        "subtitles_collect",
+        "job_status",
+        "subtitles_remaining",
         "movie_detail",
+        "reprocess_movie",
+        "_active_base",
+        "_movie_processing",
         "update_movie",
         "add_movie",
-        "delete_movie"
+        "_reset_processing",
+        "delete_movie",
+        "log_visit",
+        "_parse_count",
+        "_count",
+        "active_model",
+        "_processing_counts",
+        "visits_range",
+        "stats"
       ],
-      "totalLines": 316,
+      "totalLines": 565,
+      "hasStructuralAnalysis": true
+    },
+    "4K_BE/app/subtitle_collect.py": {
+      "filePath": "4K_BE/app/subtitle_collect.py",
+      "contentHash": "46616cebfe67ec6d0341bee3d5ef18b60340cd7e134ae206d2143f3138cff369",
+      "functions": [
+        {
+          "name": "config_from_env",
+          "params": [],
+          "returnType": "tuple[int, float]",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "is_sdh",
+          "params": [
+            "c"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "_is_full_season",
+          "params": [
+            "c"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "_is_english",
+          "params": [
+            "c"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "choose",
+          "params": [
+            "candidates"
+          ],
+          "returnType": "dict | None",
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "_largest_srt",
+          "params": [
+            "zip_bytes"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "_subdl_key",
+          "params": [],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "ai_url",
+          "params": [],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "_ai_key",
+          "params": [],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "_ai_auth",
+          "params": [],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "ai_headers",
+          "params": [
+            "write"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "search",
+          "params": [
+            "client",
+            "tmdb_id"
+          ],
+          "returnType": "list[dict]",
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "download_and_extract",
+          "params": [
+            "client",
+            "url_path"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "fetch_status",
+          "params": [
+            "client"
+          ],
+          "returnType": "dict[int, dict]",
+          "exported": true,
+          "lineCount": 13
+        },
+        {
+          "name": "_is_terminal",
+          "params": [
+            "info"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "remaining_counts",
+          "params": [
+            "client"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "save_subtitle",
+          "params": [
+            "client",
+            "tmdb_id",
+            "chosen",
+            "raw_text"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "set_status",
+          "params": [
+            "client",
+            "tmdb_id",
+            "state",
+            "error",
+            "retry_count"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "collect_one",
+          "params": [
+            "client",
+            "tmdb_id"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 19
+        },
+        {
+          "name": "reset_downstream",
+          "params": [
+            "client",
+            "tmdb_id"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "collect_events",
+          "params": [
+            "client",
+            "max_new",
+            "rate_delay"
+          ],
+          "exported": true,
+          "lineCount": 55
+        },
+        {
+          "name": "run",
+          "params": [
+            "client"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "main",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 6
+        }
+      ],
+      "classes": [
+        {
+          "name": "SubdlRateLimit",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 2
+        }
+      ],
+      "imports": [
+        {
+          "source": "io",
+          "specifiers": [
+            "io"
+          ]
+        },
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "zipfile",
+          "specifiers": [
+            "zipfile"
+          ]
+        },
+        {
+          "source": "asyncio",
+          "specifiers": [
+            "asyncio"
+          ]
+        },
+        {
+          "source": "datetime",
+          "specifiers": [
+            "datetime",
+            "timezone"
+          ]
+        },
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        },
+        {
+          "source": "app",
+          "specifiers": [
+            "tc"
+          ]
+        }
+      ],
+      "exports": [
+        "SubdlRateLimit",
+        "config_from_env",
+        "is_sdh",
+        "_is_full_season",
+        "_is_english",
+        "choose",
+        "_largest_srt",
+        "_subdl_key",
+        "ai_url",
+        "_ai_key",
+        "_ai_auth",
+        "ai_headers",
+        "search",
+        "download_and_extract",
+        "fetch_status",
+        "_is_terminal",
+        "remaining_counts",
+        "save_subtitle",
+        "set_status",
+        "collect_one",
+        "reset_downstream",
+        "collect_events",
+        "run",
+        "main"
+      ],
+      "totalLines": 318,
+      "hasStructuralAnalysis": true
+    },
+    "4K_BE/app/tmdb_common.py": {
+      "filePath": "4K_BE/app/tmdb_common.py",
+      "contentHash": "7282b1d454c4ef1db697961f6ab271eff487d48b64c3155c054bb5ede1365ed3",
+      "functions": [
+        {
+          "name": "_tmdb_key",
+          "params": [],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "data_url",
+          "params": [],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "_data_key",
+          "params": [],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "sb_headers",
+          "params": [
+            "resolution"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "pick_trailer",
+          "params": [
+            "videos"
+          ],
+          "returnType": "str | None",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "build_movie",
+          "params": [
+            "d",
+            "tmdb_id"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 25
+        },
+        {
+          "name": "tmdb_discover",
+          "params": [
+            "client",
+            "sort_by",
+            "page"
+          ],
+          "returnType": "list[dict]",
+          "exported": true,
+          "lineCount": 18
+        },
+        {
+          "name": "fetch_movie",
+          "params": [
+            "client",
+            "tmdb_id"
+          ],
+          "returnType": "dict | None",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "get_existing_tmdb_ids",
+          "params": [
+            "client"
+          ],
+          "returnType": "set[int]",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "upsert_movies",
+          "params": [
+            "client",
+            "rows",
+            "resolution"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 12
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        }
+      ],
+      "exports": [
+        "_tmdb_key",
+        "data_url",
+        "_data_key",
+        "sb_headers",
+        "pick_trailer",
+        "build_movie",
+        "tmdb_discover",
+        "fetch_movie",
+        "get_existing_tmdb_ids",
+        "upsert_movies"
+      ],
+      "totalLines": 132,
       "hasStructuralAnalysis": true
     },
     "4K_BE/DB_SCRIPTS/seed_movies.py": {
@@ -262,6 +1057,16 @@
       "totalLines": 280,
       "hasStructuralAnalysis": true
     },
+    "4K_BE/DB_SCRIPTS/visits_schema.sql": {
+      "filePath": "4K_BE/DB_SCRIPTS/visits_schema.sql",
+      "contentHash": "33dcb36f4d983ebbd7ed5d6bb560cb1ebcf43416fe12f16e6e01cb6e3a7e12bf",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 10,
+      "hasStructuralAnalysis": true
+    },
     "4K_BE/Dockerfile": {
       "filePath": "4K_BE/Dockerfile",
       "contentHash": "291bbaaa7d7533dd1063a3e553883c31cfae1db8d2ffb47b3f2a95cb689b7062",
@@ -272,6 +1077,26 @@
       "totalLines": 13,
       "hasStructuralAnalysis": true
     },
+    "4K_BE/pytest.ini": {
+      "filePath": "4K_BE/pytest.ini",
+      "contentHash": "da9808d584f4d7bf9f89efb0e294727a7abd06903d9ae8fbc45f5dd93c59b684",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 4,
+      "hasStructuralAnalysis": false
+    },
+    "4K_BE/requirements-dev.txt": {
+      "filePath": "4K_BE/requirements-dev.txt",
+      "contentHash": "4a2ce30a504a2b4a5ff4a8a77993b219ab523495238c6c50cd53e9fec25c425c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 4,
+      "hasStructuralAnalysis": false
+    },
     "4K_BE/requirements.txt": {
       "filePath": "4K_BE/requirements.txt",
       "contentHash": "62bb1a5f094dfd580199c60d95f715a289a8245f7604c6ed5744cae6708eb32d",
@@ -281,6 +1106,1003 @@
       "exports": [],
       "totalLines": 5,
       "hasStructuralAnalysis": false
+    },
+    "4K_BE/tests/__init__.py": {
+      "filePath": "4K_BE/tests/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "4K_BE/tests/test_active_model.py": {
+      "filePath": "4K_BE/tests/test_active_model.py",
+      "contentHash": "803779087bba701ed65d7b2251a549bb9ec654210c5867ca2485752457eaa1b0",
+      "functions": [
+        {
+          "name": "_patch",
+          "params": [
+            "monkeypatch",
+            "handler"
+          ],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "test_active_model_returns_base_version",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 13
+        },
+        {
+          "name": "test_active_model_fallback",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 11
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        },
+        {
+          "source": "fastapi.testclient",
+          "specifiers": [
+            "TestClient"
+          ]
+        },
+        {
+          "source": "app",
+          "specifiers": [
+            "main"
+          ]
+        }
+      ],
+      "exports": [
+        "_patch",
+        "test_active_model_returns_base_version",
+        "test_active_model_fallback"
+      ],
+      "totalLines": 42,
+      "hasStructuralAnalysis": true
+    },
+    "4K_BE/tests/test_backfill.py": {
+      "filePath": "4K_BE/tests/test_backfill.py",
+      "contentHash": "de0ee3508434ae03423081e24043f5a7753e9cb8e2d5a62e76de5f9776a5a55c",
+      "functions": [
+        {
+          "name": "_make_handler",
+          "params": [
+            "existing_ids",
+            "discover_pages"
+          ],
+          "exported": true,
+          "lineCount": 16
+        },
+        {
+          "name": "_run",
+          "params": [
+            "handler",
+            "max_new",
+            "max_pages"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "test_adds_only_missing_and_stops_at_max_new",
+          "params": [],
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "test_idempotent_when_all_exist",
+          "params": [],
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "test_paginates_until_max_new",
+          "params": [],
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "test_stops_when_discover_empty",
+          "params": [],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "test_records_failed_fetches",
+          "params": [],
+          "exported": true,
+          "lineCount": 20
+        },
+        {
+          "name": "test_respects_max_pages",
+          "params": [],
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "test_backfill_events_streams_progress_then_done",
+          "params": [],
+          "exported": true,
+          "lineCount": 11
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        },
+        {
+          "source": "app",
+          "specifiers": [
+            "bf"
+          ]
+        }
+      ],
+      "exports": [
+        "_make_handler",
+        "_run",
+        "test_adds_only_missing_and_stops_at_max_new",
+        "test_idempotent_when_all_exist",
+        "test_paginates_until_max_new",
+        "test_stops_when_discover_empty",
+        "test_records_failed_fetches",
+        "test_respects_max_pages",
+        "test_backfill_events_streams_progress_then_done"
+      ],
+      "totalLines": 103,
+      "hasStructuralAnalysis": true
+    },
+    "4K_BE/tests/test_collect_one.py": {
+      "filePath": "4K_BE/tests/test_collect_one.py",
+      "contentHash": "ffdacc0a69dd55704c981f64b82eedd691c1321b2d4c9b343aa79950805d836e",
+      "functions": [
+        {
+          "name": "_client",
+          "params": [
+            "handler"
+          ],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "_fake_dl",
+          "params": [
+            "client",
+            "url_path"
+          ],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "test_collect_one_done_and_reset",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 25
+        },
+        {
+          "name": "test_collect_one_skipped_when_no_subtitle",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 13
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        },
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "app",
+          "specifiers": [
+            "sc"
+          ]
+        }
+      ],
+      "exports": [
+        "_client",
+        "_fake_dl",
+        "test_collect_one_done_and_reset",
+        "test_collect_one_skipped_when_no_subtitle"
+      ],
+      "totalLines": 57,
+      "hasStructuralAnalysis": true
+    },
+    "4K_BE/tests/test_delete_movie.py": {
+      "filePath": "4K_BE/tests/test_delete_movie.py",
+      "contentHash": "0177570218df2f0cbccf6ffd7cabb6b96d625b4db26db4b9cfa46a4e91f92930",
+      "functions": [
+        {
+          "name": "_patch",
+          "params": [
+            "monkeypatch",
+            "handler"
+          ],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "test_delete_cleans_vector_and_resets_processing",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 24
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        },
+        {
+          "source": "fastapi.testclient",
+          "specifiers": [
+            "TestClient"
+          ]
+        },
+        {
+          "source": "app",
+          "specifiers": [
+            "main"
+          ]
+        }
+      ],
+      "exports": [
+        "_patch",
+        "test_delete_cleans_vector_and_resets_processing"
+      ],
+      "totalLines": 40,
+      "hasStructuralAnalysis": true
+    },
+    "4K_BE/tests/test_jobs.py": {
+      "filePath": "4K_BE/tests/test_jobs.py",
+      "contentHash": "7442709f9e360d56ebcc3fc4ea9ff482851fdf7c3e75f16140ee346eb298aefc",
+      "functions": [
+        {
+          "name": "_clear",
+          "params": [],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "_fake_ok",
+          "params": [
+            "client"
+          ],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "_fake_boom",
+          "params": [
+            "client"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "test_get_defaults_idle",
+          "params": [],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "test_start_runs_and_records",
+          "params": [],
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "test_start_dedupes_running",
+          "params": [],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "test_run_captures_exception",
+          "params": [],
+          "exported": true,
+          "lineCount": 6
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "app",
+          "specifiers": [
+            "jobs"
+          ]
+        }
+      ],
+      "exports": [
+        "_clear",
+        "_fake_ok",
+        "_fake_boom",
+        "test_get_defaults_idle",
+        "test_start_runs_and_records",
+        "test_start_dedupes_running",
+        "test_run_captures_exception"
+      ],
+      "totalLines": 56,
+      "hasStructuralAnalysis": true
+    },
+    "4K_BE/tests/test_main_jobs.py": {
+      "filePath": "4K_BE/tests/test_main_jobs.py",
+      "contentHash": "635489ea7b2baf8532b8f25146c002a0b26736d8d86ca1c58607f4da0844e538",
+      "functions": [
+        {
+          "name": "_no_real_task",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "test_backfill_starts_movie_job_with_limit",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "test_collect_starts_subtitle_job",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "test_job_status_returns_state",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 6
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "fastapi.testclient",
+          "specifiers": [
+            "TestClient"
+          ]
+        },
+        {
+          "source": "app",
+          "specifiers": [
+            "main",
+            "jobs"
+          ]
+        }
+      ],
+      "exports": [
+        "_no_real_task",
+        "test_backfill_starts_movie_job_with_limit",
+        "test_collect_starts_subtitle_job",
+        "test_job_status_returns_state"
+      ],
+      "totalLines": 42,
+      "hasStructuralAnalysis": true
+    },
+    "4K_BE/tests/test_main_recent.py": {
+      "filePath": "4K_BE/tests/test_main_recent.py",
+      "contentHash": "3e5cbd236dcacfb805746d49f7f3ae820333800cac6a99256ae64e7ad65eebf7",
+      "functions": [
+        {
+          "name": "_patch_client",
+          "params": [
+            "monkeypatch",
+            "handler"
+          ],
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "test_recent_returns_movies",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "test_recent_clamps_limit",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 9
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        },
+        {
+          "source": "fastapi.testclient",
+          "specifiers": [
+            "TestClient"
+          ]
+        },
+        {
+          "source": "app",
+          "specifiers": [
+            "main"
+          ]
+        }
+      ],
+      "exports": [
+        "_patch_client",
+        "test_recent_returns_movies",
+        "test_recent_clamps_limit"
+      ],
+      "totalLines": 39,
+      "hasStructuralAnalysis": true
+    },
+    "4K_BE/tests/test_reprocess.py": {
+      "filePath": "4K_BE/tests/test_reprocess.py",
+      "contentHash": "aab34a0ca93ca13eb1e04678f568b91dc353e227a978c0076bf4ca713db67c7b",
+      "functions": [
+        {
+          "name": "_patch",
+          "params": [
+            "monkeypatch",
+            "handler"
+          ],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "test_reprocess_resets_downstream",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 20
+        },
+        {
+          "name": "test_active_model_includes_metrics",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 14
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        },
+        {
+          "source": "fastapi.testclient",
+          "specifiers": [
+            "TestClient"
+          ]
+        },
+        {
+          "source": "app",
+          "specifiers": [
+            "main"
+          ]
+        }
+      ],
+      "exports": [
+        "_patch",
+        "test_reprocess_resets_downstream",
+        "test_active_model_includes_metrics"
+      ],
+      "totalLines": 53,
+      "hasStructuralAnalysis": true
+    },
+    "4K_BE/tests/test_stats.py": {
+      "filePath": "4K_BE/tests/test_stats.py",
+      "contentHash": "c1a68670755f72695638f80696015e6a798fa6df582771d2f0fbe91e814f66ce",
+      "functions": [
+        {
+          "name": "_patch_client",
+          "params": [
+            "monkeypatch",
+            "handler"
+          ],
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "test_log_visit_inserts",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "test_log_visit_requires_visitor_id",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "test_stats_returns_counts",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 28
+        },
+        {
+          "name": "test_stats_handles_missing_ai_env",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 12
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        },
+        {
+          "source": "fastapi.testclient",
+          "specifiers": [
+            "TestClient"
+          ]
+        },
+        {
+          "source": "app",
+          "specifiers": [
+            "main"
+          ]
+        }
+      ],
+      "exports": [
+        "_patch_client",
+        "test_log_visit_inserts",
+        "test_log_visit_requires_visitor_id",
+        "test_stats_returns_counts",
+        "test_stats_handles_missing_ai_env"
+      ],
+      "totalLines": 86,
+      "hasStructuralAnalysis": true
+    },
+    "4K_BE/tests/test_subtitle_collect.py": {
+      "filePath": "4K_BE/tests/test_subtitle_collect.py",
+      "contentHash": "0fcd92c3f61c148fa9f2c4960f621210cb1ef749773052ebd203cb1abf86e405",
+      "functions": [
+        {
+          "name": "test_choose_prefers_sdh",
+          "params": [],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "test_choose_filters_non_english",
+          "params": [],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "test_choose_fallback_to_non_sdh",
+          "params": [],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "test_choose_skips_full_season",
+          "params": [],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "test_choose_empty_returns_none",
+          "params": [],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "test_largest_srt_picks_biggest",
+          "params": [],
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "test_largest_srt_no_srt_raises",
+          "params": [],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "test_config_from_env_defaults",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "_zip_bytes",
+          "params": [
+            "text"
+          ],
+          "returnType": "bytes",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "_client",
+          "params": [
+            "handler"
+          ],
+          "returnType": "httpx.AsyncClient",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "test_search_parses_and_ratelimit",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "test_download_and_extract",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "_set_env",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "test_collect_events_happy",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 26
+        },
+        {
+          "name": "test_collect_events_skips_terminal_states",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 19
+        },
+        {
+          "name": "test_collect_events_retries_failed_under_cap",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 21
+        },
+        {
+          "name": "test_collect_events_increments_retry_on_failure",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 27
+        },
+        {
+          "name": "test_remaining_counts",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 18
+        },
+        {
+          "name": "test_collect_events_respects_max_new",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 21
+        },
+        {
+          "name": "test_collect_progress_has_result_fields",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 23
+        },
+        {
+          "name": "test_run_collect_consumes_to_done",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 20
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "io",
+          "specifiers": [
+            "io"
+          ]
+        },
+        {
+          "source": "zipfile",
+          "specifiers": [
+            "zipfile"
+          ]
+        },
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "app",
+          "specifiers": [
+            "sc"
+          ]
+        },
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        }
+      ],
+      "exports": [
+        "test_choose_prefers_sdh",
+        "test_choose_filters_non_english",
+        "test_choose_fallback_to_non_sdh",
+        "test_choose_skips_full_season",
+        "test_choose_empty_returns_none",
+        "test_largest_srt_picks_biggest",
+        "test_largest_srt_no_srt_raises",
+        "test_config_from_env_defaults",
+        "_zip_bytes",
+        "_client",
+        "test_search_parses_and_ratelimit",
+        "test_download_and_extract",
+        "_set_env",
+        "test_collect_events_happy",
+        "test_collect_events_skips_terminal_states",
+        "test_collect_events_retries_failed_under_cap",
+        "test_collect_events_increments_retry_on_failure",
+        "test_remaining_counts",
+        "test_collect_events_respects_max_new",
+        "test_collect_progress_has_result_fields",
+        "test_run_collect_consumes_to_done"
+      ],
+      "totalLines": 291,
+      "hasStructuralAnalysis": true
+    },
+    "4K_BE/tests/test_tmdb_common.py": {
+      "filePath": "4K_BE/tests/test_tmdb_common.py",
+      "contentHash": "d44dc0eca1f3d8bbc91bf58fb5e9aa3f5e4a88b3bdaca397ea2b202cf2898e6f",
+      "functions": [
+        {
+          "name": "test_pick_trailer_prefers_korean_youtube_trailer",
+          "params": [],
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "test_pick_trailer_returns_none_when_no_match",
+          "params": [],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "test_build_movie_maps_fields",
+          "params": [],
+          "exported": true,
+          "lineCount": 24
+        },
+        {
+          "name": "test_build_movie_handles_missing_fields",
+          "params": [],
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "_client",
+          "params": [
+            "handler"
+          ],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "test_tmdb_discover_returns_results",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "test_fetch_movie_builds_row",
+          "params": [],
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "test_fetch_movie_returns_none_on_error",
+          "params": [],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "test_get_existing_tmdb_ids_parses_rows",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "test_upsert_movies_sends_ignore_duplicates",
+          "params": [],
+          "exported": true,
+          "lineCount": 11
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "app",
+          "specifiers": [
+            "tc"
+          ]
+        },
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        }
+      ],
+      "exports": [
+        "test_pick_trailer_prefers_korean_youtube_trailer",
+        "test_pick_trailer_returns_none_when_no_match",
+        "test_build_movie_maps_fields",
+        "test_build_movie_handles_missing_fields",
+        "_client",
+        "test_tmdb_discover_returns_results",
+        "test_fetch_movie_builds_row",
+        "test_fetch_movie_returns_none_on_error",
+        "test_get_existing_tmdb_ids_parses_rows",
+        "test_upsert_movies_sends_ignore_duplicates"
+      ],
+      "totalLines": 109,
+      "hasStructuralAnalysis": true
+    },
+    "4K_BE/tests/test_visits_range.py": {
+      "filePath": "4K_BE/tests/test_visits_range.py",
+      "contentHash": "50aadd02ab33d796f3c67ce375e0fc2d04d3b46e7b6f89dec6284d4635826c9a",
+      "functions": [
+        {
+          "name": "_patch",
+          "params": [
+            "monkeypatch",
+            "handler"
+          ],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "test_visits_range_counts",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "test_visits_range_bad_date",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 4
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        },
+        {
+          "source": "fastapi.testclient",
+          "specifiers": [
+            "TestClient"
+          ]
+        },
+        {
+          "source": "app",
+          "specifiers": [
+            "main"
+          ]
+        }
+      ],
+      "exports": [
+        "_patch",
+        "test_visits_range_counts",
+        "test_visits_range_bad_date"
+      ],
+      "totalLines": 37,
+      "hasStructuralAnalysis": true
     },
     "4K_FE/.dockerignore": {
       "filePath": "4K_FE/.dockerignore",
@@ -310,6 +2132,25 @@
       "imports": [],
       "exports": [],
       "totalLines": 6,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/api/manager/active-model/route.ts": {
+      "filePath": "4K_FE/app/api/manager/active-model/route.ts",
+      "contentHash": "042d3405aec93b7e1294aaa2574a7da2b67592353a521c7594d3a637956fdb8e",
+      "functions": [
+        {
+          "name": "GET",
+          "params": [],
+          "exported": true,
+          "lineCount": 5
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "GET"
+      ],
+      "totalLines": 8,
       "hasStructuralAnalysis": true
     },
     "4K_FE/app/api/manager/auth/login/route.ts": {
@@ -381,6 +2222,51 @@
       "totalLines": 9,
       "hasStructuralAnalysis": true
     },
+    "4K_FE/app/api/manager/jobs/[type]/route.ts": {
+      "filePath": "4K_FE/app/api/manager/jobs/[type]/route.ts",
+      "contentHash": "315a7d140d6b4e47e0ce1654f65187cecb0162daa7a8e67c666d0d5ff403827a",
+      "functions": [
+        {
+          "name": "GET",
+          "params": [
+            "_request",
+            "{ params }"
+          ],
+          "exported": true,
+          "lineCount": 8
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "dynamic",
+        "GET"
+      ],
+      "totalLines": 14,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/api/manager/movies/[tmdb_id]/reprocess/route.ts": {
+      "filePath": "4K_FE/app/api/manager/movies/[tmdb_id]/reprocess/route.ts",
+      "contentHash": "127c806381db7a3aa9cb57a0ee468e0de0381a3fc1cf3513af7e3a0bc0682174",
+      "functions": [
+        {
+          "name": "POST",
+          "params": [
+            "_request",
+            "{ params }"
+          ],
+          "exported": true,
+          "lineCount": 12
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "POST"
+      ],
+      "totalLines": 15,
+      "hasStructuralAnalysis": true
+    },
     "4K_FE/app/api/manager/movies/[tmdb_id]/route.ts": {
       "filePath": "4K_FE/app/api/manager/movies/[tmdb_id]/route.ts",
       "contentHash": "691091ec3a7aa474e9963d663ea248bf7cc7e4ece0d32c0485f53449db78d6f1",
@@ -421,6 +2307,49 @@
         "DELETE"
       ],
       "totalLines": 37,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/api/manager/movies/backfill/route.ts": {
+      "filePath": "4K_FE/app/api/manager/movies/backfill/route.ts",
+      "contentHash": "820878aa1882ed0272ed7c823a60a1d038ed0a52116b59916c72e42060186d05",
+      "functions": [
+        {
+          "name": "POST",
+          "params": [
+            "request"
+          ],
+          "exported": true,
+          "lineCount": 9
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "dynamic",
+        "POST"
+      ],
+      "totalLines": 15,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/api/manager/movies/recent/route.ts": {
+      "filePath": "4K_FE/app/api/manager/movies/recent/route.ts",
+      "contentHash": "5d8ef7766bf8e597d317219e1c6e3f78b0ee3750cc393d95c12ad22f8f1d9180",
+      "functions": [
+        {
+          "name": "GET",
+          "params": [
+            "request"
+          ],
+          "exported": true,
+          "lineCount": 7
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "GET"
+      ],
+      "totalLines": 10,
       "hasStructuralAnalysis": true
     },
     "4K_FE/app/api/manager/movies/route.ts": {
@@ -474,9 +2403,111 @@
       "totalLines": 16,
       "hasStructuralAnalysis": true
     },
+    "4K_FE/app/api/manager/stats/route.ts": {
+      "filePath": "4K_FE/app/api/manager/stats/route.ts",
+      "contentHash": "d5c0d06a289998d6e564383a5db0420aed9d0f56455688235a380b58adfbab22",
+      "functions": [
+        {
+          "name": "GET",
+          "params": [],
+          "exported": true,
+          "lineCount": 5
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "GET"
+      ],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/api/manager/subtitles/collect/route.ts": {
+      "filePath": "4K_FE/app/api/manager/subtitles/collect/route.ts",
+      "contentHash": "4b71fb0e4d65e64e4191ad866c025db9a17818d1d075b2111fbc0cc90d421626",
+      "functions": [
+        {
+          "name": "POST",
+          "params": [
+            "request"
+          ],
+          "exported": true,
+          "lineCount": 9
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "dynamic",
+        "POST"
+      ],
+      "totalLines": 15,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/api/manager/subtitles/remaining/route.ts": {
+      "filePath": "4K_FE/app/api/manager/subtitles/remaining/route.ts",
+      "contentHash": "ce337659f192b4f73f5499cc437895ab8151be29a1a33372188517937a379346",
+      "functions": [
+        {
+          "name": "GET",
+          "params": [],
+          "exported": true,
+          "lineCount": 5
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "GET"
+      ],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/api/manager/visits/range/route.ts": {
+      "filePath": "4K_FE/app/api/manager/visits/range/route.ts",
+      "contentHash": "fa69a1aef53565b0146939f9676c8aa66147f15ea88276c46e6f5273b69d82c7",
+      "functions": [
+        {
+          "name": "GET",
+          "params": [
+            "request"
+          ],
+          "exported": true,
+          "lineCount": 6
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "GET"
+      ],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/api/visit/route.ts": {
+      "filePath": "4K_FE/app/api/visit/route.ts",
+      "contentHash": "365c8edcdc84ff799ec1d8258380a374eedcbc400c67dd33c0d4379ffd310b1b",
+      "functions": [
+        {
+          "name": "POST",
+          "params": [
+            "request"
+          ],
+          "exported": true,
+          "lineCount": 15
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "POST"
+      ],
+      "totalLines": 19,
+      "hasStructuralAnalysis": true
+    },
     "4K_FE/app/components/BackgroundThread.tsx": {
       "filePath": "4K_FE/app/components/BackgroundThread.tsx",
-      "contentHash": "8885c8f990a65b73fe54b64fe6f9d3777ede042249cc06469327898f79039eca",
+      "contentHash": "7fc42aea0ed50923f7a279c4347294658811827470219435d17ebd2c0b976a70",
       "functions": [
         {
           "name": "Threads",
@@ -484,7 +2515,7 @@
             "{\n  color = [1, 1, 1],\n  amplitude = 1,\n  distance = 0,\n  enableMouseInteraction = false,\n  ...rest\n}"
           ],
           "exported": false,
-          "lineCount": 106
+          "lineCount": 110
         }
       ],
       "classes": [],
@@ -509,51 +2540,69 @@
         }
       ],
       "exports": [],
-      "totalLines": 236,
+      "totalLines": 240,
       "hasStructuralAnalysis": true
     },
     "4K_FE/app/components/ClimaxGraph.tsx": {
       "filePath": "4K_FE/app/components/ClimaxGraph.tsx",
-      "contentHash": "b329239e5445aad67bdb32a8cc48381f320a6227c0d62dc0ba85cd5564aef38c",
+      "contentHash": "4b9df4db8f975877dfe81ee612d7e0ae1d6cc50d92a540ac05dd0804225dbc3b",
       "functions": [
         {
           "name": "ClimaxGraph",
           "params": [
-            "{ data, height = 160 }"
+            "{ data, valence, height = 380 }"
           ],
           "exported": true,
-          "lineCount": 73
+          "lineCount": 128
         }
       ],
       "classes": [],
-      "imports": [],
+      "imports": [
+        {
+          "source": "react",
+          "specifiers": [
+            "useRef",
+            "useState"
+          ]
+        },
+        {
+          "source": "@/app/lib/climax",
+          "specifiers": [
+            "toDisplayScale"
+          ]
+        },
+        {
+          "source": "@/app/lib/color",
+          "specifiers": [
+            "valenceGradientStops",
+            "valenceToUnit",
+            "valenceColorAt"
+          ]
+        },
+        {
+          "source": "@/app/lib/svgPath",
+          "specifiers": [
+            "catmullRomPath"
+          ]
+        }
+      ],
       "exports": [
         "ClimaxGraph"
       ],
-      "totalLines": 82,
+      "totalLines": 143,
       "hasStructuralAnalysis": true
     },
     "4K_FE/app/components/DetailOverlay.tsx": {
       "filePath": "4K_FE/app/components/DetailOverlay.tsx",
-      "contentHash": "8f894ca3fa23083e5ecaa3fc82e95524ad191f6e3d48e7e2e2babda753373336",
+      "contentHash": "e6e806980ee9ff06ccfe9b5cb374b0ae41ac1afb71a783f6779d3589dd507d8b",
       "functions": [
-        {
-          "name": "dtwDistance",
-          "params": [
-            "a",
-            "b"
-          ],
-          "returnType": "number",
-          "exported": false,
-          "lineCount": 17
-        },
         {
           "name": "DetailOverlay",
           "params": [
-            "{ movie, onClose, onSelectMovie }"
+            "{\n  movie,\n  onClose,\n  onSelectMovie,\n}"
           ],
           "exported": true,
-          "lineCount": 227
+          "lineCount": 618
         }
       ],
       "classes": [],
@@ -572,9 +2621,17 @@
             "posterUrl",
             "genreList",
             "castList",
-            "fetchVector",
+            "fetchVectorPair",
             "fetchPreferredMovies",
-            "fetchMovieVectors"
+            "fetchMovieVectorPairs"
+          ]
+        },
+        {
+          "source": "@/app/lib/climax",
+          "specifiers": [
+            "cosineSimilarity",
+            "climaxDescriptor",
+            "meanCenter"
           ]
         },
         {
@@ -582,12 +2639,18 @@
           "specifiers": [
             "ClimaxGraph"
           ]
+        },
+        {
+          "source": "@/app/components/MiniGraph",
+          "specifiers": [
+            "MiniGraph"
+          ]
         }
       ],
       "exports": [
         "DetailOverlay"
       ],
-      "totalLines": 264,
+      "totalLines": 651,
       "hasStructuralAnalysis": true
     },
     "4K_FE/app/components/FilterBar.tsx": {
@@ -670,45 +2733,61 @@
     },
     "4K_FE/app/components/MiniGraph.tsx": {
       "filePath": "4K_FE/app/components/MiniGraph.tsx",
-      "contentHash": "c311b8453340e2be9ba683d10e061110193b057970e3e61ff564f6ff6bee122d",
+      "contentHash": "a3326d4cded8127af2bf281f6da5914ce8dad32cb61d6058a1d4f44b903bad09",
       "functions": [
         {
           "name": "MiniGraph",
           "params": [
-            "{ data, color = 'var(--accent)', height = 40 }"
+            "{ data, valence, color = 'var(--accent)', height = 40 }"
           ],
           "exported": true,
-          "lineCount": 30
+          "lineCount": 33
         }
       ],
       "classes": [],
-      "imports": [],
+      "imports": [
+        {
+          "source": "react",
+          "specifiers": [
+            "useId"
+          ]
+        },
+        {
+          "source": "@/app/lib/climax",
+          "specifiers": [
+            "toDisplayScale"
+          ]
+        },
+        {
+          "source": "@/app/lib/color",
+          "specifiers": [
+            "valenceGradientStops"
+          ]
+        },
+        {
+          "source": "@/app/lib/svgPath",
+          "specifiers": [
+            "catmullRomPath"
+          ]
+        }
+      ],
       "exports": [
         "MiniGraph"
       ],
-      "totalLines": 40,
+      "totalLines": 49,
       "hasStructuralAnalysis": true
     },
     "4K_FE/app/components/MovieDetailModal.tsx": {
       "filePath": "4K_FE/app/components/MovieDetailModal.tsx",
-      "contentHash": "bd53eb45e5e28d2cebdf59c6aa28f9f5b7a4e89c7c0df195afb80265859631cf",
+      "contentHash": "f8760a6f13ac1494d7c80140bf82d6d2482c5060137c9e3df8e50711a80556ce",
       "functions": [
-        {
-          "name": "parseVector",
-          "params": [
-            "raw"
-          ],
-          "returnType": "number[]",
-          "exported": false,
-          "lineCount": 9
-        },
         {
           "name": "MovieDetailModal",
           "params": [
             "{\n  tmdbId,\n  fallbackTitle,\n  onClose,\n}"
           ],
           "exported": true,
-          "lineCount": 354
+          "lineCount": 347
         },
         {
           "name": "Field",
@@ -763,7 +2842,7 @@
       "exports": [
         "MovieDetailModal"
       ],
-      "totalLines": 477,
+      "totalLines": 457,
       "hasStructuralAnalysis": true
     },
     "4K_FE/app/components/PosterCard.tsx": {
@@ -886,13 +2965,13 @@
     },
     "4K_FE/app/dashboard/page.tsx": {
       "filePath": "4K_FE/app/dashboard/page.tsx",
-      "contentHash": "9b3a18fb7c27c0bb0b470e41cf1ac5b920eff7262730d1aa1d5509fd09593c47",
+      "contentHash": "d3a6e7469d855403cd8f98246af89fe52ad28f8dbe9eea94c55a2c25b158fe33",
       "functions": [
         {
           "name": "Dashboard",
           "params": [],
           "exported": true,
-          "lineCount": 632
+          "lineCount": 655
         }
       ],
       "classes": [],
@@ -923,7 +3002,8 @@
             "getRecentIds",
             "addRecentId",
             "removeRecentId",
-            "fetchPreferredMovies"
+            "fetchPreferredMovies",
+            "logVisit"
           ]
         },
         {
@@ -961,27 +3041,33 @@
           "specifiers": [
             "Tutorial"
           ]
+        },
+        {
+          "source": "@/app/components/BackgroundThread",
+          "specifiers": [
+            "BackgroundThread"
+          ]
         }
       ],
       "exports": [
         "Dashboard"
       ],
-      "totalLines": 659,
+      "totalLines": 688,
       "hasStructuralAnalysis": true
     },
     "4K_FE/app/globals.css": {
       "filePath": "4K_FE/app/globals.css",
-      "contentHash": "71f1843c88dd63ee3954d2880c94c3f02f87c69f4aeee561dddb14cb1ea28035",
+      "contentHash": "5ca95775725c7e682aa1be43570d150a2246a59fa95e6c76a0b170df0cd5af8c",
       "functions": [],
       "classes": [],
       "imports": [],
       "exports": [],
-      "totalLines": 162,
+      "totalLines": 179,
       "hasStructuralAnalysis": false
     },
     "4K_FE/app/layout.tsx": {
       "filePath": "4K_FE/app/layout.tsx",
-      "contentHash": "265343ac9e680953bcc987cd6c47f1db6a775e63080d1565abb9bb326393844c",
+      "contentHash": "3998337d6f3dfd19e21be9e051a861046d6e9f1137aea2cbc05523754e437f4c",
       "functions": [
         {
           "name": "RootLayout",
@@ -1005,7 +3091,8 @@
           "specifiers": [
             "Inter_Tight",
             "Playfair_Display",
-            "JetBrains_Mono"
+            "JetBrains_Mono",
+            "Nanum_Myeongjo"
           ]
         },
         {
@@ -1017,7 +3104,7 @@
         "metadata",
         "RootLayout"
       ],
-      "totalLines": 43,
+      "totalLines": 49,
       "hasStructuralAnalysis": true
     },
     "4K_FE/app/lib/auth.ts": {
@@ -1070,9 +3157,164 @@
       "totalLines": 33,
       "hasStructuralAnalysis": true
     },
+    "4K_FE/app/lib/climax.ts": {
+      "filePath": "4K_FE/app/lib/climax.ts",
+      "contentHash": "45eda7b53382673413e9b575fe30870b6bbb9c48ce0efb8488d9894e58552647",
+      "functions": [
+        {
+          "name": "cosineSimilarity",
+          "params": [
+            "a",
+            "b"
+          ],
+          "returnType": "number",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "zscore",
+          "params": [
+            "v"
+          ],
+          "returnType": "number[]",
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "toDisplayScale",
+          "params": [
+            "v"
+          ],
+          "returnType": "number[]",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "countPeaks",
+          "params": [
+            "v"
+          ],
+          "returnType": "number[]",
+          "exported": false,
+          "lineCount": 19
+        },
+        {
+          "name": "climaxMetrics",
+          "params": [
+            "v"
+          ],
+          "returnType": "ClimaxMetrics",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "topPeaks",
+          "params": [
+            "v",
+            "n"
+          ],
+          "returnType": "TopPeak[]",
+          "exported": true,
+          "lineCount": 21
+        },
+        {
+          "name": "climaxDescriptor",
+          "params": [
+            "v"
+          ],
+          "returnType": "string",
+          "exported": true,
+          "lineCount": 28
+        },
+        {
+          "name": "meanCenter",
+          "params": [
+            "v"
+          ],
+          "returnType": "number[]",
+          "exported": true,
+          "lineCount": 5
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "cosineSimilarity",
+        "toDisplayScale",
+        "climaxMetrics",
+        "topPeaks",
+        "climaxDescriptor",
+        "meanCenter"
+      ],
+      "totalLines": 138,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/lib/color.ts": {
+      "filePath": "4K_FE/app/lib/color.ts",
+      "contentHash": "e62717aaf1b11779885e151ee675ae35e5dd381c8ca5495252a6677399b8c541",
+      "functions": [
+        {
+          "name": "lerp",
+          "params": [
+            "a",
+            "b",
+            "t"
+          ],
+          "returnType": "number",
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "hex",
+          "params": [
+            "c"
+          ],
+          "returnType": "string",
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "valenceColorAt",
+          "params": [
+            "t"
+          ],
+          "returnType": "string",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "valenceToUnit",
+          "params": [
+            "valence"
+          ],
+          "returnType": "number[]",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "valenceGradientStops",
+          "params": [
+            "valence",
+            "n"
+          ],
+          "returnType": "GradientStop[]",
+          "exported": true,
+          "lineCount": 11
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "valenceColorAt",
+        "valenceToUnit",
+        "valenceGradientStops"
+      ],
+      "totalLines": 53,
+      "hasStructuralAnalysis": true
+    },
     "4K_FE/app/lib/data.ts": {
       "filePath": "4K_FE/app/lib/data.ts",
-      "contentHash": "e2be94c7761961ba36501e2eb99e076c513e367d4a483dd9bc3b1549b14c022a",
+      "contentHash": "0abfa1abfc8f8b833d4e07ea358c37b3b9a68e4b1c0863435c4187dccf0924d7",
       "functions": [
         {
           "name": "posterUrl",
@@ -1141,6 +3383,31 @@
           "lineCount": 17
         },
         {
+          "name": "getActiveVersion",
+          "params": [],
+          "returnType": "Promise<string>",
+          "exported": true,
+          "lineCount": 18
+        },
+        {
+          "name": "fetchVectorPair",
+          "params": [
+            "tmdbId"
+          ],
+          "returnType": "Promise<{ arousal: number[]; valence: number[] } | null>",
+          "exported": true,
+          "lineCount": 23
+        },
+        {
+          "name": "fetchMovieVectorPairs",
+          "params": [
+            "tmdbIds"
+          ],
+          "returnType": "Promise<Map<number, { arousal: number[]; valence: number[] }>>",
+          "exported": true,
+          "lineCount": 26
+        },
+        {
           "name": "getRecentIds",
           "params": [],
           "returnType": "number[]",
@@ -1164,6 +3431,13 @@
           "returnType": "void",
           "exported": true,
           "lineCount": 3
+        },
+        {
+          "name": "logVisit",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 23
         }
       ],
       "classes": [],
@@ -1180,16 +3454,42 @@
         "fetchSimilarMovies",
         "fetchMovieVectors",
         "fetchVector",
+        "getActiveVersion",
+        "fetchVectorPair",
+        "fetchMovieVectorPairs",
         "getRecentIds",
         "addRecentId",
-        "removeRecentId"
+        "removeRecentId",
+        "logVisit"
       ],
-      "totalLines": 166,
+      "totalLines": 266,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/lib/svgPath.ts": {
+      "filePath": "4K_FE/app/lib/svgPath.ts",
+      "contentHash": "878d3c265e9e5711ca3806be435ca3e1f6635c76177adb048606109e564d0e04",
+      "functions": [
+        {
+          "name": "catmullRomPath",
+          "params": [
+            "pts"
+          ],
+          "returnType": "string",
+          "exported": true,
+          "lineCount": 17
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "catmullRomPath"
+      ],
+      "totalLines": 21,
       "hasStructuralAnalysis": true
     },
     "4K_FE/app/login/page.tsx": {
       "filePath": "4K_FE/app/login/page.tsx",
-      "contentHash": "77c2eb2406d6dc0015fea6a912fb5545d05f71d5b5b9b6423b16c1e04e9b6402",
+      "contentHash": "1c8e66ce7e2bcad9f66d817cb8e27df040640fd45bd3eda71d743f430e0ec8c7",
       "functions": [
         {
           "name": "LoginPage",
@@ -1219,15 +3519,118 @@
       "totalLines": 117,
       "hasStructuralAnalysis": true
     },
+    "4K_FE/app/manager/page.tsx": {
+      "filePath": "4K_FE/app/manager/page.tsx",
+      "contentHash": "17e1ded46a34efdf0ca996a097c7fd4696b9f50419a4c313d820b778f819a9e5",
+      "functions": [
+        {
+          "name": "_failedJob",
+          "params": [
+            "error"
+          ],
+          "returnType": "Job",
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "startAndPoll",
+          "params": [
+            "startUrl",
+            "jobType",
+            "setJob",
+            "onDone"
+          ],
+          "exported": false,
+          "lineCount": 31
+        },
+        {
+          "name": "JobBanner",
+          "params": [
+            "{ job, label, onClose }"
+          ],
+          "exported": false,
+          "lineCount": 41
+        },
+        {
+          "name": "ManagerPage",
+          "params": [],
+          "exported": true,
+          "lineCount": 245
+        },
+        {
+          "name": "fmtMetric",
+          "params": [
+            "n"
+          ],
+          "returnType": "string",
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "StatCard",
+          "params": [
+            "{ label, value, accent }"
+          ],
+          "exported": false,
+          "lineCount": 13
+        },
+        {
+          "name": "LinkRow",
+          "params": [
+            "{ label, desc, href, onClick }"
+          ],
+          "exported": false,
+          "lineCount": 22
+        },
+        {
+          "name": "CollectCard",
+          "params": [
+            "props"
+          ],
+          "exported": false,
+          "lineCount": 40
+        },
+        {
+          "name": "actionBtn",
+          "params": [
+            "disabled"
+          ],
+          "returnType": "React.CSSProperties",
+          "exported": false,
+          "lineCount": 10
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "react",
+          "specifiers": [
+            "useState",
+            "useEffect"
+          ]
+        },
+        {
+          "source": "next/navigation",
+          "specifiers": [
+            "useRouter"
+          ]
+        }
+      ],
+      "exports": [
+        "ManagerPage"
+      ],
+      "totalLines": 510,
+      "hasStructuralAnalysis": true
+    },
     "4K_FE/app/movie_list/page.tsx": {
       "filePath": "4K_FE/app/movie_list/page.tsx",
-      "contentHash": "2c7f7943f3cf762b721c5f280271293baf3ff6be365702e3056519837f8e5ccf",
+      "contentHash": "e759aafda9b1bf52462ec2e4c3ce0e0c876b7a0035a02efc4081cb36445bc657",
       "functions": [
         {
           "name": "MovieListPage",
           "params": [],
           "exported": true,
-          "lineCount": 281
+          "lineCount": 288
         },
         {
           "name": "paginationBtn",
@@ -1271,18 +3674,57 @@
       "exports": [
         "MovieListPage"
       ],
-      "totalLines": 318,
+      "totalLines": 325,
+      "hasStructuralAnalysis": true
+    },
+    "4K_FE/app/movie_list/recent/page.tsx": {
+      "filePath": "4K_FE/app/movie_list/recent/page.tsx",
+      "contentHash": "5647f441b2516de5aa8bec7228b86cbd395dc2b9edbbebfbf7c759341addf1a1",
+      "functions": [
+        {
+          "name": "RecentPage",
+          "params": [],
+          "exported": true,
+          "lineCount": 79
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "react",
+          "specifiers": [
+            "useState",
+            "useEffect"
+          ]
+        },
+        {
+          "source": "next/navigation",
+          "specifiers": [
+            "useRouter"
+          ]
+        },
+        {
+          "source": "@/app/lib/data",
+          "specifiers": [
+            "posterUrl"
+          ]
+        }
+      ],
+      "exports": [
+        "RecentPage"
+      ],
+      "totalLines": 96,
       "hasStructuralAnalysis": true
     },
     "4K_FE/app/page.tsx": {
       "filePath": "4K_FE/app/page.tsx",
-      "contentHash": "dddbb164dea92d2931998aa113af453ff75258ef8231ed4c92f22cd278a77ada",
+      "contentHash": "90f14ee51f49a821aab660a5d93e66fab81f35fbc6ebaf3532fdc92f2ffb8970",
       "functions": [
         {
           "name": "OnboardingPage",
           "params": [],
           "exported": true,
-          "lineCount": 186
+          "lineCount": 181
         }
       ],
       "classes": [],
@@ -1291,6 +3733,18 @@
           "source": "next/navigation",
           "specifiers": [
             "useRouter"
+          ]
+        },
+        {
+          "source": "react",
+          "specifiers": [
+            "useEffect"
+          ]
+        },
+        {
+          "source": "@/app/lib/data",
+          "specifiers": [
+            "logVisit"
           ]
         },
         {
@@ -1303,7 +3757,7 @@
       "exports": [
         "OnboardingPage"
       ],
-      "totalLines": 257,
+      "totalLines": 190,
       "hasStructuralAnalysis": true
     },
     "4K_FE/CLAUDE.md": {
@@ -1395,7 +3849,7 @@
     },
     "4K_FE/proxy.ts": {
       "filePath": "4K_FE/proxy.ts",
-      "contentHash": "f5e4ae25c97d7c7f0c583a633d46e7601e5707c5f8ae8297236e822ea449012e",
+      "contentHash": "31c8fdeb989f1af5abcd488fc2e77044bcafaea8127e4084aaa29dfe55c997cf",
       "functions": [
         {
           "name": "proxy",
@@ -1432,7 +3886,7 @@
         "proxy",
         "config"
       ],
-      "totalLines": 29,
+      "totalLines": 37,
       "hasStructuralAnalysis": true
     },
     "4K_FE/README.md": {
@@ -1455,6 +3909,16 @@
       "totalLines": 35,
       "hasStructuralAnalysis": true
     },
+    "4K_ML/.dockerignore": {
+      "filePath": "4K_ML/.dockerignore",
+      "contentHash": "1025515367c7fb5bf661ebbe3909f16a1bd940b4b3e251a5f6fb7f07cf24baf2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 8,
+      "hasStructuralAnalysis": false
+    },
     "4K_ML/.python-version": {
       "filePath": "4K_ML/.python-version",
       "contentHash": "61141e9590171b900fdf709e7ea8f050d5c2a69198d4a4a1977d7c45186307e5",
@@ -1465,46 +3929,252 @@
       "totalLines": 2,
       "hasStructuralAnalysis": false
     },
-    "4K_ML/generate_vectors/generate_vectors.py": {
-      "filePath": "4K_ML/generate_vectors/generate_vectors.py",
-      "contentHash": "11eaf3fbc2f8eada0d93ec591986158d68e2b1a70804441112dddb6deae6be2b",
+    "4K_ML/db/__init__.py": {
+      "filePath": "4K_ML/db/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/db/apply_schema.py": {
+      "filePath": "4K_ML/db/apply_schema.py",
+      "contentHash": "7ac251ed56f50922a8ce8b89197d88155f2d8c758199c439a5f60661e3b3a0c5",
       "functions": [
         {
-          "name": "ext_fetch",
+          "name": "apply_schema",
           "params": [
+            "dsn",
+            "sql_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 7
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "psycopg",
+          "specifiers": [
+            "psycopg"
+          ]
+        }
+      ],
+      "exports": [
+        "apply_schema"
+      ],
+      "totalLines": 25,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/db/p1_migrations.sql": {
+      "filePath": "4K_ML/db/p1_migrations.sql",
+      "contentHash": "a0063c776fccc7ce7aa9482d5be7a17f165b008c13d9e46758c56726da45c362",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 23,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/db/rpc_arousal_version_filter.sql": {
+      "filePath": "4K_ML/db/rpc_arousal_version_filter.sql",
+      "contentHash": "a7df3ddad0b99197920ff6b2a710d5b267abb7e02db486f6c63c7e510a52f11f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 71,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/db/schema.sql": {
+      "filePath": "4K_ML/db/schema.sql",
+      "contentHash": "b8ad5e108a8ae974c3eb08746ac4a49e147b4c1f5ddc387c5a621557bc0ed490",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 83,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/Dockerfile": {
+      "filePath": "4K_ML/Dockerfile",
+      "contentHash": "bc3513501523ea0192989048df24144c3602ac4e21d8d5526edb24997d01290a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 38,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/generate_vectors/__init__.py": {
+      "filePath": "4K_ML/generate_vectors/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/generate_vectors/db.py": {
+      "filePath": "4K_ML/generate_vectors/db.py",
+      "contentHash": "fc4dbc5c27cbbe33c83638ecf56c921ab1d62c7241a6ee12155645ef01bae025",
+      "functions": [
+        {
+          "name": "_ai",
+          "params": [],
+          "returnType": "tuple[str, str]",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "_ai_auth",
+          "params": [],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "_ai_headers",
+          "params": [],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "_ai_get_all",
+          "params": [
+            "client",
             "table",
             "params"
           ],
           "returnType": "list[dict]",
           "exported": true,
-          "lineCount": 25
+          "lineCount": 15
         },
         {
-          "name": "vm4_upsert",
+          "name": "fetch_scene_index",
           "params": [
-            "table",
-            "rows",
-            "on_conflict"
+            "client"
           ],
-          "returnType": "None",
+          "returnType": "dict[int, tuple]",
           "exported": true,
-          "lineCount": 22
+          "lineCount": 7
         },
         {
-          "name": "process",
+          "name": "fetch_axis_scores",
           "params": [
-            "points"
+            "client",
+            "model_version_axis"
           ],
-          "returnType": "np.ndarray | None",
+          "returnType": "list[dict]",
           "exported": true,
-          "lineCount": 27
+          "lineCount": 4
         },
         {
-          "name": "main",
+          "name": "build_series",
+          "params": [
+            "scores",
+            "scene_index"
+          ],
+          "returnType": "dict[int, list]",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "_data",
           "params": [],
+          "returnType": "tuple[str, str]",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "_data_auth",
+          "params": [],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "_data_headers",
+          "params": [
+            "write"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "upsert_vectors",
+          "params": [
+            "client",
+            "rows"
+          ],
           "returnType": "None",
           "exported": true,
-          "lineCount": 71
+          "lineCount": 11
+        },
+        {
+          "name": "set_has_vector",
+          "params": [
+            "client",
+            "tmdb_ids"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "fetch_active_version",
+          "params": [
+            "client"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "fetch_vectored_tmdbs",
+          "params": [
+            "client",
+            "version_axis"
+          ],
+          "returnType": "set",
+          "exported": true,
+          "lineCount": 19
+        },
+        {
+          "name": "reconcile_has_vector",
+          "params": [
+            "client",
+            "active_tmdbs"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 26
+        },
+        {
+          "name": "set_vector_state",
+          "params": [
+            "client",
+            "tmdb_ids"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 13
         }
       ],
       "classes": [],
@@ -1526,17 +4196,122 @@
           "specifiers": [
             "httpx"
           ]
+        }
+      ],
+      "exports": [
+        "_ai",
+        "_ai_auth",
+        "_ai_headers",
+        "_ai_get_all",
+        "fetch_scene_index",
+        "fetch_axis_scores",
+        "build_series",
+        "_data",
+        "_data_auth",
+        "_data_headers",
+        "upsert_vectors",
+        "set_has_vector",
+        "fetch_active_version",
+        "fetch_vectored_tmdbs",
+        "reconcile_has_vector",
+        "set_vector_state"
+      ],
+      "totalLines": 198,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/generate_vectors/generate_vectors.py": {
+      "filePath": "4K_ML/generate_vectors/generate_vectors.py",
+      "contentHash": "932e3ec642b3414861504540eb825f29d50318dc80aa1e9c9716ac6609fef53b",
+      "functions": [
+        {
+          "name": "select_vector_targets",
+          "params": [
+            "ar_series_keys",
+            "vectored"
+          ],
+          "returnType": "list",
+          "exported": true,
+          "lineCount": 3
         },
+        {
+          "name": "build_rows",
+          "params": [
+            "ar_series",
+            "va_series",
+            "model_version"
+          ],
+          "returnType": "tuple[list, set]",
+          "exported": true,
+          "lineCount": 24
+        },
+        {
+          "name": "run",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 32
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        },
+        {
+          "source": "generate_vectors",
+          "specifiers": [
+            "db",
+            "transform"
+          ]
+        }
+      ],
+      "exports": [
+        "select_vector_targets",
+        "build_rows",
+        "run"
+      ],
+      "totalLines": 83,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/generate_vectors/transform.py": {
+      "filePath": "4K_ML/generate_vectors/transform.py",
+      "contentHash": "15fee27b201ef80dffb2df61acb22eea4e837cba6447ae58e48cf41a75025c8c",
+      "functions": [
+        {
+          "name": "_resample_smooth",
+          "params": [
+            "points"
+          ],
+          "returnType": "np.ndarray | None",
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "process_axis",
+          "params": [
+            "points",
+            "axis"
+          ],
+          "returnType": "list[float] | None",
+          "exported": true,
+          "lineCount": 12
+        }
+      ],
+      "classes": [],
+      "imports": [
         {
           "source": "numpy",
           "specifiers": [
             "np"
-          ]
-        },
-        {
-          "source": "dotenv",
-          "specifiers": [
-            "load_dotenv"
           ]
         },
         {
@@ -1547,23 +4322,3300 @@
         }
       ],
       "exports": [
-        "ext_fetch",
-        "vm4_upsert",
-        "process",
-        "main"
+        "_resample_smooth",
+        "process_axis"
       ],
-      "totalLines": 206,
+      "totalLines": 44,
       "hasStructuralAnalysis": true
     },
-    "4K_ML/requirements.txt": {
-      "filePath": "4K_ML/requirements.txt",
-      "contentHash": "a5e5fb52dd87e89eec46c40f4a4cbebea11d80ea8082386526724ff6599f29b7",
+    "4K_ML/labeling/__init__.py": {
+      "filePath": "4K_ML/labeling/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "functions": [],
       "classes": [],
       "imports": [],
       "exports": [],
-      "totalLines": 11,
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/labeling/batch.py": {
+      "filePath": "4K_ML/labeling/batch.py",
+      "contentHash": "fc72bee4c8cb153c7589d5e50dfdb3d7dbf1fecd5ac70025776895a0ef17796e",
+      "functions": [
+        {
+          "name": "build_requests",
+          "params": [
+            "movies"
+          ],
+          "returnType": "list[Request]",
+          "exported": true,
+          "lineCount": 17
+        },
+        {
+          "name": "submit",
+          "params": [
+            "client",
+            "requests"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "poll",
+          "params": [
+            "client",
+            "batch_id",
+            "interval"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "collect",
+          "params": [
+            "client",
+            "batch_id"
+          ],
+          "exported": true,
+          "lineCount": 12
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "time",
+          "specifiers": [
+            "time"
+          ]
+        },
+        {
+          "source": "anthropic.types.message_create_params",
+          "specifiers": [
+            "MessageCreateParamsNonStreaming"
+          ]
+        },
+        {
+          "source": "anthropic.types.messages.batch_create_params",
+          "specifiers": [
+            "Request"
+          ]
+        },
+        {
+          "source": "labeling.prompt",
+          "specifiers": [
+            "RUBRIC",
+            "OUTPUT_SCHEMA",
+            "build_user_message"
+          ]
+        }
+      ],
+      "exports": [
+        "build_requests",
+        "submit",
+        "poll",
+        "collect"
+      ],
+      "totalLines": 59,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/labeling/db.py": {
+      "filePath": "4K_ML/labeling/db.py",
+      "contentHash": "4be67ad2f01561fb3e06550cb713cf81aa9cb42422296ac9eec103a4eda23878",
+      "functions": [
+        {
+          "name": "_ai",
+          "params": [],
+          "returnType": "tuple[str, str]",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "_auth",
+          "params": [],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "_headers",
+          "params": [
+            "write",
+            "representation"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "fetch_label_targets",
+          "params": [
+            "client"
+          ],
+          "returnType": "list[int]",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "fetch_scenes",
+          "params": [
+            "client",
+            "tmdb_id"
+          ],
+          "returnType": "list[dict]",
+          "exported": true,
+          "lineCount": 18
+        },
+        {
+          "name": "ensure_model_versions",
+          "params": [
+            "client"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "upsert_scene_scores",
+          "params": [
+            "client",
+            "rows"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "set_label_state",
+          "params": [
+            "client",
+            "tmdb_id",
+            "state",
+            "error"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 8
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "datetime",
+          "specifiers": [
+            "datetime",
+            "timezone"
+          ]
+        },
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        }
+      ],
+      "exports": [
+        "_ai",
+        "_auth",
+        "_headers",
+        "fetch_label_targets",
+        "fetch_scenes",
+        "ensure_model_versions",
+        "upsert_scene_scores",
+        "set_label_state"
+      ],
+      "totalLines": 92,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/labeling/label_scenes.py": {
+      "filePath": "4K_ML/labeling/label_scenes.py",
+      "contentHash": "fe096054e04daa2dcd6245a08947e91c065c07584ddf20dbb1c48e5467134e16",
+      "functions": [
+        {
+          "name": "_clamp",
+          "params": [
+            "x"
+          ],
+          "returnType": "float",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "parse_to_rows",
+          "params": [
+            "parsed",
+            "index_to_sid"
+          ],
+          "returnType": "list[dict]",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "run",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 41
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        },
+        {
+          "source": "anthropic",
+          "specifiers": [
+            "Anthropic"
+          ]
+        },
+        {
+          "source": "labeling",
+          "specifiers": [
+            "db",
+            "batch"
+          ]
+        }
+      ],
+      "exports": [
+        "_clamp",
+        "parse_to_rows",
+        "run"
+      ],
+      "totalLines": 78,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/labeling/prompt.py": {
+      "filePath": "4K_ML/labeling/prompt.py",
+      "contentHash": "107f6b8e96a1752d07b6390c4d48ae61712725314924c665f23b9a64ca3e9cc0",
+      "functions": [
+        {
+          "name": "build_user_message",
+          "params": [
+            "scenes"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 4
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "build_user_message"
+      ],
+      "totalLines": 47,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/pytest.ini": {
+      "filePath": "4K_ML/pytest.ini",
+      "contentHash": "07e12af78809b103a9e003b9bf24f9718928fa263046b37bf3ebc9ebbf802ceb",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 3,
       "hasStructuralAnalysis": false
+    },
+    "4K_ML/requirements.txt": {
+      "filePath": "4K_ML/requirements.txt",
+      "contentHash": "32269fa8652ff6006e9c8119ca74ce9a8d6040b1f4d853733524680d3b4ad29a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 19,
+      "hasStructuralAnalysis": false
+    },
+    "4K_ML/serving/__init__.py": {
+      "filePath": "4K_ML/serving/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/serving/db.py": {
+      "filePath": "4K_ML/serving/db.py",
+      "contentHash": "0f57f9a7f32dfd69c1d01b4ddca64d1f25db1efc9941d60fc825ad430dc7ede6",
+      "functions": [
+        {
+          "name": "_ai",
+          "params": [],
+          "returnType": "tuple[str, str]",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "_auth",
+          "params": [],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "_headers",
+          "params": [
+            "write"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "_get",
+          "params": [
+            "client",
+            "table",
+            "params"
+          ],
+          "returnType": "list[dict]",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "_get_all",
+          "params": [
+            "client",
+            "table",
+            "params"
+          ],
+          "returnType": "list[dict]",
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "fetch_active_version",
+          "params": [
+            "client"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "select_score_targets",
+          "params": [
+            "parse_done",
+            "scene_to_movie",
+            "scored_scene_ids"
+          ],
+          "returnType": "list",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "fetch_score_targets",
+          "params": [
+            "client"
+          ],
+          "returnType": "list[int]",
+          "exported": true,
+          "lineCount": 16
+        },
+        {
+          "name": "fetch_movie_scenes_for_scoring",
+          "params": [
+            "client",
+            "tmdb_id"
+          ],
+          "returnType": "list[dict]",
+          "exported": true,
+          "lineCount": 29
+        },
+        {
+          "name": "ensure_model_versions",
+          "params": [
+            "client",
+            "model_version"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 13
+        },
+        {
+          "name": "upsert_scene_scores",
+          "params": [
+            "client",
+            "rows"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "set_score_state",
+          "params": [
+            "client",
+            "tmdb_id",
+            "state",
+            "error"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 8
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "datetime",
+          "specifiers": [
+            "datetime",
+            "timezone"
+          ]
+        },
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        }
+      ],
+      "exports": [
+        "_ai",
+        "_auth",
+        "_headers",
+        "_get",
+        "_get_all",
+        "fetch_active_version",
+        "select_score_targets",
+        "fetch_score_targets",
+        "fetch_movie_scenes_for_scoring",
+        "ensure_model_versions",
+        "upsert_scene_scores",
+        "set_score_state"
+      ],
+      "totalLines": 151,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/serving/predict_core.py": {
+      "filePath": "4K_ML/serving/predict_core.py",
+      "contentHash": "31ef3f730eabdab9e599a8b4ebad839fb03dce0abd3c6db7a83cd0b055f4cc1c",
+      "functions": [
+        {
+          "name": "load_artifacts",
+          "params": [
+            "model_dir",
+            "encoder_name",
+            "device"
+          ],
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "_clamp01",
+          "params": [
+            "x"
+          ],
+          "returnType": "float",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "score_instances",
+          "params": [
+            "model",
+            "scaler",
+            "tokenizer",
+            "max_len",
+            "instances"
+          ],
+          "returnType": "list[dict]",
+          "exported": true,
+          "lineCount": 14
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "numpy",
+          "specifiers": [
+            "np"
+          ]
+        },
+        {
+          "source": "torch",
+          "specifiers": [
+            "torch"
+          ]
+        },
+        {
+          "source": "train.features",
+          "specifiers": [
+            "Scaler",
+            "compute_features"
+          ]
+        },
+        {
+          "source": "train.model",
+          "specifiers": [
+            "HybridRobertaRegressor",
+            "build_encoder"
+          ]
+        }
+      ],
+      "exports": [
+        "load_artifacts",
+        "_clamp01",
+        "score_instances"
+      ],
+      "totalLines": 49,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/serving/predictor.py": {
+      "filePath": "4K_ML/serving/predictor.py",
+      "contentHash": "4dffb0aae2b1d79b8423b2f568dbcdbe143c601b1e0e1131396fd62f61e5c4a1",
+      "functions": [
+        {
+          "name": "create_app",
+          "params": [
+            "loader"
+          ],
+          "returnType": "FastAPI",
+          "exported": true,
+          "lineCount": 26
+        }
+      ],
+      "classes": [
+        {
+          "name": "PredictRequest",
+          "methods": [],
+          "properties": [
+            "instances"
+          ],
+          "exported": true,
+          "lineCount": 2
+        }
+      ],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "fastapi",
+          "specifiers": [
+            "FastAPI"
+          ]
+        },
+        {
+          "source": "pydantic",
+          "specifiers": [
+            "BaseModel"
+          ]
+        },
+        {
+          "source": "serving.predict_core",
+          "specifiers": [
+            "load_artifacts",
+            "score_instances"
+          ]
+        }
+      ],
+      "exports": [
+        "PredictRequest",
+        "create_app"
+      ],
+      "totalLines": 50,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/serving/promote.py": {
+      "filePath": "4K_ML/serving/promote.py",
+      "contentHash": "e6a980d67ee23b8bb5d664f5be8319372ac7c3b957ce6db2fe2652f651288617",
+      "functions": [
+        {
+          "name": "decide",
+          "params": [
+            "current",
+            "candidate",
+            "mae_tol"
+          ],
+          "returnType": "tuple[bool, str]",
+          "exported": true,
+          "lineCount": 11
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "decide"
+      ],
+      "totalLines": 40,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/serving/score_scenes_gpu.py": {
+      "filePath": "4K_ML/serving/score_scenes_gpu.py",
+      "contentHash": "30113682ef98efaac16177f9646d04b32114206797fe3349c6a736b36bca6197",
+      "functions": [
+        {
+          "name": "_clamp01",
+          "params": [
+            "x"
+          ],
+          "returnType": "float",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "scene_score_rows",
+          "params": [
+            "scenes",
+            "preds",
+            "mv"
+          ],
+          "returnType": "list[dict]",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "run",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 35
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        },
+        {
+          "source": "serving",
+          "specifiers": [
+            "db",
+            "predict_core"
+          ]
+        }
+      ],
+      "exports": [
+        "_clamp01",
+        "scene_score_rows",
+        "run"
+      ],
+      "totalLines": 68,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/serving/score_scenes.py": {
+      "filePath": "4K_ML/serving/score_scenes.py",
+      "contentHash": "890b03c20175a2943a5c26f876289fd025a4c602b8d47598c0dd6582f225c9e4",
+      "functions": [
+        {
+          "name": "call_predictor",
+          "params": [
+            "url",
+            "instances"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "_clamp01",
+          "params": [
+            "x"
+          ],
+          "returnType": "float",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "run",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 45
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        },
+        {
+          "source": "serving",
+          "specifiers": [
+            "db"
+          ]
+        }
+      ],
+      "exports": [
+        "call_predictor",
+        "_clamp01",
+        "run"
+      ],
+      "totalLines": 74,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/serving/serve.py": {
+      "filePath": "4K_ML/serving/serve.py",
+      "contentHash": "ba4e31cb501e110e416f7dea8032eea03628db656fa3f7442027bfbf512ce2ed",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "uvicorn",
+          "specifiers": [
+            "uvicorn"
+          ]
+        },
+        {
+          "source": "serving.predictor",
+          "specifiers": [
+            "app"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 8,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/subtitle_parse/__init__.py": {
+      "filePath": "4K_ML/subtitle_parse/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/subtitle_parse/db.py": {
+      "filePath": "4K_ML/subtitle_parse/db.py",
+      "contentHash": "1a6eb39ac608e659deb06afd5a8137c197d87787c6804773efa5f8cdf5b43934",
+      "functions": [
+        {
+          "name": "_ai",
+          "params": [],
+          "returnType": "tuple[str, str]",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "_auth",
+          "params": [],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "_headers",
+          "params": [
+            "write",
+            "representation"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "fetch_targets",
+          "params": [
+            "client"
+          ],
+          "returnType": "list[int]",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "fetch_subtitle",
+          "params": [
+            "client",
+            "tmdb_id"
+          ],
+          "returnType": "dict | None",
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "upsert_scenes",
+          "params": [
+            "client",
+            "rows"
+          ],
+          "returnType": "list[dict]",
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "upsert_dialogues",
+          "params": [
+            "client",
+            "rows"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "set_parse_state",
+          "params": [
+            "client",
+            "tmdb_id",
+            "state",
+            "error"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 8
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "datetime",
+          "specifiers": [
+            "datetime",
+            "timezone"
+          ]
+        },
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        }
+      ],
+      "exports": [
+        "_ai",
+        "_auth",
+        "_headers",
+        "fetch_targets",
+        "fetch_subtitle",
+        "upsert_scenes",
+        "upsert_dialogues",
+        "set_parse_state"
+      ],
+      "totalLines": 74,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/subtitle_parse/embed.py": {
+      "filePath": "4K_ML/subtitle_parse/embed.py",
+      "contentHash": "a36e4bf5a1180c017abb90dbc4438ed1b4902b720e0895b01270128dbc3e25e8",
+      "functions": [
+        {
+          "name": "_get_model",
+          "params": [],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "embed_texts",
+          "params": [
+            "texts"
+          ],
+          "returnType": "np.ndarray",
+          "exported": true,
+          "lineCount": 5
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "numpy",
+          "specifiers": [
+            "np"
+          ]
+        }
+      ],
+      "exports": [
+        "_get_model",
+        "embed_texts"
+      ],
+      "totalLines": 20,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/subtitle_parse/features.py": {
+      "filePath": "4K_ML/subtitle_parse/features.py",
+      "contentHash": "7f63af4aa63f3a43d11dd0d67190fb3247028910f696b745e205660d016b5f88",
+      "functions": [
+        {
+          "name": "line_features",
+          "params": [
+            "cues"
+          ],
+          "returnType": "list[dict]",
+          "exported": true,
+          "lineCount": 20
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "subtitle_parse.srt",
+          "specifiers": [
+            "Cue"
+          ]
+        }
+      ],
+      "exports": [
+        "line_features"
+      ],
+      "totalLines": 25,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/subtitle_parse/parse_subtitles.py": {
+      "filePath": "4K_ML/subtitle_parse/parse_subtitles.py",
+      "contentHash": "8168f7a352173daf2141b31ed4f6816d4cef7fbece7efab8ffe118a469b857bf",
+      "functions": [
+        {
+          "name": "parse_one",
+          "params": [
+            "client",
+            "sub",
+            "gap_ms",
+            "sim_threshold",
+            "min_lines",
+            "min_ms"
+          ],
+          "returnType": "int",
+          "exported": true,
+          "lineCount": 38
+        },
+        {
+          "name": "run",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 22
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        },
+        {
+          "source": "subtitle_parse",
+          "specifiers": [
+            "db"
+          ]
+        },
+        {
+          "source": "subtitle_parse.srt",
+          "specifiers": [
+            "parse_srt"
+          ]
+        },
+        {
+          "source": "subtitle_parse.features",
+          "specifiers": [
+            "line_features"
+          ]
+        },
+        {
+          "source": "subtitle_parse.scenes",
+          "specifiers": [
+            "split_scenes",
+            "split_method",
+            "config_from_env"
+          ]
+        },
+        {
+          "source": "subtitle_parse.embed",
+          "specifiers": [
+            "embed_texts"
+          ]
+        }
+      ],
+      "exports": [
+        "parse_one",
+        "run"
+      ],
+      "totalLines": 81,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/subtitle_parse/scenes.py": {
+      "filePath": "4K_ML/subtitle_parse/scenes.py",
+      "contentHash": "9d805542392146737fef5e371ce2294a62fe21f5f128c7fcd25a94be009b6eec",
+      "functions": [
+        {
+          "name": "config_from_env",
+          "params": [],
+          "returnType": "tuple[int, float, int, int]",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "split_method",
+          "params": [
+            "gap_ms",
+            "sim_threshold",
+            "min_ms"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "_cosine",
+          "params": [
+            "a",
+            "b"
+          ],
+          "returnType": "float",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "split_scenes",
+          "params": [
+            "features",
+            "embeddings",
+            "gap_ms",
+            "sim_threshold",
+            "min_lines",
+            "min_ms"
+          ],
+          "returnType": "list[list[int]]",
+          "exported": true,
+          "lineCount": 31
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "numpy",
+          "specifiers": [
+            "np"
+          ]
+        }
+      ],
+      "exports": [
+        "config_from_env",
+        "split_method",
+        "_cosine",
+        "split_scenes"
+      ],
+      "totalLines": 62,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/subtitle_parse/srt.py": {
+      "filePath": "4K_ML/subtitle_parse/srt.py",
+      "contentHash": "578e95f71836f0157e5b65304ac5586d9d2f7d065349f7c2adf83d2ed615fff8",
+      "functions": [
+        {
+          "name": "_ts_to_ms",
+          "params": [
+            "ts"
+          ],
+          "returnType": "int | None",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "parse_srt",
+          "params": [
+            "raw_text"
+          ],
+          "returnType": "list[Cue]",
+          "exported": true,
+          "lineCount": 21
+        }
+      ],
+      "classes": [
+        {
+          "name": "Cue",
+          "methods": [],
+          "properties": [
+            "index",
+            "start_ms",
+            "end_ms",
+            "text"
+          ],
+          "exported": true,
+          "lineCount": 5
+        }
+      ],
+      "imports": [
+        {
+          "source": "re",
+          "specifiers": [
+            "re"
+          ]
+        },
+        {
+          "source": "dataclasses",
+          "specifiers": [
+            "dataclass"
+          ]
+        }
+      ],
+      "exports": [
+        "Cue",
+        "_ts_to_ms",
+        "parse_srt"
+      ],
+      "totalLines": 46,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/tests/__init__.py": {
+      "filePath": "4K_ML/tests/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/tests/test_features.py": {
+      "filePath": "4K_ML/tests/test_features.py",
+      "contentHash": "c12363bf6d29c7f927eb57166cd8d6acf1a675708e3c8e7650e37662d06c810e",
+      "functions": [
+        {
+          "name": "test_features_basic",
+          "params": [],
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "test_empty",
+          "params": [],
+          "exported": true,
+          "lineCount": 2
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "subtitle_parse.srt",
+          "specifiers": [
+            "Cue"
+          ]
+        },
+        {
+          "source": "subtitle_parse.features",
+          "specifiers": [
+            "line_features"
+          ]
+        }
+      ],
+      "exports": [
+        "test_features_basic",
+        "test_empty"
+      ],
+      "totalLines": 23,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/tests/test_gen_db.py": {
+      "filePath": "4K_ML/tests/test_gen_db.py",
+      "contentHash": "41f6a6e5ccb36aeb586cf7c02e620f3b59c509cb928294333f38e1859505c4f5",
+      "functions": [
+        {
+          "name": "test_build_series_joins_score_scene_subtitle",
+          "params": [],
+          "exported": true,
+          "lineCount": 22
+        },
+        {
+          "name": "test_fetch_axis_scores_paginates",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 21
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "generate_vectors",
+          "specifiers": [
+            "db"
+          ]
+        }
+      ],
+      "exports": [
+        "test_build_series_joins_score_scene_subtitle",
+        "test_fetch_axis_scores_paginates"
+      ],
+      "totalLines": 49,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/tests/test_gen_run.py": {
+      "filePath": "4K_ML/tests/test_gen_run.py",
+      "contentHash": "dc042b90591b806eebf14588710a5dc6f0ce408e0327ceaee35d274625eedef2",
+      "functions": [
+        {
+          "name": "test_build_rows_arousal_required_valence_optional",
+          "params": [],
+          "exported": true,
+          "lineCount": 24
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "generate_vectors.generate_vectors",
+          "specifiers": [
+            "build_rows"
+          ]
+        }
+      ],
+      "exports": [
+        "test_build_rows_arousal_required_valence_optional"
+      ],
+      "totalLines": 28,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/tests/test_gen_transform.py": {
+      "filePath": "4K_ML/tests/test_gen_transform.py",
+      "contentHash": "6dd6615e6e6ee40db81850681fe6bf9074e31a21d8ea10fe792931019ee109ba",
+      "functions": [
+        {
+          "name": "_peak_points",
+          "params": [],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "test_arousal_zscore_centered_unit_variance",
+          "params": [],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "test_valence_raw_keeps_scale",
+          "params": [],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "test_flat_arousal_none_valence_raw",
+          "params": [],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "test_too_few_scenes_none",
+          "params": [],
+          "exported": true,
+          "lineCount": 4
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "numpy",
+          "specifiers": [
+            "np"
+          ]
+        },
+        {
+          "source": "generate_vectors.transform",
+          "specifiers": [
+            "process_axis"
+          ]
+        }
+      ],
+      "exports": [
+        "_peak_points",
+        "test_arousal_zscore_centered_unit_variance",
+        "test_valence_raw_keeps_scale",
+        "test_flat_arousal_none_valence_raw",
+        "test_too_few_scenes_none"
+      ],
+      "totalLines": 42,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/tests/test_label_batch.py": {
+      "filePath": "4K_ML/tests/test_label_batch.py",
+      "contentHash": "81ed93a745ad828dad09c4f1a34322a1f31b852676350a2fdf6346feefb763df",
+      "functions": [
+        {
+          "name": "test_build_requests_one_per_movie",
+          "params": [],
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "test_submit_returns_id_and_prints",
+          "params": [
+            "capsys"
+          ],
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "test_poll_until_ended",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 13
+        },
+        {
+          "name": "_result",
+          "params": [
+            "custom_id",
+            "rtype",
+            "text"
+          ],
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "test_collect_parses_and_flags",
+          "params": [],
+          "exported": true,
+          "lineCount": 16
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "types",
+          "specifiers": [
+            "types"
+          ]
+        },
+        {
+          "source": "labeling",
+          "specifiers": [
+            "batch"
+          ]
+        }
+      ],
+      "exports": [
+        "test_build_requests_one_per_movie",
+        "test_submit_returns_id_and_prints",
+        "test_poll_until_ended",
+        "_result",
+        "test_collect_parses_and_flags"
+      ],
+      "totalLines": 74,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/tests/test_label_db.py": {
+      "filePath": "4K_ML/tests/test_label_db.py",
+      "contentHash": "9827c04117aebb87769735797c5b860ca2b2173ad6e7ef1ee912a38f978529c5",
+      "functions": [
+        {
+          "name": "_client",
+          "params": [
+            "handler"
+          ],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "_env",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "test_fetch_label_targets_filters",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "test_fetch_scenes_two_calls",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 18
+        },
+        {
+          "name": "test_fetch_scenes_no_subtitle",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "test_ensure_model_versions_payload",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 13
+        },
+        {
+          "name": "test_upsert_scene_scores_conflict",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "test_set_label_state_posts",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 11
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        },
+        {
+          "source": "labeling",
+          "specifiers": [
+            "db"
+          ]
+        }
+      ],
+      "exports": [
+        "_client",
+        "_env",
+        "test_fetch_label_targets_filters",
+        "test_fetch_scenes_two_calls",
+        "test_fetch_scenes_no_subtitle",
+        "test_ensure_model_versions_payload",
+        "test_upsert_scene_scores_conflict",
+        "test_set_label_state_posts"
+      ],
+      "totalLines": 95,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/tests/test_label_main.py": {
+      "filePath": "4K_ML/tests/test_label_main.py",
+      "contentHash": "305b9f3213bb9f836240b9312b5ab2b5c6384e35b815d8991ab611cb84aa9233",
+      "functions": [
+        {
+          "name": "test_clamp",
+          "params": [],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "test_parse_to_rows_makes_two_rows_per_scene",
+          "params": [],
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "test_run_writes_scores_and_states",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 33
+        },
+        {
+          "name": "test_run_flags_failed",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 18
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "labeling",
+          "specifiers": [
+            "main"
+          ]
+        },
+        {
+          "source": "labeling",
+          "specifiers": [
+            "db"
+          ]
+        }
+      ],
+      "exports": [
+        "test_clamp",
+        "test_parse_to_rows_makes_two_rows_per_scene",
+        "test_run_writes_scores_and_states",
+        "test_run_flags_failed"
+      ],
+      "totalLines": 80,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/tests/test_label_prompt.py": {
+      "filePath": "4K_ML/tests/test_label_prompt.py",
+      "contentHash": "efe0abca7fc841cdd6991a2d88cd6125a021befa43c57d23285dfa45ab5f7469",
+      "functions": [
+        {
+          "name": "test_user_message_includes_indexed_scenes",
+          "params": [],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "test_rubric_mentions_both_axes",
+          "params": [],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "test_output_schema_has_only_two_axes",
+          "params": [],
+          "exported": true,
+          "lineCount": 5
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "labeling.prompt",
+          "specifiers": [
+            "RUBRIC",
+            "OUTPUT_SCHEMA",
+            "build_user_message"
+          ]
+        }
+      ],
+      "exports": [
+        "test_user_message_includes_indexed_scenes",
+        "test_rubric_mentions_both_axes",
+        "test_output_schema_has_only_two_axes"
+      ],
+      "totalLines": 23,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/tests/test_parse_db.py": {
+      "filePath": "4K_ML/tests/test_parse_db.py",
+      "contentHash": "699217445ee62db04d6f80a83d2429cd355f30f17f17627412049317367f9c13",
+      "functions": [
+        {
+          "name": "_client",
+          "params": [
+            "handler"
+          ],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "_env",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "test_fetch_targets_filters",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "test_upsert_scenes_returns_rows",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 13
+        },
+        {
+          "name": "test_set_parse_state_posts",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 12
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        },
+        {
+          "source": "subtitle_parse",
+          "specifiers": [
+            "db"
+          ]
+        }
+      ],
+      "exports": [
+        "_client",
+        "_env",
+        "test_fetch_targets_filters",
+        "test_upsert_scenes_returns_rows",
+        "test_set_parse_state_posts"
+      ],
+      "totalLines": 55,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/tests/test_parse_main.py": {
+      "filePath": "4K_ML/tests/test_parse_main.py",
+      "contentHash": "0ffe1c298c3879e0cb3866f2dcdba1755b34ad8225d66effac3fbd7cf2a278e5",
+      "functions": [
+        {
+          "name": "test_parse_one_builds_scenes_and_dialogues",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 27
+        },
+        {
+          "name": "test_parse_one_raises_on_empty",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 6
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "numpy",
+          "specifiers": [
+            "np"
+          ]
+        },
+        {
+          "source": "subtitle_parse",
+          "specifiers": [
+            "main"
+          ]
+        }
+      ],
+      "exports": [
+        "test_parse_one_builds_scenes_and_dialogues",
+        "test_parse_one_raises_on_empty"
+      ],
+      "totalLines": 48,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/tests/test_predict_core.py": {
+      "filePath": "4K_ML/tests/test_predict_core.py",
+      "contentHash": "4bbd6f247addb4590b83559f8eafabd27283c2e9940be3ef7249f733f25ed90f",
+      "functions": [
+        {
+          "name": "_tiny_model",
+          "params": [],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "_inst",
+          "params": [
+            "text",
+            "prog",
+            "dur_ms",
+            "dcount",
+            "gap"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "test_score_instances_shape_and_range",
+          "params": [],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "test_score_instances_empty",
+          "params": [],
+          "exported": true,
+          "lineCount": 3
+        }
+      ],
+      "classes": [
+        {
+          "name": "_FakeTok",
+          "methods": [
+            "__call__"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 5
+        }
+      ],
+      "imports": [
+        {
+          "source": "torch",
+          "specifiers": [
+            "torch"
+          ]
+        },
+        {
+          "source": "transformers",
+          "specifiers": [
+            "RobertaConfig",
+            "RobertaModel"
+          ]
+        },
+        {
+          "source": "serving.predict_core",
+          "specifiers": [
+            "score_instances"
+          ]
+        },
+        {
+          "source": "train.model",
+          "specifiers": [
+            "HybridRobertaRegressor"
+          ]
+        },
+        {
+          "source": "train.features",
+          "specifiers": [
+            "Scaler",
+            "compute_features"
+          ]
+        }
+      ],
+      "exports": [
+        "_FakeTok",
+        "_tiny_model",
+        "_inst",
+        "test_score_instances_shape_and_range",
+        "test_score_instances_empty"
+      ],
+      "totalLines": 40,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/tests/test_predictor.py": {
+      "filePath": "4K_ML/tests/test_predictor.py",
+      "contentHash": "72bb90ececa41cf500d8815eb9ba648c571c3174bd51f32e9a9bdbfb8cb05060",
+      "functions": [
+        {
+          "name": "_fake_loader",
+          "params": [
+            "model_dir"
+          ],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "test_ready_and_predict",
+          "params": [],
+          "exported": true,
+          "lineCount": 16
+        }
+      ],
+      "classes": [
+        {
+          "name": "_FakeTok",
+          "methods": [
+            "__call__"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 5
+        }
+      ],
+      "imports": [
+        {
+          "source": "torch",
+          "specifiers": [
+            "torch"
+          ]
+        },
+        {
+          "source": "fastapi.testclient",
+          "specifiers": [
+            "TestClient"
+          ]
+        },
+        {
+          "source": "transformers",
+          "specifiers": [
+            "RobertaConfig",
+            "RobertaModel"
+          ]
+        },
+        {
+          "source": "serving.predictor",
+          "specifiers": [
+            "create_app"
+          ]
+        },
+        {
+          "source": "train.features",
+          "specifiers": [
+            "Scaler",
+            "compute_features"
+          ]
+        },
+        {
+          "source": "train.model",
+          "specifiers": [
+            "HybridRobertaRegressor"
+          ]
+        }
+      ],
+      "exports": [
+        "_FakeTok",
+        "_fake_loader",
+        "test_ready_and_predict"
+      ],
+      "totalLines": 43,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/tests/test_promote.py": {
+      "filePath": "4K_ML/tests/test_promote.py",
+      "contentHash": "2c39ac9a7fba7a23d23e8e00a16e99efa72d8c5934184b5b00948760daf9b0e7",
+      "functions": [
+        {
+          "name": "test_promote_when_better_or_equal",
+          "params": [],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "test_hold_when_spearman_worse",
+          "params": [],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "test_hold_when_mae_worse_beyond_tol",
+          "params": [],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "test_hold_on_missing_metrics",
+          "params": [],
+          "exported": true,
+          "lineCount": 4
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "serving.promote",
+          "specifiers": [
+            "decide"
+          ]
+        }
+      ],
+      "exports": [
+        "test_promote_when_better_or_equal",
+        "test_hold_when_spearman_worse",
+        "test_hold_when_mae_worse_beyond_tol",
+        "test_hold_on_missing_metrics"
+      ],
+      "totalLines": 29,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/tests/test_scenes.py": {
+      "filePath": "4K_ML/tests/test_scenes.py",
+      "contentHash": "9826de0b02ffc1d980aa9ba8bbb0bc34980ac28a7dd04274196bf5b4f9211ca2",
+      "functions": [
+        {
+          "name": "_f",
+          "params": [
+            "start",
+            "end",
+            "gap"
+          ],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "_split",
+          "params": [
+            "feats",
+            "emb",
+            "gap_ms",
+            "sim",
+            "min_lines",
+            "min_ms"
+          ],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "test_gap_boundary_gated_by_min_ms",
+          "params": [],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "test_semantic_boundary_when_long_enough",
+          "params": [],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "test_semantic_ignored_when_scene_too_short",
+          "params": [],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "test_single_scene_when_similar_and_small_gaps",
+          "params": [],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "test_min_lines_also_gates",
+          "params": [],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "test_empty",
+          "params": [],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "test_config_defaults",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 4
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "numpy",
+          "specifiers": [
+            "np"
+          ]
+        },
+        {
+          "source": "subtitle_parse.scenes",
+          "specifiers": [
+            "split_scenes",
+            "config_from_env"
+          ]
+        }
+      ],
+      "exports": [
+        "_f",
+        "_split",
+        "test_gap_boundary_gated_by_min_ms",
+        "test_semantic_boundary_when_long_enough",
+        "test_semantic_ignored_when_scene_too_short",
+        "test_single_scene_when_similar_and_small_gaps",
+        "test_min_lines_also_gates",
+        "test_empty",
+        "test_config_defaults"
+      ],
+      "totalLines": 55,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/tests/test_schema.py": {
+      "filePath": "4K_ML/tests/test_schema.py",
+      "contentHash": "6a172f3d7ae01d2e9e201dca6b00372ba9c7be8c45853d7fc3ebc9dc9e66fbd4",
+      "functions": [
+        {
+          "name": "clean_db",
+          "params": [],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "test_apply_creates_all_tables",
+          "params": [
+            "clean_db"
+          ],
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "test_apply_is_idempotent",
+          "params": [
+            "clean_db"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "test_scene_scores_requires_known_model_version",
+          "params": [
+            "clean_db"
+          ],
+          "exported": true,
+          "lineCount": 19
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "pathlib"
+          ]
+        },
+        {
+          "source": "psycopg",
+          "specifiers": [
+            "psycopg"
+          ]
+        },
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "db.apply_schema",
+          "specifiers": [
+            "apply_schema"
+          ]
+        }
+      ],
+      "exports": [
+        "clean_db",
+        "test_apply_creates_all_tables",
+        "test_apply_is_idempotent",
+        "test_scene_scores_requires_known_model_version"
+      ],
+      "totalLines": 65,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/tests/test_score_gpu.py": {
+      "filePath": "4K_ML/tests/test_score_gpu.py",
+      "contentHash": "3187d59ae4b4efb4418345a98577dcce096856c140fc58c962f054e1dd64791b",
+      "functions": [
+        {
+          "name": "test_scene_score_rows_maps_axes_and_clamps",
+          "params": [],
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "test_run_flow_loads_active_model_and_upserts",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 28
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "serving",
+          "specifiers": [
+            "g"
+          ]
+        }
+      ],
+      "exports": [
+        "test_scene_score_rows_maps_axes_and_clamps",
+        "test_run_flow_loads_active_model_and_upserts"
+      ],
+      "totalLines": 44,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/tests/test_score_main.py": {
+      "filePath": "4K_ML/tests/test_score_main.py",
+      "contentHash": "d80e9c4b9c3e4d7ee3601a7c299296a225273c3d36a089e64ca6b5d59a8b4f50",
+      "functions": [
+        {
+          "name": "test_run_scores_and_states",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 34
+        },
+        {
+          "name": "test_run_flags_failed",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 18
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "serving",
+          "specifiers": [
+            "sc"
+          ]
+        }
+      ],
+      "exports": [
+        "test_run_scores_and_states",
+        "test_run_flags_failed"
+      ],
+      "totalLines": 58,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/tests/test_score_targets.py": {
+      "filePath": "4K_ML/tests/test_score_targets.py",
+      "contentHash": "50f1ba2efbf514df79ca28751bc4a7e0acd25c00d77a2d1523c5f4185d311020",
+      "functions": [
+        {
+          "name": "test_select_targets_only_missing_and_parsed",
+          "params": [],
+          "exported": true,
+          "lineCount": 15
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "serving.db",
+          "specifiers": [
+            "select_score_targets"
+          ]
+        }
+      ],
+      "exports": [
+        "test_select_targets_only_missing_and_parsed"
+      ],
+      "totalLines": 19,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/tests/test_serving_db.py": {
+      "filePath": "4K_ML/tests/test_serving_db.py",
+      "contentHash": "ef98fc42ae7c3ae8580255b773b77618a24cdd408690e6b4b0be0421048c5d1a",
+      "functions": [
+        {
+          "name": "_client",
+          "params": [
+            "handler"
+          ],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "_env",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "test_fetch_score_targets",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 27
+        },
+        {
+          "name": "test_fetch_movie_scenes_for_scoring",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 25
+        },
+        {
+          "name": "test_ensure_model_versions",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 13
+        },
+        {
+          "name": "test_upsert_scene_scores_and_state",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 17
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        },
+        {
+          "source": "serving",
+          "specifiers": [
+            "db"
+          ]
+        }
+      ],
+      "exports": [
+        "_client",
+        "_env",
+        "test_fetch_score_targets",
+        "test_fetch_movie_scenes_for_scoring",
+        "test_ensure_model_versions",
+        "test_upsert_scene_scores_and_state"
+      ],
+      "totalLines": 105,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/tests/test_srt.py": {
+      "filePath": "4K_ML/tests/test_srt.py",
+      "contentHash": "3d374bcea6b25d82118d29a7bd0d6dbf008f046faebf44302c26e4eb57b326d2",
+      "functions": [
+        {
+          "name": "test_parses_two_cues",
+          "params": [],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "test_joins_multiline_and_strips_tags",
+          "params": [],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "test_keeps_sdh_brackets",
+          "params": [],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "test_skips_malformed_block_and_reindexes",
+          "params": [],
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "test_skips_empty_text_cue",
+          "params": [],
+          "exported": true,
+          "lineCount": 3
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "subtitle_parse.srt",
+          "specifiers": [
+            "parse_srt",
+            "Cue"
+          ]
+        }
+      ],
+      "exports": [
+        "test_parses_two_cues",
+        "test_joins_multiline_and_strips_tags",
+        "test_keeps_sdh_brackets",
+        "test_skips_malformed_block_and_reindexes",
+        "test_skips_empty_text_cue"
+      ],
+      "totalLines": 43,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/tests/test_train_dataset.py": {
+      "filePath": "4K_ML/tests/test_train_dataset.py",
+      "contentHash": "c3cb6e1d3bf1f2e9a6e9625818a5a834c3b58771618db0315275e30ea327f735",
+      "functions": [
+        {
+          "name": "test_split_movies_no_overlap_and_reproducible",
+          "params": [],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "test_scene_dataset_item_shapes",
+          "params": [],
+          "exported": true,
+          "lineCount": 16
+        }
+      ],
+      "classes": [
+        {
+          "name": "_FakeTok",
+          "methods": [
+            "__call__"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 5
+        }
+      ],
+      "imports": [
+        {
+          "source": "torch",
+          "specifiers": [
+            "torch"
+          ]
+        },
+        {
+          "source": "train.dataset",
+          "specifiers": [
+            "split_movies",
+            "SceneDataset"
+          ]
+        },
+        {
+          "source": "train.features",
+          "specifiers": [
+            "Scaler",
+            "compute_features"
+          ]
+        }
+      ],
+      "exports": [
+        "test_split_movies_no_overlap_and_reproducible",
+        "_FakeTok",
+        "test_scene_dataset_item_shapes"
+      ],
+      "totalLines": 40,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/tests/test_train_db.py": {
+      "filePath": "4K_ML/tests/test_train_db.py",
+      "contentHash": "94cba13f877e772cb62d5b3c209f6ad88ad1817855f6a292a05f7de904cc6a60",
+      "functions": [
+        {
+          "name": "_client",
+          "params": [
+            "handler"
+          ],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "_env",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "test_fetch_labeled_movies",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "test_fetch_movie_scenes_assembles",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 36
+        },
+        {
+          "name": "test_upsert_model_version_payload",
+          "params": [
+            "monkeypatch"
+          ],
+          "exported": true,
+          "lineCount": 14
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        },
+        {
+          "source": "train",
+          "specifiers": [
+            "db"
+          ]
+        }
+      ],
+      "exports": [
+        "_client",
+        "_env",
+        "test_fetch_labeled_movies",
+        "test_fetch_movie_scenes_assembles",
+        "test_upsert_model_version_payload"
+      ],
+      "totalLines": 82,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/tests/test_train_evaluate.py": {
+      "filePath": "4K_ML/tests/test_train_evaluate.py",
+      "contentHash": "5675add60a8507d5ddbc3044d38c30ef8027fc7695e775c39336906d589793e6",
+      "functions": [
+        {
+          "name": "test_mae",
+          "params": [],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "test_pearson_perfect",
+          "params": [],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "test_pearson_constant_returns_zero",
+          "params": [],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "test_movie_spearman_averages_per_movie",
+          "params": [],
+          "exported": true,
+          "lineCount": 6
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "train.evaluate",
+          "specifiers": [
+            "mae",
+            "pearson",
+            "movie_spearman"
+          ]
+        }
+      ],
+      "exports": [
+        "test_mae",
+        "test_pearson_perfect",
+        "test_pearson_constant_returns_zero",
+        "test_movie_spearman_averages_per_movie"
+      ],
+      "totalLines": 22,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/tests/test_train_features.py": {
+      "filePath": "4K_ML/tests/test_train_features.py",
+      "contentHash": "21192d3716ab2d8972123afd5362253bbdda39cbf0da5bafb096b221459a24d6",
+      "functions": [
+        {
+          "name": "test_feature_order",
+          "params": [],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "test_compute_features_values",
+          "params": [],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "test_compute_features_zero_duration_guard",
+          "params": [],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "test_scaler_fit_transform_and_roundtrip",
+          "params": [
+            "tmp_path"
+          ],
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "test_scaler_zero_std_no_nan",
+          "params": [],
+          "exported": true,
+          "lineCount": 4
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "numpy",
+          "specifiers": [
+            "np"
+          ]
+        },
+        {
+          "source": "train.features",
+          "specifiers": [
+            "compute_features",
+            "Scaler",
+            "FEATURE_ORDER"
+          ]
+        }
+      ],
+      "exports": [
+        "test_feature_order",
+        "test_compute_features_values",
+        "test_compute_features_zero_duration_guard",
+        "test_scaler_fit_transform_and_roundtrip",
+        "test_scaler_zero_std_no_nan"
+      ],
+      "totalLines": 41,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/tests/test_train_main.py": {
+      "filePath": "4K_ML/tests/test_train_main.py",
+      "contentHash": "f8945adc824f2df6ab0e0137634c3f8a06ea1ac5f032e46ed9f73fac10ee04b1",
+      "functions": [
+        {
+          "name": "_rec",
+          "params": [
+            "movie",
+            "idx",
+            "a",
+            "v"
+          ],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "_tiny_model",
+          "params": [],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "test_run_trains_and_saves",
+          "params": [
+            "monkeypatch",
+            "tmp_path"
+          ],
+          "exported": true,
+          "lineCount": 30
+        }
+      ],
+      "classes": [
+        {
+          "name": "_FakeTok",
+          "methods": [
+            "__call__",
+            "save_pretrained"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 9
+        }
+      ],
+      "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "torch",
+          "specifiers": [
+            "torch"
+          ]
+        },
+        {
+          "source": "transformers",
+          "specifiers": [
+            "RobertaConfig",
+            "RobertaModel"
+          ]
+        },
+        {
+          "source": "train",
+          "specifiers": [
+            "tm"
+          ]
+        },
+        {
+          "source": "train.model",
+          "specifiers": [
+            "HybridRobertaRegressor"
+          ]
+        }
+      ],
+      "exports": [
+        "_FakeTok",
+        "_rec",
+        "_tiny_model",
+        "test_run_trains_and_saves"
+      ],
+      "totalLines": 64,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/tests/test_train_model_arch.py": {
+      "filePath": "4K_ML/tests/test_train_model_arch.py",
+      "contentHash": "500f114d3dbb6d08cd50a397be0142ed49e75ecb5cc4e60205b376d987b52114",
+      "functions": [
+        {
+          "name": "_tiny_encoder",
+          "params": [],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "test_forward_shape_and_range",
+          "params": [],
+          "exported": true,
+          "lineCount": 9
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "torch",
+          "specifiers": [
+            "torch"
+          ]
+        },
+        {
+          "source": "transformers",
+          "specifiers": [
+            "RobertaConfig",
+            "RobertaModel"
+          ]
+        },
+        {
+          "source": "train.model",
+          "specifiers": [
+            "HybridRobertaRegressor"
+          ]
+        }
+      ],
+      "exports": [
+        "_tiny_encoder",
+        "test_forward_shape_and_range"
+      ],
+      "totalLines": 22,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/tests/test_vector_targets.py": {
+      "filePath": "4K_ML/tests/test_vector_targets.py",
+      "contentHash": "8cfc99ae7379835900579bb328a7a2d3a948fb55e62fb7bb5708847f1acb81e5",
+      "functions": [
+        {
+          "name": "test_only_unvectored_movies",
+          "params": [],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "test_all_vectored_returns_empty",
+          "params": [],
+          "exported": true,
+          "lineCount": 2
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "generate_vectors.generate_vectors",
+          "specifiers": [
+            "select_vector_targets"
+          ]
+        }
+      ],
+      "exports": [
+        "test_only_unvectored_movies",
+        "test_all_vectored_returns_empty"
+      ],
+      "totalLines": 12,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/train/__init__.py": {
+      "filePath": "4K_ML/train/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/train/dataset.py": {
+      "filePath": "4K_ML/train/dataset.py",
+      "contentHash": "c5efe61c929108e86266239eae752595bbac1da9f02af274b54ebbfdf3dac15c",
+      "functions": [
+        {
+          "name": "split_movies",
+          "params": [
+            "movie_ids",
+            "seed",
+            "ratios"
+          ],
+          "exported": true,
+          "lineCount": 8
+        }
+      ],
+      "classes": [
+        {
+          "name": "SceneDataset",
+          "methods": [
+            "__init__",
+            "__len__",
+            "__getitem__"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 22
+        }
+      ],
+      "imports": [
+        {
+          "source": "random",
+          "specifiers": [
+            "random"
+          ]
+        },
+        {
+          "source": "torch",
+          "specifiers": [
+            "torch"
+          ]
+        },
+        {
+          "source": "torch.utils.data",
+          "specifiers": [
+            "Dataset"
+          ]
+        },
+        {
+          "source": "train.features",
+          "specifiers": [
+            "compute_features"
+          ]
+        }
+      ],
+      "exports": [
+        "split_movies",
+        "SceneDataset"
+      ],
+      "totalLines": 42,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/train/db.py": {
+      "filePath": "4K_ML/train/db.py",
+      "contentHash": "382631be6ee25ae0ead02f16437cc4124a375279ba86ce8d1feee0ae75829c60",
+      "functions": [
+        {
+          "name": "_ai",
+          "params": [],
+          "returnType": "tuple[str, str]",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "_auth",
+          "params": [],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "_headers",
+          "params": [
+            "write"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "_get",
+          "params": [
+            "client",
+            "table",
+            "params"
+          ],
+          "returnType": "list[dict]",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "fetch_labeled_movies",
+          "params": [
+            "client"
+          ],
+          "returnType": "list[int]",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "fetch_movie_scenes",
+          "params": [
+            "client",
+            "tmdb_id"
+          ],
+          "returnType": "list[dict]",
+          "exported": true,
+          "lineCount": 50
+        },
+        {
+          "name": "upsert_model_version",
+          "params": [
+            "client",
+            "model_version",
+            "kind",
+            "metrics"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 7
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        }
+      ],
+      "exports": [
+        "_ai",
+        "_auth",
+        "_headers",
+        "_get",
+        "fetch_labeled_movies",
+        "fetch_movie_scenes",
+        "upsert_model_version"
+      ],
+      "totalLines": 102,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/train/evaluate.py": {
+      "filePath": "4K_ML/train/evaluate.py",
+      "contentHash": "df946d59e86252bd7a58dd5f9acb91bf2aec8a8d5b58a4a3825f539b583f95cf",
+      "functions": [
+        {
+          "name": "mae",
+          "params": [
+            "pred",
+            "true"
+          ],
+          "returnType": "float",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "pearson",
+          "params": [
+            "pred",
+            "true"
+          ],
+          "returnType": "float",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "movie_spearman",
+          "params": [
+            "pred",
+            "true",
+            "movie_ids"
+          ],
+          "returnType": "float",
+          "exported": true,
+          "lineCount": 15
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "numpy",
+          "specifiers": [
+            "np"
+          ]
+        },
+        {
+          "source": "scipy.stats",
+          "specifiers": [
+            "pearsonr",
+            "spearmanr"
+          ]
+        }
+      ],
+      "exports": [
+        "mae",
+        "pearson",
+        "movie_spearman"
+      ],
+      "totalLines": 35,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/train/features.py": {
+      "filePath": "4K_ML/train/features.py",
+      "contentHash": "cc4e155cd306ade4c5969ad3d15d0cdef68576b1dcef23377b9abd885a5ebf38",
+      "functions": [
+        {
+          "name": "compute_features",
+          "params": [
+            "scene"
+          ],
+          "returnType": "list[float]",
+          "exported": true,
+          "lineCount": 11
+        }
+      ],
+      "classes": [
+        {
+          "name": "Scaler",
+          "methods": [
+            "__init__",
+            "fit",
+            "transform",
+            "to_dict",
+            "from_dict",
+            "save",
+            "load"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 35
+        }
+      ],
+      "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "numpy",
+          "specifiers": [
+            "np"
+          ]
+        }
+      ],
+      "exports": [
+        "compute_features",
+        "Scaler"
+      ],
+      "totalLines": 58,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/train/model.py": {
+      "filePath": "4K_ML/train/model.py",
+      "contentHash": "aae533add8baa30677759c99ed68a15acf9b779753b75fbd3ee117533331a4fc",
+      "functions": [
+        {
+          "name": "build_encoder",
+          "params": [
+            "name"
+          ],
+          "exported": true,
+          "lineCount": 3
+        }
+      ],
+      "classes": [
+        {
+          "name": "HybridRobertaRegressor",
+          "methods": [
+            "__init__",
+            "forward"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 18
+        }
+      ],
+      "imports": [
+        {
+          "source": "torch",
+          "specifiers": [
+            "torch"
+          ]
+        },
+        {
+          "source": "torch.nn",
+          "specifiers": [
+            "nn"
+          ]
+        }
+      ],
+      "exports": [
+        "HybridRobertaRegressor",
+        "build_encoder"
+      ],
+      "totalLines": 29,
+      "hasStructuralAnalysis": true
+    },
+    "4K_ML/train/train_model.py": {
+      "filePath": "4K_ML/train/train_model.py",
+      "contentHash": "6848c0983fee13fa414c4b7f87ac5d31e0212d8ecaf365a642bf0e75450a5028",
+      "functions": [
+        {
+          "name": "load_training_data",
+          "params": [
+            "client"
+          ],
+          "returnType": "list[dict]",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "build_model",
+          "params": [
+            "name"
+          ],
+          "returnType": "HybridRobertaRegressor",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "_load_tokenizer",
+          "params": [
+            "name"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "_records_for",
+          "params": [
+            "records",
+            "movie_set"
+          ],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "_predict",
+          "params": [
+            "model",
+            "records",
+            "tok",
+            "scaler",
+            "device",
+            "batch_size",
+            "max_len"
+          ],
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "_val_mae",
+          "params": [
+            "model",
+            "records",
+            "tok",
+            "scaler",
+            "device",
+            "batch_size",
+            "max_len"
+          ],
+          "returnType": "float",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "_save",
+          "params": [
+            "out_dir",
+            "model",
+            "tok",
+            "scaler",
+            "split",
+            "config"
+          ],
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "run",
+          "params": [
+            "out_dir",
+            "model_name",
+            "max_epochs",
+            "batch_size",
+            "lr",
+            "patience",
+            "seed",
+            "max_len"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 87
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "numpy",
+          "specifiers": [
+            "np"
+          ]
+        },
+        {
+          "source": "torch",
+          "specifiers": [
+            "torch"
+          ]
+        },
+        {
+          "source": "torch.utils.data",
+          "specifiers": [
+            "DataLoader"
+          ]
+        },
+        {
+          "source": "train",
+          "specifiers": [
+            "db",
+            "evaluate"
+          ]
+        },
+        {
+          "source": "train.dataset",
+          "specifiers": [
+            "SceneDataset",
+            "split_movies"
+          ]
+        },
+        {
+          "source": "train.features",
+          "specifiers": [
+            "Scaler",
+            "compute_features"
+          ]
+        },
+        {
+          "source": "train.model",
+          "specifiers": [
+            "HybridRobertaRegressor",
+            "build_encoder"
+          ]
+        }
+      ],
+      "exports": [
+        "load_training_data",
+        "build_model",
+        "_load_tokenizer",
+        "_records_for",
+        "_predict",
+        "_val_mae",
+        "_save",
+        "run"
+      ],
+      "totalLines": 167,
+      "hasStructuralAnalysis": true
     },
     "Ansible/ansible.cfg": {
       "filePath": "Ansible/ansible.cfg",
@@ -1605,6 +7657,16 @@
       "totalLines": 22,
       "hasStructuralAnalysis": true
     },
+    "Ansible/manifests/4k-be/backfill-cronjob.yaml": {
+      "filePath": "Ansible/manifests/4k-be/backfill-cronjob.yaml",
+      "contentHash": "28d3b5ab3e41328655f33207c2b957ce58245a78fdf3d1dbb340e86635f3bbe8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 36,
+      "hasStructuralAnalysis": true
+    },
     "Ansible/manifests/4k-be/deployment.yaml": {
       "filePath": "Ansible/manifests/4k-be/deployment.yaml",
       "contentHash": "7c71b4d2b580e276e4ca4321cff71b26d814d17fec273e36c11308dd9ee8127a",
@@ -1617,12 +7679,12 @@
     },
     "Ansible/manifests/4k-be/kustomization.yaml": {
       "filePath": "Ansible/manifests/4k-be/kustomization.yaml",
-      "contentHash": "068b2bcf9cf59a50a223942598e758d9232b53c2ab604be6c3745cd3fe61d71a",
+      "contentHash": "8fc444df7f7a2095738e0daf9af8b77a668ccc3cea89220e5f2d67b6352f4c1b",
       "functions": [],
       "classes": [],
       "imports": [],
       "exports": [],
-      "totalLines": 13,
+      "totalLines": 15,
       "hasStructuralAnalysis": true
     },
     "Ansible/manifests/4k-be/service.yaml": {
@@ -1633,6 +7695,16 @@
       "imports": [],
       "exports": [],
       "totalLines": 12,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/4k-be/subtitle-cronjob.yaml": {
+      "filePath": "Ansible/manifests/4k-be/subtitle-cronjob.yaml",
+      "contentHash": "475477cb26afc8e84479d0476bf1d2fcfbc689151ca2e6bd468a4ea1aa8d5511",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 36,
       "hasStructuralAnalysis": true
     },
     "Ansible/manifests/4k-fe/deployment.yaml": {
@@ -1657,7 +7729,7 @@
     },
     "Ansible/manifests/4k-fe/kustomization.yaml": {
       "filePath": "Ansible/manifests/4k-fe/kustomization.yaml",
-      "contentHash": "9a5800341a20354f449b2f2d46afd5512f8c091c962a27e1f608d5b8362f7926",
+      "contentHash": "350fcad456ad12d99694fd28ec8f35909d15ddc6d633b9b0408c954d1294a46a",
       "functions": [],
       "classes": [],
       "imports": [],
@@ -1673,6 +7745,136 @@
       "imports": [],
       "exports": [],
       "totalLines": 12,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/4k-ml/cronworkflow-parse.yaml": {
+      "filePath": "Ansible/manifests/4k-ml/cronworkflow-parse.yaml",
+      "contentHash": "78c69c70a404f6c4e52deb7d8ec68a61e8bde4a759f5653ae7563bbf2de9314d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 17,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/4k-ml/cronworkflow-score.yaml": {
+      "filePath": "Ansible/manifests/4k-ml/cronworkflow-score.yaml",
+      "contentHash": "0f701ac848ca9fd2b1376cf0210c2b89277e1d4bb44fc8de2e19c87a8315b1a7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 17,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/4k-ml/cronworkflow-vector.yaml": {
+      "filePath": "Ansible/manifests/4k-ml/cronworkflow-vector.yaml",
+      "contentHash": "2b6a21b84a059fd375944f80242934a1358004e5137ea6c3a757d7bc02cb1280",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 17,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/4k-ml/inferenceservice-roberta-va.yaml": {
+      "filePath": "Ansible/manifests/4k-ml/inferenceservice-roberta-va.yaml",
+      "contentHash": "ead5f1cef49c5c2e0fb4faa91d9e43f8cbfeeb454b83fc024354be003789d0b3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 53,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/4k-ml/pvc-models.yaml": {
+      "filePath": "Ansible/manifests/4k-ml/pvc-models.yaml",
+      "contentHash": "0535e64dff9ba32068853c040c5d895f1f26b408c757c584cacc62bc7b7b74e0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 14,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/4k-ml/workflowtemplate-generate-vectors.yaml": {
+      "filePath": "Ansible/manifests/4k-ml/workflowtemplate-generate-vectors.yaml",
+      "contentHash": "fae1bdc9edb53dc70bd6775bbc633c901b818d71f3f0d726e545929bd11dbd73",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 19,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/4k-ml/workflowtemplate-llm-labeling.yaml": {
+      "filePath": "Ansible/manifests/4k-ml/workflowtemplate-llm-labeling.yaml",
+      "contentHash": "b5eb2c045cc00aed455c066e65784feb32fed3d013fe6a21b980621ef8a3b837",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 19,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/4k-ml/workflowtemplate-score-scenes-gpu.yaml": {
+      "filePath": "Ansible/manifests/4k-ml/workflowtemplate-score-scenes-gpu.yaml",
+      "contentHash": "d8a926f3214e106917637bcb63f474f68942e1cab383a3467ea79db31fe9d9ff",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 33,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/4k-ml/workflowtemplate-score-scenes.yaml": {
+      "filePath": "Ansible/manifests/4k-ml/workflowtemplate-score-scenes.yaml",
+      "contentHash": "ec24ee396c16c329937d6c70db4f6e524df5722bb27e2a6db669c6e161eb0dc9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 22,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/4k-ml/workflowtemplate-subtitle-parse.yaml": {
+      "filePath": "Ansible/manifests/4k-ml/workflowtemplate-subtitle-parse.yaml",
+      "contentHash": "8729498246521a6624773779d7ebec663fcf071a9cc8e502e715f3b353db6db7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 25,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/4k-ml/workflowtemplate-train-roberta.yaml": {
+      "filePath": "Ansible/manifests/4k-ml/workflowtemplate-train-roberta.yaml",
+      "contentHash": "d735b76351b4845bf0c0161b0d9e58d0fe04be21c869c67069a5491005e01124",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 36,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/apps/argo-workflow-rbac-ai.yaml": {
+      "filePath": "Ansible/manifests/apps/argo-workflow-rbac-ai.yaml",
+      "contentHash": "f28cbfc4667b4346a6dd7b8c9c4716b053ab914f040b27214d688d0456c1f7f2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 40,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/apps/argo-workflows-ingress.yaml": {
+      "filePath": "Ansible/manifests/apps/argo-workflows-ingress.yaml",
+      "contentHash": "b749c25b7eecc73aaf7d3fb475b549dd995598a80e2c6172be87e99e7d3525f7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 32,
       "hasStructuralAnalysis": true
     },
     "Ansible/manifests/apps/cluster-issuer.yaml": {
@@ -1697,12 +7899,12 @@
     },
     "Ansible/manifests/apps/ingress-studio.yaml": {
       "filePath": "Ansible/manifests/apps/ingress-studio.yaml",
-      "contentHash": "6e7814038de035ae9be038a0f9d661764bf67c8ccb2acae37ca7b1d165c9af74",
+      "contentHash": "e426c2e76cfe1ff80f8a5eaafef31089164798e63ee63937a1da6beecccab2b6",
       "functions": [],
       "classes": [],
       "imports": [],
       "exports": [],
-      "totalLines": 234,
+      "totalLines": 302,
       "hasStructuralAnalysis": true
     },
     "Ansible/manifests/argocd/argocd-app-4k-be.yaml": {
@@ -1723,6 +7925,26 @@
       "imports": [],
       "exports": [],
       "totalLines": 21,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/argocd/argocd-app-4k-ml.yaml": {
+      "filePath": "Ansible/manifests/argocd/argocd-app-4k-ml.yaml",
+      "contentHash": "997541ea0d61ab114b4ae11a43f135ba7f3a109fa7a4db278ac10c012086880e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 21,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/argocd/argocd-app-argo-workflows.yaml": {
+      "filePath": "Ansible/manifests/argocd/argocd-app-argo-workflows.yaml",
+      "contentHash": "3940e40a5488dc09a8ae479afff653a213bd55bd66612a66bf259ae9cb76021a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 27,
       "hasStructuralAnalysis": true
     },
     "Ansible/manifests/argocd/argocd-app-infra.yaml": {
@@ -1763,6 +7985,26 @@
       "imports": [],
       "exports": [],
       "totalLines": 16,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/test/hello-wf-ai.yaml": {
+      "filePath": "Ansible/manifests/test/hello-wf-ai.yaml",
+      "contentHash": "1e231ba61f5a1003ba08b8e3b4da51cd24281aa9dd0345cc69af37c38af02860",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 15,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/manifests/test/llm-labeling-run.yaml": {
+      "filePath": "Ansible/manifests/test/llm-labeling-run.yaml",
+      "contentHash": "50e1f6279f3aa010cf53ad769daafa14155965656c815e568eab88f07b4501f1",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 10,
       "hasStructuralAnalysis": true
     },
     "Ansible/manifests/test/test-nginx.yaml": {
@@ -1833,6 +8075,16 @@
       "imports": [],
       "exports": [],
       "totalLines": 108,
+      "hasStructuralAnalysis": true
+    },
+    "Ansible/values/values-argo-workflows.yaml": {
+      "filePath": "Ansible/values/values-argo-workflows.yaml",
+      "contentHash": "3a181fd9506a32e55e237e3840419b6adcaca807e11ac961a54a7f19d1013e8d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 10,
       "hasStructuralAnalysis": true
     },
     "Ansible/values/values-argocd.yaml": {

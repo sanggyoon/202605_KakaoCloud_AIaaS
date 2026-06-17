@@ -1,0 +1,15 @@
+{
+  "projectRoot": "/Users/sanggyoon/Documents/KakaoCloud_Project",
+  "batchFiles": [
+    {"path": "aws/.env.example", "language": "config", "sizeLines": 24, "fileCategory": "config"},
+    {"path": "aws/COST-OPTIMIZATION.md", "language": "markdown", "sizeLines": 118, "fileCategory": "docs"},
+    {"path": "aws/DR-DB-RUNBOOK.md", "language": "markdown", "sizeLines": 184, "fileCategory": "docs"},
+    {"path": "aws/docker-compose.yml", "language": "yaml", "sizeLines": 53, "fileCategory": "infra"}
+  ],
+  "batchImportData": {
+    "aws/.env.example": [],
+    "aws/COST-OPTIMIZATION.md": [],
+    "aws/DR-DB-RUNBOOK.md": [],
+    "aws/docker-compose.yml": []
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 2,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "4K_ML/.dockerignore",
+      "language": "unknown",
+      "fileCategory": "infra",
+      "totalLines": 7,
+      "nonEmptyLines": 7,
+      "metrics": {}
+    },
+    {
+      "path": "4K_ML/Dockerfile",
+      "language": "dockerfile",
+      "fileCategory": "infra",
+      "totalLines": 37,
+      "nonEmptyLines": 31,
+      "services": [
+        {
+          "name": "pytorch",
+          "image": "pytorch/pytorch:2.5.1-cuda12.1-cudnn9-runtime",
+          "ports": [],
+          "startLine": 2,
+          "endLine": 38
+        }
+      ],
+      "steps": [
+        {
+          "name": "FROM pytorch/pytorch:2.5.1-cuda12.1-cudnn9-runtime",
+          "startLine": 2,
+          "endLine": 2
+        },
+        {
+          "name": "WORKDIR /app",
+          "startLine": 4,
+          "endLine": 4
+        },
+        {
+          "name": "COPY requirements.txt .",
+          "startLine": 7,
+          "endLine": 7
+        },
+        {
+          "name": "RUN pip install --no-cache-dir -r requirements.txt",
+          "startLine": 8,
+          "endLine": 8
+        },
+        {
+          "name": "RUN --mount=type=secret,id=hf_token \\",
+          "startLine": 12,
+          "endLine": 12
+        },
+        {
+          "name": "RUN --mount=type=secret,id=hf_token \\",
+          "startLine": 21,
+          "endLine": 21
+        },
+        {
+          "name": "COPY subtitle_parse/ ./subtitle_parse/",
+          "startLine": 30,
+          "endLine": 30
+        },
+        {
+          "name": "COPY labeling/ ./labeling/",
+          "startLine": 31,
+          "endLine": 31
+        },
+        {
+          "name": "COPY train/ ./train/",
+          "startLine": 32,
+          "endLine": 32
+        },
+        {
+          "name": "COPY serving/ ./serving/",
+          "startLine": 33,
+          "endLine": 33
+        },
+        {
+          "name": "COPY db/ ./db/",
+          "startLine": 34,
+          "endLine": 34
+        },
+        {
+          "name": "COPY generate_vectors/ ./generate_vectors/",
+          "startLine": 35,
+          "endLine": 35
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "serviceCount": 1,
+        "stepCount": 12
+      }
+    }
+  ]
+}

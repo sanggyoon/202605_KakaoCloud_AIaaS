@@ -1,0 +1,31 @@
+{
+  "projectRoot": "/Users/sanggyoon/Documents/KakaoCloud_Project",
+  "batchFiles": [
+    {"path": "4K_ML/subtitle_parse/__init__.py", "language": "python", "sizeLines": 0, "fileCategory": "code"},
+    {"path": "4K_ML/subtitle_parse/db.py", "language": "python", "sizeLines": 73, "fileCategory": "code"},
+    {"path": "4K_ML/subtitle_parse/embed.py", "language": "python", "sizeLines": 19, "fileCategory": "code"},
+    {"path": "4K_ML/subtitle_parse/features.py", "language": "python", "sizeLines": 24, "fileCategory": "code"},
+    {"path": "4K_ML/subtitle_parse/parse_subtitles.py", "language": "python", "sizeLines": 80, "fileCategory": "code"},
+    {"path": "4K_ML/subtitle_parse/scenes.py", "language": "python", "sizeLines": 61, "fileCategory": "code"},
+    {"path": "4K_ML/subtitle_parse/srt.py", "language": "python", "sizeLines": 45, "fileCategory": "code"},
+    {"path": "4K_ML/tests/test_features.py", "language": "python", "sizeLines": 22, "fileCategory": "code"},
+    {"path": "4K_ML/tests/test_parse_db.py", "language": "python", "sizeLines": 54, "fileCategory": "code"},
+    {"path": "4K_ML/tests/test_parse_main.py", "language": "python", "sizeLines": 47, "fileCategory": "code"},
+    {"path": "4K_ML/tests/test_scenes.py", "language": "python", "sizeLines": 54, "fileCategory": "code"},
+    {"path": "4K_ML/tests/test_srt.py", "language": "python", "sizeLines": 42, "fileCategory": "code"}
+  ],
+  "batchImportData": {
+    "4K_ML/subtitle_parse/__init__.py": [],
+    "4K_ML/subtitle_parse/db.py": [],
+    "4K_ML/subtitle_parse/embed.py": [],
+    "4K_ML/subtitle_parse/features.py": ["4K_ML/subtitle_parse/srt.py"],
+    "4K_ML/subtitle_parse/parse_subtitles.py": ["4K_ML/subtitle_parse/__init__.py","4K_ML/subtitle_parse/db.py","4K_ML/subtitle_parse/embed.py","4K_ML/subtitle_parse/features.py","4K_ML/subtitle_parse/scenes.py","4K_ML/subtitle_parse/srt.py"],
+    "4K_ML/subtitle_parse/scenes.py": [],
+    "4K_ML/subtitle_parse/srt.py": [],
+    "4K_ML/tests/test_features.py": ["4K_ML/subtitle_parse/features.py","4K_ML/subtitle_parse/srt.py"],
+    "4K_ML/tests/test_parse_db.py": ["4K_ML/subtitle_parse/__init__.py","4K_ML/subtitle_parse/db.py"],
+    "4K_ML/tests/test_parse_main.py": ["4K_ML/subtitle_parse/__init__.py"],
+    "4K_ML/tests/test_scenes.py": ["4K_ML/subtitle_parse/scenes.py"],
+    "4K_ML/tests/test_srt.py": ["4K_ML/subtitle_parse/srt.py"]
+  }
+}

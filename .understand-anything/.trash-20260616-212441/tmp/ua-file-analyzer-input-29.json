@@ -1,0 +1,32 @@
+{
+  "projectRoot": "/Users/sanggyoon/Documents/KakaoCloud_Project",
+  "batchFiles": [
+    {"path": "4K_ML/.python-version", "language": "unknown", "sizeLines": 1, "fileCategory": "code"},
+    {"path": "4K_ML/db/__init__.py", "language": "python", "sizeLines": 0, "fileCategory": "code"},
+    {"path": "4K_ML/db/apply_schema.py", "language": "python", "sizeLines": 24, "fileCategory": "code"},
+    {"path": "4K_ML/generate_vectors/transform.py", "language": "python", "sizeLines": 43, "fileCategory": "code"},
+    {"path": "4K_ML/pytest.ini", "language": "config", "sizeLines": 2, "fileCategory": "config"},
+    {"path": "4K_ML/requirements.txt", "language": "txt", "sizeLines": 18, "fileCategory": "docs"},
+    {"path": "4K_ML/serving/promote.py", "language": "python", "sizeLines": 39, "fileCategory": "code"},
+    {"path": "4K_ML/tests/__init__.py", "language": "python", "sizeLines": 0, "fileCategory": "code"},
+    {"path": "4K_ML/tests/test_gen_transform.py", "language": "python", "sizeLines": 41, "fileCategory": "code"},
+    {"path": "4K_ML/tests/test_promote.py", "language": "python", "sizeLines": 28, "fileCategory": "code"},
+    {"path": "4K_ML/tests/test_schema.py", "language": "python", "sizeLines": 64, "fileCategory": "code"},
+    {"path": "Ansible/ansible.cfg", "language": "config", "sizeLines": 10, "fileCategory": "config"},
+    {"path": "Ansible/group_vars/all.yaml", "language": "yaml", "sizeLines": 0, "fileCategory": "config"},
+    {"path": "Ansible/helm-values/ingress-nginx.yaml", "language": "yaml", "sizeLines": 11, "fileCategory": "config"},
+    {"path": "Ansible/helm-values/longhorn.yaml", "language": "yaml", "sizeLines": 21, "fileCategory": "config"},
+    {"path": "aws/terraform/.terraform.lock.hcl", "language": "hcl", "sizeLines": 46, "fileCategory": "code"},
+    {"path": "aws/terraform/lambda/dr_controller.py", "language": "python", "sizeLines": 56, "fileCategory": "code"},
+    {"path": "aws/terraform/ssm-params.sh.example", "language": "example", "sizeLines": 26, "fileCategory": "code"},
+    {"path": "aws/terraform/terraform.tfvars.example", "language": "example", "sizeLines": 20, "fileCategory": "code"},
+    {"path": "aws/terraform/user_data_db.sh.tftpl", "language": "tftpl", "sizeLines": 38, "fileCategory": "code"},
+    {"path": "aws/terraform/user_data.sh.tftpl", "language": "tftpl", "sizeLines": 48, "fileCategory": "code"},
+    {"path": "readme.md", "language": "markdown", "sizeLines": 107, "fileCategory": "docs"}
+  ],
+  "batchImportData": {
+    "4K_ML/tests/test_gen_transform.py": ["4K_ML/generate_vectors/transform.py"],
+    "4K_ML/tests/test_promote.py": ["4K_ML/serving/promote.py"],
+    "4K_ML/tests/test_schema.py": ["4K_ML/db/apply_schema.py"]
+  }
+}

@@ -1,0 +1,188 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 3,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "4K_ML/db/p1_migrations.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 22,
+      "nonEmptyLines": 19,
+      "definitions": [
+        {
+          "name": "app_config",
+          "kind": "table",
+          "fields": [
+            "value"
+          ],
+          "startLine": 14,
+          "endLine": 17
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 1
+      }
+    },
+    {
+      "path": "4K_ML/db/rpc_arousal_version_filter.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 70,
+      "nonEmptyLines": 64,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/db/schema.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 82,
+      "nonEmptyLines": 76,
+      "definitions": [
+        {
+          "name": "subtitles",
+          "kind": "table",
+          "fields": [
+            "id",
+            "tmdb_id",
+            "language",
+            "provider",
+            "provider_file_id",
+            "release_name",
+            "raw_text",
+            "is_sdh",
+            "created_at"
+          ],
+          "startLine": 4,
+          "endLine": 14
+        },
+        {
+          "name": "scenes",
+          "kind": "table",
+          "fields": [
+            "id",
+            "subtitles_id",
+            "scene_index",
+            "start_ms",
+            "end_ms",
+            "progress_ratio",
+            "text",
+            "dialogue_count",
+            "split_method",
+            "created_at"
+          ],
+          "startLine": 17,
+          "endLine": 29
+        },
+        {
+          "name": "dialogues",
+          "kind": "table",
+          "fields": [
+            "id",
+            "subtitles_id",
+            "scenes_id",
+            "line_index",
+            "start_ms",
+            "end_ms",
+            "duration_ms",
+            "text",
+            "char_count",
+            "word_count",
+            "gap_before_ms",
+            "progress_ratio"
+          ],
+          "startLine": 33,
+          "endLine": 47
+        },
+        {
+          "name": "model_versions",
+          "kind": "table",
+          "fields": [
+            "model_version",
+            "kind",
+            "description",
+            "metrics",
+            "created_at"
+          ],
+          "startLine": 52,
+          "endLine": 58
+        },
+        {
+          "name": "scene_scores",
+          "kind": "table",
+          "fields": [
+            "id",
+            "scenes_id",
+            "score",
+            "model_version",
+            "created_at"
+          ],
+          "startLine": 61,
+          "endLine": 68
+        },
+        {
+          "name": "processing_status",
+          "kind": "table",
+          "fields": [
+            "tmdb_id",
+            "subtitle_state",
+            "parse_state",
+            "label_state",
+            "score_state",
+            "vector_state",
+            "error",
+            "retry_count",
+            "updated_at"
+          ],
+          "startLine": 72,
+          "endLine": 82
+        },
+        {
+          "name": "scenes_subtitles_id_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 30,
+          "endLine": 30
+        },
+        {
+          "name": "dialogues_subtitles_id_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 48,
+          "endLine": 48
+        },
+        {
+          "name": "dialogues_scenes_id_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 49,
+          "endLine": 49
+        },
+        {
+          "name": "scene_scores_model_version_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 69,
+          "endLine": 69
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 10
+      }
+    }
+  ]
+}

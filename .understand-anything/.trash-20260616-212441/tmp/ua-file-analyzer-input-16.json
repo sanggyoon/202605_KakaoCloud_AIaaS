@@ -1,0 +1,13 @@
+{
+  "projectRoot": "/Users/sanggyoon/Documents/KakaoCloud_Project",
+  "batchFiles": [
+    {"path": "4K_ML/db/p1_migrations.sql", "language": "sql", "sizeLines": 22, "fileCategory": "data"},
+    {"path": "4K_ML/db/rpc_arousal_version_filter.sql", "language": "sql", "sizeLines": 70, "fileCategory": "data"},
+    {"path": "4K_ML/db/schema.sql", "language": "sql", "sizeLines": 82, "fileCategory": "data"}
+  ],
+  "batchImportData": {
+    "4K_ML/db/p1_migrations.sql": [],
+    "4K_ML/db/rpc_arousal_version_filter.sql": [],
+    "4K_ML/db/schema.sql": []
+  }
+}

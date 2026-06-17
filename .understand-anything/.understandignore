@@ -24,3 +24,7 @@
 # *.test.*
 # *.spec.*
 # *.snap
+
+# --- Session-requested exclusions ---
+docs/superpowers/
+.understand-anything/

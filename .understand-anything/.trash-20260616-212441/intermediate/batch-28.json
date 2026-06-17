@@ -1,0 +1,505 @@
+{
+  "nodes": [
+    {
+      "id": "file:4K_BE/.python-version",
+      "type": "file",
+      "name": ".python-version",
+      "filePath": "4K_BE/.python-version",
+      "summary": "백엔드 Python 버전을 고정하는 pyenv 버전 파일.",
+      "tags": ["configuration", "python", "build-system"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_BE/app/tmdb_common.py",
+      "type": "file",
+      "name": "tmdb_common.py",
+      "filePath": "4K_BE/app/tmdb_common.py",
+      "summary": "TMDB API 조회와 Supabase upsert를 위한 공용 헬퍼 모듈로, 영화 데이터 빌드/디스커버/조회/업서트 로직을 제공한다.",
+      "tags": ["utility", "tmdb", "supabase", "data-model", "serialization"],
+      "complexity": "moderate",
+      "languageNotes": "환경변수(os.getenv) 기반 키 관리와 httpx 클라이언트 주입 패턴 사용."
+    },
+    {
+      "id": "function:4K_BE/app/tmdb_common.py:sb_headers",
+      "type": "function",
+      "name": "sb_headers",
+      "filePath": "4K_BE/app/tmdb_common.py",
+      "lineRange": [23, 32],
+      "summary": "해상도 헤더를 포함한 Supabase REST 요청 헤더를 구성한다.",
+      "tags": ["utility", "supabase", "http"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_BE/app/tmdb_common.py:pick_trailer",
+      "type": "function",
+      "name": "pick_trailer",
+      "filePath": "4K_BE/app/tmdb_common.py",
+      "lineRange": [35, 46],
+      "summary": "TMDB 비디오 목록에서 YouTube 트레일러 키를 선택한다.",
+      "tags": ["utility", "tmdb", "parsing"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_BE/app/tmdb_common.py:build_movie",
+      "type": "function",
+      "name": "build_movie",
+      "filePath": "4K_BE/app/tmdb_common.py",
+      "lineRange": [49, 73],
+      "summary": "TMDB 상세 응답을 DB 저장용 영화 레코드(감독/배우/장르/트레일러 등)로 변환한다.",
+      "tags": ["serialization", "data-model", "tmdb"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_BE/app/tmdb_common.py:tmdb_discover",
+      "type": "function",
+      "name": "tmdb_discover",
+      "filePath": "4K_BE/app/tmdb_common.py",
+      "lineRange": [76, 93],
+      "summary": "TMDB discover 엔드포인트를 정렬/페이지 조건으로 호출해 영화 목록을 반환한다.",
+      "tags": ["utility", "tmdb", "http"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_BE/app/tmdb_common.py:fetch_movie",
+      "type": "function",
+      "name": "fetch_movie",
+      "filePath": "4K_BE/app/tmdb_common.py",
+      "lineRange": [96, 105],
+      "summary": "단일 TMDB 영화 상세를 조회하고 build_movie로 변환해 반환한다.",
+      "tags": ["utility", "tmdb", "http"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_BE/app/tmdb_common.py:get_existing_tmdb_ids",
+      "type": "function",
+      "name": "get_existing_tmdb_ids",
+      "filePath": "4K_BE/app/tmdb_common.py",
+      "lineRange": [108, 117],
+      "summary": "Supabase에 이미 저장된 tmdb_id 집합을 조회해 중복 삽입을 방지한다.",
+      "tags": ["utility", "supabase", "deduplication"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_BE/app/tmdb_common.py:upsert_movies",
+      "type": "function",
+      "name": "upsert_movies",
+      "filePath": "4K_BE/app/tmdb_common.py",
+      "lineRange": [120, 131],
+      "summary": "영화 레코드 배열을 Supabase movies 테이블에 upsert한다.",
+      "tags": ["utility", "supabase", "persistence"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_BE/DB_SCRIPTS/seed_movies.py",
+      "type": "file",
+      "name": "seed_movies.py",
+      "filePath": "4K_BE/DB_SCRIPTS/seed_movies.py",
+      "summary": "TMDB에서 영화를 대량 수집해 Supabase에 시드하는 일회성 스크립트로, 중복 제거/배치 upsert/검증을 수행한다.",
+      "tags": ["script", "data-pipeline", "tmdb", "supabase", "entry-point"],
+      "complexity": "complex",
+      "languageNotes": "httpx 동기 호출, 배치 적재, time.sleep 레이트리밋 처리 패턴."
+    },
+    {
+      "id": "function:4K_BE/DB_SCRIPTS/seed_movies.py:tmdb_get",
+      "type": "function",
+      "name": "tmdb_get",
+      "filePath": "4K_BE/DB_SCRIPTS/seed_movies.py",
+      "lineRange": [77, 85],
+      "summary": "TMDB API GET 요청 래퍼로 상태 검증 후 JSON을 반환한다.",
+      "tags": ["utility", "tmdb", "http"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_BE/DB_SCRIPTS/seed_movies.py:fetch_movie",
+      "type": "function",
+      "name": "fetch_movie",
+      "filePath": "4K_BE/DB_SCRIPTS/seed_movies.py",
+      "lineRange": [104, 147],
+      "summary": "TMDB 상세를 조회하여 감독/배우/장르/트레일러 등 DB 레코드로 변환한다.",
+      "tags": ["serialization", "data-model", "tmdb"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_BE/DB_SCRIPTS/seed_movies.py:get_existing_tmdb_ids",
+      "type": "function",
+      "name": "get_existing_tmdb_ids",
+      "filePath": "4K_BE/DB_SCRIPTS/seed_movies.py",
+      "lineRange": [150, 168],
+      "summary": "이미 저장된 tmdb_id 집합을 Supabase에서 조회한다.",
+      "tags": ["utility", "supabase", "deduplication"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_BE/DB_SCRIPTS/seed_movies.py:verify_insert",
+      "type": "function",
+      "name": "verify_insert",
+      "filePath": "4K_BE/DB_SCRIPTS/seed_movies.py",
+      "lineRange": [171, 182],
+      "summary": "특정 tmdb_id가 정상 삽입됐는지 조회로 검증한다.",
+      "tags": ["utility", "supabase", "validation"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_BE/DB_SCRIPTS/seed_movies.py:upsert_batch",
+      "type": "function",
+      "name": "upsert_batch",
+      "filePath": "4K_BE/DB_SCRIPTS/seed_movies.py",
+      "lineRange": [185, 211],
+      "summary": "영화 배치를 Supabase에 upsert하고 결과를 로깅한다.",
+      "tags": ["utility", "supabase", "persistence"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_BE/DB_SCRIPTS/seed_movies.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "4K_BE/DB_SCRIPTS/seed_movies.py",
+      "lineRange": [214, 275],
+      "summary": "시드 스크립트 진입점으로 수집/중복 제거/배치 적재/검증 전체 흐름을 오케스트레이션한다.",
+      "tags": ["entry-point", "data-pipeline", "orchestration"],
+      "complexity": "complex"
+    },
+    {
+      "id": "table:4K_BE/DB_SCRIPTS/visits_schema.sql",
+      "type": "table",
+      "name": "visits_schema.sql",
+      "filePath": "4K_BE/DB_SCRIPTS/visits_schema.sql",
+      "summary": "방문자 추적용 visits 테이블과 created_at 인덱스를 정의하는 스키마 스크립트.",
+      "tags": ["database", "schema-definition", "migration", "analytics"],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:4K_BE/DB_SCRIPTS/visits_schema.sql:visits",
+      "type": "table",
+      "name": "visits",
+      "filePath": "4K_BE/DB_SCRIPTS/visits_schema.sql",
+      "lineRange": [3, 7],
+      "summary": "id, visitor_id, created_at 컬럼을 가진 방문 기록 테이블.",
+      "tags": ["database", "table", "analytics"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_BE/tests/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "4K_BE/tests/__init__.py",
+      "summary": "백엔드 테스트 패키지를 표시하는 빈 초기화 파일.",
+      "tags": ["test", "entry-point", "python"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/api/manager/active-model/route.ts",
+      "type": "file",
+      "name": "route.ts",
+      "filePath": "4K_FE/app/api/manager/active-model/route.ts",
+      "summary": "현재 활성 ML 모델 정보를 백엔드에서 프록시 조회하는 매니저용 Next.js API 라우트.",
+      "tags": ["api-handler", "proxy", "manager"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/api/manager/jobs/[type]/route.ts",
+      "type": "file",
+      "name": "route.ts",
+      "filePath": "4K_FE/app/api/manager/jobs/[type]/route.ts",
+      "summary": "작업 유형별 진행 상태를 백엔드에서 조회해 텍스트로 반환하는 동적 매니저 API 라우트.",
+      "tags": ["api-handler", "proxy", "manager", "job-status"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/api/manager/movies/[tmdb_id]/reprocess/route.ts",
+      "type": "file",
+      "name": "route.ts",
+      "filePath": "4K_FE/app/api/manager/movies/[tmdb_id]/reprocess/route.ts",
+      "summary": "특정 영화의 재처리를 백엔드에 요청하는 매니저 POST API 라우트.",
+      "tags": ["api-handler", "proxy", "manager"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/api/manager/movies/[tmdb_id]/route.ts",
+      "type": "file",
+      "name": "route.ts",
+      "filePath": "4K_FE/app/api/manager/movies/[tmdb_id]/route.ts",
+      "summary": "단일 영화의 조회(GET)/수정(PATCH)/삭제(DELETE)를 백엔드로 프록시하는 매니저 API 라우트.",
+      "tags": ["api-handler", "proxy", "manager", "crud"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/api/manager/movies/backfill/route.ts",
+      "type": "file",
+      "name": "route.ts",
+      "filePath": "4K_FE/app/api/manager/movies/backfill/route.ts",
+      "summary": "신규 영화 백필 작업을 시작하도록 백엔드에 요청하는 매니저 POST API 라우트.",
+      "tags": ["api-handler", "proxy", "manager", "data-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/api/manager/movies/recent/route.ts",
+      "type": "file",
+      "name": "route.ts",
+      "filePath": "4K_FE/app/api/manager/movies/recent/route.ts",
+      "summary": "최근 추가된 영화 목록을 백엔드에서 프록시 조회하는 매니저 API 라우트.",
+      "tags": ["api-handler", "proxy", "manager"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/api/manager/movies/route.ts",
+      "type": "file",
+      "name": "route.ts",
+      "filePath": "4K_FE/app/api/manager/movies/route.ts",
+      "summary": "영화 목록 조회(GET)와 생성(POST)을 백엔드로 프록시하는 매니저 API 라우트.",
+      "tags": ["api-handler", "proxy", "manager", "crud"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/api/manager/movies/search/route.ts",
+      "type": "file",
+      "name": "route.ts",
+      "filePath": "4K_FE/app/api/manager/movies/search/route.ts",
+      "summary": "영화 검색 쿼리를 백엔드로 전달해 결과를 반환하는 매니저 API 라우트.",
+      "tags": ["api-handler", "proxy", "manager", "search"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/api/manager/stats/route.ts",
+      "type": "file",
+      "name": "route.ts",
+      "filePath": "4K_FE/app/api/manager/stats/route.ts",
+      "summary": "매니저 대시보드용 통계 지표를 백엔드에서 프록시 조회하는 API 라우트.",
+      "tags": ["api-handler", "proxy", "manager", "monitoring"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/api/manager/subtitles/collect/route.ts",
+      "type": "file",
+      "name": "route.ts",
+      "filePath": "4K_FE/app/api/manager/subtitles/collect/route.ts",
+      "summary": "자막 수집 작업 시작을 백엔드에 요청하는 매니저 POST API 라우트.",
+      "tags": ["api-handler", "proxy", "manager", "data-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/api/manager/subtitles/remaining/route.ts",
+      "type": "file",
+      "name": "route.ts",
+      "filePath": "4K_FE/app/api/manager/subtitles/remaining/route.ts",
+      "summary": "남은 자막 수집 대상 수를 백엔드에서 조회하는 매니저 API 라우트.",
+      "tags": ["api-handler", "proxy", "manager", "monitoring"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/api/manager/visits/range/route.ts",
+      "type": "file",
+      "name": "route.ts",
+      "filePath": "4K_FE/app/api/manager/visits/range/route.ts",
+      "summary": "기간별 방문 수를 백엔드에서 프록시 조회하는 매니저 API 라우트.",
+      "tags": ["api-handler", "proxy", "manager", "analytics"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/api/visit/route.ts",
+      "type": "file",
+      "name": "route.ts",
+      "filePath": "4K_FE/app/api/visit/route.ts",
+      "summary": "방문 이벤트를 백엔드로 기록 전송하는 공개 POST API 라우트.",
+      "tags": ["api-handler", "proxy", "analytics"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/globals.css",
+      "type": "file",
+      "name": "globals.css",
+      "filePath": "4K_FE/app/globals.css",
+      "summary": "다크 시네마 테마의 전역 스타일과 디자인 토큰을 정의하는 글로벌 CSS.",
+      "tags": ["styling", "css", "theme", "global"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_FE/app/layout.tsx",
+      "type": "file",
+      "name": "layout.tsx",
+      "filePath": "4K_FE/app/layout.tsx",
+      "summary": "앱 전역 메타데이터와 폰트, 글로벌 스타일을 적용하는 Next.js 루트 레이아웃.",
+      "tags": ["entry-point", "layout", "component", "nextjs"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/login/page.tsx",
+      "type": "file",
+      "name": "page.tsx",
+      "filePath": "4K_FE/app/login/page.tsx",
+      "summary": "아이디/비밀번호 로그인 폼을 제공하고 인증 후 다음 경로로 리다이렉트하는 로그인 페이지 컴포넌트.",
+      "tags": ["component", "page", "authentication", "form"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/login/page.tsx:LoginPage",
+      "type": "function",
+      "name": "LoginPage",
+      "filePath": "4K_FE/app/login/page.tsx",
+      "lineRange": [7, 107],
+      "summary": "로그인 폼 상태와 제출 처리, 인증 후 리다이렉트를 담당하는 클라이언트 컴포넌트.",
+      "tags": ["component", "authentication", "form", "event-handler"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_FE/app/manager/page.tsx",
+      "type": "file",
+      "name": "page.tsx",
+      "filePath": "4K_FE/app/manager/page.tsx",
+      "summary": "통계/방문/백필/자막 수집을 관리하는 매니저 대시보드로, 작업 시작과 진행 상황 실시간 폴링 UI를 제공한다.",
+      "tags": ["component", "page", "manager", "dashboard", "monitoring"],
+      "complexity": "complex",
+      "languageNotes": "setInterval 기반 작업 폴링과 다수의 useState/useEffect 훅을 사용하는 대형 클라이언트 컴포넌트."
+    },
+    {
+      "id": "function:4K_FE/app/manager/page.tsx:startAndPoll",
+      "type": "function",
+      "name": "startAndPoll",
+      "filePath": "4K_FE/app/manager/page.tsx",
+      "lineRange": [49, 79],
+      "summary": "작업을 시작하고 setInterval로 진행 상태를 폴링하여 완료 시 콜백을 호출한다.",
+      "tags": ["utility", "polling", "job-status", "async"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/manager/page.tsx:JobBanner",
+      "type": "function",
+      "name": "JobBanner",
+      "filePath": "4K_FE/app/manager/page.tsx",
+      "lineRange": [81, 121],
+      "summary": "실행 중 작업의 진행률과 로그를 표시하는 배너 컴포넌트.",
+      "tags": ["component", "ui", "job-status"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/manager/page.tsx:ManagerPage",
+      "type": "function",
+      "name": "ManagerPage",
+      "filePath": "4K_FE/app/manager/page.tsx",
+      "lineRange": [123, 367],
+      "summary": "매니저 대시보드 본체로 통계/방문/백필/자막 수집 상태를 조회하고 작업을 트리거한다.",
+      "tags": ["component", "page", "dashboard", "manager"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:4K_FE/app/manager/page.tsx:CollectCard",
+      "type": "function",
+      "name": "CollectCard",
+      "filePath": "4K_FE/app/manager/page.tsx",
+      "lineRange": [410, 449],
+      "summary": "수집 작업 개수 입력과 실행 버튼을 제공하는 카드 컴포넌트.",
+      "tags": ["component", "ui", "form"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_FE/app/manager/page.tsx:LinkRow",
+      "type": "function",
+      "name": "LinkRow",
+      "filePath": "4K_FE/app/manager/page.tsx",
+      "lineRange": [387, 408],
+      "summary": "라벨/설명과 이동 동작을 가진 링크 행 UI 컴포넌트.",
+      "tags": ["component", "ui", "navigation"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/eslint.config.mjs",
+      "type": "file",
+      "name": "eslint.config.mjs",
+      "filePath": "4K_FE/eslint.config.mjs",
+      "summary": "Next.js 프론트엔드의 ESLint 플랫 설정 파일.",
+      "tags": ["configuration", "linting", "build-system"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/next.config.ts",
+      "type": "file",
+      "name": "next.config.ts",
+      "filePath": "4K_FE/next.config.ts",
+      "summary": "Next.js 빌드 및 런타임 동작을 정의하는 프레임워크 설정 파일.",
+      "tags": ["configuration", "nextjs", "build-system"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/postcss.config.mjs",
+      "type": "file",
+      "name": "postcss.config.mjs",
+      "filePath": "4K_FE/postcss.config.mjs",
+      "summary": "Tailwind/PostCSS 플러그인을 구성하는 CSS 빌드 설정 파일.",
+      "tags": ["configuration", "css", "build-system"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {"source": "file:4K_BE/app/tmdb_common.py", "target": "function:4K_BE/app/tmdb_common.py:sb_headers", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_BE/app/tmdb_common.py", "target": "function:4K_BE/app/tmdb_common.py:pick_trailer", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_BE/app/tmdb_common.py", "target": "function:4K_BE/app/tmdb_common.py:build_movie", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_BE/app/tmdb_common.py", "target": "function:4K_BE/app/tmdb_common.py:tmdb_discover", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_BE/app/tmdb_common.py", "target": "function:4K_BE/app/tmdb_common.py:fetch_movie", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_BE/app/tmdb_common.py", "target": "function:4K_BE/app/tmdb_common.py:get_existing_tmdb_ids", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_BE/app/tmdb_common.py", "target": "function:4K_BE/app/tmdb_common.py:upsert_movies", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_BE/app/tmdb_common.py", "target": "function:4K_BE/app/tmdb_common.py:sb_headers", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_BE/app/tmdb_common.py", "target": "function:4K_BE/app/tmdb_common.py:pick_trailer", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_BE/app/tmdb_common.py", "target": "function:4K_BE/app/tmdb_common.py:build_movie", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_BE/app/tmdb_common.py", "target": "function:4K_BE/app/tmdb_common.py:tmdb_discover", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_BE/app/tmdb_common.py", "target": "function:4K_BE/app/tmdb_common.py:fetch_movie", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_BE/app/tmdb_common.py", "target": "function:4K_BE/app/tmdb_common.py:get_existing_tmdb_ids", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_BE/app/tmdb_common.py", "target": "function:4K_BE/app/tmdb_common.py:upsert_movies", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_BE/app/tmdb_common.py:build_movie", "target": "function:4K_BE/app/tmdb_common.py:pick_trailer", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_BE/app/tmdb_common.py:fetch_movie", "target": "function:4K_BE/app/tmdb_common.py:build_movie", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_BE/app/tmdb_common.py:get_existing_tmdb_ids", "target": "function:4K_BE/app/tmdb_common.py:sb_headers", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_BE/app/tmdb_common.py:upsert_movies", "target": "function:4K_BE/app/tmdb_common.py:sb_headers", "type": "calls", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:4K_BE/DB_SCRIPTS/seed_movies.py", "target": "function:4K_BE/DB_SCRIPTS/seed_movies.py:tmdb_get", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_BE/DB_SCRIPTS/seed_movies.py", "target": "function:4K_BE/DB_SCRIPTS/seed_movies.py:fetch_movie", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_BE/DB_SCRIPTS/seed_movies.py", "target": "function:4K_BE/DB_SCRIPTS/seed_movies.py:get_existing_tmdb_ids", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_BE/DB_SCRIPTS/seed_movies.py", "target": "function:4K_BE/DB_SCRIPTS/seed_movies.py:verify_insert", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_BE/DB_SCRIPTS/seed_movies.py", "target": "function:4K_BE/DB_SCRIPTS/seed_movies.py:upsert_batch", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_BE/DB_SCRIPTS/seed_movies.py", "target": "function:4K_BE/DB_SCRIPTS/seed_movies.py:main", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "function:4K_BE/DB_SCRIPTS/seed_movies.py:fetch_movie", "target": "function:4K_BE/DB_SCRIPTS/seed_movies.py:tmdb_get", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_BE/DB_SCRIPTS/seed_movies.py:main", "target": "function:4K_BE/DB_SCRIPTS/seed_movies.py:get_existing_tmdb_ids", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_BE/DB_SCRIPTS/seed_movies.py:main", "target": "function:4K_BE/DB_SCRIPTS/seed_movies.py:fetch_movie", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_BE/DB_SCRIPTS/seed_movies.py:main", "target": "function:4K_BE/DB_SCRIPTS/seed_movies.py:upsert_batch", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_BE/DB_SCRIPTS/seed_movies.py:main", "target": "function:4K_BE/DB_SCRIPTS/seed_movies.py:verify_insert", "type": "calls", "direction": "forward", "weight": 0.8},
+
+    {"source": "table:4K_BE/DB_SCRIPTS/visits_schema.sql", "target": "table:4K_BE/DB_SCRIPTS/visits_schema.sql:visits", "type": "migrates", "direction": "forward", "weight": 0.7},
+    {"source": "table:4K_BE/DB_SCRIPTS/visits_schema.sql", "target": "file:4K_FE/app/api/visit/route.ts", "type": "defines_schema", "direction": "forward", "weight": 0.8},
+    {"source": "table:4K_BE/DB_SCRIPTS/visits_schema.sql", "target": "file:4K_FE/app/api/manager/visits/range/route.ts", "type": "defines_schema", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:4K_FE/app/api/manager/active-model/route.ts", "target": "function:4K_FE/app/api/manager/active-model/route.ts:GET", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/api/manager/jobs/[type]/route.ts", "target": "function:4K_FE/app/api/manager/jobs/[type]/route.ts:GET", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/api/manager/movies/[tmdb_id]/reprocess/route.ts", "target": "function:4K_FE/app/api/manager/movies/[tmdb_id]/reprocess/route.ts:POST", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/api/manager/movies/[tmdb_id]/route.ts", "target": "function:4K_FE/app/api/manager/movies/[tmdb_id]/route.ts:PATCH", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/api/manager/movies/backfill/route.ts", "target": "function:4K_FE/app/api/manager/movies/backfill/route.ts:POST", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/api/manager/movies/route.ts", "target": "function:4K_FE/app/api/manager/movies/route.ts:GET", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/api/manager/movies/search/route.ts", "target": "function:4K_FE/app/api/manager/movies/search/route.ts:GET", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/api/visit/route.ts", "target": "function:4K_FE/app/api/visit/route.ts:POST", "type": "contains", "direction": "forward", "weight": 1.0},
+
+    {"source": "file:4K_FE/app/layout.tsx", "target": "file:4K_FE/app/globals.css", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_FE/app/layout.tsx", "target": "function:4K_FE/app/layout.tsx:RootLayout", "type": "contains", "direction": "forward", "weight": 1.0},
+
+    {"source": "file:4K_FE/app/login/page.tsx", "target": "function:4K_FE/app/login/page.tsx:LoginPage", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/login/page.tsx", "target": "function:4K_FE/app/login/page.tsx:LoginPage", "type": "exports", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:4K_FE/app/manager/page.tsx", "target": "function:4K_FE/app/manager/page.tsx:startAndPoll", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/manager/page.tsx", "target": "function:4K_FE/app/manager/page.tsx:JobBanner", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/manager/page.tsx", "target": "function:4K_FE/app/manager/page.tsx:ManagerPage", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/manager/page.tsx", "target": "function:4K_FE/app/manager/page.tsx:CollectCard", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/manager/page.tsx", "target": "function:4K_FE/app/manager/page.tsx:LinkRow", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_FE/app/manager/page.tsx", "target": "function:4K_FE/app/manager/page.tsx:ManagerPage", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_FE/app/manager/page.tsx:ManagerPage", "target": "function:4K_FE/app/manager/page.tsx:JobBanner", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "function:4K_FE/app/manager/page.tsx:ManagerPage", "target": "function:4K_FE/app/manager/page.tsx:CollectCard", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "function:4K_FE/app/manager/page.tsx:ManagerPage", "target": "function:4K_FE/app/manager/page.tsx:startAndPoll", "type": "calls", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:4K_FE/app/manager/page.tsx", "target": "file:4K_FE/app/api/manager/stats/route.ts", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:4K_FE/app/manager/page.tsx", "target": "file:4K_FE/app/api/manager/active-model/route.ts", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:4K_FE/app/manager/page.tsx", "target": "file:4K_FE/app/api/manager/subtitles/remaining/route.ts", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:4K_FE/app/manager/page.tsx", "target": "file:4K_FE/app/api/manager/movies/backfill/route.ts", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:4K_FE/app/manager/page.tsx", "target": "file:4K_FE/app/api/manager/subtitles/collect/route.ts", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:4K_FE/app/manager/page.tsx", "target": "file:4K_FE/app/api/manager/visits/range/route.ts", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:4K_FE/app/manager/page.tsx", "target": "file:4K_FE/app/api/manager/jobs/[type]/route.ts", "type": "depends_on", "direction": "forward", "weight": 0.6},
+
+    {"source": "file:4K_FE/postcss.config.mjs", "target": "file:4K_FE/app/globals.css", "type": "configures", "direction": "forward", "weight": 0.6},
+    {"source": "file:4K_FE/next.config.ts", "target": "file:4K_FE/app/layout.tsx", "type": "configures", "direction": "forward", "weight": 0.6},
+    {"source": "file:4K_FE/eslint.config.mjs", "target": "file:4K_FE/app/manager/page.tsx", "type": "configures", "direction": "forward", "weight": 0.6}
+  ]
+}

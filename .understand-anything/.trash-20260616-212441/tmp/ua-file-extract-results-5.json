@@ -1,0 +1,1608 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 9,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "4K_ML/labeling/__init__.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 1,
+      "nonEmptyLines": 0,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/labeling/batch.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 58,
+      "nonEmptyLines": 47,
+      "functions": [
+        {
+          "name": "build_requests",
+          "startLine": 14,
+          "endLine": 30,
+          "params": [
+            "movies"
+          ]
+        },
+        {
+          "name": "submit",
+          "startLine": 33,
+          "endLine": 36,
+          "params": [
+            "client",
+            "requests"
+          ]
+        },
+        {
+          "name": "poll",
+          "startLine": 39,
+          "endLine": 44,
+          "params": [
+            "client",
+            "batch_id",
+            "interval"
+          ]
+        },
+        {
+          "name": "collect",
+          "startLine": 47,
+          "endLine": 58,
+          "params": [
+            "client",
+            "batch_id"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "build_requests",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "submit",
+          "line": 33,
+          "isDefault": false
+        },
+        {
+          "name": "poll",
+          "line": 39,
+          "isDefault": false
+        },
+        {
+          "name": "collect",
+          "line": 47,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "build_requests",
+          "callee": "reqs.append",
+          "lineNumber": 18
+        },
+        {
+          "caller": "build_requests",
+          "callee": "Request",
+          "lineNumber": 18
+        },
+        {
+          "caller": "build_requests",
+          "callee": "str",
+          "lineNumber": 19
+        },
+        {
+          "caller": "build_requests",
+          "callee": "MessageCreateParamsNonStreaming",
+          "lineNumber": 20
+        },
+        {
+          "caller": "build_requests",
+          "callee": "build_user_message",
+          "lineNumber": 27
+        },
+        {
+          "caller": "submit",
+          "callee": "client.messages.batches.create",
+          "lineNumber": 34
+        },
+        {
+          "caller": "submit",
+          "callee": "print",
+          "lineNumber": 35
+        },
+        {
+          "caller": "submit",
+          "callee": "len",
+          "lineNumber": 35
+        },
+        {
+          "caller": "poll",
+          "callee": "client.messages.batches.retrieve",
+          "lineNumber": 41
+        },
+        {
+          "caller": "poll",
+          "callee": "time.sleep",
+          "lineNumber": 44
+        },
+        {
+          "caller": "collect",
+          "callee": "client.messages.batches.results",
+          "lineNumber": 49
+        },
+        {
+          "caller": "collect",
+          "callee": "int",
+          "lineNumber": 50
+        },
+        {
+          "caller": "collect",
+          "callee": "next",
+          "lineNumber": 53
+        },
+        {
+          "caller": "collect",
+          "callee": "json.loads",
+          "lineNumber": 54
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 4,
+        "functionCount": 4,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/labeling/db.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 91,
+      "nonEmptyLines": 73,
+      "functions": [
+        {
+          "name": "_ai",
+          "startLine": 12,
+          "endLine": 13,
+          "params": []
+        },
+        {
+          "name": "_auth",
+          "startLine": 16,
+          "endLine": 18,
+          "params": []
+        },
+        {
+          "name": "_headers",
+          "startLine": 21,
+          "endLine": 28,
+          "params": [
+            "write",
+            "representation"
+          ]
+        },
+        {
+          "name": "fetch_label_targets",
+          "startLine": 31,
+          "endLine": 39,
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "fetch_scenes",
+          "startLine": 42,
+          "endLine": 59,
+          "params": [
+            "client",
+            "tmdb_id"
+          ]
+        },
+        {
+          "name": "ensure_model_versions",
+          "startLine": 62,
+          "endLine": 73,
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "upsert_scene_scores",
+          "startLine": 76,
+          "endLine": 81,
+          "params": [
+            "client",
+            "rows"
+          ]
+        },
+        {
+          "name": "set_label_state",
+          "startLine": 84,
+          "endLine": 91,
+          "params": [
+            "client",
+            "tmdb_id",
+            "state",
+            "error"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "_ai",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "_auth",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "_headers",
+          "line": 21,
+          "isDefault": false
+        },
+        {
+          "name": "fetch_label_targets",
+          "line": 31,
+          "isDefault": false
+        },
+        {
+          "name": "fetch_scenes",
+          "line": 42,
+          "isDefault": false
+        },
+        {
+          "name": "ensure_model_versions",
+          "line": 62,
+          "isDefault": false
+        },
+        {
+          "name": "upsert_scene_scores",
+          "line": 76,
+          "isDefault": false
+        },
+        {
+          "name": "set_label_state",
+          "line": 84,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_ai",
+          "callee": "os.getenv",
+          "lineNumber": 13
+        },
+        {
+          "caller": "_ai",
+          "callee": "os.getenv",
+          "lineNumber": 13
+        },
+        {
+          "caller": "_auth",
+          "callee": "os.getenv",
+          "lineNumber": 17
+        },
+        {
+          "caller": "_auth",
+          "callee": "os.getenv",
+          "lineNumber": 18
+        },
+        {
+          "caller": "_headers",
+          "callee": "_ai",
+          "lineNumber": 22
+        },
+        {
+          "caller": "fetch_label_targets",
+          "callee": "_ai",
+          "lineNumber": 33
+        },
+        {
+          "caller": "fetch_label_targets",
+          "callee": "client.get",
+          "lineNumber": 34
+        },
+        {
+          "caller": "fetch_label_targets",
+          "callee": "_headers",
+          "lineNumber": 36
+        },
+        {
+          "caller": "fetch_label_targets",
+          "callee": "_auth",
+          "lineNumber": 36
+        },
+        {
+          "caller": "fetch_label_targets",
+          "callee": "r.raise_for_status",
+          "lineNumber": 37
+        },
+        {
+          "caller": "fetch_label_targets",
+          "callee": "r.json",
+          "lineNumber": 38
+        },
+        {
+          "caller": "fetch_label_targets",
+          "callee": "row.get",
+          "lineNumber": 39
+        },
+        {
+          "caller": "fetch_label_targets",
+          "callee": "row.get",
+          "lineNumber": 39
+        },
+        {
+          "caller": "fetch_scenes",
+          "callee": "_ai",
+          "lineNumber": 44
+        },
+        {
+          "caller": "fetch_scenes",
+          "callee": "client.get",
+          "lineNumber": 45
+        },
+        {
+          "caller": "fetch_scenes",
+          "callee": "_headers",
+          "lineNumber": 47
+        },
+        {
+          "caller": "fetch_scenes",
+          "callee": "_auth",
+          "lineNumber": 47
+        },
+        {
+          "caller": "fetch_scenes",
+          "callee": "r.raise_for_status",
+          "lineNumber": 48
+        },
+        {
+          "caller": "fetch_scenes",
+          "callee": "r.json",
+          "lineNumber": 49
+        },
+        {
+          "caller": "fetch_scenes",
+          "callee": "client.get",
+          "lineNumber": 53
+        },
+        {
+          "caller": "fetch_scenes",
+          "callee": "_headers",
+          "lineNumber": 56
+        },
+        {
+          "caller": "fetch_scenes",
+          "callee": "_auth",
+          "lineNumber": 56
+        },
+        {
+          "caller": "fetch_scenes",
+          "callee": "r.raise_for_status",
+          "lineNumber": 57
+        },
+        {
+          "caller": "fetch_scenes",
+          "callee": "r.json",
+          "lineNumber": 59
+        },
+        {
+          "caller": "ensure_model_versions",
+          "callee": "_ai",
+          "lineNumber": 63
+        },
+        {
+          "caller": "ensure_model_versions",
+          "callee": "client.post",
+          "lineNumber": 70
+        },
+        {
+          "caller": "ensure_model_versions",
+          "callee": "_headers",
+          "lineNumber": 71
+        },
+        {
+          "caller": "ensure_model_versions",
+          "callee": "_auth",
+          "lineNumber": 71
+        },
+        {
+          "caller": "ensure_model_versions",
+          "callee": "RuntimeError",
+          "lineNumber": 73
+        },
+        {
+          "caller": "upsert_scene_scores",
+          "callee": "_ai",
+          "lineNumber": 77
+        },
+        {
+          "caller": "upsert_scene_scores",
+          "callee": "client.post",
+          "lineNumber": 78
+        },
+        {
+          "caller": "upsert_scene_scores",
+          "callee": "_headers",
+          "lineNumber": 79
+        },
+        {
+          "caller": "upsert_scene_scores",
+          "callee": "_auth",
+          "lineNumber": 79
+        },
+        {
+          "caller": "upsert_scene_scores",
+          "callee": "RuntimeError",
+          "lineNumber": 81
+        },
+        {
+          "caller": "set_label_state",
+          "callee": "_ai",
+          "lineNumber": 85
+        },
+        {
+          "caller": "set_label_state",
+          "callee": "datetime.now(timezone.utc).isoformat",
+          "lineNumber": 87
+        },
+        {
+          "caller": "set_label_state",
+          "callee": "datetime.now",
+          "lineNumber": 87
+        },
+        {
+          "caller": "set_label_state",
+          "callee": "client.post",
+          "lineNumber": 88
+        },
+        {
+          "caller": "set_label_state",
+          "callee": "_headers",
+          "lineNumber": 89
+        },
+        {
+          "caller": "set_label_state",
+          "callee": "_auth",
+          "lineNumber": 89
+        },
+        {
+          "caller": "set_label_state",
+          "callee": "RuntimeError",
+          "lineNumber": 91
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 8,
+        "functionCount": 8,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/labeling/label_scenes.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 77,
+      "nonEmptyLines": 64,
+      "functions": [
+        {
+          "name": "_clamp",
+          "startLine": 15,
+          "endLine": 16,
+          "params": [
+            "x"
+          ]
+        },
+        {
+          "name": "parse_to_rows",
+          "startLine": 19,
+          "endLine": 30,
+          "params": [
+            "parsed",
+            "index_to_sid"
+          ]
+        },
+        {
+          "name": "run",
+          "startLine": 33,
+          "endLine": 73,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "_clamp",
+          "line": 15,
+          "isDefault": false
+        },
+        {
+          "name": "parse_to_rows",
+          "line": 19,
+          "isDefault": false
+        },
+        {
+          "name": "run",
+          "line": 33,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_clamp",
+          "callee": "max",
+          "lineNumber": 16
+        },
+        {
+          "caller": "_clamp",
+          "callee": "min",
+          "lineNumber": 16
+        },
+        {
+          "caller": "_clamp",
+          "callee": "float",
+          "lineNumber": 16
+        },
+        {
+          "caller": "parse_to_rows",
+          "callee": "index_to_sid.get",
+          "lineNumber": 23
+        },
+        {
+          "caller": "parse_to_rows",
+          "callee": "rows.append",
+          "lineNumber": 26
+        },
+        {
+          "caller": "parse_to_rows",
+          "callee": "_clamp",
+          "lineNumber": 26
+        },
+        {
+          "caller": "parse_to_rows",
+          "callee": "rows.append",
+          "lineNumber": 28
+        },
+        {
+          "caller": "parse_to_rows",
+          "callee": "_clamp",
+          "lineNumber": 28
+        },
+        {
+          "caller": "run",
+          "callee": "os.getenv",
+          "lineNumber": 34
+        },
+        {
+          "caller": "run",
+          "callee": "SystemExit",
+          "lineNumber": 35
+        },
+        {
+          "caller": "run",
+          "callee": "os.getenv",
+          "lineNumber": 36
+        },
+        {
+          "caller": "run",
+          "callee": "SystemExit",
+          "lineNumber": 37
+        },
+        {
+          "caller": "run",
+          "callee": "Anthropic",
+          "lineNumber": 38
+        },
+        {
+          "caller": "run",
+          "callee": "httpx.Client",
+          "lineNumber": 40
+        },
+        {
+          "caller": "run",
+          "callee": "db.ensure_model_versions",
+          "lineNumber": 41
+        },
+        {
+          "caller": "run",
+          "callee": "db.fetch_label_targets",
+          "lineNumber": 42
+        },
+        {
+          "caller": "run",
+          "callee": "db.fetch_scenes",
+          "lineNumber": 45
+        },
+        {
+          "caller": "run",
+          "callee": "movies.append",
+          "lineNumber": 48
+        },
+        {
+          "caller": "run",
+          "callee": "print",
+          "lineNumber": 51
+        },
+        {
+          "caller": "run",
+          "callee": "os.getenv",
+          "lineNumber": 54
+        },
+        {
+          "caller": "run",
+          "callee": "batch.submit",
+          "lineNumber": 54
+        },
+        {
+          "caller": "run",
+          "callee": "batch.build_requests",
+          "lineNumber": 54
+        },
+        {
+          "caller": "run",
+          "callee": "batch.poll",
+          "lineNumber": 55
+        },
+        {
+          "caller": "run",
+          "callee": "batch.collect",
+          "lineNumber": 57
+        },
+        {
+          "caller": "run",
+          "callee": "db.set_label_state",
+          "lineNumber": 59
+        },
+        {
+          "caller": "run",
+          "callee": "print",
+          "lineNumber": 61
+        },
+        {
+          "caller": "run",
+          "callee": "parse_to_rows",
+          "lineNumber": 64
+        },
+        {
+          "caller": "run",
+          "callee": "sid_maps.get",
+          "lineNumber": 64
+        },
+        {
+          "caller": "run",
+          "callee": "db.upsert_scene_scores",
+          "lineNumber": 65
+        },
+        {
+          "caller": "run",
+          "callee": "db.set_label_state",
+          "lineNumber": 66
+        },
+        {
+          "caller": "run",
+          "callee": "print",
+          "lineNumber": 68
+        },
+        {
+          "caller": "run",
+          "callee": "len",
+          "lineNumber": 68
+        },
+        {
+          "caller": "run",
+          "callee": "db.set_label_state",
+          "lineNumber": 70
+        },
+        {
+          "caller": "run",
+          "callee": "str",
+          "lineNumber": 70
+        },
+        {
+          "caller": "run",
+          "callee": "print",
+          "lineNumber": 72
+        },
+        {
+          "caller": "run",
+          "callee": "print",
+          "lineNumber": 73
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 3,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/labeling/prompt.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 46,
+      "nonEmptyLines": 39,
+      "functions": [
+        {
+          "name": "build_user_message",
+          "startLine": 43,
+          "endLine": 46,
+          "params": [
+            "scenes"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "build_user_message",
+          "line": 43,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "build_user_message",
+          "callee": "\"\\n\".join",
+          "lineNumber": 46
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/tests/test_label_batch.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 73,
+      "nonEmptyLines": 56,
+      "functions": [
+        {
+          "name": "test_build_requests_one_per_movie",
+          "startLine": 6,
+          "endLine": 17,
+          "params": []
+        },
+        {
+          "name": "test_submit_returns_id_and_prints",
+          "startLine": 20,
+          "endLine": 31,
+          "params": [
+            "capsys"
+          ]
+        },
+        {
+          "name": "test_poll_until_ended",
+          "startLine": 34,
+          "endLine": 46,
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "_result",
+          "startLine": 49,
+          "endLine": 55,
+          "params": [
+            "custom_id",
+            "rtype",
+            "text"
+          ]
+        },
+        {
+          "name": "test_collect_parses_and_flags",
+          "startLine": 58,
+          "endLine": 73,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "test_build_requests_one_per_movie",
+          "line": 6,
+          "isDefault": false
+        },
+        {
+          "name": "test_submit_returns_id_and_prints",
+          "line": 20,
+          "isDefault": false
+        },
+        {
+          "name": "test_poll_until_ended",
+          "line": 34,
+          "isDefault": false
+        },
+        {
+          "name": "_result",
+          "line": 49,
+          "isDefault": false
+        },
+        {
+          "name": "test_collect_parses_and_flags",
+          "line": 58,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "test_build_requests_one_per_movie",
+          "callee": "batch.build_requests",
+          "lineNumber": 11
+        },
+        {
+          "caller": "create",
+          "callee": "len",
+          "lineNumber": 25
+        },
+        {
+          "caller": "create",
+          "callee": "types.SimpleNamespace",
+          "lineNumber": 26
+        },
+        {
+          "caller": "test_submit_returns_id_and_prints",
+          "callee": "types.SimpleNamespace",
+          "lineNumber": 28
+        },
+        {
+          "caller": "test_submit_returns_id_and_prints",
+          "callee": "types.SimpleNamespace",
+          "lineNumber": 28
+        },
+        {
+          "caller": "test_submit_returns_id_and_prints",
+          "callee": "Batches",
+          "lineNumber": 28
+        },
+        {
+          "caller": "test_submit_returns_id_and_prints",
+          "callee": "batch.submit",
+          "lineNumber": 29
+        },
+        {
+          "caller": "test_submit_returns_id_and_prints",
+          "callee": "capsys.readouterr",
+          "lineNumber": 31
+        },
+        {
+          "caller": "test_poll_until_ended",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 35
+        },
+        {
+          "caller": "retrieve",
+          "callee": "types.SimpleNamespace",
+          "lineNumber": 42
+        },
+        {
+          "caller": "test_poll_until_ended",
+          "callee": "types.SimpleNamespace",
+          "lineNumber": 44
+        },
+        {
+          "caller": "test_poll_until_ended",
+          "callee": "types.SimpleNamespace",
+          "lineNumber": 44
+        },
+        {
+          "caller": "test_poll_until_ended",
+          "callee": "Batches",
+          "lineNumber": 44
+        },
+        {
+          "caller": "test_poll_until_ended",
+          "callee": "batch.poll",
+          "lineNumber": 45
+        },
+        {
+          "caller": "_result",
+          "callee": "types.SimpleNamespace",
+          "lineNumber": 51
+        },
+        {
+          "caller": "_result",
+          "callee": "types.SimpleNamespace",
+          "lineNumber": 51
+        },
+        {
+          "caller": "_result",
+          "callee": "types.SimpleNamespace",
+          "lineNumber": 52
+        },
+        {
+          "caller": "_result",
+          "callee": "types.SimpleNamespace",
+          "lineNumber": 54
+        },
+        {
+          "caller": "_result",
+          "callee": "types.SimpleNamespace",
+          "lineNumber": 55
+        },
+        {
+          "caller": "test_collect_parses_and_flags",
+          "callee": "_result",
+          "lineNumber": 60
+        },
+        {
+          "caller": "test_collect_parses_and_flags",
+          "callee": "_result",
+          "lineNumber": 61
+        },
+        {
+          "caller": "test_collect_parses_and_flags",
+          "callee": "_result",
+          "lineNumber": 62
+        },
+        {
+          "caller": "results",
+          "callee": "iter",
+          "lineNumber": 67
+        },
+        {
+          "caller": "test_collect_parses_and_flags",
+          "callee": "types.SimpleNamespace",
+          "lineNumber": 69
+        },
+        {
+          "caller": "test_collect_parses_and_flags",
+          "callee": "types.SimpleNamespace",
+          "lineNumber": 69
+        },
+        {
+          "caller": "test_collect_parses_and_flags",
+          "callee": "Batches",
+          "lineNumber": 69
+        },
+        {
+          "caller": "test_collect_parses_and_flags",
+          "callee": "list",
+          "lineNumber": 70
+        },
+        {
+          "caller": "test_collect_parses_and_flags",
+          "callee": "batch.collect",
+          "lineNumber": 70
+        },
+        {
+          "caller": "test_collect_parses_and_flags",
+          "callee": "out[2][2].lower",
+          "lineNumber": 73
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 5,
+        "functionCount": 5,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/tests/test_label_db.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 94,
+      "nonEmptyLines": 66,
+      "functions": [
+        {
+          "name": "_client",
+          "startLine": 8,
+          "endLine": 9,
+          "params": [
+            "handler"
+          ]
+        },
+        {
+          "name": "_env",
+          "startLine": 12,
+          "endLine": 14,
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_fetch_label_targets_filters",
+          "startLine": 17,
+          "endLine": 27,
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_fetch_scenes_two_calls",
+          "startLine": 30,
+          "endLine": 47,
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_fetch_scenes_no_subtitle",
+          "startLine": 50,
+          "endLine": 52,
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_ensure_model_versions_payload",
+          "startLine": 55,
+          "endLine": 67,
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_upsert_scene_scores_conflict",
+          "startLine": 70,
+          "endLine": 81,
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_set_label_state_posts",
+          "startLine": 84,
+          "endLine": 94,
+          "params": [
+            "monkeypatch"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "_client",
+          "line": 8,
+          "isDefault": false
+        },
+        {
+          "name": "_env",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "test_fetch_label_targets_filters",
+          "line": 17,
+          "isDefault": false
+        },
+        {
+          "name": "test_fetch_scenes_two_calls",
+          "line": 30,
+          "isDefault": false
+        },
+        {
+          "name": "test_fetch_scenes_no_subtitle",
+          "line": 50,
+          "isDefault": false
+        },
+        {
+          "name": "test_ensure_model_versions_payload",
+          "line": 55,
+          "isDefault": false
+        },
+        {
+          "name": "test_upsert_scene_scores_conflict",
+          "line": 70,
+          "isDefault": false
+        },
+        {
+          "name": "test_set_label_state_posts",
+          "line": 84,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_client",
+          "callee": "httpx.Client",
+          "lineNumber": 9
+        },
+        {
+          "caller": "_client",
+          "callee": "httpx.MockTransport",
+          "lineNumber": 9
+        },
+        {
+          "caller": "_env",
+          "callee": "monkeypatch.setenv",
+          "lineNumber": 13
+        },
+        {
+          "caller": "_env",
+          "callee": "monkeypatch.setenv",
+          "lineNumber": 14
+        },
+        {
+          "caller": "test_fetch_label_targets_filters",
+          "callee": "_env",
+          "lineNumber": 18
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 21
+        },
+        {
+          "caller": "test_fetch_label_targets_filters",
+          "callee": "db.fetch_label_targets",
+          "lineNumber": 27
+        },
+        {
+          "caller": "test_fetch_label_targets_filters",
+          "callee": "_client",
+          "lineNumber": 27
+        },
+        {
+          "caller": "test_fetch_scenes_two_calls",
+          "callee": "_env",
+          "lineNumber": 31
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 35
+        },
+        {
+          "caller": "handler",
+          "callee": "str",
+          "lineNumber": 36
+        },
+        {
+          "caller": "handler",
+          "callee": "str",
+          "lineNumber": 37
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 38
+        },
+        {
+          "caller": "test_fetch_scenes_two_calls",
+          "callee": "db.fetch_scenes",
+          "lineNumber": 43
+        },
+        {
+          "caller": "test_fetch_scenes_two_calls",
+          "callee": "_client",
+          "lineNumber": 43
+        },
+        {
+          "caller": "test_fetch_scenes_no_subtitle",
+          "callee": "_env",
+          "lineNumber": 51
+        },
+        {
+          "caller": "test_fetch_scenes_no_subtitle",
+          "callee": "db.fetch_scenes",
+          "lineNumber": 52
+        },
+        {
+          "caller": "test_fetch_scenes_no_subtitle",
+          "callee": "_client",
+          "lineNumber": 52
+        },
+        {
+          "caller": "test_fetch_scenes_no_subtitle",
+          "callee": "httpx.Response",
+          "lineNumber": 52
+        },
+        {
+          "caller": "test_ensure_model_versions_payload",
+          "callee": "_env",
+          "lineNumber": 56
+        },
+        {
+          "caller": "handler",
+          "callee": "str",
+          "lineNumber": 60
+        },
+        {
+          "caller": "handler",
+          "callee": "json.loads",
+          "lineNumber": 61
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 62
+        },
+        {
+          "caller": "test_ensure_model_versions_payload",
+          "callee": "db.ensure_model_versions",
+          "lineNumber": 64
+        },
+        {
+          "caller": "test_ensure_model_versions_payload",
+          "callee": "_client",
+          "lineNumber": 64
+        },
+        {
+          "caller": "test_upsert_scene_scores_conflict",
+          "callee": "_env",
+          "lineNumber": 71
+        },
+        {
+          "caller": "handler",
+          "callee": "str",
+          "lineNumber": 75
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 76
+        },
+        {
+          "caller": "test_upsert_scene_scores_conflict",
+          "callee": "db.upsert_scene_scores",
+          "lineNumber": 78
+        },
+        {
+          "caller": "test_upsert_scene_scores_conflict",
+          "callee": "_client",
+          "lineNumber": 78
+        },
+        {
+          "caller": "test_set_label_state_posts",
+          "callee": "_env",
+          "lineNumber": 85
+        },
+        {
+          "caller": "handler",
+          "callee": "json.loads",
+          "lineNumber": 89
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 90
+        },
+        {
+          "caller": "test_set_label_state_posts",
+          "callee": "db.set_label_state",
+          "lineNumber": 92
+        },
+        {
+          "caller": "test_set_label_state_posts",
+          "callee": "_client",
+          "lineNumber": 92
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 8,
+        "functionCount": 8,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/tests/test_label_main.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 79,
+      "nonEmptyLines": 65,
+      "functions": [
+        {
+          "name": "test_clamp",
+          "startLine": 5,
+          "endLine": 8,
+          "params": []
+        },
+        {
+          "name": "test_parse_to_rows_makes_two_rows_per_scene",
+          "startLine": 11,
+          "endLine": 24,
+          "params": []
+        },
+        {
+          "name": "test_run_writes_scores_and_states",
+          "startLine": 27,
+          "endLine": 59,
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_run_flags_failed",
+          "startLine": 62,
+          "endLine": 79,
+          "params": [
+            "monkeypatch"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "test_clamp",
+          "line": 5,
+          "isDefault": false
+        },
+        {
+          "name": "test_parse_to_rows_makes_two_rows_per_scene",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "test_run_writes_scores_and_states",
+          "line": 27,
+          "isDefault": false
+        },
+        {
+          "name": "test_run_flags_failed",
+          "line": 62,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "test_clamp",
+          "callee": "main._clamp",
+          "lineNumber": 6
+        },
+        {
+          "caller": "test_clamp",
+          "callee": "main._clamp",
+          "lineNumber": 7
+        },
+        {
+          "caller": "test_clamp",
+          "callee": "main._clamp",
+          "lineNumber": 8
+        },
+        {
+          "caller": "test_parse_to_rows_makes_two_rows_per_scene",
+          "callee": "main.parse_to_rows",
+          "lineNumber": 18
+        },
+        {
+          "caller": "test_run_writes_scores_and_states",
+          "callee": "monkeypatch.setenv",
+          "lineNumber": 28
+        },
+        {
+          "caller": "test_run_writes_scores_and_states",
+          "callee": "monkeypatch.setenv",
+          "lineNumber": 29
+        },
+        {
+          "caller": "test_run_writes_scores_and_states",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 30
+        },
+        {
+          "caller": "test_run_writes_scores_and_states",
+          "callee": "object",
+          "lineNumber": 30
+        },
+        {
+          "caller": "test_run_writes_scores_and_states",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 32
+        },
+        {
+          "caller": "test_run_writes_scores_and_states",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 33
+        },
+        {
+          "caller": "test_run_writes_scores_and_states",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 38
+        },
+        {
+          "caller": "test_run_writes_scores_and_states",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 41
+        },
+        {
+          "caller": "test_run_writes_scores_and_states",
+          "callee": "captured[\"scores\"].extend",
+          "lineNumber": 42
+        },
+        {
+          "caller": "test_run_writes_scores_and_states",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 43
+        },
+        {
+          "caller": "test_run_writes_scores_and_states",
+          "callee": "captured[\"states\"].append",
+          "lineNumber": 44
+        },
+        {
+          "caller": "test_run_writes_scores_and_states",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 46
+        },
+        {
+          "caller": "test_run_writes_scores_and_states",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 47
+        },
+        {
+          "caller": "test_run_writes_scores_and_states",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 48
+        },
+        {
+          "caller": "test_run_writes_scores_and_states",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 49
+        },
+        {
+          "caller": "test_run_writes_scores_and_states",
+          "callee": "iter",
+          "lineNumber": 49
+        },
+        {
+          "caller": "test_run_writes_scores_and_states",
+          "callee": "main.run",
+          "lineNumber": 53
+        },
+        {
+          "caller": "test_run_flags_failed",
+          "callee": "monkeypatch.setenv",
+          "lineNumber": 63
+        },
+        {
+          "caller": "test_run_flags_failed",
+          "callee": "monkeypatch.setenv",
+          "lineNumber": 64
+        },
+        {
+          "caller": "test_run_flags_failed",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 65
+        },
+        {
+          "caller": "test_run_flags_failed",
+          "callee": "object",
+          "lineNumber": 65
+        },
+        {
+          "caller": "test_run_flags_failed",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 66
+        },
+        {
+          "caller": "test_run_flags_failed",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 67
+        },
+        {
+          "caller": "test_run_flags_failed",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 68
+        },
+        {
+          "caller": "test_run_flags_failed",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 71
+        },
+        {
+          "caller": "test_run_flags_failed",
+          "callee": "states.append",
+          "lineNumber": 71
+        },
+        {
+          "caller": "test_run_flags_failed",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 72
+        },
+        {
+          "caller": "test_run_flags_failed",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 73
+        },
+        {
+          "caller": "test_run_flags_failed",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 74
+        },
+        {
+          "caller": "test_run_flags_failed",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 75
+        },
+        {
+          "caller": "test_run_flags_failed",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 76
+        },
+        {
+          "caller": "test_run_flags_failed",
+          "callee": "iter",
+          "lineNumber": 76
+        },
+        {
+          "caller": "test_run_flags_failed",
+          "callee": "main.run",
+          "lineNumber": 78
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 4,
+        "functionCount": 4,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/tests/test_label_prompt.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 22,
+      "nonEmptyLines": 16,
+      "functions": [
+        {
+          "name": "test_user_message_includes_indexed_scenes",
+          "startLine": 4,
+          "endLine": 11,
+          "params": []
+        },
+        {
+          "name": "test_rubric_mentions_both_axes",
+          "startLine": 14,
+          "endLine": 15,
+          "params": []
+        },
+        {
+          "name": "test_output_schema_has_only_two_axes",
+          "startLine": 18,
+          "endLine": 22,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "test_user_message_includes_indexed_scenes",
+          "line": 4,
+          "isDefault": false
+        },
+        {
+          "name": "test_rubric_mentions_both_axes",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "test_output_schema_has_only_two_axes",
+          "line": 18,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "test_user_message_includes_indexed_scenes",
+          "callee": "build_user_message",
+          "lineNumber": 9
+        },
+        {
+          "caller": "test_output_schema_has_only_two_axes",
+          "callee": "set",
+          "lineNumber": 20
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 3,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    }
+  ]
+}

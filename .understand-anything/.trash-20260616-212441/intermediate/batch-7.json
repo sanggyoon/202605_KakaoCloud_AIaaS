@@ -1,0 +1,238 @@
+{
+  "nodes": [
+    {
+      "id": "file:4K_FE/app/api/manager/auth/login/route.ts",
+      "type": "file",
+      "name": "route.ts",
+      "filePath": "4K_FE/app/api/manager/auth/login/route.ts",
+      "summary": "매니저 로그인 API 라우트로, 입력된 자격 증명을 검증한 뒤 세션 토큰을 발급해 HTTP-only 쿠키로 설정한다.",
+      "tags": ["api-handler", "authentication", "route-handler", "session"],
+      "complexity": "simple",
+      "languageNotes": "Next.js App Router의 POST 핸들러로 next/headers의 cookies()를 사용해 세션 쿠키를 설정한다."
+    },
+    {
+      "id": "function:4K_FE/app/api/manager/auth/login/route.ts:POST",
+      "type": "function",
+      "name": "POST",
+      "filePath": "4K_FE/app/api/manager/auth/login/route.ts",
+      "lineRange": [4, 26],
+      "summary": "요청 본문의 id/password를 verifyCredentials로 검증하고, 성공 시 sessionToken을 생성해 세션 쿠키에 저장한 후 JSON 응답을 반환한다.",
+      "tags": ["api-handler", "authentication", "login", "validation"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/api/manager/auth/logout/route.ts",
+      "type": "file",
+      "name": "route.ts",
+      "filePath": "4K_FE/app/api/manager/auth/logout/route.ts",
+      "summary": "매니저 로그아웃 API 라우트로, 세션 쿠키를 삭제해 로그인 상태를 해제한다.",
+      "tags": ["api-handler", "authentication", "route-handler", "session"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_FE/app/api/manager/auth/logout/route.ts:POST",
+      "type": "function",
+      "name": "POST",
+      "filePath": "4K_FE/app/api/manager/auth/logout/route.ts",
+      "lineRange": [4, 8],
+      "summary": "세션 쿠키를 삭제하고 성공 JSON 응답을 반환하는 로그아웃 핸들러.",
+      "tags": ["api-handler", "authentication", "logout", "session"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/app/lib/auth.ts",
+      "type": "file",
+      "name": "auth.ts",
+      "filePath": "4K_FE/app/lib/auth.ts",
+      "summary": "매니저 인증 핵심 유틸리티로, 자격 증명 검증, HMAC 기반 세션 토큰 생성, 타이밍 안전 세션 검증 함수를 제공한다.",
+      "tags": ["authentication", "utility", "security", "session", "crypto"],
+      "complexity": "simple",
+      "languageNotes": "Node.js crypto.createHmac(sha256)와 crypto.timingSafeEqual을 사용해 타이밍 공격에 안전한 세션 검증을 구현한다."
+    },
+    {
+      "id": "function:4K_FE/app/lib/auth.ts:verifyCredentials",
+      "type": "function",
+      "name": "verifyCredentials",
+      "filePath": "4K_FE/app/lib/auth.ts",
+      "lineRange": [16, 18],
+      "summary": "입력된 id/password를 설정된 매니저 자격 증명과 비교해 일치 여부를 반환한다.",
+      "tags": ["authentication", "validation", "credentials"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_FE/app/lib/auth.ts:sessionToken",
+      "type": "function",
+      "name": "sessionToken",
+      "filePath": "4K_FE/app/lib/auth.ts",
+      "lineRange": [21, 23],
+      "summary": "SESSION_SECRET으로 매니저 식별자에 HMAC-SHA256 서명을 적용해 세션 토큰을 생성한다.",
+      "tags": ["authentication", "security", "crypto", "session"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_FE/app/lib/auth.ts:isValidSession",
+      "type": "function",
+      "name": "isValidSession",
+      "filePath": "4K_FE/app/lib/auth.ts",
+      "lineRange": [26, 32],
+      "summary": "전달된 토큰을 기대 세션 토큰과 timingSafeEqual로 비교해 유효한 세션인지 안전하게 판별한다.",
+      "tags": ["authentication", "security", "validation", "session"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_FE/proxy.ts",
+      "type": "file",
+      "name": "proxy.ts",
+      "filePath": "4K_FE/proxy.ts",
+      "summary": "보호된 매니저 경로에 대한 Next.js 미들웨어로, 세션 쿠키를 검증해 인증되지 않은 요청을 로그인 페이지로 리다이렉트하거나 401을 반환한다.",
+      "tags": ["middleware", "authentication", "session", "routing"],
+      "complexity": "simple",
+      "languageNotes": "Next.js 미들웨어 패턴으로 NextResponse와 config matcher를 export하여 적용 경로를 제한한다."
+    },
+    {
+      "id": "function:4K_FE/proxy.ts:proxy",
+      "type": "function",
+      "name": "proxy",
+      "filePath": "4K_FE/proxy.ts",
+      "lineRange": [7, 24],
+      "summary": "요청 쿠키의 세션 토큰을 isValidSession으로 검증해, 유효하면 통과시키고 그렇지 않으면 API는 401, 페이지는 로그인 화면으로 리다이렉트한다.",
+      "tags": ["middleware", "authentication", "routing", "session"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:4K_FE/app/api/manager/auth/login/route.ts",
+      "target": "function:4K_FE/app/api/manager/auth/login/route.ts:POST",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_FE/app/api/manager/auth/login/route.ts",
+      "target": "function:4K_FE/app/api/manager/auth/login/route.ts:POST",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/app/api/manager/auth/login/route.ts",
+      "target": "file:4K_FE/app/lib/auth.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "function:4K_FE/app/api/manager/auth/login/route.ts:POST",
+      "target": "function:4K_FE/app/lib/auth.ts:verifyCredentials",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:4K_FE/app/api/manager/auth/login/route.ts:POST",
+      "target": "function:4K_FE/app/lib/auth.ts:sessionToken",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/app/api/manager/auth/logout/route.ts",
+      "target": "function:4K_FE/app/api/manager/auth/logout/route.ts:POST",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_FE/app/api/manager/auth/logout/route.ts",
+      "target": "function:4K_FE/app/api/manager/auth/logout/route.ts:POST",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/app/api/manager/auth/logout/route.ts",
+      "target": "file:4K_FE/app/lib/auth.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_FE/app/lib/auth.ts",
+      "target": "function:4K_FE/app/lib/auth.ts:verifyCredentials",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_FE/app/lib/auth.ts",
+      "target": "function:4K_FE/app/lib/auth.ts:verifyCredentials",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/app/lib/auth.ts",
+      "target": "function:4K_FE/app/lib/auth.ts:sessionToken",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_FE/app/lib/auth.ts",
+      "target": "function:4K_FE/app/lib/auth.ts:sessionToken",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/app/lib/auth.ts",
+      "target": "function:4K_FE/app/lib/auth.ts:isValidSession",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_FE/app/lib/auth.ts",
+      "target": "function:4K_FE/app/lib/auth.ts:isValidSession",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:4K_FE/app/lib/auth.ts:isValidSession",
+      "target": "function:4K_FE/app/lib/auth.ts:sessionToken",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/proxy.ts",
+      "target": "function:4K_FE/proxy.ts:proxy",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_FE/proxy.ts",
+      "target": "function:4K_FE/proxy.ts:proxy",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_FE/proxy.ts",
+      "target": "file:4K_FE/app/lib/auth.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "function:4K_FE/proxy.ts:proxy",
+      "target": "function:4K_FE/app/lib/auth.ts:isValidSession",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

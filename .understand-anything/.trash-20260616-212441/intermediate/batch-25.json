@@ -1,0 +1,82 @@
+{
+  "nodes": [
+    {
+      "id": "document:Documents/CICD 전략.md",
+      "type": "document",
+      "name": "CICD 전략.md",
+      "filePath": "Documents/CICD 전략.md",
+      "summary": "FE/BE 모노레포의 CI/CD 전략 문서로, GitHub Actions 기반 CI(트리거 조건, 권한 모델, 이미지 태그 전략, Docker 빌드 최적화)와 ArgoCD 기반 CD(Application 설정, Kustomize 이미지 패치, 롤링 업데이트)를 단계별로 설명한다.",
+      "tags": ["documentation", "ci-cd", "deployment", "gitops", "argocd"],
+      "complexity": "complex",
+      "languageNotes": "GitHub Actions → GHCR → ArgoCD → Kustomize로 이어지는 GitOps 이미지 태그 업데이트 경로를 중심으로 구성된 운영 문서."
+    },
+    {
+      "id": "document:Documents/서비스 개요.md",
+      "type": "document",
+      "name": "서비스 개요.md",
+      "filePath": "Documents/서비스 개요.md",
+      "summary": "4K Cinema 영화 추천 서비스의 개요 문서로, 주요 기능, 화면 구성(랜딩/대시보드/매니저), FE·BE·ML 기술 스택, vm4 Supabase DB 스키마, 그리고 ML 벡터 생성부터 영화 탐색·상세까지의 데이터 흐름을 정리한다.",
+      "tags": ["documentation", "overview", "entry-point", "architecture", "data-flow"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:Documents/인프라 구축 기록.md",
+      "type": "document",
+      "name": "인프라 구축 기록.md",
+      "filePath": "Documents/인프라 구축 기록.md",
+      "summary": "KakaoCloud K3s 클러스터 인프라 구축 기록으로, 네트워크/도메인/HTTPS, K3s 설치 옵션, Ingress-Nginx, GPU Operator, Longhorn 스토리지, Supabase, 모니터링, cert-manager, ArgoCD GitOps 구성과 트러블슈팅 및 보안 메모를 망라한다.",
+      "tags": ["documentation", "infrastructure", "kubernetes", "deployment", "gitops"],
+      "complexity": "complex",
+      "languageNotes": "vm1~vm5 멀티노드 K3s 구성과 data/ai/fe/be 네임스페이스 기준의 실제 구축 기록 및 트러블슈팅 누적 문서."
+    },
+    {
+      "id": "document:Documents/인프라 구축 방법(명령어).md",
+      "type": "document",
+      "name": "인프라 구축 방법(명령어).md",
+      "filePath": "Documents/인프라 구축 방법(명령어).md",
+      "summary": "Ansible 클러스터 프로비저닝부터 ingress-nginx·cert-manager·Longhorn·ArgoCD·모니터링·GPU Operator 설치, Supabase Secret/배포, Service DB 초기화, Redis, FE/BE 배포까지를 실행 명령어 단위로 정리한 인프라 구축 런북.",
+      "tags": ["documentation", "infrastructure", "runbook", "deployment", "kubernetes"],
+      "complexity": "complex",
+      "languageNotes": "Helm/kubectl/Ansible 명령어 중심의 재현 가능한 절차서로, Secret 생성과 ArgoCD Application 등록 등 최초 1회 작업을 명시한다."
+    },
+    {
+      "id": "document:Documents/프로젝트 디렉토리 구조.md",
+      "type": "document",
+      "name": "프로젝트 디렉토리 구조.md",
+      "filePath": "Documents/프로젝트 디렉토리 구조.md",
+      "summary": "KakaoCloud_Project 모노레포의 디렉토리 구조 문서로, .github/, 4K_FE/, 4K_BE/, 4K_ML/, Ansible/, Documents/ 각 영역의 역할과 전체 트리 및 ML 시계열 처리 상세를 설명한다.",
+      "tags": ["documentation", "overview", "architecture", "monorepo", "directory-structure"],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "document:Documents/서비스 개요.md",
+      "target": "document:Documents/프로젝트 디렉토리 구조.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:Documents/CICD 전략.md",
+      "target": "document:Documents/인프라 구축 기록.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:Documents/인프라 구축 방법(명령어).md",
+      "target": "document:Documents/인프라 구축 기록.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:Documents/인프라 구축 기록.md",
+      "target": "document:Documents/CICD 전략.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

@@ -1,0 +1,673 @@
+{
+  "nodes": [
+    {
+      "id": "file:4K_ML/serving/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "4K_ML/serving/__init__.py",
+      "summary": "serving 패키지를 정의하는 빈 패키지 마커 파일로, score_scenes 및 db 모듈을 같은 패키지로 묶는다.",
+      "tags": ["entry-point", "패키지-초기화", "barrel"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/serving/db.py",
+      "type": "file",
+      "name": "db.py",
+      "filePath": "4K_ML/serving/db.py",
+      "summary": "AI DB(PostgREST 스타일 REST API)에 접근하는 데이터 액세스 계층으로, 활성 모델 버전 조회, 채점 대상 선정, 장면 데이터 페치, 점수 upsert, 채점 상태 갱신을 담당한다.",
+      "tags": ["service", "data-access", "rest-client", "scoring", "database"],
+      "complexity": "moderate",
+      "languageNotes": "httpx 클라이언트와 환경변수 기반 인증 헤더(_headers/_auth)를 사용해 PostgREST 스타일 엔드포인트를 호출한다."
+    },
+    {
+      "id": "file:4K_ML/serving/score_scenes.py",
+      "type": "file",
+      "name": "score_scenes.py",
+      "filePath": "4K_ML/serving/score_scenes.py",
+      "summary": "원격 KServe/HTTP 예측기를 호출해 영화 장면의 peak score를 산출하고 AI DB에 반영하는 CPU 기반 채점 엔트리 스크립트.",
+      "tags": ["entry-point", "scoring", "service", "ml-inference", "data-pipeline"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_ML/serving/score_scenes_gpu.py",
+      "type": "file",
+      "name": "score_scenes_gpu.py",
+      "filePath": "4K_ML/serving/score_scenes_gpu.py",
+      "summary": "predict_core를 통해 로컬 GPU 아티팩트를 로드하고 추론하여 장면 점수를 산출한 뒤 AI DB에 upsert하는 GPU 기반 채점 엔트리 스크립트.",
+      "tags": ["entry-point", "scoring", "service", "ml-inference", "gpu"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_ML/tests/test_score_gpu.py",
+      "type": "file",
+      "name": "test_score_gpu.py",
+      "filePath": "4K_ML/tests/test_score_gpu.py",
+      "summary": "score_scenes_gpu의 scene_score_rows 축 매핑/클램핑과 run 전체 플로우(활성 모델 로드 후 upsert)를 monkeypatch로 검증하는 테스트.",
+      "tags": ["test", "scoring", "gpu", "unit-test"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/tests/test_score_main.py",
+      "type": "file",
+      "name": "test_score_main.py",
+      "filePath": "4K_ML/tests/test_score_main.py",
+      "summary": "score_scenes.run의 정상 채점/상태 전이 경로와 예외 발생 시 failed 상태 플래깅 경로를 monkeypatch로 검증하는 테스트.",
+      "tags": ["test", "scoring", "unit-test"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_ML/tests/test_score_targets.py",
+      "type": "file",
+      "name": "test_score_targets.py",
+      "filePath": "4K_ML/tests/test_score_targets.py",
+      "summary": "db.select_score_targets가 파싱 완료되고 아직 점수가 없는 장면만 채점 대상으로 선정하는지 검증하는 순수 함수 테스트.",
+      "tags": ["test", "scoring", "unit-test"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/tests/test_serving_db.py",
+      "type": "file",
+      "name": "test_serving_db.py",
+      "filePath": "4K_ML/tests/test_serving_db.py",
+      "summary": "httpx MockTransport로 AI DB REST 호출을 흉내내어 db 모듈의 채점 대상 페치, 장면 페치, 모델 버전 보장, 점수/상태 upsert를 검증하는 테스트.",
+      "tags": ["test", "data-access", "rest-client", "integration-test"],
+      "complexity": "moderate",
+      "languageNotes": "httpx.MockTransport를 사용해 외부 HTTP 의존성 없이 REST 핸들러 동작을 시뮬레이션한다."
+    },
+    {
+      "id": "function:4K_ML/serving/db.py:_get_all",
+      "type": "function",
+      "name": "_get_all",
+      "filePath": "4K_ML/serving/db.py",
+      "lineRange": [34, 44],
+      "summary": "페이지네이션을 적용해 지정 테이블의 모든 레코드를 반복 조회하여 합쳐 반환하는 내부 헬퍼.",
+      "tags": ["data-access", "pagination", "utility"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/serving/db.py:fetch_active_version",
+      "type": "function",
+      "name": "fetch_active_version",
+      "filePath": "4K_ML/serving/db.py",
+      "lineRange": [47, 54],
+      "summary": "model_versions 테이블에서 현재 활성(active) 모델 버전 레코드를 조회해 반환한다.",
+      "tags": ["data-access", "model-version", "scoring"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/serving/db.py:select_score_targets",
+      "type": "function",
+      "name": "select_score_targets",
+      "filePath": "4K_ML/serving/db.py",
+      "lineRange": [57, 68],
+      "summary": "파싱이 완료되고 아직 점수가 없는 장면이 하나라도 있는 영화만 채점 대상으로 선정하는 순수 선정 로직.",
+      "tags": ["scoring", "business-logic", "filtering"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/serving/db.py:fetch_score_targets",
+      "type": "function",
+      "name": "fetch_score_targets",
+      "filePath": "4K_ML/serving/db.py",
+      "lineRange": [71, 86],
+      "summary": "활성 버전, 파싱 상태, 장면-영화 매핑, 기존 점수를 종합 조회한 뒤 select_score_targets로 채점 대상 영화를 산출한다.",
+      "tags": ["data-access", "scoring", "orchestration"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_ML/serving/db.py:fetch_movie_scenes_for_scoring",
+      "type": "function",
+      "name": "fetch_movie_scenes_for_scoring",
+      "filePath": "4K_ML/serving/db.py",
+      "lineRange": [89, 117],
+      "summary": "특정 영화의 장면 메타데이터와 갭/특징 데이터를 조회·집계하여 예측기에 넣을 채점 입력 행을 구성한다.",
+      "tags": ["data-access", "feature-engineering", "scoring"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_ML/serving/db.py:ensure_model_versions",
+      "type": "function",
+      "name": "ensure_model_versions",
+      "filePath": "4K_ML/serving/db.py",
+      "lineRange": [120, 132],
+      "summary": "지정한 모델 버전 레코드가 DB에 존재하도록 upsert(POST)하고 실패 시 RuntimeError를 발생시킨다.",
+      "tags": ["data-access", "model-version", "upsert"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/serving/db.py:set_score_state",
+      "type": "function",
+      "name": "set_score_state",
+      "filePath": "4K_ML/serving/db.py",
+      "lineRange": [143, 150],
+      "summary": "영화의 채점 상태(state)와 오류 메시지, 타임스탬프를 DB에 기록해 채점 진행 상황을 추적한다.",
+      "tags": ["data-access", "state-management", "scoring"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/serving/score_scenes.py:run",
+      "type": "function",
+      "name": "run",
+      "filePath": "4K_ML/serving/score_scenes.py",
+      "lineRange": [25, 69],
+      "summary": "채점 대상 영화를 순회하며 원격 예측기를 호출하고 점수를 클램핑해 DB에 upsert하면서 채점 상태를 전이시키는 CPU 채점 메인 루프.",
+      "tags": ["entry-point", "scoring", "orchestration", "ml-inference"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_ML/serving/score_scenes.py:call_predictor",
+      "type": "function",
+      "name": "call_predictor",
+      "filePath": "4K_ML/serving/score_scenes.py",
+      "lineRange": [14, 18],
+      "summary": "원격 예측기 URL에 instances 페이로드를 POST하고 예측 결과 JSON을 반환하는 HTTP 호출 헬퍼.",
+      "tags": ["rest-client", "ml-inference", "utility"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/serving/score_scenes_gpu.py:run",
+      "type": "function",
+      "name": "run",
+      "filePath": "4K_ML/serving/score_scenes_gpu.py",
+      "lineRange": [29, 63],
+      "summary": "활성 모델 아티팩트를 로컬 로드하고 predict_core로 장면을 추론한 뒤 점수 행을 만들어 DB에 upsert하며 상태를 전이시키는 GPU 채점 메인 루프.",
+      "tags": ["entry-point", "scoring", "gpu", "orchestration", "ml-inference"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_ML/serving/score_scenes_gpu.py:scene_score_rows",
+      "type": "function",
+      "name": "scene_score_rows",
+      "filePath": "4K_ML/serving/score_scenes_gpu.py",
+      "lineRange": [18, 26],
+      "summary": "장면과 예측 결과를 zip으로 매핑하고 점수를 0~1로 클램핑해 DB upsert용 점수 행을 생성한다.",
+      "tags": ["scoring", "serialization", "utility"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/tests/test_score_gpu.py:test_run_flow_loads_active_model_and_upserts",
+      "type": "function",
+      "name": "test_run_flow_loads_active_model_and_upserts",
+      "filePath": "4K_ML/tests/test_score_gpu.py",
+      "lineRange": [16, 43],
+      "summary": "monkeypatch로 db/predict_core 의존성을 대체해 score_scenes_gpu.run이 활성 모델 로드 후 점수를 upsert하는 전체 흐름을 검증한다.",
+      "tags": ["test", "scoring", "gpu"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_ML/tests/test_score_main.py:test_run_scores_and_states",
+      "type": "function",
+      "name": "test_run_scores_and_states",
+      "filePath": "4K_ML/tests/test_score_main.py",
+      "lineRange": [4, 37],
+      "summary": "score_scenes.run의 정상 경로에서 점수 upsert와 채점 상태 전이가 기대대로 일어나는지 monkeypatch로 검증한다.",
+      "tags": ["test", "scoring"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_ML/tests/test_score_main.py:test_run_flags_failed",
+      "type": "function",
+      "name": "test_run_flags_failed",
+      "filePath": "4K_ML/tests/test_score_main.py",
+      "lineRange": [40, 57],
+      "summary": "채점 중 예외가 발생하면 score_scenes.run이 해당 영화 상태를 failed로 기록하는지 검증한다.",
+      "tags": ["test", "scoring", "error-handling"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/tests/test_score_targets.py:test_select_targets_only_missing_and_parsed",
+      "type": "function",
+      "name": "test_select_targets_only_missing_and_parsed",
+      "filePath": "4K_ML/tests/test_score_targets.py",
+      "lineRange": [4, 18],
+      "summary": "select_score_targets가 파싱 완료되고 점수가 없는 장면을 가진 영화만 대상으로 선정하는지 검증하는 단위 테스트.",
+      "tags": ["test", "scoring"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/tests/test_serving_db.py:test_fetch_score_targets",
+      "type": "function",
+      "name": "test_fetch_score_targets",
+      "filePath": "4K_ML/tests/test_serving_db.py",
+      "lineRange": [17, 43],
+      "summary": "MockTransport 핸들러로 여러 테이블 응답을 흉내내어 db.fetch_score_targets의 대상 선정을 검증한다.",
+      "tags": ["test", "data-access"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_ML/tests/test_serving_db.py:test_fetch_movie_scenes_for_scoring",
+      "type": "function",
+      "name": "test_fetch_movie_scenes_for_scoring",
+      "filePath": "4K_ML/tests/test_serving_db.py",
+      "lineRange": [46, 70],
+      "summary": "MockTransport로 장면/갭 응답을 모사해 db.fetch_movie_scenes_for_scoring의 채점 입력 행 구성을 검증한다.",
+      "tags": ["test", "data-access"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_ML/tests/test_serving_db.py:test_upsert_scene_scores_and_state",
+      "type": "function",
+      "name": "test_upsert_scene_scores_and_state",
+      "filePath": "4K_ML/tests/test_serving_db.py",
+      "lineRange": [88, 104],
+      "summary": "db.upsert_scene_scores와 set_score_state가 올바른 URL/페이로드로 POST 요청을 보내는지 MockTransport로 검증한다.",
+      "tags": ["test", "data-access", "upsert"],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:4K_ML/serving/score_scenes.py",
+      "target": "file:4K_ML/serving/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_ML/serving/score_scenes.py",
+      "target": "file:4K_ML/serving/db.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_ML/serving/score_scenes_gpu.py",
+      "target": "file:4K_ML/serving/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_ML/serving/score_scenes_gpu.py",
+      "target": "file:4K_ML/serving/db.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_ML/serving/score_scenes_gpu.py",
+      "target": "file:4K_ML/serving/predict_core.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_ML/tests/test_score_gpu.py",
+      "target": "file:4K_ML/serving/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_ML/tests/test_score_main.py",
+      "target": "file:4K_ML/serving/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_ML/tests/test_score_targets.py",
+      "target": "file:4K_ML/serving/db.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_ML/tests/test_serving_db.py",
+      "target": "file:4K_ML/serving/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_ML/tests/test_serving_db.py",
+      "target": "file:4K_ML/serving/db.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_ML/serving/db.py",
+      "target": "function:4K_ML/serving/db.py:_get_all",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/serving/db.py",
+      "target": "function:4K_ML/serving/db.py:fetch_active_version",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/serving/db.py",
+      "target": "function:4K_ML/serving/db.py:select_score_targets",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/serving/db.py",
+      "target": "function:4K_ML/serving/db.py:fetch_score_targets",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/serving/db.py",
+      "target": "function:4K_ML/serving/db.py:fetch_movie_scenes_for_scoring",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/serving/db.py",
+      "target": "function:4K_ML/serving/db.py:ensure_model_versions",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/serving/db.py",
+      "target": "function:4K_ML/serving/db.py:set_score_state",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/serving/db.py",
+      "target": "function:4K_ML/serving/db.py:_get_all",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_ML/serving/db.py",
+      "target": "function:4K_ML/serving/db.py:fetch_active_version",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_ML/serving/db.py",
+      "target": "function:4K_ML/serving/db.py:select_score_targets",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_ML/serving/db.py",
+      "target": "function:4K_ML/serving/db.py:fetch_score_targets",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_ML/serving/db.py",
+      "target": "function:4K_ML/serving/db.py:fetch_movie_scenes_for_scoring",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_ML/serving/db.py",
+      "target": "function:4K_ML/serving/db.py:ensure_model_versions",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_ML/serving/db.py",
+      "target": "function:4K_ML/serving/db.py:set_score_state",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:4K_ML/serving/db.py:fetch_score_targets",
+      "target": "function:4K_ML/serving/db.py:fetch_active_version",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:4K_ML/serving/db.py:fetch_score_targets",
+      "target": "function:4K_ML/serving/db.py:_get_all",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:4K_ML/serving/db.py:fetch_score_targets",
+      "target": "function:4K_ML/serving/db.py:select_score_targets",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_ML/serving/score_scenes.py",
+      "target": "function:4K_ML/serving/score_scenes.py:run",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/serving/score_scenes.py",
+      "target": "function:4K_ML/serving/score_scenes.py:call_predictor",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/serving/score_scenes.py",
+      "target": "function:4K_ML/serving/score_scenes.py:run",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_ML/serving/score_scenes.py",
+      "target": "function:4K_ML/serving/score_scenes.py:call_predictor",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:4K_ML/serving/score_scenes.py:run",
+      "target": "function:4K_ML/serving/score_scenes.py:call_predictor",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:4K_ML/serving/score_scenes.py:run",
+      "target": "function:4K_ML/serving/db.py:fetch_score_targets",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:4K_ML/serving/score_scenes.py:run",
+      "target": "function:4K_ML/serving/db.py:fetch_movie_scenes_for_scoring",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:4K_ML/serving/score_scenes.py:run",
+      "target": "function:4K_ML/serving/db.py:set_score_state",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:4K_ML/serving/score_scenes.py:run",
+      "target": "function:4K_ML/serving/db.py:ensure_model_versions",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_ML/serving/score_scenes_gpu.py",
+      "target": "function:4K_ML/serving/score_scenes_gpu.py:run",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/serving/score_scenes_gpu.py",
+      "target": "function:4K_ML/serving/score_scenes_gpu.py:scene_score_rows",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/serving/score_scenes_gpu.py",
+      "target": "function:4K_ML/serving/score_scenes_gpu.py:run",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_ML/serving/score_scenes_gpu.py",
+      "target": "function:4K_ML/serving/score_scenes_gpu.py:scene_score_rows",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:4K_ML/serving/score_scenes_gpu.py:run",
+      "target": "function:4K_ML/serving/score_scenes_gpu.py:scene_score_rows",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:4K_ML/serving/score_scenes_gpu.py:run",
+      "target": "function:4K_ML/serving/db.py:fetch_active_version",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:4K_ML/serving/score_scenes_gpu.py:run",
+      "target": "function:4K_ML/serving/db.py:fetch_score_targets",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:4K_ML/serving/score_scenes_gpu.py:run",
+      "target": "function:4K_ML/serving/db.py:fetch_movie_scenes_for_scoring",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:4K_ML/serving/score_scenes_gpu.py:run",
+      "target": "function:4K_ML/serving/db.py:ensure_model_versions",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:4K_ML/serving/score_scenes_gpu.py:run",
+      "target": "function:4K_ML/serving/db.py:set_score_state",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:4K_ML/serving/score_scenes_gpu.py:run",
+      "target": "function:4K_ML/serving/predict_core.py:load_artifacts",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:4K_ML/serving/score_scenes_gpu.py:run",
+      "target": "function:4K_ML/serving/predict_core.py:score_instances",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_ML/tests/test_score_gpu.py",
+      "target": "function:4K_ML/tests/test_score_gpu.py:test_run_flow_loads_active_model_and_upserts",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/tests/test_score_main.py",
+      "target": "function:4K_ML/tests/test_score_main.py:test_run_scores_and_states",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/tests/test_score_main.py",
+      "target": "function:4K_ML/tests/test_score_main.py:test_run_flags_failed",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/tests/test_score_targets.py",
+      "target": "function:4K_ML/tests/test_score_targets.py:test_select_targets_only_missing_and_parsed",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/tests/test_serving_db.py",
+      "target": "function:4K_ML/tests/test_serving_db.py:test_fetch_score_targets",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/tests/test_serving_db.py",
+      "target": "function:4K_ML/tests/test_serving_db.py:test_fetch_movie_scenes_for_scoring",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/tests/test_serving_db.py",
+      "target": "function:4K_ML/tests/test_serving_db.py:test_upsert_scene_scores_and_state",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/serving/score_scenes_gpu.py",
+      "target": "file:4K_ML/tests/test_score_gpu.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:4K_ML/serving/score_scenes.py",
+      "target": "file:4K_ML/tests/test_score_main.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:4K_ML/serving/db.py",
+      "target": "file:4K_ML/tests/test_score_targets.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:4K_ML/serving/db.py",
+      "target": "file:4K_ML/tests/test_serving_db.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

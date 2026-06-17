@@ -1,0 +1,455 @@
+{
+  "nodes": [
+    {
+      "id": "file:4K_ML/serving/predict_core.py",
+      "type": "file",
+      "name": "predict_core.py",
+      "filePath": "4K_ML/serving/predict_core.py",
+      "summary": "학습된 HybridRoberta 회귀 모델과 스케일러/토크나이저 아티팩트를 로드하고, 입력 인스턴스에 대해 0~1 범위의 peak-score를 추론하는 서빙 핵심 로직.",
+      "tags": ["서빙", "추론", "ml-model", "utility"],
+      "complexity": "simple",
+      "languageNotes": "torch.no_grad 컨텍스트와 모델 파라미터의 device를 따라 텐서를 이동시키는 추론 패턴 사용."
+    },
+    {
+      "id": "function:4K_ML/serving/predict_core.py:load_artifacts",
+      "type": "function",
+      "name": "load_artifacts",
+      "filePath": "4K_ML/serving/predict_core.py",
+      "lineRange": [15, 28],
+      "summary": "모델 디렉터리에서 config, 스케일러, 토크나이저, safetensors 가중치를 읽어 추론 가능한 모델 객체를 구성한다.",
+      "tags": ["서빙", "model-loading", "초기화"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/serving/predict_core.py:score_instances",
+      "type": "function",
+      "name": "score_instances",
+      "filePath": "4K_ML/serving/predict_core.py",
+      "lineRange": [35, 48],
+      "summary": "인스턴스 목록에서 수치 피처를 계산·스케일링하고 텍스트를 토큰화하여 모델로 peak-score를 추론, 0~1로 클램프한 점수 리스트를 반환한다.",
+      "tags": ["추론", "서빙", "scoring"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_ML/serving/predictor.py",
+      "type": "file",
+      "name": "predictor.py",
+      "filePath": "4K_ML/serving/predictor.py",
+      "summary": "FastAPI 애플리케이션 팩토리로, 시작 시 모델 아티팩트를 로드하고 /ready 헬스체크와 /predict 추론 엔드포인트를 제공한다.",
+      "tags": ["api-handler", "서빙", "fastapi", "factory"],
+      "complexity": "simple",
+      "languageNotes": "create_app 팩토리 + app.on_event(\"startup\") 지연 로딩 패턴으로 모델 상태를 클로저 dict에 보관."
+    },
+    {
+      "id": "function:4K_ML/serving/predictor.py:create_app",
+      "type": "function",
+      "name": "create_app",
+      "filePath": "4K_ML/serving/predictor.py",
+      "lineRange": [21, 46],
+      "summary": "FastAPI 인스턴스를 생성하고 startup 로더, /ready, /predict 라우트를 등록하는 앱 팩토리 함수.",
+      "tags": ["api-handler", "factory", "fastapi"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_ML/serving/serve.py",
+      "type": "file",
+      "name": "serve.py",
+      "filePath": "4K_ML/serving/serve.py",
+      "summary": "predictor.create_app과 기본 load_artifacts 로더로 ASGI app 객체를 구성하는 서빙 진입점.",
+      "tags": ["entry-point", "서빙", "fastapi"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/tests/test_predict_core.py",
+      "type": "file",
+      "name": "test_predict_core.py",
+      "filePath": "4K_ML/tests/test_predict_core.py",
+      "summary": "score_instances의 출력 형태/범위 검증과 빈 입력 처리에 대한 pytest 단위 테스트로, 가짜 토크나이저와 소형 모델을 사용한다.",
+      "tags": ["test", "서빙", "추론"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/tests/test_predictor.py",
+      "type": "file",
+      "name": "test_predictor.py",
+      "filePath": "4K_ML/tests/test_predictor.py",
+      "summary": "FastAPI TestClient로 /ready와 /predict 엔드포인트의 정상 응답을 검증하는 통합 성격의 pytest 테스트.",
+      "tags": ["test", "api-handler", "fastapi"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/tests/test_train_dataset.py",
+      "type": "file",
+      "name": "test_train_dataset.py",
+      "filePath": "4K_ML/tests/test_train_dataset.py",
+      "summary": "split_movies의 무중복·재현성과 SceneDataset 아이템 텐서 형태를 검증하는 pytest 테스트.",
+      "tags": ["test", "dataset", "ml-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/tests/test_train_db.py",
+      "type": "file",
+      "name": "test_train_db.py",
+      "filePath": "4K_ML/tests/test_train_db.py",
+      "summary": "httpx MockTransport로 AI DB REST 호출을 모킹하여 라벨 영화 조회, 씬 조립, 모델 버전 upsert 페이로드를 검증하는 pytest 테스트.",
+      "tags": ["test", "database", "http-mock"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_ML/tests/test_train_evaluate.py",
+      "type": "file",
+      "name": "test_train_evaluate.py",
+      "filePath": "4K_ML/tests/test_train_evaluate.py",
+      "summary": "mae, pearson, movie_spearman 평가 지표 함수들의 정확성과 엣지 케이스를 검증하는 pytest 테스트.",
+      "tags": ["test", "evaluation", "metrics"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/tests/test_train_features.py",
+      "type": "file",
+      "name": "test_train_features.py",
+      "filePath": "4K_ML/tests/test_train_features.py",
+      "summary": "compute_features 피처 순서·값과 Scaler의 fit/transform/저장-복원 라운드트립 및 zero-std NaN 방어를 검증하는 pytest 테스트.",
+      "tags": ["test", "feature-engineering", "serialization"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/tests/test_train_main.py",
+      "type": "file",
+      "name": "test_train_main.py",
+      "filePath": "4K_ML/tests/test_train_main.py",
+      "summary": "monkeypatch로 DB·토크나이저·모델을 대체하여 train_model.run의 전체 학습-저장 플로우와 split 무중복을 검증하는 pytest 테스트.",
+      "tags": ["test", "ml-pipeline", "training"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_ML/tests/test_train_model_arch.py",
+      "type": "file",
+      "name": "test_train_model_arch.py",
+      "filePath": "4K_ML/tests/test_train_model_arch.py",
+      "summary": "HybridRobertaRegressor의 forward 출력 형태와 0~1 범위를 소형 인코더로 검증하는 pytest 테스트.",
+      "tags": ["test", "ml-model", "architecture"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/train/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "4K_ML/train/__init__.py",
+      "summary": "train 디렉터리를 Python 패키지로 표시하는 빈 패키지 초기화 파일.",
+      "tags": ["entry-point", "barrel", "패키지"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/train/dataset.py",
+      "type": "file",
+      "name": "dataset.py",
+      "filePath": "4K_ML/train/dataset.py",
+      "summary": "영화 단위 train/val/test 분할(split_movies)과 토큰화·수치 피처를 결합한 PyTorch SceneDataset을 정의한다.",
+      "tags": ["dataset", "ml-pipeline", "data-model"],
+      "complexity": "simple",
+      "languageNotes": "torch.utils.data.Dataset의 __len__/__getitem__ 프로토콜 구현."
+    },
+    {
+      "id": "function:4K_ML/train/dataset.py:split_movies",
+      "type": "function",
+      "name": "split_movies",
+      "filePath": "4K_ML/train/dataset.py",
+      "lineRange": [10, 17],
+      "summary": "영화 ID 목록을 시드 기반으로 셔플하여 비율에 따라 train/val/test로 재현 가능하게 분할한다.",
+      "tags": ["dataset", "splitting", "reproducible"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:4K_ML/train/dataset.py:SceneDataset",
+      "type": "class",
+      "name": "SceneDataset",
+      "filePath": "4K_ML/train/dataset.py",
+      "lineRange": [20, 41],
+      "summary": "씬 레코드에서 텍스트를 토큰화하고 스케일링된 수치 피처와 타깃을 텐서로 제공하는 PyTorch Dataset.",
+      "tags": ["dataset", "data-model", "ml-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/train/db.py",
+      "type": "file",
+      "name": "db.py",
+      "filePath": "4K_ML/train/db.py",
+      "summary": "AI DB(PostgREST 스타일 REST)에 대한 인증 헤더 구성, 라벨 영화/씬 조회 및 모델 버전 upsert를 담당하는 데이터 액세스 계층.",
+      "tags": ["database", "data-access", "http-client"],
+      "complexity": "moderate",
+      "languageNotes": "환경변수 기반 base URL/auth 구성과 httpx 클라이언트 주입 패턴."
+    },
+    {
+      "id": "function:4K_ML/train/db.py:_headers",
+      "type": "function",
+      "name": "_headers",
+      "filePath": "4K_ML/train/db.py",
+      "lineRange": [19, 25],
+      "summary": "읽기/쓰기 여부에 따라 인증 토큰과 Content-Type을 포함한 REST 요청 헤더 dict를 생성한다.",
+      "tags": ["database", "auth", "utility"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/train/db.py:fetch_movie_scenes",
+      "type": "function",
+      "name": "fetch_movie_scenes",
+      "filePath": "4K_ML/train/db.py",
+      "lineRange": [43, 92],
+      "summary": "tmdb_id에 대한 씬, 대사, gap, 라벨 데이터를 여러 테이블에서 조회·병합하여 학습용 레코드 리스트로 조립한다.",
+      "tags": ["database", "data-access", "data-pipeline"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_ML/train/db.py:upsert_model_version",
+      "type": "function",
+      "name": "upsert_model_version",
+      "filePath": "4K_ML/train/db.py",
+      "lineRange": [95, 101],
+      "summary": "모델 버전·종류·메트릭 페이로드를 AI DB에 POST로 upsert하고 실패 시 RuntimeError를 발생시킨다.",
+      "tags": ["database", "data-access", "model-registry"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/train/evaluate.py",
+      "type": "file",
+      "name": "evaluate.py",
+      "filePath": "4K_ML/train/evaluate.py",
+      "summary": "MAE, Pearson 상관, 영화 단위 평균 Spearman 상관 등 회귀 평가 지표 함수 모음.",
+      "tags": ["evaluation", "metrics", "utility"],
+      "complexity": "simple",
+      "languageNotes": "scipy.stats의 pearsonr/spearmanr 활용, 상수 입력 시 0 반환 가드 포함."
+    },
+    {
+      "id": "function:4K_ML/train/evaluate.py:movie_spearman",
+      "type": "function",
+      "name": "movie_spearman",
+      "filePath": "4K_ML/train/evaluate.py",
+      "lineRange": [20, 34],
+      "summary": "예측·정답을 영화별로 그룹화한 뒤 영화 단위 Spearman 상관의 평균을 계산한다.",
+      "tags": ["evaluation", "metrics", "ranking"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_ML/train/evaluate.py:pearson",
+      "type": "function",
+      "name": "pearson",
+      "filePath": "4K_ML/train/evaluate.py",
+      "lineRange": [12, 17],
+      "summary": "예측값과 정답 간 Pearson 상관을 계산하며 표준편차가 0인 경우 0을 반환한다.",
+      "tags": ["evaluation", "metrics"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/train/features.py",
+      "type": "file",
+      "name": "features.py",
+      "filePath": "4K_ML/train/features.py",
+      "summary": "씬에서 수치 피처를 계산(compute_features)하고 표준화·저장/복원을 지원하는 Scaler 클래스를 제공하는 피처 엔지니어링 모듈.",
+      "tags": ["feature-engineering", "serialization", "ml-pipeline"],
+      "complexity": "moderate",
+      "languageNotes": "std가 0인 경우 np.where로 1로 치환하여 NaN을 방지하는 표준화 패턴."
+    },
+    {
+      "id": "function:4K_ML/train/features.py:compute_features",
+      "type": "function",
+      "name": "compute_features",
+      "filePath": "4K_ML/train/features.py",
+      "lineRange": [10, 20],
+      "summary": "씬 dict에서 진행도, 단어 수, 길이, 대사 수, gap 등의 수치 피처 벡터를 고정된 순서로 추출한다.",
+      "tags": ["feature-engineering", "utility"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:4K_ML/train/features.py:Scaler",
+      "type": "class",
+      "name": "Scaler",
+      "filePath": "4K_ML/train/features.py",
+      "lineRange": [23, 57],
+      "summary": "수치 피처에 대한 평균/표준편차 기반 표준화기로 fit/transform과 JSON 직렬화 저장·복원을 지원한다.",
+      "tags": ["feature-engineering", "serialization", "normalization"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_ML/train/model.py",
+      "type": "file",
+      "name": "model.py",
+      "filePath": "4K_ML/train/model.py",
+      "summary": "RoBERTa 인코더와 수치 피처를 결합해 sigmoid로 0~1 회귀값을 출력하는 HybridRobertaRegressor 모델과 인코더 빌더를 정의한다.",
+      "tags": ["ml-model", "architecture", "pytorch"],
+      "complexity": "simple",
+      "languageNotes": "nn.Module 서브클래스로 텍스트 임베딩과 numeric 피처를 torch.cat으로 결합하는 하이브리드 회귀 헤드."
+    },
+    {
+      "id": "class:4K_ML/train/model.py:HybridRobertaRegressor",
+      "type": "class",
+      "name": "HybridRobertaRegressor",
+      "filePath": "4K_ML/train/model.py",
+      "lineRange": [6, 23],
+      "summary": "RoBERTa [CLS] 임베딩과 수치 피처를 결합한 MLP 헤드로 0~1 peak-score를 회귀하는 PyTorch 모델.",
+      "tags": ["ml-model", "architecture", "pytorch"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/train/model.py:build_encoder",
+      "type": "function",
+      "name": "build_encoder",
+      "filePath": "4K_ML/train/model.py",
+      "lineRange": [26, 28],
+      "summary": "사전학습 RoBERTa 인코더를 이름으로 로드하는 헬퍼.",
+      "tags": ["ml-model", "factory"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/train/train_model.py",
+      "type": "file",
+      "name": "train_model.py",
+      "filePath": "4K_ML/train/train_model.py",
+      "summary": "AI DB에서 데이터를 로드해 분할·스케일링하고 HybridRobertaRegressor를 AMP·조기종료로 학습한 뒤 아티팩트 저장 및 모델 버전 upsert까지 수행하는 학습 오케스트레이션 진입점.",
+      "tags": ["entry-point", "training", "ml-pipeline", "orchestration"],
+      "complexity": "complex",
+      "languageNotes": "torch.amp GradScaler/autocast 혼합정밀 학습, patience 기반 조기종료, best state_dict 복원 패턴."
+    },
+    {
+      "id": "function:4K_ML/train/train_model.py:run",
+      "type": "function",
+      "name": "run",
+      "filePath": "4K_ML/train/train_model.py",
+      "lineRange": [76, 162],
+      "summary": "전체 학습 파이프라인을 구동하는 핵심 함수로 데이터 로드, split, 스케일러 fit, 모델 학습 루프, 평가, 아티팩트 저장, DB upsert를 수행한다.",
+      "tags": ["training", "orchestration", "ml-pipeline"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:4K_ML/train/train_model.py:_predict",
+      "type": "function",
+      "name": "_predict",
+      "filePath": "4K_ML/train/train_model.py",
+      "lineRange": [42, 52],
+      "summary": "주어진 레코드에 대해 배치 추론을 수행하여 예측 점수 배열을 반환하는 내부 헬퍼.",
+      "tags": ["추론", "training", "utility"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/train/train_model.py:_save",
+      "type": "function",
+      "name": "_save",
+      "filePath": "4K_ML/train/train_model.py",
+      "lineRange": [63, 73],
+      "summary": "모델 가중치(safetensors), 스케일러, split, config, 토크나이저를 출력 디렉터리에 저장하는 내부 헬퍼.",
+      "tags": ["training", "serialization", "utility"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/train/train_model.py:load_training_data",
+      "type": "function",
+      "name": "load_training_data",
+      "filePath": "4K_ML/train/train_model.py",
+      "lineRange": [21, 26],
+      "summary": "라벨된 영화 목록을 조회하고 각 영화의 씬을 가져와 학습 레코드 리스트로 합치는 데이터 로더.",
+      "tags": ["training", "data-access", "ml-pipeline"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {"source": "file:4K_ML/serving/predict_core.py", "target": "function:4K_ML/serving/predict_core.py:load_artifacts", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/serving/predict_core.py", "target": "function:4K_ML/serving/predict_core.py:score_instances", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/serving/predict_core.py", "target": "function:4K_ML/serving/predict_core.py:load_artifacts", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_ML/serving/predict_core.py", "target": "function:4K_ML/serving/predict_core.py:score_instances", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_ML/serving/predict_core.py", "target": "file:4K_ML/train/features.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/serving/predict_core.py", "target": "file:4K_ML/train/model.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "function:4K_ML/serving/predict_core.py:score_instances", "target": "function:4K_ML/train/features.py:compute_features", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_ML/serving/predict_core.py:load_artifacts", "target": "class:4K_ML/train/model.py:HybridRobertaRegressor", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_ML/serving/predict_core.py:load_artifacts", "target": "function:4K_ML/train/model.py:build_encoder", "type": "calls", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:4K_ML/serving/predictor.py", "target": "function:4K_ML/serving/predictor.py:create_app", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/serving/predictor.py", "target": "function:4K_ML/serving/predictor.py:create_app", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_ML/serving/predictor.py", "target": "file:4K_ML/serving/predict_core.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "function:4K_ML/serving/predictor.py:create_app", "target": "function:4K_ML/serving/predict_core.py:score_instances", "type": "calls", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:4K_ML/serving/serve.py", "target": "file:4K_ML/serving/predictor.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/serving/serve.py", "target": "function:4K_ML/serving/predictor.py:create_app", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_ML/serving/serve.py", "target": "function:4K_ML/serving/predict_core.py:load_artifacts", "type": "calls", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:4K_ML/tests/test_predict_core.py", "target": "file:4K_ML/serving/predict_core.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/tests/test_predict_core.py", "target": "file:4K_ML/train/features.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/tests/test_predict_core.py", "target": "file:4K_ML/train/model.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/serving/predict_core.py", "target": "file:4K_ML/tests/test_predict_core.py", "type": "tested_by", "direction": "forward", "weight": 0.5},
+
+    {"source": "file:4K_ML/tests/test_predictor.py", "target": "file:4K_ML/serving/predictor.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/tests/test_predictor.py", "target": "file:4K_ML/train/features.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/tests/test_predictor.py", "target": "file:4K_ML/train/model.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/serving/predictor.py", "target": "file:4K_ML/tests/test_predictor.py", "type": "tested_by", "direction": "forward", "weight": 0.5},
+
+    {"source": "file:4K_ML/tests/test_train_dataset.py", "target": "file:4K_ML/train/dataset.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/tests/test_train_dataset.py", "target": "file:4K_ML/train/features.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/train/dataset.py", "target": "file:4K_ML/tests/test_train_dataset.py", "type": "tested_by", "direction": "forward", "weight": 0.5},
+
+    {"source": "file:4K_ML/tests/test_train_db.py", "target": "file:4K_ML/train/__init__.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/tests/test_train_db.py", "target": "file:4K_ML/train/db.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/train/db.py", "target": "file:4K_ML/tests/test_train_db.py", "type": "tested_by", "direction": "forward", "weight": 0.5},
+
+    {"source": "file:4K_ML/tests/test_train_evaluate.py", "target": "file:4K_ML/train/evaluate.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/train/evaluate.py", "target": "file:4K_ML/tests/test_train_evaluate.py", "type": "tested_by", "direction": "forward", "weight": 0.5},
+
+    {"source": "file:4K_ML/tests/test_train_features.py", "target": "file:4K_ML/train/features.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/train/features.py", "target": "file:4K_ML/tests/test_train_features.py", "type": "tested_by", "direction": "forward", "weight": 0.5},
+
+    {"source": "file:4K_ML/tests/test_train_main.py", "target": "file:4K_ML/train/__init__.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/tests/test_train_main.py", "target": "file:4K_ML/train/model.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/train/train_model.py", "target": "file:4K_ML/tests/test_train_main.py", "type": "tested_by", "direction": "forward", "weight": 0.5},
+
+    {"source": "file:4K_ML/tests/test_train_model_arch.py", "target": "file:4K_ML/train/model.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/train/model.py", "target": "file:4K_ML/tests/test_train_model_arch.py", "type": "tested_by", "direction": "forward", "weight": 0.5},
+
+    {"source": "file:4K_ML/train/dataset.py", "target": "function:4K_ML/train/dataset.py:split_movies", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/train/dataset.py", "target": "class:4K_ML/train/dataset.py:SceneDataset", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/train/dataset.py", "target": "function:4K_ML/train/dataset.py:split_movies", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_ML/train/dataset.py", "target": "class:4K_ML/train/dataset.py:SceneDataset", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_ML/train/dataset.py", "target": "file:4K_ML/train/features.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "class:4K_ML/train/dataset.py:SceneDataset", "target": "function:4K_ML/train/features.py:compute_features", "type": "calls", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:4K_ML/train/db.py", "target": "function:4K_ML/train/db.py:_headers", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/train/db.py", "target": "function:4K_ML/train/db.py:fetch_movie_scenes", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/train/db.py", "target": "function:4K_ML/train/db.py:upsert_model_version", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/train/db.py", "target": "function:4K_ML/train/db.py:fetch_movie_scenes", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_ML/train/db.py", "target": "function:4K_ML/train/db.py:upsert_model_version", "type": "exports", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:4K_ML/train/evaluate.py", "target": "function:4K_ML/train/evaluate.py:movie_spearman", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/train/evaluate.py", "target": "function:4K_ML/train/evaluate.py:pearson", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/train/evaluate.py", "target": "function:4K_ML/train/evaluate.py:movie_spearman", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_ML/train/evaluate.py", "target": "function:4K_ML/train/evaluate.py:pearson", "type": "exports", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:4K_ML/train/features.py", "target": "function:4K_ML/train/features.py:compute_features", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/train/features.py", "target": "class:4K_ML/train/features.py:Scaler", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/train/features.py", "target": "function:4K_ML/train/features.py:compute_features", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_ML/train/features.py", "target": "class:4K_ML/train/features.py:Scaler", "type": "exports", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:4K_ML/train/model.py", "target": "class:4K_ML/train/model.py:HybridRobertaRegressor", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/train/model.py", "target": "function:4K_ML/train/model.py:build_encoder", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/train/model.py", "target": "class:4K_ML/train/model.py:HybridRobertaRegressor", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_ML/train/model.py", "target": "function:4K_ML/train/model.py:build_encoder", "type": "exports", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:4K_ML/train/train_model.py", "target": "function:4K_ML/train/train_model.py:run", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/train/train_model.py", "target": "function:4K_ML/train/train_model.py:_predict", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/train/train_model.py", "target": "function:4K_ML/train/train_model.py:_save", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/train/train_model.py", "target": "function:4K_ML/train/train_model.py:load_training_data", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/train/train_model.py", "target": "function:4K_ML/train/train_model.py:run", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_ML/train/train_model.py", "target": "file:4K_ML/train/__init__.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/train/train_model.py", "target": "file:4K_ML/train/dataset.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/train/train_model.py", "target": "file:4K_ML/train/db.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/train/train_model.py", "target": "file:4K_ML/train/evaluate.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/train/train_model.py", "target": "file:4K_ML/train/features.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/train/train_model.py", "target": "file:4K_ML/train/model.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "function:4K_ML/train/train_model.py:load_training_data", "target": "function:4K_ML/train/db.py:fetch_movie_scenes", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_ML/train/train_model.py:run", "target": "function:4K_ML/train/dataset.py:split_movies", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_ML/train/train_model.py:run", "target": "class:4K_ML/train/dataset.py:SceneDataset", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_ML/train/train_model.py:run", "target": "function:4K_ML/train/evaluate.py:movie_spearman", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_ML/train/train_model.py:run", "target": "function:4K_ML/train/evaluate.py:pearson", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_ML/train/train_model.py:run", "target": "class:4K_ML/train/features.py:Scaler", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_ML/train/train_model.py:run", "target": "function:4K_ML/train/features.py:compute_features", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_ML/train/train_model.py:run", "target": "class:4K_ML/train/model.py:HybridRobertaRegressor", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_ML/train/train_model.py:run", "target": "function:4K_ML/train/model.py:build_encoder", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_ML/train/train_model.py:run", "target": "function:4K_ML/train/db.py:upsert_model_version", "type": "calls", "direction": "forward", "weight": 0.8}
+  ]
+}

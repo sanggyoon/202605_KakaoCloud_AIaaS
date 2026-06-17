@@ -1,0 +1,12 @@
+{
+  "projectRoot": "/Users/sanggyoon/Documents/KakaoCloud_Project",
+  "batchFiles": [
+    {"path": "4K_FE/.env.example", "language": "config", "sizeLines": 19, "fileCategory": "config"},
+    {"path": "4K_FE/AGENTS.md", "language": "markdown", "sizeLines": 5, "fileCategory": "docs"},
+    {"path": "4K_FE/CLAUDE.md", "language": "markdown", "sizeLines": 1, "fileCategory": "docs"},
+    {"path": "4K_FE/README.md", "language": "markdown", "sizeLines": 36, "fileCategory": "docs"},
+    {"path": "4K_FE/package.json", "language": "json", "sizeLines": 27, "fileCategory": "config"},
+    {"path": "4K_FE/tsconfig.json", "language": "json", "sizeLines": 34, "fileCategory": "config"}
+  ],
+  "batchImportData": {}
+}

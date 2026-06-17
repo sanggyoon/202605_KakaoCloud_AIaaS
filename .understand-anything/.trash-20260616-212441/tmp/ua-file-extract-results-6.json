@@ -1,0 +1,1593 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 8,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "4K_ML/serving/__init__.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 1,
+      "nonEmptyLines": 0,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/serving/db.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 150,
+      "nonEmptyLines": 125,
+      "functions": [
+        {
+          "name": "_ai",
+          "startLine": 8,
+          "endLine": 9,
+          "params": []
+        },
+        {
+          "name": "_auth",
+          "startLine": 12,
+          "endLine": 14,
+          "params": []
+        },
+        {
+          "name": "_headers",
+          "startLine": 17,
+          "endLine": 23,
+          "params": [
+            "write"
+          ]
+        },
+        {
+          "name": "_get",
+          "startLine": 26,
+          "endLine": 31,
+          "params": [
+            "client",
+            "table",
+            "params"
+          ]
+        },
+        {
+          "name": "_get_all",
+          "startLine": 34,
+          "endLine": 44,
+          "params": [
+            "client",
+            "table",
+            "params"
+          ]
+        },
+        {
+          "name": "fetch_active_version",
+          "startLine": 47,
+          "endLine": 54,
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "select_score_targets",
+          "startLine": 57,
+          "endLine": 68,
+          "params": [
+            "parse_done",
+            "scene_to_movie",
+            "scored_scene_ids"
+          ]
+        },
+        {
+          "name": "fetch_score_targets",
+          "startLine": 71,
+          "endLine": 86,
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "fetch_movie_scenes_for_scoring",
+          "startLine": 89,
+          "endLine": 117,
+          "params": [
+            "client",
+            "tmdb_id"
+          ]
+        },
+        {
+          "name": "ensure_model_versions",
+          "startLine": 120,
+          "endLine": 132,
+          "params": [
+            "client",
+            "model_version"
+          ]
+        },
+        {
+          "name": "upsert_scene_scores",
+          "startLine": 135,
+          "endLine": 140,
+          "params": [
+            "client",
+            "rows"
+          ]
+        },
+        {
+          "name": "set_score_state",
+          "startLine": 143,
+          "endLine": 150,
+          "params": [
+            "client",
+            "tmdb_id",
+            "state",
+            "error"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "_ai",
+          "line": 8,
+          "isDefault": false
+        },
+        {
+          "name": "_auth",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "_headers",
+          "line": 17,
+          "isDefault": false
+        },
+        {
+          "name": "_get",
+          "line": 26,
+          "isDefault": false
+        },
+        {
+          "name": "_get_all",
+          "line": 34,
+          "isDefault": false
+        },
+        {
+          "name": "fetch_active_version",
+          "line": 47,
+          "isDefault": false
+        },
+        {
+          "name": "select_score_targets",
+          "line": 57,
+          "isDefault": false
+        },
+        {
+          "name": "fetch_score_targets",
+          "line": 71,
+          "isDefault": false
+        },
+        {
+          "name": "fetch_movie_scenes_for_scoring",
+          "line": 89,
+          "isDefault": false
+        },
+        {
+          "name": "ensure_model_versions",
+          "line": 120,
+          "isDefault": false
+        },
+        {
+          "name": "upsert_scene_scores",
+          "line": 135,
+          "isDefault": false
+        },
+        {
+          "name": "set_score_state",
+          "line": 143,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_ai",
+          "callee": "os.getenv",
+          "lineNumber": 9
+        },
+        {
+          "caller": "_ai",
+          "callee": "os.getenv",
+          "lineNumber": 9
+        },
+        {
+          "caller": "_auth",
+          "callee": "os.getenv",
+          "lineNumber": 13
+        },
+        {
+          "caller": "_auth",
+          "callee": "os.getenv",
+          "lineNumber": 14
+        },
+        {
+          "caller": "_headers",
+          "callee": "_ai",
+          "lineNumber": 18
+        },
+        {
+          "caller": "_get",
+          "callee": "_ai",
+          "lineNumber": 27
+        },
+        {
+          "caller": "_get",
+          "callee": "client.get",
+          "lineNumber": 28
+        },
+        {
+          "caller": "_get",
+          "callee": "_headers",
+          "lineNumber": 29
+        },
+        {
+          "caller": "_get",
+          "callee": "_auth",
+          "lineNumber": 29
+        },
+        {
+          "caller": "_get",
+          "callee": "r.raise_for_status",
+          "lineNumber": 30
+        },
+        {
+          "caller": "_get",
+          "callee": "r.json",
+          "lineNumber": 31
+        },
+        {
+          "caller": "_get_all",
+          "callee": "_get",
+          "lineNumber": 39
+        },
+        {
+          "caller": "_get_all",
+          "callee": "str",
+          "lineNumber": 39
+        },
+        {
+          "caller": "_get_all",
+          "callee": "out.extend",
+          "lineNumber": 40
+        },
+        {
+          "caller": "_get_all",
+          "callee": "len",
+          "lineNumber": 41
+        },
+        {
+          "caller": "fetch_active_version",
+          "callee": "_get",
+          "lineNumber": 49
+        },
+        {
+          "caller": "fetch_active_version",
+          "callee": "r.get",
+          "lineNumber": 51
+        },
+        {
+          "caller": "select_score_targets",
+          "callee": "scene_to_movie.items",
+          "lineNumber": 60
+        },
+        {
+          "caller": "select_score_targets",
+          "callee": "movie_scenes.setdefault(tmdb, []).append",
+          "lineNumber": 61
+        },
+        {
+          "caller": "select_score_targets",
+          "callee": "movie_scenes.setdefault",
+          "lineNumber": 61
+        },
+        {
+          "caller": "select_score_targets",
+          "callee": "movie_scenes.items",
+          "lineNumber": 63
+        },
+        {
+          "caller": "select_score_targets",
+          "callee": "any",
+          "lineNumber": 66
+        },
+        {
+          "caller": "select_score_targets",
+          "callee": "targets.append",
+          "lineNumber": 67
+        },
+        {
+          "caller": "fetch_score_targets",
+          "callee": "fetch_active_version",
+          "lineNumber": 73
+        },
+        {
+          "caller": "fetch_score_targets",
+          "callee": "_get_all",
+          "lineNumber": 74
+        },
+        {
+          "caller": "fetch_score_targets",
+          "callee": "r.get",
+          "lineNumber": 75
+        },
+        {
+          "caller": "fetch_score_targets",
+          "callee": "_get_all",
+          "lineNumber": 76
+        },
+        {
+          "caller": "fetch_score_targets",
+          "callee": "_get_all",
+          "lineNumber": 78
+        },
+        {
+          "caller": "fetch_score_targets",
+          "callee": "sub_map.get",
+          "lineNumber": 80
+        },
+        {
+          "caller": "fetch_score_targets",
+          "callee": "sub_map.get",
+          "lineNumber": 81
+        },
+        {
+          "caller": "fetch_score_targets",
+          "callee": "_get_all",
+          "lineNumber": 83
+        },
+        {
+          "caller": "fetch_score_targets",
+          "callee": "select_score_targets",
+          "lineNumber": 86
+        },
+        {
+          "caller": "fetch_movie_scenes_for_scoring",
+          "callee": "_get",
+          "lineNumber": 91
+        },
+        {
+          "caller": "fetch_movie_scenes_for_scoring",
+          "callee": "_get",
+          "lineNumber": 95
+        },
+        {
+          "caller": "fetch_movie_scenes_for_scoring",
+          "callee": "_get",
+          "lineNumber": 100
+        },
+        {
+          "caller": "fetch_movie_scenes_for_scoring",
+          "callee": "d.get",
+          "lineNumber": 104
+        },
+        {
+          "caller": "fetch_movie_scenes_for_scoring",
+          "callee": "gaps.setdefault(d[\"scenes_id\"], []).append",
+          "lineNumber": 106
+        },
+        {
+          "caller": "fetch_movie_scenes_for_scoring",
+          "callee": "gaps.setdefault",
+          "lineNumber": 106
+        },
+        {
+          "caller": "fetch_movie_scenes_for_scoring",
+          "callee": "float",
+          "lineNumber": 106
+        },
+        {
+          "caller": "fetch_movie_scenes_for_scoring",
+          "callee": "gaps.get",
+          "lineNumber": 109
+        },
+        {
+          "caller": "fetch_movie_scenes_for_scoring",
+          "callee": "out.append",
+          "lineNumber": 110
+        },
+        {
+          "caller": "fetch_movie_scenes_for_scoring",
+          "callee": "s.get",
+          "lineNumber": 112
+        },
+        {
+          "caller": "fetch_movie_scenes_for_scoring",
+          "callee": "s.get",
+          "lineNumber": 112
+        },
+        {
+          "caller": "fetch_movie_scenes_for_scoring",
+          "callee": "s.get",
+          "lineNumber": 114
+        },
+        {
+          "caller": "fetch_movie_scenes_for_scoring",
+          "callee": "sum",
+          "lineNumber": 115
+        },
+        {
+          "caller": "fetch_movie_scenes_for_scoring",
+          "callee": "len",
+          "lineNumber": 115
+        },
+        {
+          "caller": "ensure_model_versions",
+          "callee": "_ai",
+          "lineNumber": 122
+        },
+        {
+          "caller": "ensure_model_versions",
+          "callee": "client.post",
+          "lineNumber": 129
+        },
+        {
+          "caller": "ensure_model_versions",
+          "callee": "_headers",
+          "lineNumber": 130
+        },
+        {
+          "caller": "ensure_model_versions",
+          "callee": "_auth",
+          "lineNumber": 130
+        },
+        {
+          "caller": "ensure_model_versions",
+          "callee": "RuntimeError",
+          "lineNumber": 132
+        },
+        {
+          "caller": "upsert_scene_scores",
+          "callee": "_ai",
+          "lineNumber": 136
+        },
+        {
+          "caller": "upsert_scene_scores",
+          "callee": "client.post",
+          "lineNumber": 137
+        },
+        {
+          "caller": "upsert_scene_scores",
+          "callee": "_headers",
+          "lineNumber": 138
+        },
+        {
+          "caller": "upsert_scene_scores",
+          "callee": "_auth",
+          "lineNumber": 138
+        },
+        {
+          "caller": "upsert_scene_scores",
+          "callee": "RuntimeError",
+          "lineNumber": 140
+        },
+        {
+          "caller": "set_score_state",
+          "callee": "_ai",
+          "lineNumber": 144
+        },
+        {
+          "caller": "set_score_state",
+          "callee": "datetime.now(timezone.utc).isoformat",
+          "lineNumber": 146
+        },
+        {
+          "caller": "set_score_state",
+          "callee": "datetime.now",
+          "lineNumber": 146
+        },
+        {
+          "caller": "set_score_state",
+          "callee": "client.post",
+          "lineNumber": 147
+        },
+        {
+          "caller": "set_score_state",
+          "callee": "_headers",
+          "lineNumber": 148
+        },
+        {
+          "caller": "set_score_state",
+          "callee": "_auth",
+          "lineNumber": 148
+        },
+        {
+          "caller": "set_score_state",
+          "callee": "RuntimeError",
+          "lineNumber": 150
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 12,
+        "functionCount": 12,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/serving/score_scenes.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 73,
+      "nonEmptyLines": 61,
+      "functions": [
+        {
+          "name": "call_predictor",
+          "startLine": 14,
+          "endLine": 18,
+          "params": [
+            "url",
+            "instances"
+          ]
+        },
+        {
+          "name": "_clamp01",
+          "startLine": 21,
+          "endLine": 22,
+          "params": [
+            "x"
+          ]
+        },
+        {
+          "name": "run",
+          "startLine": 25,
+          "endLine": 69,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "call_predictor",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "_clamp01",
+          "line": 21,
+          "isDefault": false
+        },
+        {
+          "name": "run",
+          "line": 25,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "call_predictor",
+          "callee": "httpx.post",
+          "lineNumber": 16
+        },
+        {
+          "caller": "call_predictor",
+          "callee": "r.raise_for_status",
+          "lineNumber": 17
+        },
+        {
+          "caller": "call_predictor",
+          "callee": "r.json",
+          "lineNumber": 18
+        },
+        {
+          "caller": "_clamp01",
+          "callee": "float",
+          "lineNumber": 22
+        },
+        {
+          "caller": "_clamp01",
+          "callee": "min",
+          "lineNumber": 22
+        },
+        {
+          "caller": "_clamp01",
+          "callee": "max",
+          "lineNumber": 22
+        },
+        {
+          "caller": "_clamp01",
+          "callee": "float",
+          "lineNumber": 22
+        },
+        {
+          "caller": "run",
+          "callee": "os.getenv",
+          "lineNumber": 26
+        },
+        {
+          "caller": "run",
+          "callee": "SystemExit",
+          "lineNumber": 27
+        },
+        {
+          "caller": "run",
+          "callee": "os.getenv",
+          "lineNumber": 28
+        },
+        {
+          "caller": "run",
+          "callee": "SystemExit",
+          "lineNumber": 30
+        },
+        {
+          "caller": "run",
+          "callee": "set",
+          "lineNumber": 33
+        },
+        {
+          "caller": "run",
+          "callee": "httpx.Client",
+          "lineNumber": 34
+        },
+        {
+          "caller": "run",
+          "callee": "db.fetch_score_targets",
+          "lineNumber": 35
+        },
+        {
+          "caller": "run",
+          "callee": "db.fetch_movie_scenes_for_scoring",
+          "lineNumber": 38
+        },
+        {
+          "caller": "run",
+          "callee": "db.set_score_state",
+          "lineNumber": 40
+        },
+        {
+          "caller": "run",
+          "callee": "call_predictor",
+          "lineNumber": 49
+        },
+        {
+          "caller": "run",
+          "callee": "db.ensure_model_versions",
+          "lineNumber": 52
+        },
+        {
+          "caller": "run",
+          "callee": "ensured.add",
+          "lineNumber": 53
+        },
+        {
+          "caller": "run",
+          "callee": "zip",
+          "lineNumber": 56
+        },
+        {
+          "caller": "run",
+          "callee": "rows.append",
+          "lineNumber": 57
+        },
+        {
+          "caller": "run",
+          "callee": "_clamp01",
+          "lineNumber": 57
+        },
+        {
+          "caller": "run",
+          "callee": "rows.append",
+          "lineNumber": 59
+        },
+        {
+          "caller": "run",
+          "callee": "_clamp01",
+          "lineNumber": 59
+        },
+        {
+          "caller": "run",
+          "callee": "db.upsert_scene_scores",
+          "lineNumber": 61
+        },
+        {
+          "caller": "run",
+          "callee": "db.set_score_state",
+          "lineNumber": 62
+        },
+        {
+          "caller": "run",
+          "callee": "print",
+          "lineNumber": 64
+        },
+        {
+          "caller": "run",
+          "callee": "len",
+          "lineNumber": 64
+        },
+        {
+          "caller": "run",
+          "callee": "db.set_score_state",
+          "lineNumber": 66
+        },
+        {
+          "caller": "run",
+          "callee": "str",
+          "lineNumber": 66
+        },
+        {
+          "caller": "run",
+          "callee": "print",
+          "lineNumber": 68
+        },
+        {
+          "caller": "run",
+          "callee": "print",
+          "lineNumber": 69
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 3,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/serving/score_scenes_gpu.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 67,
+      "nonEmptyLines": 56,
+      "functions": [
+        {
+          "name": "_clamp01",
+          "startLine": 14,
+          "endLine": 15,
+          "params": [
+            "x"
+          ]
+        },
+        {
+          "name": "scene_score_rows",
+          "startLine": 18,
+          "endLine": 26,
+          "params": [
+            "scenes",
+            "preds",
+            "mv"
+          ]
+        },
+        {
+          "name": "run",
+          "startLine": 29,
+          "endLine": 63,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "_clamp01",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "scene_score_rows",
+          "line": 18,
+          "isDefault": false
+        },
+        {
+          "name": "run",
+          "line": 29,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_clamp01",
+          "callee": "float",
+          "lineNumber": 15
+        },
+        {
+          "caller": "_clamp01",
+          "callee": "min",
+          "lineNumber": 15
+        },
+        {
+          "caller": "_clamp01",
+          "callee": "max",
+          "lineNumber": 15
+        },
+        {
+          "caller": "_clamp01",
+          "callee": "float",
+          "lineNumber": 15
+        },
+        {
+          "caller": "scene_score_rows",
+          "callee": "zip",
+          "lineNumber": 21
+        },
+        {
+          "caller": "scene_score_rows",
+          "callee": "rows.append",
+          "lineNumber": 22
+        },
+        {
+          "caller": "scene_score_rows",
+          "callee": "_clamp01",
+          "lineNumber": 22
+        },
+        {
+          "caller": "scene_score_rows",
+          "callee": "rows.append",
+          "lineNumber": 24
+        },
+        {
+          "caller": "scene_score_rows",
+          "callee": "_clamp01",
+          "lineNumber": 24
+        },
+        {
+          "caller": "run",
+          "callee": "os.getenv",
+          "lineNumber": 30
+        },
+        {
+          "caller": "run",
+          "callee": "os.getenv",
+          "lineNumber": 30
+        },
+        {
+          "caller": "run",
+          "callee": "SystemExit",
+          "lineNumber": 31
+        },
+        {
+          "caller": "run",
+          "callee": "os.getenv",
+          "lineNumber": 32
+        },
+        {
+          "caller": "run",
+          "callee": "httpx.Client",
+          "lineNumber": 34
+        },
+        {
+          "caller": "run",
+          "callee": "db.fetch_active_version",
+          "lineNumber": 35
+        },
+        {
+          "caller": "run",
+          "callee": "print",
+          "lineNumber": 37
+        },
+        {
+          "caller": "run",
+          "callee": "predict_core.load_artifacts",
+          "lineNumber": 38
+        },
+        {
+          "caller": "run",
+          "callee": "int",
+          "lineNumber": 39
+        },
+        {
+          "caller": "run",
+          "callee": "cfg.get",
+          "lineNumber": 39
+        },
+        {
+          "caller": "run",
+          "callee": "db.ensure_model_versions",
+          "lineNumber": 40
+        },
+        {
+          "caller": "run",
+          "callee": "db.fetch_score_targets",
+          "lineNumber": 41
+        },
+        {
+          "caller": "run",
+          "callee": "print",
+          "lineNumber": 42
+        },
+        {
+          "caller": "run",
+          "callee": "len",
+          "lineNumber": 42
+        },
+        {
+          "caller": "run",
+          "callee": "db.fetch_movie_scenes_for_scoring",
+          "lineNumber": 45
+        },
+        {
+          "caller": "run",
+          "callee": "db.set_score_state",
+          "lineNumber": 47
+        },
+        {
+          "caller": "run",
+          "callee": "predict_core.score_instances",
+          "lineNumber": 56
+        },
+        {
+          "caller": "run",
+          "callee": "db.upsert_scene_scores",
+          "lineNumber": 57
+        },
+        {
+          "caller": "run",
+          "callee": "scene_score_rows",
+          "lineNumber": 57
+        },
+        {
+          "caller": "run",
+          "callee": "db.set_score_state",
+          "lineNumber": 58
+        },
+        {
+          "caller": "run",
+          "callee": "print",
+          "lineNumber": 62
+        },
+        {
+          "caller": "run",
+          "callee": "print",
+          "lineNumber": 63
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 3,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/tests/test_score_gpu.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 43,
+      "nonEmptyLines": 36,
+      "functions": [
+        {
+          "name": "test_scene_score_rows_maps_axes_and_clamps",
+          "startLine": 4,
+          "endLine": 13,
+          "params": []
+        },
+        {
+          "name": "test_run_flow_loads_active_model_and_upserts",
+          "startLine": 16,
+          "endLine": 43,
+          "params": [
+            "monkeypatch"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "test_scene_score_rows_maps_axes_and_clamps",
+          "line": 4,
+          "isDefault": false
+        },
+        {
+          "name": "test_run_flow_loads_active_model_and_upserts",
+          "line": 16,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "test_scene_score_rows_maps_axes_and_clamps",
+          "callee": "g.scene_score_rows",
+          "lineNumber": 7
+        },
+        {
+          "caller": "test_run_flow_loads_active_model_and_upserts",
+          "callee": "monkeypatch.setenv",
+          "lineNumber": 17
+        },
+        {
+          "caller": "test_run_flow_loads_active_model_and_upserts",
+          "callee": "monkeypatch.setenv",
+          "lineNumber": 18
+        },
+        {
+          "caller": "test_run_flow_loads_active_model_and_upserts",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 21
+        },
+        {
+          "caller": "test_run_flow_loads_active_model_and_upserts",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 23
+        },
+        {
+          "caller": "test_run_flow_loads_active_model_and_upserts",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 25
+        },
+        {
+          "caller": "test_run_flow_loads_active_model_and_upserts",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 26
+        },
+        {
+          "caller": "test_run_flow_loads_active_model_and_upserts",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 27
+        },
+        {
+          "caller": "test_run_flow_loads_active_model_and_upserts",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 28
+        },
+        {
+          "caller": "test_run_flow_loads_active_model_and_upserts",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 32
+        },
+        {
+          "caller": "test_run_flow_loads_active_model_and_upserts",
+          "callee": "calls[\"upsert\"].extend",
+          "lineNumber": 32
+        },
+        {
+          "caller": "test_run_flow_loads_active_model_and_upserts",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 33
+        },
+        {
+          "caller": "test_run_flow_loads_active_model_and_upserts",
+          "callee": "calls[\"states\"].append",
+          "lineNumber": 33
+        },
+        {
+          "caller": "test_run_flow_loads_active_model_and_upserts",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 38
+        },
+        {
+          "caller": "test_run_flow_loads_active_model_and_upserts",
+          "callee": "FakeClient",
+          "lineNumber": 38
+        },
+        {
+          "caller": "test_run_flow_loads_active_model_and_upserts",
+          "callee": "g.run",
+          "lineNumber": 40
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/tests/test_score_main.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 57,
+      "nonEmptyLines": 45,
+      "functions": [
+        {
+          "name": "test_run_scores_and_states",
+          "startLine": 4,
+          "endLine": 37,
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_run_flags_failed",
+          "startLine": 40,
+          "endLine": 57,
+          "params": [
+            "monkeypatch"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "test_run_scores_and_states",
+          "line": 4,
+          "isDefault": false
+        },
+        {
+          "name": "test_run_flags_failed",
+          "line": 40,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "test_run_scores_and_states",
+          "callee": "monkeypatch.setenv",
+          "lineNumber": 5
+        },
+        {
+          "caller": "test_run_scores_and_states",
+          "callee": "monkeypatch.setenv",
+          "lineNumber": 6
+        },
+        {
+          "caller": "test_run_scores_and_states",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 8
+        },
+        {
+          "caller": "test_run_scores_and_states",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 14
+        },
+        {
+          "caller": "test_run_scores_and_states",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 17
+        },
+        {
+          "caller": "test_run_scores_and_states",
+          "callee": "captured[\"ensured\"].append",
+          "lineNumber": 18
+        },
+        {
+          "caller": "test_run_scores_and_states",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 19
+        },
+        {
+          "caller": "test_run_scores_and_states",
+          "callee": "captured[\"scores\"].extend",
+          "lineNumber": 20
+        },
+        {
+          "caller": "test_run_scores_and_states",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 21
+        },
+        {
+          "caller": "test_run_scores_and_states",
+          "callee": "captured[\"states\"].append",
+          "lineNumber": 22
+        },
+        {
+          "caller": "test_run_scores_and_states",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 28
+        },
+        {
+          "caller": "test_run_scores_and_states",
+          "callee": "sc.run",
+          "lineNumber": 30
+        },
+        {
+          "caller": "test_run_flags_failed",
+          "callee": "monkeypatch.setenv",
+          "lineNumber": 41
+        },
+        {
+          "caller": "test_run_flags_failed",
+          "callee": "monkeypatch.setenv",
+          "lineNumber": 42
+        },
+        {
+          "caller": "test_run_flags_failed",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 43
+        },
+        {
+          "caller": "test_run_flags_failed",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 44
+        },
+        {
+          "caller": "test_run_flags_failed",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 47
+        },
+        {
+          "caller": "test_run_flags_failed",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 48
+        },
+        {
+          "caller": "test_run_flags_failed",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 50
+        },
+        {
+          "caller": "test_run_flags_failed",
+          "callee": "states.append",
+          "lineNumber": 50
+        },
+        {
+          "caller": "boom",
+          "callee": "RuntimeError",
+          "lineNumber": 53
+        },
+        {
+          "caller": "test_run_flags_failed",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 55
+        },
+        {
+          "caller": "test_run_flags_failed",
+          "callee": "sc.run",
+          "lineNumber": 56
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/tests/test_score_targets.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 18,
+      "nonEmptyLines": 14,
+      "functions": [
+        {
+          "name": "test_select_targets_only_missing_and_parsed",
+          "startLine": 4,
+          "endLine": 18,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "test_select_targets_only_missing_and_parsed",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "test_select_targets_only_missing_and_parsed",
+          "callee": "select_score_targets",
+          "lineNumber": 12
+        },
+        {
+          "caller": "test_select_targets_only_missing_and_parsed",
+          "callee": "select_score_targets",
+          "lineNumber": 15
+        },
+        {
+          "caller": "test_select_targets_only_missing_and_parsed",
+          "callee": "select_score_targets",
+          "lineNumber": 18
+        },
+        {
+          "caller": "test_select_targets_only_missing_and_parsed",
+          "callee": "set",
+          "lineNumber": 18
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/tests/test_serving_db.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 104,
+      "nonEmptyLines": 82,
+      "functions": [
+        {
+          "name": "_client",
+          "startLine": 8,
+          "endLine": 9,
+          "params": [
+            "handler"
+          ]
+        },
+        {
+          "name": "_env",
+          "startLine": 12,
+          "endLine": 14,
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_fetch_score_targets",
+          "startLine": 17,
+          "endLine": 43,
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_fetch_movie_scenes_for_scoring",
+          "startLine": 46,
+          "endLine": 70,
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_ensure_model_versions",
+          "startLine": 73,
+          "endLine": 85,
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_upsert_scene_scores_and_state",
+          "startLine": 88,
+          "endLine": 104,
+          "params": [
+            "monkeypatch"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "_client",
+          "line": 8,
+          "isDefault": false
+        },
+        {
+          "name": "_env",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "test_fetch_score_targets",
+          "line": 17,
+          "isDefault": false
+        },
+        {
+          "name": "test_fetch_movie_scenes_for_scoring",
+          "line": 46,
+          "isDefault": false
+        },
+        {
+          "name": "test_ensure_model_versions",
+          "line": 73,
+          "isDefault": false
+        },
+        {
+          "name": "test_upsert_scene_scores_and_state",
+          "line": 88,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_client",
+          "callee": "httpx.Client",
+          "lineNumber": 9
+        },
+        {
+          "caller": "_client",
+          "callee": "httpx.MockTransport",
+          "lineNumber": 9
+        },
+        {
+          "caller": "_env",
+          "callee": "monkeypatch.setenv",
+          "lineNumber": 13
+        },
+        {
+          "caller": "_env",
+          "callee": "monkeypatch.setenv",
+          "lineNumber": 14
+        },
+        {
+          "caller": "test_fetch_score_targets",
+          "callee": "_env",
+          "lineNumber": 18
+        },
+        {
+          "caller": "handler",
+          "callee": "str",
+          "lineNumber": 21
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 23
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 25
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 31
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 35
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 39
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 40
+        },
+        {
+          "caller": "test_fetch_score_targets",
+          "callee": "db.fetch_score_targets",
+          "lineNumber": 43
+        },
+        {
+          "caller": "test_fetch_score_targets",
+          "callee": "_client",
+          "lineNumber": 43
+        },
+        {
+          "caller": "test_fetch_movie_scenes_for_scoring",
+          "callee": "_env",
+          "lineNumber": 47
+        },
+        {
+          "caller": "handler",
+          "callee": "str",
+          "lineNumber": 50
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 52
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 54
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 59
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 63
+        },
+        {
+          "caller": "test_fetch_movie_scenes_for_scoring",
+          "callee": "db.fetch_movie_scenes_for_scoring",
+          "lineNumber": 65
+        },
+        {
+          "caller": "test_fetch_movie_scenes_for_scoring",
+          "callee": "_client",
+          "lineNumber": 65
+        },
+        {
+          "caller": "test_fetch_movie_scenes_for_scoring",
+          "callee": "len",
+          "lineNumber": 66
+        },
+        {
+          "caller": "test_ensure_model_versions",
+          "callee": "_env",
+          "lineNumber": 74
+        },
+        {
+          "caller": "handler",
+          "callee": "str",
+          "lineNumber": 78
+        },
+        {
+          "caller": "handler",
+          "callee": "json.loads",
+          "lineNumber": 79
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 80
+        },
+        {
+          "caller": "test_ensure_model_versions",
+          "callee": "db.ensure_model_versions",
+          "lineNumber": 82
+        },
+        {
+          "caller": "test_ensure_model_versions",
+          "callee": "_client",
+          "lineNumber": 82
+        },
+        {
+          "caller": "test_upsert_scene_scores_and_state",
+          "callee": "_env",
+          "lineNumber": 89
+        },
+        {
+          "caller": "handler",
+          "callee": "seen.setdefault(\"urls\", []).append",
+          "lineNumber": 93
+        },
+        {
+          "caller": "handler",
+          "callee": "seen.setdefault",
+          "lineNumber": 93
+        },
+        {
+          "caller": "handler",
+          "callee": "str",
+          "lineNumber": 93
+        },
+        {
+          "caller": "handler",
+          "callee": "str",
+          "lineNumber": 94
+        },
+        {
+          "caller": "handler",
+          "callee": "json.loads",
+          "lineNumber": 95
+        },
+        {
+          "caller": "handler",
+          "callee": "str",
+          "lineNumber": 96
+        },
+        {
+          "caller": "handler",
+          "callee": "json.loads",
+          "lineNumber": 97
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 98
+        },
+        {
+          "caller": "test_upsert_scene_scores_and_state",
+          "callee": "db.upsert_scene_scores",
+          "lineNumber": 100
+        },
+        {
+          "caller": "test_upsert_scene_scores_and_state",
+          "callee": "_client",
+          "lineNumber": 100
+        },
+        {
+          "caller": "test_upsert_scene_scores_and_state",
+          "callee": "db.set_score_state",
+          "lineNumber": 102
+        },
+        {
+          "caller": "test_upsert_scene_scores_and_state",
+          "callee": "_client",
+          "lineNumber": 102
+        },
+        {
+          "caller": "test_upsert_scene_scores_and_state",
+          "callee": "any",
+          "lineNumber": 103
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 6,
+        "functionCount": 6,
+        "classCount": 0
+      }
+    }
+  ]
+}

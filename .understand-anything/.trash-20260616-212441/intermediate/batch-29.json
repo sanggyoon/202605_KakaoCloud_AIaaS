@@ -1,0 +1,406 @@
+{
+  "nodes": [
+    {
+      "id": "file:4K_ML/.python-version",
+      "type": "file",
+      "name": ".python-version",
+      "filePath": "4K_ML/.python-version",
+      "summary": "ML 프로젝트의 Python 버전을 고정하는 pyenv 버전 파일.",
+      "tags": ["configuration", "python", "version-pin"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/db/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "4K_ML/db/__init__.py",
+      "summary": "db 패키지를 Python 패키지로 인식시키는 빈 초기화 파일.",
+      "tags": ["entry-point", "python", "package-init"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/db/apply_schema.py",
+      "type": "file",
+      "name": "apply_schema.py",
+      "filePath": "4K_ML/db/apply_schema.py",
+      "summary": "SQL 파일을 읽어 psycopg로 PostgreSQL(AI DB)에 스키마를 적용하는 헬퍼.",
+      "tags": ["database", "schema", "migration", "utility"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/generate_vectors/transform.py",
+      "type": "file",
+      "name": "transform.py",
+      "filePath": "4K_ML/generate_vectors/transform.py",
+      "summary": "장면별 peak 포인트를 등간격 리샘플 후 Savitzky-Golay로 평활하고 arousal은 z-score, valence는 원본 스케일로 정규화하는 신호 변환 모듈.",
+      "tags": ["data-pipeline", "signal-processing", "normalization", "utility"],
+      "complexity": "moderate",
+      "languageNotes": "numpy interp/linspace와 scipy savgol_filter를 사용한 시계열 평활 처리."
+    },
+    {
+      "id": "config:4K_ML/pytest.ini",
+      "type": "config",
+      "name": "pytest.ini",
+      "filePath": "4K_ML/pytest.ini",
+      "summary": "ML 프로젝트의 pytest 실행 설정 파일.",
+      "tags": ["configuration", "test", "pytest"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:4K_ML/requirements.txt",
+      "type": "document",
+      "name": "requirements.txt",
+      "filePath": "4K_ML/requirements.txt",
+      "summary": "ML 파이프라인의 Python 의존성 목록(numpy, scipy, psycopg, httpx 등).",
+      "tags": ["documentation", "dependencies", "python"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/serving/promote.py",
+      "type": "file",
+      "name": "promote.py",
+      "filePath": "4K_ML/serving/promote.py",
+      "summary": "후보 model_version을 현재 버전과 Spearman/MAE 지표로 비교해 승격 여부를 판정하는 승격 게이트.",
+      "tags": ["service", "ml-ops", "model-promotion", "validation"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/tests/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "4K_ML/tests/__init__.py",
+      "summary": "tests 패키지를 Python 패키지로 인식시키는 빈 초기화 파일.",
+      "tags": ["entry-point", "python", "package-init", "test"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/tests/test_gen_transform.py",
+      "type": "file",
+      "name": "test_gen_transform.py",
+      "filePath": "4K_ML/tests/test_gen_transform.py",
+      "summary": "transform.process_axis의 arousal z-score 정규화, valence 원본 스케일 유지, 평탄/소수 장면 처리 등을 검증하는 단위 테스트.",
+      "tags": ["test", "data-pipeline", "validation"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_ML/tests/test_promote.py",
+      "type": "file",
+      "name": "test_promote.py",
+      "filePath": "4K_ML/tests/test_promote.py",
+      "summary": "promote.decide의 승격/보류 판정 로직을 지표 조합별로 검증하는 단위 테스트.",
+      "tags": ["test", "ml-ops", "validation"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/tests/test_schema.py",
+      "type": "file",
+      "name": "test_schema.py",
+      "filePath": "4K_ML/tests/test_schema.py",
+      "summary": "apply_schema가 테이블을 생성하고 멱등하게 동작하며 외래키 제약을 강제하는지 실제 DB 연결로 검증하는 통합 테스트.",
+      "tags": ["test", "database", "integration-test", "schema"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:Ansible/ansible.cfg",
+      "type": "config",
+      "name": "ansible.cfg",
+      "filePath": "Ansible/ansible.cfg",
+      "summary": "Ansible 실행 기본 동작(인벤토리, SSH 등)을 정의하는 설정 파일.",
+      "tags": ["configuration", "ansible", "infrastructure"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/group_vars/all.yaml",
+      "type": "config",
+      "name": "all.yaml",
+      "filePath": "Ansible/group_vars/all.yaml",
+      "summary": "모든 Ansible 호스트 그룹에 공통 적용되는 변수 정의 파일(현재 비어 있음).",
+      "tags": ["configuration", "ansible", "group-vars"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/helm-values/ingress-nginx.yaml",
+      "type": "config",
+      "name": "ingress-nginx.yaml",
+      "filePath": "Ansible/helm-values/ingress-nginx.yaml",
+      "summary": "ingress-nginx 컨트롤러 Helm 차트의 controller 설정을 오버라이드하는 values 파일.",
+      "tags": ["configuration", "kubernetes", "helm", "ingress"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/helm-values/longhorn.yaml",
+      "type": "config",
+      "name": "longhorn.yaml",
+      "filePath": "Ansible/helm-values/longhorn.yaml",
+      "summary": "Longhorn 분산 스토리지 Helm 차트의 기본 설정, 매니저/드라이버/UI, 퍼시스턴스를 정의하는 values 파일.",
+      "tags": ["configuration", "kubernetes", "helm", "storage"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:aws/terraform/.terraform.lock.hcl",
+      "type": "file",
+      "name": ".terraform.lock.hcl",
+      "filePath": "aws/terraform/.terraform.lock.hcl",
+      "summary": "Terraform 공급자(provider) 버전과 해시를 고정하는 의존성 잠금 파일.",
+      "tags": ["infrastructure", "terraform", "lockfile", "dependencies"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:aws/terraform/lambda/dr_controller.py",
+      "type": "file",
+      "name": "dr_controller.py",
+      "filePath": "aws/terraform/lambda/dr_controller.py",
+      "summary": "Route53 헬스체크로 카카오클라우드 가용성을 판단해 장애 시 AWS ASG 용량을 조정하는 DR(재해 복구) 페일오버 Lambda 핸들러.",
+      "tags": ["service", "disaster-recovery", "aws-lambda", "failover"],
+      "complexity": "moderate",
+      "languageNotes": "boto3 route53/autoscaling 클라이언트를 사용한 멀티클라우드 페일오버 로직."
+    },
+    {
+      "id": "file:aws/terraform/ssm-params.sh.example",
+      "type": "file",
+      "name": "ssm-params.sh.example",
+      "filePath": "aws/terraform/ssm-params.sh.example",
+      "summary": "AWS SSM Parameter Store에 비밀/설정 값을 등록하는 예시 셸 스크립트 템플릿.",
+      "tags": ["infrastructure", "aws-ssm", "secrets", "example"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:aws/terraform/terraform.tfvars.example",
+      "type": "file",
+      "name": "terraform.tfvars.example",
+      "filePath": "aws/terraform/terraform.tfvars.example",
+      "summary": "Terraform 변수 값을 채우기 위한 예시 tfvars 템플릿.",
+      "tags": ["infrastructure", "terraform", "configuration", "example"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:aws/terraform/user_data_db.sh.tftpl",
+      "type": "file",
+      "name": "user_data_db.sh.tftpl",
+      "filePath": "aws/terraform/user_data_db.sh.tftpl",
+      "summary": "DB 인스턴스 부팅 시 초기 프로비저닝을 수행하는 Terraform user_data 셸 템플릿.",
+      "tags": ["infrastructure", "terraform", "provisioning", "database"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:aws/terraform/user_data.sh.tftpl",
+      "type": "file",
+      "name": "user_data.sh.tftpl",
+      "filePath": "aws/terraform/user_data.sh.tftpl",
+      "summary": "애플리케이션 인스턴스 부팅 시 초기 설정을 수행하는 Terraform user_data 셸 템플릿.",
+      "tags": ["infrastructure", "terraform", "provisioning", "bootstrap"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:readme.md",
+      "type": "document",
+      "name": "readme.md",
+      "filePath": "readme.md",
+      "summary": "KakaoCloud AIaaS 영화 추천 모노레포의 전체 개요 문서로 라이브 서비스, 기술 스택, 배포 파이프라인, 저장소 구조, 클러스터 구성을 설명.",
+      "tags": ["documentation", "entry-point", "overview"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_ML/db/apply_schema.py:apply_schema",
+      "type": "function",
+      "name": "apply_schema",
+      "filePath": "4K_ML/db/apply_schema.py",
+      "lineRange": [9, 15],
+      "summary": "SQL 파일을 읽어 psycopg 연결을 통해 대상 DB에 스키마 DDL을 실행.",
+      "tags": ["database", "schema", "utility"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/generate_vectors/transform.py:_resample_smooth",
+      "type": "function",
+      "name": "_resample_smooth",
+      "filePath": "4K_ML/generate_vectors/transform.py",
+      "lineRange": [15, 29],
+      "summary": "포인트 시퀀스를 등간격으로 보간 리샘플한 뒤 Savitzky-Golay 필터로 평활화.",
+      "tags": ["signal-processing", "utility", "data-pipeline"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_ML/generate_vectors/transform.py:process_axis",
+      "type": "function",
+      "name": "process_axis",
+      "filePath": "4K_ML/generate_vectors/transform.py",
+      "lineRange": [32, 43],
+      "summary": "축(arousal/valence)별로 평활 후 arousal은 z-score 정규화, valence는 0~1 클립으로 변환.",
+      "tags": ["signal-processing", "normalization", "data-pipeline"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_ML/serving/promote.py:decide",
+      "type": "function",
+      "name": "decide",
+      "filePath": "4K_ML/serving/promote.py",
+      "lineRange": [4, 14],
+      "summary": "candidate가 current 대비 Spearman 이상이고 MAE가 허용 오차 내이면 PROMOTE, 아니면 HOLD를 반환.",
+      "tags": ["ml-ops", "model-promotion", "validation"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:aws/terraform/lambda/dr_controller.py:_kakao_healthy",
+      "type": "function",
+      "name": "_kakao_healthy",
+      "filePath": "aws/terraform/lambda/dr_controller.py",
+      "lineRange": [20, 32],
+      "summary": "Route53 헬스체크 상태를 조회해 카카오클라우드 엔드포인트의 건강 여부를 판정.",
+      "tags": ["disaster-recovery", "health-check", "aws"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:aws/terraform/lambda/dr_controller.py:handler",
+      "type": "function",
+      "name": "handler",
+      "filePath": "aws/terraform/lambda/dr_controller.py",
+      "lineRange": [35, 56],
+      "summary": "헬스 상태에 따라 AWS Auto Scaling Group의 desired capacity를 조정하는 Lambda 진입점.",
+      "tags": ["disaster-recovery", "aws-lambda", "failover", "event-handler"],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:4K_ML/db/apply_schema.py",
+      "target": "function:4K_ML/db/apply_schema.py:apply_schema",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/db/apply_schema.py",
+      "target": "function:4K_ML/db/apply_schema.py:apply_schema",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_ML/generate_vectors/transform.py",
+      "target": "function:4K_ML/generate_vectors/transform.py:_resample_smooth",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/generate_vectors/transform.py",
+      "target": "function:4K_ML/generate_vectors/transform.py:process_axis",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/generate_vectors/transform.py",
+      "target": "function:4K_ML/generate_vectors/transform.py:process_axis",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_ML/serving/promote.py",
+      "target": "function:4K_ML/serving/promote.py:decide",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/serving/promote.py",
+      "target": "function:4K_ML/serving/promote.py:decide",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:aws/terraform/lambda/dr_controller.py",
+      "target": "function:aws/terraform/lambda/dr_controller.py:_kakao_healthy",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:aws/terraform/lambda/dr_controller.py",
+      "target": "function:aws/terraform/lambda/dr_controller.py:handler",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:aws/terraform/lambda/dr_controller.py",
+      "target": "function:aws/terraform/lambda/dr_controller.py:handler",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_ML/tests/test_gen_transform.py",
+      "target": "file:4K_ML/generate_vectors/transform.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_ML/tests/test_promote.py",
+      "target": "file:4K_ML/serving/promote.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_ML/tests/test_schema.py",
+      "target": "file:4K_ML/db/apply_schema.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_ML/generate_vectors/transform.py",
+      "target": "file:4K_ML/tests/test_gen_transform.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:4K_ML/serving/promote.py",
+      "target": "file:4K_ML/tests/test_promote.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:4K_ML/db/apply_schema.py",
+      "target": "file:4K_ML/tests/test_schema.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:4K_ML/pytest.ini",
+      "target": "file:4K_ML/tests/test_schema.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:4K_ML/pytest.ini",
+      "target": "file:4K_ML/tests/test_gen_transform.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:4K_ML/pytest.ini",
+      "target": "file:4K_ML/tests/test_promote.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:4K_ML/requirements.txt",
+      "target": "file:4K_ML/generate_vectors/transform.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

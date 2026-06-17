@@ -1,0 +1,25 @@
+{
+  "projectRoot": "/Users/sanggyoon/Documents/KakaoCloud_Project",
+  "batchFiles": [
+    {"path": "4K_ML/labeling/__init__.py", "language": "python", "sizeLines": 0, "fileCategory": "code"},
+    {"path": "4K_ML/labeling/batch.py", "language": "python", "sizeLines": 58, "fileCategory": "code"},
+    {"path": "4K_ML/labeling/db.py", "language": "python", "sizeLines": 91, "fileCategory": "code"},
+    {"path": "4K_ML/labeling/label_scenes.py", "language": "python", "sizeLines": 77, "fileCategory": "code"},
+    {"path": "4K_ML/labeling/prompt.py", "language": "python", "sizeLines": 46, "fileCategory": "code"},
+    {"path": "4K_ML/tests/test_label_batch.py", "language": "python", "sizeLines": 73, "fileCategory": "code"},
+    {"path": "4K_ML/tests/test_label_db.py", "language": "python", "sizeLines": 94, "fileCategory": "code"},
+    {"path": "4K_ML/tests/test_label_main.py", "language": "python", "sizeLines": 79, "fileCategory": "code"},
+    {"path": "4K_ML/tests/test_label_prompt.py", "language": "python", "sizeLines": 22, "fileCategory": "code"}
+  ],
+  "batchImportData": {
+    "4K_ML/labeling/__init__.py": [],
+    "4K_ML/labeling/batch.py": ["4K_ML/labeling/prompt.py"],
+    "4K_ML/labeling/db.py": [],
+    "4K_ML/labeling/label_scenes.py": ["4K_ML/labeling/__init__.py","4K_ML/labeling/batch.py","4K_ML/labeling/db.py"],
+    "4K_ML/labeling/prompt.py": [],
+    "4K_ML/tests/test_label_batch.py": ["4K_ML/labeling/__init__.py","4K_ML/labeling/batch.py"],
+    "4K_ML/tests/test_label_db.py": ["4K_ML/labeling/__init__.py","4K_ML/labeling/db.py"],
+    "4K_ML/tests/test_label_main.py": ["4K_ML/labeling/__init__.py","4K_ML/labeling/db.py"],
+    "4K_ML/tests/test_label_prompt.py": ["4K_ML/labeling/prompt.py"]
+  }
+}

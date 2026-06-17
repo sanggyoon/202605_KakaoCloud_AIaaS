@@ -1,0 +1,165 @@
+{
+  "projectRoot": "/Users/sanggyoon/Documents/KakaoCloud_Project",
+  "batchFiles": [
+    {
+      "path": "4K_FE/app/components/BackgroundThread.tsx",
+      "language": "typescript",
+      "sizeLines": 239,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/app/components/ClimaxGraph.tsx",
+      "language": "typescript",
+      "sizeLines": 142,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/app/components/DetailOverlay.tsx",
+      "language": "typescript",
+      "sizeLines": 650,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/app/components/FilterBar.tsx",
+      "language": "typescript",
+      "sizeLines": 683,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/app/components/MiniGraph.tsx",
+      "language": "typescript",
+      "sizeLines": 48,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/app/components/MovieDetailModal.tsx",
+      "language": "typescript",
+      "sizeLines": 456,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/app/components/PosterCard.tsx",
+      "language": "typescript",
+      "sizeLines": 329,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/app/components/RandomModal.tsx",
+      "language": "typescript",
+      "sizeLines": 192,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/app/components/Tutorial.tsx",
+      "language": "typescript",
+      "sizeLines": 225,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/app/dashboard/page.tsx",
+      "language": "typescript",
+      "sizeLines": 687,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/app/lib/climax.ts",
+      "language": "typescript",
+      "sizeLines": 137,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/app/lib/color.ts",
+      "language": "typescript",
+      "sizeLines": 52,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/app/lib/data.ts",
+      "language": "typescript",
+      "sizeLines": 265,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/app/lib/svgPath.ts",
+      "language": "typescript",
+      "sizeLines": 20,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/app/movie_list/page.tsx",
+      "language": "typescript",
+      "sizeLines": 324,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/app/movie_list/recent/page.tsx",
+      "language": "typescript",
+      "sizeLines": 95,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_FE/app/page.tsx",
+      "language": "typescript",
+      "sizeLines": 189,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "4K_FE/app/components/BackgroundThread.tsx": [],
+    "4K_FE/app/components/ClimaxGraph.tsx": [
+      "4K_FE/app/lib/climax.ts",
+      "4K_FE/app/lib/color.ts",
+      "4K_FE/app/lib/svgPath.ts"
+    ],
+    "4K_FE/app/components/DetailOverlay.tsx": [
+      "4K_FE/app/components/ClimaxGraph.tsx",
+      "4K_FE/app/components/MiniGraph.tsx",
+      "4K_FE/app/lib/climax.ts",
+      "4K_FE/app/lib/data.ts"
+    ],
+    "4K_FE/app/components/FilterBar.tsx": [
+      "4K_FE/app/lib/data.ts"
+    ],
+    "4K_FE/app/components/MiniGraph.tsx": [
+      "4K_FE/app/lib/climax.ts",
+      "4K_FE/app/lib/color.ts",
+      "4K_FE/app/lib/svgPath.ts"
+    ],
+    "4K_FE/app/components/MovieDetailModal.tsx": [
+      "4K_FE/app/lib/data.ts"
+    ],
+    "4K_FE/app/components/PosterCard.tsx": [
+      "4K_FE/app/lib/data.ts"
+    ],
+    "4K_FE/app/components/RandomModal.tsx": [
+      "4K_FE/app/lib/data.ts"
+    ],
+    "4K_FE/app/components/Tutorial.tsx": [
+      "4K_FE/app/components/MiniGraph.tsx"
+    ],
+    "4K_FE/app/dashboard/page.tsx": [
+      "4K_FE/app/components/BackgroundThread.tsx",
+      "4K_FE/app/components/DetailOverlay.tsx",
+      "4K_FE/app/components/FilterBar.tsx",
+      "4K_FE/app/components/PosterCard.tsx",
+      "4K_FE/app/components/RandomModal.tsx",
+      "4K_FE/app/components/Tutorial.tsx",
+      "4K_FE/app/lib/data.ts"
+    ],
+    "4K_FE/app/lib/climax.ts": [],
+    "4K_FE/app/lib/color.ts": [],
+    "4K_FE/app/lib/data.ts": [],
+    "4K_FE/app/lib/svgPath.ts": [],
+    "4K_FE/app/movie_list/page.tsx": [
+      "4K_FE/app/components/MovieDetailModal.tsx",
+      "4K_FE/app/lib/data.ts"
+    ],
+    "4K_FE/app/movie_list/recent/page.tsx": [
+      "4K_FE/app/lib/data.ts"
+    ],
+    "4K_FE/app/page.tsx": [
+      "4K_FE/app/components/BackgroundThread.tsx",
+      "4K_FE/app/lib/data.ts"
+    ]
+  }
+}

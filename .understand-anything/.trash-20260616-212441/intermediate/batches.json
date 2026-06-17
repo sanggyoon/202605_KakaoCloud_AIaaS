@@ -1,0 +1,2739 @@
+{
+  "schemaVersion": 1,
+  "algorithm": "louvain",
+  "totalFiles": 230,
+  "totalBatches": 29,
+  "exportsByPath": {
+    "4K_BE/.python-version": [],
+    "4K_BE/app/__init__.py": [],
+    "4K_BE/app/backfill_popular.py": [
+      "config_from_env",
+      "backfill_events",
+      "run_backfill",
+      "main"
+    ],
+    "4K_BE/app/jobs.py": [
+      "_now",
+      "_idle",
+      "get",
+      "_log_line",
+      "_run",
+      "start"
+    ],
+    "4K_BE/app/main.py": [
+      "health",
+      "list_movies",
+      "search_movies",
+      "recent_movies",
+      "backfill_now",
+      "subtitles_collect",
+      "job_status",
+      "subtitles_remaining",
+      "movie_detail",
+      "reprocess_movie",
+      "_active_base",
+      "_movie_processing",
+      "update_movie",
+      "add_movie",
+      "_reset_processing",
+      "delete_movie",
+      "log_visit",
+      "_parse_count",
+      "_count",
+      "active_model",
+      "_processing_counts",
+      "visits_range",
+      "stats"
+    ],
+    "4K_BE/app/subtitle_collect.py": [
+      "SubdlRateLimit",
+      "config_from_env",
+      "is_sdh",
+      "_is_full_season",
+      "_is_english",
+      "choose",
+      "_largest_srt",
+      "_subdl_key",
+      "ai_url",
+      "_ai_key",
+      "_ai_auth",
+      "ai_headers",
+      "search",
+      "download_and_extract",
+      "fetch_status",
+      "_is_terminal",
+      "remaining_counts",
+      "save_subtitle",
+      "set_status",
+      "collect_one",
+      "reset_downstream",
+      "collect_events",
+      "run",
+      "main"
+    ],
+    "4K_BE/app/tmdb_common.py": [
+      "_tmdb_key",
+      "data_url",
+      "_data_key",
+      "sb_headers",
+      "pick_trailer",
+      "build_movie",
+      "tmdb_discover",
+      "fetch_movie",
+      "get_existing_tmdb_ids",
+      "upsert_movies"
+    ],
+    "4K_BE/DB_SCRIPTS/seed_movies.py": [
+      "tmdb_get",
+      "pick_trailer",
+      "fetch_movie",
+      "get_existing_tmdb_ids",
+      "verify_insert",
+      "upsert_batch",
+      "main"
+    ],
+    "4K_BE/tests/__init__.py": [],
+    "4K_BE/tests/test_active_model.py": [
+      "_patch",
+      "test_active_model_returns_base_version",
+      "test_active_model_fallback"
+    ],
+    "4K_BE/tests/test_backfill.py": [
+      "_make_handler",
+      "_run",
+      "test_adds_only_missing_and_stops_at_max_new",
+      "test_idempotent_when_all_exist",
+      "test_paginates_until_max_new",
+      "test_stops_when_discover_empty",
+      "test_records_failed_fetches",
+      "test_respects_max_pages",
+      "test_backfill_events_streams_progress_then_done"
+    ],
+    "4K_BE/tests/test_collect_one.py": [
+      "_client",
+      "_fake_dl",
+      "test_collect_one_done_and_reset",
+      "test_collect_one_skipped_when_no_subtitle"
+    ],
+    "4K_BE/tests/test_delete_movie.py": [
+      "_patch",
+      "test_delete_cleans_vector_and_resets_processing"
+    ],
+    "4K_BE/tests/test_jobs.py": [
+      "_clear",
+      "_fake_ok",
+      "_fake_boom",
+      "test_get_defaults_idle",
+      "test_start_runs_and_records",
+      "test_start_dedupes_running",
+      "test_run_captures_exception"
+    ],
+    "4K_BE/tests/test_main_jobs.py": [
+      "_no_real_task",
+      "test_backfill_starts_movie_job_with_limit",
+      "test_collect_starts_subtitle_job",
+      "test_job_status_returns_state"
+    ],
+    "4K_BE/tests/test_main_recent.py": [
+      "_patch_client",
+      "test_recent_returns_movies",
+      "test_recent_clamps_limit"
+    ],
+    "4K_BE/tests/test_reprocess.py": [
+      "_patch",
+      "test_reprocess_resets_downstream",
+      "test_active_model_includes_metrics"
+    ],
+    "4K_BE/tests/test_stats.py": [
+      "_patch_client",
+      "test_log_visit_inserts",
+      "test_log_visit_requires_visitor_id",
+      "test_stats_returns_counts",
+      "test_stats_handles_missing_ai_env"
+    ],
+    "4K_BE/tests/test_subtitle_collect.py": [
+      "test_choose_prefers_sdh",
+      "test_choose_filters_non_english",
+      "test_choose_fallback_to_non_sdh",
+      "test_choose_skips_full_season",
+      "test_choose_empty_returns_none",
+      "test_largest_srt_picks_biggest",
+      "test_largest_srt_no_srt_raises",
+      "test_config_from_env_defaults",
+      "_zip_bytes",
+      "_client",
+      "test_search_parses_and_ratelimit",
+      "test_download_and_extract",
+      "_set_env",
+      "test_collect_events_happy",
+      "test_collect_events_skips_terminal_states",
+      "test_collect_events_retries_failed_under_cap",
+      "test_collect_events_increments_retry_on_failure",
+      "test_remaining_counts",
+      "test_collect_events_respects_max_new",
+      "test_collect_progress_has_result_fields",
+      "test_run_collect_consumes_to_done"
+    ],
+    "4K_BE/tests/test_tmdb_common.py": [
+      "test_pick_trailer_prefers_korean_youtube_trailer",
+      "test_pick_trailer_returns_none_when_no_match",
+      "test_build_movie_maps_fields",
+      "test_build_movie_handles_missing_fields",
+      "_client",
+      "test_tmdb_discover_returns_results",
+      "test_fetch_movie_builds_row",
+      "test_fetch_movie_returns_none_on_error",
+      "test_get_existing_tmdb_ids_parses_rows",
+      "test_upsert_movies_sends_ignore_duplicates"
+    ],
+    "4K_BE/tests/test_visits_range.py": [
+      "_patch",
+      "test_visits_range_counts",
+      "test_visits_range_bad_date"
+    ],
+    "4K_FE/app/api/manager/active-model/route.ts": [
+      "GET"
+    ],
+    "4K_FE/app/api/manager/auth/login/route.ts": [
+      "POST"
+    ],
+    "4K_FE/app/api/manager/auth/logout/route.ts": [
+      "POST"
+    ],
+    "4K_FE/app/api/manager/jobs/[type]/route.ts": [
+      "dynamic",
+      "GET"
+    ],
+    "4K_FE/app/api/manager/movies/[tmdb_id]/reprocess/route.ts": [
+      "POST"
+    ],
+    "4K_FE/app/api/manager/movies/[tmdb_id]/route.ts": [
+      "GET",
+      "PATCH",
+      "DELETE"
+    ],
+    "4K_FE/app/api/manager/movies/backfill/route.ts": [
+      "dynamic",
+      "POST"
+    ],
+    "4K_FE/app/api/manager/movies/recent/route.ts": [
+      "GET"
+    ],
+    "4K_FE/app/api/manager/movies/route.ts": [
+      "GET",
+      "POST"
+    ],
+    "4K_FE/app/api/manager/movies/search/route.ts": [
+      "GET"
+    ],
+    "4K_FE/app/api/manager/stats/route.ts": [
+      "GET"
+    ],
+    "4K_FE/app/api/manager/subtitles/collect/route.ts": [
+      "dynamic",
+      "POST"
+    ],
+    "4K_FE/app/api/manager/subtitles/remaining/route.ts": [
+      "GET"
+    ],
+    "4K_FE/app/api/manager/visits/range/route.ts": [
+      "GET"
+    ],
+    "4K_FE/app/api/visit/route.ts": [
+      "POST"
+    ],
+    "4K_FE/app/components/BackgroundThread.tsx": [],
+    "4K_FE/app/components/ClimaxGraph.tsx": [
+      "ClimaxGraph"
+    ],
+    "4K_FE/app/components/DetailOverlay.tsx": [
+      "DetailOverlay"
+    ],
+    "4K_FE/app/components/FilterBar.tsx": [
+      "FilterBar"
+    ],
+    "4K_FE/app/components/MiniGraph.tsx": [
+      "MiniGraph"
+    ],
+    "4K_FE/app/components/MovieDetailModal.tsx": [
+      "MovieDetailModal"
+    ],
+    "4K_FE/app/components/PosterCard.tsx": [
+      "PosterCard"
+    ],
+    "4K_FE/app/components/RandomModal.tsx": [
+      "RandomModal"
+    ],
+    "4K_FE/app/components/Tutorial.tsx": [
+      "Tutorial"
+    ],
+    "4K_FE/app/dashboard/page.tsx": [
+      "Dashboard"
+    ],
+    "4K_FE/app/layout.tsx": [
+      "metadata",
+      "RootLayout"
+    ],
+    "4K_FE/app/lib/auth.ts": [
+      "SESSION_COOKIE",
+      "SESSION_MAX_AGE",
+      "verifyCredentials",
+      "sessionToken",
+      "isValidSession"
+    ],
+    "4K_FE/app/lib/climax.ts": [
+      "cosineSimilarity",
+      "toDisplayScale",
+      "climaxMetrics",
+      "topPeaks",
+      "climaxDescriptor",
+      "meanCenter"
+    ],
+    "4K_FE/app/lib/color.ts": [
+      "valenceColorAt",
+      "valenceToUnit",
+      "valenceGradientStops"
+    ],
+    "4K_FE/app/lib/data.ts": [
+      "posterUrl",
+      "genreList",
+      "castList",
+      "SUPABASE_URL",
+      "SUPABASE_ANON_KEY",
+      "GENRES",
+      "INITIAL_FILTERS",
+      "fetchPreferredMovies",
+      "fetchSimilarMovies",
+      "fetchMovieVectors",
+      "fetchVector",
+      "getActiveVersion",
+      "fetchVectorPair",
+      "fetchMovieVectorPairs",
+      "getRecentIds",
+      "addRecentId",
+      "removeRecentId",
+      "logVisit"
+    ],
+    "4K_FE/app/lib/svgPath.ts": [
+      "catmullRomPath"
+    ],
+    "4K_FE/app/login/page.tsx": [
+      "LoginPage"
+    ],
+    "4K_FE/app/manager/page.tsx": [
+      "ManagerPage"
+    ],
+    "4K_FE/app/movie_list/page.tsx": [
+      "MovieListPage"
+    ],
+    "4K_FE/app/movie_list/recent/page.tsx": [
+      "RecentPage"
+    ],
+    "4K_FE/app/page.tsx": [
+      "OnboardingPage"
+    ],
+    "4K_FE/eslint.config.mjs": [],
+    "4K_FE/next.config.ts": [],
+    "4K_FE/postcss.config.mjs": [],
+    "4K_FE/proxy.ts": [
+      "proxy",
+      "config"
+    ],
+    "4K_ML/.python-version": [],
+    "4K_ML/db/__init__.py": [],
+    "4K_ML/db/apply_schema.py": [
+      "apply_schema"
+    ],
+    "4K_ML/generate_vectors/__init__.py": [],
+    "4K_ML/generate_vectors/db.py": [
+      "_ai",
+      "_ai_auth",
+      "_ai_headers",
+      "_ai_get_all",
+      "fetch_scene_index",
+      "fetch_axis_scores",
+      "build_series",
+      "_data",
+      "_data_auth",
+      "_data_headers",
+      "upsert_vectors",
+      "set_has_vector",
+      "fetch_active_version",
+      "fetch_vectored_tmdbs",
+      "reconcile_has_vector",
+      "set_vector_state"
+    ],
+    "4K_ML/generate_vectors/generate_vectors.py": [
+      "select_vector_targets",
+      "build_rows",
+      "run"
+    ],
+    "4K_ML/generate_vectors/transform.py": [
+      "_resample_smooth",
+      "process_axis"
+    ],
+    "4K_ML/labeling/__init__.py": [],
+    "4K_ML/labeling/batch.py": [
+      "build_requests",
+      "submit",
+      "poll",
+      "collect"
+    ],
+    "4K_ML/labeling/db.py": [
+      "_ai",
+      "_auth",
+      "_headers",
+      "fetch_label_targets",
+      "fetch_scenes",
+      "ensure_model_versions",
+      "upsert_scene_scores",
+      "set_label_state"
+    ],
+    "4K_ML/labeling/label_scenes.py": [
+      "_clamp",
+      "parse_to_rows",
+      "run"
+    ],
+    "4K_ML/labeling/prompt.py": [
+      "build_user_message"
+    ],
+    "4K_ML/serving/__init__.py": [],
+    "4K_ML/serving/db.py": [
+      "_ai",
+      "_auth",
+      "_headers",
+      "_get",
+      "_get_all",
+      "fetch_active_version",
+      "select_score_targets",
+      "fetch_score_targets",
+      "fetch_movie_scenes_for_scoring",
+      "ensure_model_versions",
+      "upsert_scene_scores",
+      "set_score_state"
+    ],
+    "4K_ML/serving/predict_core.py": [
+      "load_artifacts",
+      "_clamp01",
+      "score_instances"
+    ],
+    "4K_ML/serving/predictor.py": [
+      "PredictRequest",
+      "create_app"
+    ],
+    "4K_ML/serving/promote.py": [
+      "decide"
+    ],
+    "4K_ML/serving/score_scenes_gpu.py": [
+      "_clamp01",
+      "scene_score_rows",
+      "run"
+    ],
+    "4K_ML/serving/score_scenes.py": [
+      "call_predictor",
+      "_clamp01",
+      "run"
+    ],
+    "4K_ML/serving/serve.py": [],
+    "4K_ML/subtitle_parse/__init__.py": [],
+    "4K_ML/subtitle_parse/db.py": [
+      "_ai",
+      "_auth",
+      "_headers",
+      "fetch_targets",
+      "fetch_subtitle",
+      "upsert_scenes",
+      "upsert_dialogues",
+      "set_parse_state"
+    ],
+    "4K_ML/subtitle_parse/embed.py": [
+      "_get_model",
+      "embed_texts"
+    ],
+    "4K_ML/subtitle_parse/features.py": [
+      "line_features"
+    ],
+    "4K_ML/subtitle_parse/parse_subtitles.py": [
+      "parse_one",
+      "run"
+    ],
+    "4K_ML/subtitle_parse/scenes.py": [
+      "config_from_env",
+      "split_method",
+      "_cosine",
+      "split_scenes"
+    ],
+    "4K_ML/subtitle_parse/srt.py": [
+      "Cue",
+      "_ts_to_ms",
+      "parse_srt"
+    ],
+    "4K_ML/tests/__init__.py": [],
+    "4K_ML/tests/test_features.py": [
+      "test_features_basic",
+      "test_empty"
+    ],
+    "4K_ML/tests/test_gen_db.py": [
+      "test_build_series_joins_score_scene_subtitle",
+      "test_fetch_axis_scores_paginates"
+    ],
+    "4K_ML/tests/test_gen_run.py": [
+      "test_build_rows_arousal_required_valence_optional"
+    ],
+    "4K_ML/tests/test_gen_transform.py": [
+      "_peak_points",
+      "test_arousal_zscore_centered_unit_variance",
+      "test_valence_raw_keeps_scale",
+      "test_flat_arousal_none_valence_raw",
+      "test_too_few_scenes_none"
+    ],
+    "4K_ML/tests/test_label_batch.py": [
+      "test_build_requests_one_per_movie",
+      "test_submit_returns_id_and_prints",
+      "test_poll_until_ended",
+      "_result",
+      "test_collect_parses_and_flags"
+    ],
+    "4K_ML/tests/test_label_db.py": [
+      "_client",
+      "_env",
+      "test_fetch_label_targets_filters",
+      "test_fetch_scenes_two_calls",
+      "test_fetch_scenes_no_subtitle",
+      "test_ensure_model_versions_payload",
+      "test_upsert_scene_scores_conflict",
+      "test_set_label_state_posts"
+    ],
+    "4K_ML/tests/test_label_main.py": [
+      "test_clamp",
+      "test_parse_to_rows_makes_two_rows_per_scene",
+      "test_run_writes_scores_and_states",
+      "test_run_flags_failed"
+    ],
+    "4K_ML/tests/test_label_prompt.py": [
+      "test_user_message_includes_indexed_scenes",
+      "test_rubric_mentions_both_axes",
+      "test_output_schema_has_only_two_axes"
+    ],
+    "4K_ML/tests/test_parse_db.py": [
+      "_client",
+      "_env",
+      "test_fetch_targets_filters",
+      "test_upsert_scenes_returns_rows",
+      "test_set_parse_state_posts"
+    ],
+    "4K_ML/tests/test_parse_main.py": [
+      "test_parse_one_builds_scenes_and_dialogues",
+      "test_parse_one_raises_on_empty"
+    ],
+    "4K_ML/tests/test_predict_core.py": [
+      "_FakeTok",
+      "_tiny_model",
+      "_inst",
+      "test_score_instances_shape_and_range",
+      "test_score_instances_empty"
+    ],
+    "4K_ML/tests/test_predictor.py": [
+      "_FakeTok",
+      "_fake_loader",
+      "test_ready_and_predict"
+    ],
+    "4K_ML/tests/test_promote.py": [
+      "test_promote_when_better_or_equal",
+      "test_hold_when_spearman_worse",
+      "test_hold_when_mae_worse_beyond_tol",
+      "test_hold_on_missing_metrics"
+    ],
+    "4K_ML/tests/test_scenes.py": [
+      "_f",
+      "_split",
+      "test_gap_boundary_gated_by_min_ms",
+      "test_semantic_boundary_when_long_enough",
+      "test_semantic_ignored_when_scene_too_short",
+      "test_single_scene_when_similar_and_small_gaps",
+      "test_min_lines_also_gates",
+      "test_empty",
+      "test_config_defaults"
+    ],
+    "4K_ML/tests/test_schema.py": [
+      "clean_db",
+      "test_apply_creates_all_tables",
+      "test_apply_is_idempotent",
+      "test_scene_scores_requires_known_model_version"
+    ],
+    "4K_ML/tests/test_score_gpu.py": [
+      "test_scene_score_rows_maps_axes_and_clamps",
+      "test_run_flow_loads_active_model_and_upserts"
+    ],
+    "4K_ML/tests/test_score_main.py": [
+      "test_run_scores_and_states",
+      "test_run_flags_failed"
+    ],
+    "4K_ML/tests/test_score_targets.py": [
+      "test_select_targets_only_missing_and_parsed"
+    ],
+    "4K_ML/tests/test_serving_db.py": [
+      "_client",
+      "_env",
+      "test_fetch_score_targets",
+      "test_fetch_movie_scenes_for_scoring",
+      "test_ensure_model_versions",
+      "test_upsert_scene_scores_and_state"
+    ],
+    "4K_ML/tests/test_srt.py": [
+      "test_parses_two_cues",
+      "test_joins_multiline_and_strips_tags",
+      "test_keeps_sdh_brackets",
+      "test_skips_malformed_block_and_reindexes",
+      "test_skips_empty_text_cue"
+    ],
+    "4K_ML/tests/test_train_dataset.py": [
+      "test_split_movies_no_overlap_and_reproducible",
+      "_FakeTok",
+      "test_scene_dataset_item_shapes"
+    ],
+    "4K_ML/tests/test_train_db.py": [
+      "_client",
+      "_env",
+      "test_fetch_labeled_movies",
+      "test_fetch_movie_scenes_assembles",
+      "test_upsert_model_version_payload"
+    ],
+    "4K_ML/tests/test_train_evaluate.py": [
+      "test_mae",
+      "test_pearson_perfect",
+      "test_pearson_constant_returns_zero",
+      "test_movie_spearman_averages_per_movie"
+    ],
+    "4K_ML/tests/test_train_features.py": [
+      "test_feature_order",
+      "test_compute_features_values",
+      "test_compute_features_zero_duration_guard",
+      "test_scaler_fit_transform_and_roundtrip",
+      "test_scaler_zero_std_no_nan"
+    ],
+    "4K_ML/tests/test_train_main.py": [
+      "_FakeTok",
+      "_rec",
+      "_tiny_model",
+      "test_run_trains_and_saves"
+    ],
+    "4K_ML/tests/test_train_model_arch.py": [
+      "_tiny_encoder",
+      "test_forward_shape_and_range"
+    ],
+    "4K_ML/tests/test_vector_targets.py": [
+      "test_only_unvectored_movies",
+      "test_all_vectored_returns_empty"
+    ],
+    "4K_ML/train/__init__.py": [],
+    "4K_ML/train/dataset.py": [
+      "split_movies",
+      "SceneDataset"
+    ],
+    "4K_ML/train/db.py": [
+      "_ai",
+      "_auth",
+      "_headers",
+      "_get",
+      "fetch_labeled_movies",
+      "fetch_movie_scenes",
+      "upsert_model_version"
+    ],
+    "4K_ML/train/evaluate.py": [
+      "mae",
+      "pearson",
+      "movie_spearman"
+    ],
+    "4K_ML/train/features.py": [
+      "compute_features",
+      "Scaler"
+    ],
+    "4K_ML/train/model.py": [
+      "HybridRobertaRegressor",
+      "build_encoder"
+    ],
+    "4K_ML/train/train_model.py": [
+      "load_training_data",
+      "build_model",
+      "_load_tokenizer",
+      "_records_for",
+      "_predict",
+      "_val_mae",
+      "_save",
+      "run"
+    ],
+    "aws/terraform/.terraform.lock.hcl": [],
+    "aws/terraform/lambda/dr_controller.py": [
+      "_kakao_healthy",
+      "handler"
+    ],
+    "aws/terraform/ssm-params.sh.example": [],
+    "aws/terraform/terraform.tfvars.example": [],
+    "aws/terraform/user_data_db.sh.tftpl": [],
+    "aws/terraform/user_data.sh.tftpl": []
+  },
+  "batches": [
+    {
+      "batchIndex": 1,
+      "files": [
+        {
+          "path": "4K_ML/serving/predict_core.py",
+          "language": "python",
+          "sizeLines": 48,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/serving/predictor.py",
+          "language": "python",
+          "sizeLines": 49,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/serving/serve.py",
+          "language": "python",
+          "sizeLines": 7,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/tests/test_predict_core.py",
+          "language": "python",
+          "sizeLines": 39,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/tests/test_predictor.py",
+          "language": "python",
+          "sizeLines": 42,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/tests/test_train_dataset.py",
+          "language": "python",
+          "sizeLines": 39,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/tests/test_train_db.py",
+          "language": "python",
+          "sizeLines": 81,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/tests/test_train_evaluate.py",
+          "language": "python",
+          "sizeLines": 21,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/tests/test_train_features.py",
+          "language": "python",
+          "sizeLines": 40,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/tests/test_train_main.py",
+          "language": "python",
+          "sizeLines": 63,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/tests/test_train_model_arch.py",
+          "language": "python",
+          "sizeLines": 21,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/train/__init__.py",
+          "language": "python",
+          "sizeLines": 0,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/train/dataset.py",
+          "language": "python",
+          "sizeLines": 41,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/train/db.py",
+          "language": "python",
+          "sizeLines": 101,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/train/evaluate.py",
+          "language": "python",
+          "sizeLines": 34,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/train/features.py",
+          "language": "python",
+          "sizeLines": 57,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/train/model.py",
+          "language": "python",
+          "sizeLines": 28,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/train/train_model.py",
+          "language": "python",
+          "sizeLines": 166,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "4K_ML/serving/predict_core.py": [
+          "4K_ML/train/features.py",
+          "4K_ML/train/model.py"
+        ],
+        "4K_ML/serving/predictor.py": [
+          "4K_ML/serving/predict_core.py"
+        ],
+        "4K_ML/serving/serve.py": [
+          "4K_ML/serving/predictor.py"
+        ],
+        "4K_ML/tests/test_predict_core.py": [
+          "4K_ML/serving/predict_core.py",
+          "4K_ML/train/features.py",
+          "4K_ML/train/model.py"
+        ],
+        "4K_ML/tests/test_predictor.py": [
+          "4K_ML/serving/predictor.py",
+          "4K_ML/train/features.py",
+          "4K_ML/train/model.py"
+        ],
+        "4K_ML/tests/test_train_dataset.py": [
+          "4K_ML/train/dataset.py",
+          "4K_ML/train/features.py"
+        ],
+        "4K_ML/tests/test_train_db.py": [
+          "4K_ML/train/__init__.py",
+          "4K_ML/train/db.py"
+        ],
+        "4K_ML/tests/test_train_evaluate.py": [
+          "4K_ML/train/evaluate.py"
+        ],
+        "4K_ML/tests/test_train_features.py": [
+          "4K_ML/train/features.py"
+        ],
+        "4K_ML/tests/test_train_main.py": [
+          "4K_ML/train/__init__.py",
+          "4K_ML/train/model.py"
+        ],
+        "4K_ML/tests/test_train_model_arch.py": [
+          "4K_ML/train/model.py"
+        ],
+        "4K_ML/train/__init__.py": [],
+        "4K_ML/train/dataset.py": [
+          "4K_ML/train/features.py"
+        ],
+        "4K_ML/train/db.py": [],
+        "4K_ML/train/evaluate.py": [],
+        "4K_ML/train/features.py": [],
+        "4K_ML/train/model.py": [],
+        "4K_ML/train/train_model.py": [
+          "4K_ML/train/__init__.py",
+          "4K_ML/train/dataset.py",
+          "4K_ML/train/db.py",
+          "4K_ML/train/evaluate.py",
+          "4K_ML/train/features.py",
+          "4K_ML/train/model.py"
+        ]
+      },
+      "neighborMap": {
+        "4K_ML/serving/predict_core.py": [
+          {
+            "path": "4K_ML/serving/score_scenes_gpu.py",
+            "batchIndex": 6,
+            "symbols": [
+              "_clamp01",
+              "scene_score_rows",
+              "run"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "batchIndex": 2,
+      "files": [
+        {
+          "path": "4K_BE/app/__init__.py",
+          "language": "python",
+          "sizeLines": 0,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_BE/app/backfill_popular.py",
+          "language": "python",
+          "sizeLines": 113,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_BE/app/jobs.py",
+          "language": "python",
+          "sizeLines": 72,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_BE/app/main.py",
+          "language": "python",
+          "sizeLines": 564,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_BE/app/subtitle_collect.py",
+          "language": "python",
+          "sizeLines": 317,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_BE/tests/test_active_model.py",
+          "language": "python",
+          "sizeLines": 41,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_BE/tests/test_backfill.py",
+          "language": "python",
+          "sizeLines": 102,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_BE/tests/test_collect_one.py",
+          "language": "python",
+          "sizeLines": 56,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_BE/tests/test_delete_movie.py",
+          "language": "python",
+          "sizeLines": 39,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_BE/tests/test_jobs.py",
+          "language": "python",
+          "sizeLines": 55,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_BE/tests/test_main_jobs.py",
+          "language": "python",
+          "sizeLines": 41,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_BE/tests/test_main_recent.py",
+          "language": "python",
+          "sizeLines": 38,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_BE/tests/test_reprocess.py",
+          "language": "python",
+          "sizeLines": 52,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_BE/tests/test_stats.py",
+          "language": "python",
+          "sizeLines": 85,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_BE/tests/test_subtitle_collect.py",
+          "language": "python",
+          "sizeLines": 290,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_BE/tests/test_tmdb_common.py",
+          "language": "python",
+          "sizeLines": 108,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_BE/tests/test_visits_range.py",
+          "language": "python",
+          "sizeLines": 36,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "4K_BE/app/__init__.py": [],
+        "4K_BE/app/backfill_popular.py": [
+          "4K_BE/app/__init__.py"
+        ],
+        "4K_BE/app/jobs.py": [],
+        "4K_BE/app/main.py": [
+          "4K_BE/app/__init__.py",
+          "4K_BE/app/jobs.py"
+        ],
+        "4K_BE/app/subtitle_collect.py": [
+          "4K_BE/app/__init__.py"
+        ],
+        "4K_BE/tests/test_active_model.py": [
+          "4K_BE/app/__init__.py",
+          "4K_BE/app/main.py"
+        ],
+        "4K_BE/tests/test_backfill.py": [
+          "4K_BE/app/__init__.py"
+        ],
+        "4K_BE/tests/test_collect_one.py": [
+          "4K_BE/app/__init__.py"
+        ],
+        "4K_BE/tests/test_delete_movie.py": [
+          "4K_BE/app/__init__.py",
+          "4K_BE/app/main.py"
+        ],
+        "4K_BE/tests/test_jobs.py": [
+          "4K_BE/app/__init__.py",
+          "4K_BE/app/jobs.py"
+        ],
+        "4K_BE/tests/test_main_jobs.py": [
+          "4K_BE/app/__init__.py",
+          "4K_BE/app/jobs.py",
+          "4K_BE/app/main.py"
+        ],
+        "4K_BE/tests/test_main_recent.py": [
+          "4K_BE/app/__init__.py",
+          "4K_BE/app/main.py"
+        ],
+        "4K_BE/tests/test_reprocess.py": [
+          "4K_BE/app/__init__.py",
+          "4K_BE/app/main.py"
+        ],
+        "4K_BE/tests/test_stats.py": [
+          "4K_BE/app/__init__.py",
+          "4K_BE/app/main.py"
+        ],
+        "4K_BE/tests/test_subtitle_collect.py": [
+          "4K_BE/app/__init__.py"
+        ],
+        "4K_BE/tests/test_tmdb_common.py": [
+          "4K_BE/app/__init__.py"
+        ],
+        "4K_BE/tests/test_visits_range.py": [
+          "4K_BE/app/__init__.py",
+          "4K_BE/app/main.py"
+        ]
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 3,
+      "files": [
+        {
+          "path": "4K_FE/app/components/BackgroundThread.tsx",
+          "language": "typescript",
+          "sizeLines": 239,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/components/ClimaxGraph.tsx",
+          "language": "typescript",
+          "sizeLines": 142,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/components/DetailOverlay.tsx",
+          "language": "typescript",
+          "sizeLines": 650,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/components/FilterBar.tsx",
+          "language": "typescript",
+          "sizeLines": 683,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/components/MiniGraph.tsx",
+          "language": "typescript",
+          "sizeLines": 48,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/components/MovieDetailModal.tsx",
+          "language": "typescript",
+          "sizeLines": 456,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/components/PosterCard.tsx",
+          "language": "typescript",
+          "sizeLines": 329,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/components/RandomModal.tsx",
+          "language": "typescript",
+          "sizeLines": 192,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/components/Tutorial.tsx",
+          "language": "typescript",
+          "sizeLines": 225,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/dashboard/page.tsx",
+          "language": "typescript",
+          "sizeLines": 687,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/lib/climax.ts",
+          "language": "typescript",
+          "sizeLines": 137,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/lib/color.ts",
+          "language": "typescript",
+          "sizeLines": 52,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/lib/data.ts",
+          "language": "typescript",
+          "sizeLines": 265,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/lib/svgPath.ts",
+          "language": "typescript",
+          "sizeLines": 20,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/movie_list/page.tsx",
+          "language": "typescript",
+          "sizeLines": 324,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/movie_list/recent/page.tsx",
+          "language": "typescript",
+          "sizeLines": 95,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/page.tsx",
+          "language": "typescript",
+          "sizeLines": 189,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "4K_FE/app/components/BackgroundThread.tsx": [],
+        "4K_FE/app/components/ClimaxGraph.tsx": [
+          "4K_FE/app/lib/climax.ts",
+          "4K_FE/app/lib/color.ts",
+          "4K_FE/app/lib/svgPath.ts"
+        ],
+        "4K_FE/app/components/DetailOverlay.tsx": [
+          "4K_FE/app/components/ClimaxGraph.tsx",
+          "4K_FE/app/components/MiniGraph.tsx",
+          "4K_FE/app/lib/climax.ts",
+          "4K_FE/app/lib/data.ts"
+        ],
+        "4K_FE/app/components/FilterBar.tsx": [
+          "4K_FE/app/lib/data.ts"
+        ],
+        "4K_FE/app/components/MiniGraph.tsx": [
+          "4K_FE/app/lib/climax.ts",
+          "4K_FE/app/lib/color.ts",
+          "4K_FE/app/lib/svgPath.ts"
+        ],
+        "4K_FE/app/components/MovieDetailModal.tsx": [
+          "4K_FE/app/lib/data.ts"
+        ],
+        "4K_FE/app/components/PosterCard.tsx": [
+          "4K_FE/app/lib/data.ts"
+        ],
+        "4K_FE/app/components/RandomModal.tsx": [
+          "4K_FE/app/lib/data.ts"
+        ],
+        "4K_FE/app/components/Tutorial.tsx": [
+          "4K_FE/app/components/MiniGraph.tsx"
+        ],
+        "4K_FE/app/dashboard/page.tsx": [
+          "4K_FE/app/components/BackgroundThread.tsx",
+          "4K_FE/app/components/DetailOverlay.tsx",
+          "4K_FE/app/components/FilterBar.tsx",
+          "4K_FE/app/components/PosterCard.tsx",
+          "4K_FE/app/components/RandomModal.tsx",
+          "4K_FE/app/components/Tutorial.tsx",
+          "4K_FE/app/lib/data.ts"
+        ],
+        "4K_FE/app/lib/climax.ts": [],
+        "4K_FE/app/lib/color.ts": [],
+        "4K_FE/app/lib/data.ts": [],
+        "4K_FE/app/lib/svgPath.ts": [],
+        "4K_FE/app/movie_list/page.tsx": [
+          "4K_FE/app/components/MovieDetailModal.tsx",
+          "4K_FE/app/lib/data.ts"
+        ],
+        "4K_FE/app/movie_list/recent/page.tsx": [
+          "4K_FE/app/lib/data.ts"
+        ],
+        "4K_FE/app/page.tsx": [
+          "4K_FE/app/components/BackgroundThread.tsx",
+          "4K_FE/app/lib/data.ts"
+        ]
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 4,
+      "files": [
+        {
+          "path": "4K_ML/subtitle_parse/__init__.py",
+          "language": "python",
+          "sizeLines": 0,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/subtitle_parse/db.py",
+          "language": "python",
+          "sizeLines": 73,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/subtitle_parse/embed.py",
+          "language": "python",
+          "sizeLines": 19,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/subtitle_parse/features.py",
+          "language": "python",
+          "sizeLines": 24,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/subtitle_parse/parse_subtitles.py",
+          "language": "python",
+          "sizeLines": 80,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/subtitle_parse/scenes.py",
+          "language": "python",
+          "sizeLines": 61,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/subtitle_parse/srt.py",
+          "language": "python",
+          "sizeLines": 45,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/tests/test_features.py",
+          "language": "python",
+          "sizeLines": 22,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/tests/test_parse_db.py",
+          "language": "python",
+          "sizeLines": 54,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/tests/test_parse_main.py",
+          "language": "python",
+          "sizeLines": 47,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/tests/test_scenes.py",
+          "language": "python",
+          "sizeLines": 54,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/tests/test_srt.py",
+          "language": "python",
+          "sizeLines": 42,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "4K_ML/subtitle_parse/__init__.py": [],
+        "4K_ML/subtitle_parse/db.py": [],
+        "4K_ML/subtitle_parse/embed.py": [],
+        "4K_ML/subtitle_parse/features.py": [
+          "4K_ML/subtitle_parse/srt.py"
+        ],
+        "4K_ML/subtitle_parse/parse_subtitles.py": [
+          "4K_ML/subtitle_parse/__init__.py",
+          "4K_ML/subtitle_parse/db.py",
+          "4K_ML/subtitle_parse/embed.py",
+          "4K_ML/subtitle_parse/features.py",
+          "4K_ML/subtitle_parse/scenes.py",
+          "4K_ML/subtitle_parse/srt.py"
+        ],
+        "4K_ML/subtitle_parse/scenes.py": [],
+        "4K_ML/subtitle_parse/srt.py": [],
+        "4K_ML/tests/test_features.py": [
+          "4K_ML/subtitle_parse/features.py",
+          "4K_ML/subtitle_parse/srt.py"
+        ],
+        "4K_ML/tests/test_parse_db.py": [
+          "4K_ML/subtitle_parse/__init__.py",
+          "4K_ML/subtitle_parse/db.py"
+        ],
+        "4K_ML/tests/test_parse_main.py": [
+          "4K_ML/subtitle_parse/__init__.py"
+        ],
+        "4K_ML/tests/test_scenes.py": [
+          "4K_ML/subtitle_parse/scenes.py"
+        ],
+        "4K_ML/tests/test_srt.py": [
+          "4K_ML/subtitle_parse/srt.py"
+        ]
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 5,
+      "files": [
+        {
+          "path": "4K_ML/labeling/__init__.py",
+          "language": "python",
+          "sizeLines": 0,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/labeling/batch.py",
+          "language": "python",
+          "sizeLines": 58,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/labeling/db.py",
+          "language": "python",
+          "sizeLines": 91,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/labeling/label_scenes.py",
+          "language": "python",
+          "sizeLines": 77,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/labeling/prompt.py",
+          "language": "python",
+          "sizeLines": 46,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/tests/test_label_batch.py",
+          "language": "python",
+          "sizeLines": 73,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/tests/test_label_db.py",
+          "language": "python",
+          "sizeLines": 94,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/tests/test_label_main.py",
+          "language": "python",
+          "sizeLines": 79,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/tests/test_label_prompt.py",
+          "language": "python",
+          "sizeLines": 22,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "4K_ML/labeling/__init__.py": [],
+        "4K_ML/labeling/batch.py": [
+          "4K_ML/labeling/prompt.py"
+        ],
+        "4K_ML/labeling/db.py": [],
+        "4K_ML/labeling/label_scenes.py": [
+          "4K_ML/labeling/__init__.py",
+          "4K_ML/labeling/batch.py",
+          "4K_ML/labeling/db.py"
+        ],
+        "4K_ML/labeling/prompt.py": [],
+        "4K_ML/tests/test_label_batch.py": [
+          "4K_ML/labeling/__init__.py",
+          "4K_ML/labeling/batch.py"
+        ],
+        "4K_ML/tests/test_label_db.py": [
+          "4K_ML/labeling/__init__.py",
+          "4K_ML/labeling/db.py"
+        ],
+        "4K_ML/tests/test_label_main.py": [
+          "4K_ML/labeling/__init__.py",
+          "4K_ML/labeling/db.py"
+        ],
+        "4K_ML/tests/test_label_prompt.py": [
+          "4K_ML/labeling/prompt.py"
+        ]
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 6,
+      "files": [
+        {
+          "path": "4K_ML/serving/__init__.py",
+          "language": "python",
+          "sizeLines": 0,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/serving/db.py",
+          "language": "python",
+          "sizeLines": 150,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/serving/score_scenes.py",
+          "language": "python",
+          "sizeLines": 73,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/serving/score_scenes_gpu.py",
+          "language": "python",
+          "sizeLines": 67,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/tests/test_score_gpu.py",
+          "language": "python",
+          "sizeLines": 43,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/tests/test_score_main.py",
+          "language": "python",
+          "sizeLines": 57,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/tests/test_score_targets.py",
+          "language": "python",
+          "sizeLines": 18,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/tests/test_serving_db.py",
+          "language": "python",
+          "sizeLines": 104,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "4K_ML/serving/__init__.py": [],
+        "4K_ML/serving/db.py": [],
+        "4K_ML/serving/score_scenes.py": [
+          "4K_ML/serving/__init__.py",
+          "4K_ML/serving/db.py"
+        ],
+        "4K_ML/serving/score_scenes_gpu.py": [
+          "4K_ML/serving/__init__.py",
+          "4K_ML/serving/db.py",
+          "4K_ML/serving/predict_core.py"
+        ],
+        "4K_ML/tests/test_score_gpu.py": [
+          "4K_ML/serving/__init__.py"
+        ],
+        "4K_ML/tests/test_score_main.py": [
+          "4K_ML/serving/__init__.py"
+        ],
+        "4K_ML/tests/test_score_targets.py": [
+          "4K_ML/serving/db.py"
+        ],
+        "4K_ML/tests/test_serving_db.py": [
+          "4K_ML/serving/__init__.py",
+          "4K_ML/serving/db.py"
+        ]
+      },
+      "neighborMap": {
+        "4K_ML/serving/score_scenes_gpu.py": [
+          {
+            "path": "4K_ML/serving/predict_core.py",
+            "batchIndex": 1,
+            "symbols": [
+              "load_artifacts",
+              "_clamp01",
+              "score_instances"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "batchIndex": 7,
+      "files": [
+        {
+          "path": "4K_FE/app/api/manager/auth/login/route.ts",
+          "language": "typescript",
+          "sizeLines": 26,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/api/manager/auth/logout/route.ts",
+          "language": "typescript",
+          "sizeLines": 8,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/lib/auth.ts",
+          "language": "typescript",
+          "sizeLines": 32,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/proxy.ts",
+          "language": "typescript",
+          "sizeLines": 36,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "4K_FE/app/api/manager/auth/login/route.ts": [
+          "4K_FE/app/lib/auth.ts"
+        ],
+        "4K_FE/app/api/manager/auth/logout/route.ts": [
+          "4K_FE/app/lib/auth.ts"
+        ],
+        "4K_FE/app/lib/auth.ts": [],
+        "4K_FE/proxy.ts": [
+          "4K_FE/app/lib/auth.ts"
+        ]
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 8,
+      "files": [
+        {
+          "path": "4K_ML/generate_vectors/__init__.py",
+          "language": "python",
+          "sizeLines": 0,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/generate_vectors/db.py",
+          "language": "python",
+          "sizeLines": 197,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/tests/test_gen_db.py",
+          "language": "python",
+          "sizeLines": 48,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "4K_ML/generate_vectors/__init__.py": [],
+        "4K_ML/generate_vectors/db.py": [],
+        "4K_ML/tests/test_gen_db.py": [
+          "4K_ML/generate_vectors/__init__.py",
+          "4K_ML/generate_vectors/db.py"
+        ]
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 9,
+      "files": [
+        {
+          "path": "4K_ML/generate_vectors/generate_vectors.py",
+          "language": "python",
+          "sizeLines": 82,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/tests/test_gen_run.py",
+          "language": "python",
+          "sizeLines": 27,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/tests/test_vector_targets.py",
+          "language": "python",
+          "sizeLines": 11,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "4K_ML/generate_vectors/generate_vectors.py": [
+          "4K_ML/generate_vectors/generate_vectors.py"
+        ],
+        "4K_ML/tests/test_gen_run.py": [
+          "4K_ML/generate_vectors/generate_vectors.py"
+        ],
+        "4K_ML/tests/test_vector_targets.py": [
+          "4K_ML/generate_vectors/generate_vectors.py"
+        ]
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 10,
+      "files": [
+        {
+          "path": "4K_BE/Dockerfile",
+          "language": "dockerfile",
+          "sizeLines": 12,
+          "fileCategory": "infra"
+        }
+      ],
+      "batchImportData": {
+        "4K_BE/Dockerfile": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 11,
+      "files": [
+        {
+          "path": "4K_FE/.dockerignore",
+          "language": "unknown",
+          "sizeLines": 6,
+          "fileCategory": "infra"
+        },
+        {
+          "path": "4K_FE/Dockerfile",
+          "language": "dockerfile",
+          "sizeLines": 36,
+          "fileCategory": "infra"
+        }
+      ],
+      "batchImportData": {
+        "4K_FE/.dockerignore": [],
+        "4K_FE/Dockerfile": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 12,
+      "files": [
+        {
+          "path": "4K_ML/.dockerignore",
+          "language": "unknown",
+          "sizeLines": 7,
+          "fileCategory": "infra"
+        },
+        {
+          "path": "4K_ML/Dockerfile",
+          "language": "dockerfile",
+          "sizeLines": 37,
+          "fileCategory": "infra"
+        }
+      ],
+      "batchImportData": {
+        "4K_ML/.dockerignore": [],
+        "4K_ML/Dockerfile": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 13,
+      "files": [
+        {
+          "path": ".github/workflows/deploy-4k-be.yml",
+          "language": "yaml",
+          "sizeLines": 64,
+          "fileCategory": "infra"
+        },
+        {
+          "path": ".github/workflows/deploy-4k-fe.yml",
+          "language": "yaml",
+          "sizeLines": 64,
+          "fileCategory": "infra"
+        },
+        {
+          "path": ".github/workflows/deploy-4k-ml.yml",
+          "language": "yaml",
+          "sizeLines": 78,
+          "fileCategory": "infra"
+        }
+      ],
+      "batchImportData": {
+        ".github/workflows/deploy-4k-be.yml": [],
+        ".github/workflows/deploy-4k-fe.yml": [],
+        ".github/workflows/deploy-4k-ml.yml": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 14,
+      "files": [
+        {
+          "path": "4K_BE/pytest.ini",
+          "language": "config",
+          "sizeLines": 3,
+          "fileCategory": "config"
+        },
+        {
+          "path": "4K_BE/requirements-dev.txt",
+          "language": "txt",
+          "sizeLines": 3,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "4K_BE/requirements.txt",
+          "language": "txt",
+          "sizeLines": 4,
+          "fileCategory": "docs"
+        }
+      ],
+      "batchImportData": {
+        "4K_BE/pytest.ini": [],
+        "4K_BE/requirements-dev.txt": [],
+        "4K_BE/requirements.txt": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 15,
+      "files": [
+        {
+          "path": "4K_FE/.env.example",
+          "language": "config",
+          "sizeLines": 19,
+          "fileCategory": "config"
+        },
+        {
+          "path": "4K_FE/AGENTS.md",
+          "language": "markdown",
+          "sizeLines": 5,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "4K_FE/CLAUDE.md",
+          "language": "markdown",
+          "sizeLines": 1,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "4K_FE/README.md",
+          "language": "markdown",
+          "sizeLines": 36,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "4K_FE/package.json",
+          "language": "json",
+          "sizeLines": 27,
+          "fileCategory": "config"
+        },
+        {
+          "path": "4K_FE/tsconfig.json",
+          "language": "json",
+          "sizeLines": 34,
+          "fileCategory": "config"
+        }
+      ],
+      "batchImportData": {
+        "4K_FE/.env.example": [],
+        "4K_FE/AGENTS.md": [],
+        "4K_FE/CLAUDE.md": [],
+        "4K_FE/README.md": [],
+        "4K_FE/package.json": [],
+        "4K_FE/tsconfig.json": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 16,
+      "files": [
+        {
+          "path": "4K_ML/db/p1_migrations.sql",
+          "language": "sql",
+          "sizeLines": 22,
+          "fileCategory": "data"
+        },
+        {
+          "path": "4K_ML/db/rpc_arousal_version_filter.sql",
+          "language": "sql",
+          "sizeLines": 70,
+          "fileCategory": "data"
+        },
+        {
+          "path": "4K_ML/db/schema.sql",
+          "language": "sql",
+          "sizeLines": 82,
+          "fileCategory": "data"
+        }
+      ],
+      "batchImportData": {
+        "4K_ML/db/p1_migrations.sql": [],
+        "4K_ML/db/rpc_arousal_version_filter.sql": [],
+        "4K_ML/db/schema.sql": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 17,
+      "files": [
+        {
+          "path": "Ansible/manifests/4k-be/backfill-cronjob.yaml",
+          "language": "yaml",
+          "sizeLines": 35,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/4k-be/deployment.yaml",
+          "language": "yaml",
+          "sizeLines": 44,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/4k-be/kustomization.yaml",
+          "language": "yaml",
+          "sizeLines": 14,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/4k-be/service.yaml",
+          "language": "yaml",
+          "sizeLines": 11,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/4k-be/subtitle-cronjob.yaml",
+          "language": "yaml",
+          "sizeLines": 35,
+          "fileCategory": "config"
+        }
+      ],
+      "batchImportData": {
+        "Ansible/manifests/4k-be/backfill-cronjob.yaml": [],
+        "Ansible/manifests/4k-be/deployment.yaml": [],
+        "Ansible/manifests/4k-be/kustomization.yaml": [],
+        "Ansible/manifests/4k-be/service.yaml": [],
+        "Ansible/manifests/4k-be/subtitle-cronjob.yaml": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 18,
+      "files": [
+        {
+          "path": "Ansible/manifests/4k-fe/deployment.yaml",
+          "language": "yaml",
+          "sizeLines": 52,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/4k-fe/ingress.yaml",
+          "language": "yaml",
+          "sizeLines": 53,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/4k-fe/kustomization.yaml",
+          "language": "yaml",
+          "sizeLines": 13,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/4k-fe/service.yaml",
+          "language": "yaml",
+          "sizeLines": 11,
+          "fileCategory": "config"
+        }
+      ],
+      "batchImportData": {
+        "Ansible/manifests/4k-fe/deployment.yaml": [],
+        "Ansible/manifests/4k-fe/ingress.yaml": [],
+        "Ansible/manifests/4k-fe/kustomization.yaml": [],
+        "Ansible/manifests/4k-fe/service.yaml": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 19,
+      "files": [
+        {
+          "path": "Ansible/manifests/4k-ml/cronworkflow-parse.yaml",
+          "language": "yaml",
+          "sizeLines": 16,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/4k-ml/cronworkflow-score.yaml",
+          "language": "yaml",
+          "sizeLines": 16,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/4k-ml/cronworkflow-vector.yaml",
+          "language": "yaml",
+          "sizeLines": 16,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/4k-ml/inferenceservice-roberta-va.yaml",
+          "language": "yaml",
+          "sizeLines": 52,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/4k-ml/pvc-models.yaml",
+          "language": "yaml",
+          "sizeLines": 13,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/4k-ml/workflowtemplate-generate-vectors.yaml",
+          "language": "yaml",
+          "sizeLines": 18,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/4k-ml/workflowtemplate-llm-labeling.yaml",
+          "language": "yaml",
+          "sizeLines": 18,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/4k-ml/workflowtemplate-score-scenes-gpu.yaml",
+          "language": "yaml",
+          "sizeLines": 32,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/4k-ml/workflowtemplate-score-scenes.yaml",
+          "language": "yaml",
+          "sizeLines": 21,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/4k-ml/workflowtemplate-subtitle-parse.yaml",
+          "language": "yaml",
+          "sizeLines": 24,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/4k-ml/workflowtemplate-train-roberta.yaml",
+          "language": "yaml",
+          "sizeLines": 35,
+          "fileCategory": "config"
+        }
+      ],
+      "batchImportData": {
+        "Ansible/manifests/4k-ml/cronworkflow-parse.yaml": [],
+        "Ansible/manifests/4k-ml/cronworkflow-score.yaml": [],
+        "Ansible/manifests/4k-ml/cronworkflow-vector.yaml": [],
+        "Ansible/manifests/4k-ml/inferenceservice-roberta-va.yaml": [],
+        "Ansible/manifests/4k-ml/pvc-models.yaml": [],
+        "Ansible/manifests/4k-ml/workflowtemplate-generate-vectors.yaml": [],
+        "Ansible/manifests/4k-ml/workflowtemplate-llm-labeling.yaml": [],
+        "Ansible/manifests/4k-ml/workflowtemplate-score-scenes-gpu.yaml": [],
+        "Ansible/manifests/4k-ml/workflowtemplate-score-scenes.yaml": [],
+        "Ansible/manifests/4k-ml/workflowtemplate-subtitle-parse.yaml": [],
+        "Ansible/manifests/4k-ml/workflowtemplate-train-roberta.yaml": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 20,
+      "files": [
+        {
+          "path": "Ansible/manifests/apps/argo-workflow-rbac-ai.yaml",
+          "language": "yaml",
+          "sizeLines": 39,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/apps/argo-workflows-ingress.yaml",
+          "language": "yaml",
+          "sizeLines": 31,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/apps/cluster-issuer.yaml",
+          "language": "yaml",
+          "sizeLines": 31,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/apps/ingress-nginx-config.yaml",
+          "language": "yaml",
+          "sizeLines": 12,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/apps/ingress-studio.yaml",
+          "language": "yaml",
+          "sizeLines": 301,
+          "fileCategory": "config"
+        }
+      ],
+      "batchImportData": {
+        "Ansible/manifests/apps/argo-workflow-rbac-ai.yaml": [],
+        "Ansible/manifests/apps/argo-workflows-ingress.yaml": [],
+        "Ansible/manifests/apps/cluster-issuer.yaml": [],
+        "Ansible/manifests/apps/ingress-nginx-config.yaml": [],
+        "Ansible/manifests/apps/ingress-studio.yaml": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 21,
+      "files": [
+        {
+          "path": "Ansible/manifests/argocd/argocd-app-4k-be.yaml",
+          "language": "yaml",
+          "sizeLines": 20,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/argocd/argocd-app-4k-fe.yaml",
+          "language": "yaml",
+          "sizeLines": 20,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/argocd/argocd-app-4k-ml.yaml",
+          "language": "yaml",
+          "sizeLines": 20,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/argocd/argocd-app-argo-workflows.yaml",
+          "language": "yaml",
+          "sizeLines": 26,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/argocd/argocd-app-infra.yaml",
+          "language": "yaml",
+          "sizeLines": 20,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/argocd/argocd-app-supabase-ai.yaml",
+          "language": "yaml",
+          "sizeLines": 26,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/argocd/argocd-app-supabase-data.yaml",
+          "language": "yaml",
+          "sizeLines": 26,
+          "fileCategory": "config"
+        }
+      ],
+      "batchImportData": {
+        "Ansible/manifests/argocd/argocd-app-4k-be.yaml": [],
+        "Ansible/manifests/argocd/argocd-app-4k-fe.yaml": [],
+        "Ansible/manifests/argocd/argocd-app-4k-ml.yaml": [],
+        "Ansible/manifests/argocd/argocd-app-argo-workflows.yaml": [],
+        "Ansible/manifests/argocd/argocd-app-infra.yaml": [],
+        "Ansible/manifests/argocd/argocd-app-supabase-ai.yaml": [],
+        "Ansible/manifests/argocd/argocd-app-supabase-data.yaml": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 22,
+      "files": [
+        {
+          "path": "Ansible/manifests/test/gpu-test.yaml",
+          "language": "yaml",
+          "sizeLines": 15,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/test/hello-wf-ai.yaml",
+          "language": "yaml",
+          "sizeLines": 14,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/test/llm-labeling-run.yaml",
+          "language": "yaml",
+          "sizeLines": 9,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/manifests/test/test-nginx.yaml",
+          "language": "yaml",
+          "sizeLines": 52,
+          "fileCategory": "config"
+        }
+      ],
+      "batchImportData": {
+        "Ansible/manifests/test/gpu-test.yaml": [],
+        "Ansible/manifests/test/hello-wf-ai.yaml": [],
+        "Ansible/manifests/test/llm-labeling-run.yaml": [],
+        "Ansible/manifests/test/test-nginx.yaml": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 23,
+      "files": [
+        {
+          "path": "Ansible/playbooks/00-ping.yml",
+          "language": "yaml",
+          "sizeLines": 4,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/playbooks/01-common.yml",
+          "language": "yaml",
+          "sizeLines": 68,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/playbooks/02-k3s-server.yml",
+          "language": "yaml",
+          "sizeLines": 52,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/playbooks/03-k3s-agent.yml",
+          "language": "yaml",
+          "sizeLines": 31,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/playbooks/04-longhorn-prereq.yml",
+          "language": "yaml",
+          "sizeLines": 29,
+          "fileCategory": "config"
+        }
+      ],
+      "batchImportData": {
+        "Ansible/playbooks/00-ping.yml": [],
+        "Ansible/playbooks/01-common.yml": [],
+        "Ansible/playbooks/02-k3s-server.yml": [],
+        "Ansible/playbooks/03-k3s-agent.yml": [],
+        "Ansible/playbooks/04-longhorn-prereq.yml": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 24,
+      "files": [
+        {
+          "path": "Ansible/values/values-ai.yaml",
+          "language": "yaml",
+          "sizeLines": 107,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/values/values-argo-workflows.yaml",
+          "language": "yaml",
+          "sizeLines": 9,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/values/values-argocd.yaml",
+          "language": "yaml",
+          "sizeLines": 38,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/values/values-data.yaml",
+          "language": "yaml",
+          "sizeLines": 104,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/values/values-loki.yaml",
+          "language": "yaml",
+          "sizeLines": 93,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/values/values-prometheus.yaml",
+          "language": "yaml",
+          "sizeLines": 74,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/values/values-promtail.yaml",
+          "language": "yaml",
+          "sizeLines": 16,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/values/values-redis.yaml",
+          "language": "yaml",
+          "sizeLines": 33,
+          "fileCategory": "config"
+        }
+      ],
+      "batchImportData": {
+        "Ansible/values/values-ai.yaml": [],
+        "Ansible/values/values-argo-workflows.yaml": [],
+        "Ansible/values/values-argocd.yaml": [],
+        "Ansible/values/values-data.yaml": [],
+        "Ansible/values/values-loki.yaml": [],
+        "Ansible/values/values-prometheus.yaml": [],
+        "Ansible/values/values-promtail.yaml": [],
+        "Ansible/values/values-redis.yaml": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 25,
+      "files": [
+        {
+          "path": "Documents/CICD 전략.md",
+          "language": "markdown",
+          "sizeLines": 387,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "Documents/서비스 개요.md",
+          "language": "markdown",
+          "sizeLines": 212,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "Documents/인프라 구축 기록.md",
+          "language": "markdown",
+          "sizeLines": 528,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "Documents/인프라 구축 방법(명령어).md",
+          "language": "markdown",
+          "sizeLines": 507,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "Documents/프로젝트 디렉토리 구조.md",
+          "language": "markdown",
+          "sizeLines": 302,
+          "fileCategory": "docs"
+        }
+      ],
+      "batchImportData": {
+        "Documents/CICD 전략.md": [],
+        "Documents/서비스 개요.md": [],
+        "Documents/인프라 구축 기록.md": [],
+        "Documents/인프라 구축 방법(명령어).md": [],
+        "Documents/프로젝트 디렉토리 구조.md": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 26,
+      "files": [
+        {
+          "path": "aws/.env.example",
+          "language": "config",
+          "sizeLines": 24,
+          "fileCategory": "config"
+        },
+        {
+          "path": "aws/COST-OPTIMIZATION.md",
+          "language": "markdown",
+          "sizeLines": 118,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "aws/DR-DB-RUNBOOK.md",
+          "language": "markdown",
+          "sizeLines": 184,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "aws/docker-compose.yml",
+          "language": "yaml",
+          "sizeLines": 53,
+          "fileCategory": "infra"
+        }
+      ],
+      "batchImportData": {
+        "aws/.env.example": [],
+        "aws/COST-OPTIMIZATION.md": [],
+        "aws/DR-DB-RUNBOOK.md": [],
+        "aws/docker-compose.yml": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 27,
+      "files": [
+        {
+          "path": "aws/terraform/alb.tf",
+          "language": "terraform",
+          "sizeLines": 100,
+          "fileCategory": "infra"
+        },
+        {
+          "path": "aws/terraform/asg.tf",
+          "language": "terraform",
+          "sizeLines": 32,
+          "fileCategory": "infra"
+        },
+        {
+          "path": "aws/terraform/compute.tf",
+          "language": "terraform",
+          "sizeLines": 43,
+          "fileCategory": "infra"
+        },
+        {
+          "path": "aws/terraform/db.tf",
+          "language": "terraform",
+          "sizeLines": 98,
+          "fileCategory": "infra"
+        },
+        {
+          "path": "aws/terraform/dns.tf",
+          "language": "terraform",
+          "sizeLines": 82,
+          "fileCategory": "infra"
+        },
+        {
+          "path": "aws/terraform/dr_trigger.tf",
+          "language": "terraform",
+          "sizeLines": 102,
+          "fileCategory": "infra"
+        },
+        {
+          "path": "aws/terraform/iam.tf",
+          "language": "terraform",
+          "sizeLines": 47,
+          "fileCategory": "infra"
+        },
+        {
+          "path": "aws/terraform/network.tf",
+          "language": "terraform",
+          "sizeLines": 63,
+          "fileCategory": "infra"
+        },
+        {
+          "path": "aws/terraform/outputs.tf",
+          "language": "terraform",
+          "sizeLines": 70,
+          "fileCategory": "infra"
+        },
+        {
+          "path": "aws/terraform/postgrest.tf",
+          "language": "terraform",
+          "sizeLines": 47,
+          "fileCategory": "infra"
+        },
+        {
+          "path": "aws/terraform/providers.tf",
+          "language": "terraform",
+          "sizeLines": 12,
+          "fileCategory": "infra"
+        },
+        {
+          "path": "aws/terraform/security.tf",
+          "language": "terraform",
+          "sizeLines": 86,
+          "fileCategory": "infra"
+        },
+        {
+          "path": "aws/terraform/variables.tf",
+          "language": "terraform",
+          "sizeLines": 122,
+          "fileCategory": "infra"
+        },
+        {
+          "path": "aws/terraform/versions.tf",
+          "language": "terraform",
+          "sizeLines": 24,
+          "fileCategory": "infra"
+        }
+      ],
+      "batchImportData": {
+        "aws/terraform/alb.tf": [],
+        "aws/terraform/asg.tf": [],
+        "aws/terraform/compute.tf": [],
+        "aws/terraform/db.tf": [],
+        "aws/terraform/dns.tf": [],
+        "aws/terraform/dr_trigger.tf": [],
+        "aws/terraform/iam.tf": [],
+        "aws/terraform/network.tf": [],
+        "aws/terraform/outputs.tf": [],
+        "aws/terraform/postgrest.tf": [],
+        "aws/terraform/providers.tf": [],
+        "aws/terraform/security.tf": [],
+        "aws/terraform/variables.tf": [],
+        "aws/terraform/versions.tf": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 28,
+      "files": [
+        {
+          "path": "4K_BE/.python-version",
+          "language": "unknown",
+          "sizeLines": 1,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_BE/app/tmdb_common.py",
+          "language": "python",
+          "sizeLines": 131,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_BE/DB_SCRIPTS/seed_movies.py",
+          "language": "python",
+          "sizeLines": 279,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_BE/DB_SCRIPTS/visits_schema.sql",
+          "language": "sql",
+          "sizeLines": 9,
+          "fileCategory": "data"
+        },
+        {
+          "path": "4K_BE/tests/__init__.py",
+          "language": "python",
+          "sizeLines": 0,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/api/manager/active-model/route.ts",
+          "language": "typescript",
+          "sizeLines": 7,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/api/manager/jobs/[type]/route.ts",
+          "language": "typescript",
+          "sizeLines": 13,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/api/manager/movies/[tmdb_id]/reprocess/route.ts",
+          "language": "typescript",
+          "sizeLines": 14,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/api/manager/movies/[tmdb_id]/route.ts",
+          "language": "typescript",
+          "sizeLines": 36,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/api/manager/movies/backfill/route.ts",
+          "language": "typescript",
+          "sizeLines": 14,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/api/manager/movies/recent/route.ts",
+          "language": "typescript",
+          "sizeLines": 9,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/api/manager/movies/route.ts",
+          "language": "typescript",
+          "sizeLines": 18,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/api/manager/movies/search/route.ts",
+          "language": "typescript",
+          "sizeLines": 15,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/api/manager/stats/route.ts",
+          "language": "typescript",
+          "sizeLines": 8,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/api/manager/subtitles/collect/route.ts",
+          "language": "typescript",
+          "sizeLines": 14,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/api/manager/subtitles/remaining/route.ts",
+          "language": "typescript",
+          "sizeLines": 8,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/api/manager/visits/range/route.ts",
+          "language": "typescript",
+          "sizeLines": 8,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/api/visit/route.ts",
+          "language": "typescript",
+          "sizeLines": 18,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/globals.css",
+          "language": "css",
+          "sizeLines": 178,
+          "fileCategory": "markup"
+        },
+        {
+          "path": "4K_FE/app/layout.tsx",
+          "language": "typescript",
+          "sizeLines": 48,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/login/page.tsx",
+          "language": "typescript",
+          "sizeLines": 116,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/app/manager/page.tsx",
+          "language": "typescript",
+          "sizeLines": 509,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/eslint.config.mjs",
+          "language": "javascript",
+          "sizeLines": 18,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/next.config.ts",
+          "language": "typescript",
+          "sizeLines": 7,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_FE/postcss.config.mjs",
+          "language": "javascript",
+          "sizeLines": 7,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "4K_BE/.python-version": [],
+        "4K_BE/app/tmdb_common.py": [],
+        "4K_BE/DB_SCRIPTS/seed_movies.py": [],
+        "4K_BE/DB_SCRIPTS/visits_schema.sql": [],
+        "4K_BE/tests/__init__.py": [],
+        "4K_FE/app/api/manager/active-model/route.ts": [],
+        "4K_FE/app/api/manager/jobs/[type]/route.ts": [],
+        "4K_FE/app/api/manager/movies/[tmdb_id]/reprocess/route.ts": [],
+        "4K_FE/app/api/manager/movies/[tmdb_id]/route.ts": [],
+        "4K_FE/app/api/manager/movies/backfill/route.ts": [],
+        "4K_FE/app/api/manager/movies/recent/route.ts": [],
+        "4K_FE/app/api/manager/movies/route.ts": [],
+        "4K_FE/app/api/manager/movies/search/route.ts": [],
+        "4K_FE/app/api/manager/stats/route.ts": [],
+        "4K_FE/app/api/manager/subtitles/collect/route.ts": [],
+        "4K_FE/app/api/manager/subtitles/remaining/route.ts": [],
+        "4K_FE/app/api/manager/visits/range/route.ts": [],
+        "4K_FE/app/api/visit/route.ts": [],
+        "4K_FE/app/globals.css": [],
+        "4K_FE/app/layout.tsx": [
+          "4K_FE/app/globals.css"
+        ],
+        "4K_FE/app/login/page.tsx": [],
+        "4K_FE/app/manager/page.tsx": [],
+        "4K_FE/eslint.config.mjs": [],
+        "4K_FE/next.config.ts": [],
+        "4K_FE/postcss.config.mjs": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 29,
+      "files": [
+        {
+          "path": "4K_ML/.python-version",
+          "language": "unknown",
+          "sizeLines": 1,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/db/__init__.py",
+          "language": "python",
+          "sizeLines": 0,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/db/apply_schema.py",
+          "language": "python",
+          "sizeLines": 24,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/generate_vectors/transform.py",
+          "language": "python",
+          "sizeLines": 43,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/pytest.ini",
+          "language": "config",
+          "sizeLines": 2,
+          "fileCategory": "config"
+        },
+        {
+          "path": "4K_ML/requirements.txt",
+          "language": "txt",
+          "sizeLines": 18,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "4K_ML/serving/promote.py",
+          "language": "python",
+          "sizeLines": 39,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/tests/__init__.py",
+          "language": "python",
+          "sizeLines": 0,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/tests/test_gen_transform.py",
+          "language": "python",
+          "sizeLines": 41,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/tests/test_promote.py",
+          "language": "python",
+          "sizeLines": 28,
+          "fileCategory": "code"
+        },
+        {
+          "path": "4K_ML/tests/test_schema.py",
+          "language": "python",
+          "sizeLines": 64,
+          "fileCategory": "code"
+        },
+        {
+          "path": "Ansible/ansible.cfg",
+          "language": "config",
+          "sizeLines": 10,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/group_vars/all.yaml",
+          "language": "yaml",
+          "sizeLines": 0,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/helm-values/ingress-nginx.yaml",
+          "language": "yaml",
+          "sizeLines": 11,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Ansible/helm-values/longhorn.yaml",
+          "language": "yaml",
+          "sizeLines": 21,
+          "fileCategory": "config"
+        },
+        {
+          "path": "aws/terraform/.terraform.lock.hcl",
+          "language": "hcl",
+          "sizeLines": 46,
+          "fileCategory": "code"
+        },
+        {
+          "path": "aws/terraform/lambda/dr_controller.py",
+          "language": "python",
+          "sizeLines": 56,
+          "fileCategory": "code"
+        },
+        {
+          "path": "aws/terraform/ssm-params.sh.example",
+          "language": "example",
+          "sizeLines": 26,
+          "fileCategory": "code"
+        },
+        {
+          "path": "aws/terraform/terraform.tfvars.example",
+          "language": "example",
+          "sizeLines": 20,
+          "fileCategory": "code"
+        },
+        {
+          "path": "aws/terraform/user_data_db.sh.tftpl",
+          "language": "tftpl",
+          "sizeLines": 38,
+          "fileCategory": "code"
+        },
+        {
+          "path": "aws/terraform/user_data.sh.tftpl",
+          "language": "tftpl",
+          "sizeLines": 48,
+          "fileCategory": "code"
+        },
+        {
+          "path": "readme.md",
+          "language": "markdown",
+          "sizeLines": 107,
+          "fileCategory": "docs"
+        }
+      ],
+      "batchImportData": {
+        "4K_ML/.python-version": [],
+        "4K_ML/db/__init__.py": [],
+        "4K_ML/db/apply_schema.py": [],
+        "4K_ML/generate_vectors/transform.py": [],
+        "4K_ML/pytest.ini": [],
+        "4K_ML/requirements.txt": [],
+        "4K_ML/serving/promote.py": [],
+        "4K_ML/tests/__init__.py": [],
+        "4K_ML/tests/test_gen_transform.py": [
+          "4K_ML/generate_vectors/transform.py"
+        ],
+        "4K_ML/tests/test_promote.py": [
+          "4K_ML/serving/promote.py"
+        ],
+        "4K_ML/tests/test_schema.py": [
+          "4K_ML/db/apply_schema.py"
+        ],
+        "Ansible/ansible.cfg": [],
+        "Ansible/group_vars/all.yaml": [],
+        "Ansible/helm-values/ingress-nginx.yaml": [],
+        "Ansible/helm-values/longhorn.yaml": [],
+        "aws/terraform/.terraform.lock.hcl": [],
+        "aws/terraform/lambda/dr_controller.py": [],
+        "aws/terraform/ssm-params.sh.example": [],
+        "aws/terraform/terraform.tfvars.example": [],
+        "aws/terraform/user_data_db.sh.tftpl": [],
+        "aws/terraform/user_data.sh.tftpl": [],
+        "readme.md": []
+      },
+      "neighborMap": {}
+    }
+  ]
+}

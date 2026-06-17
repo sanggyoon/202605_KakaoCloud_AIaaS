@@ -1,0 +1,391 @@
+{
+  "nodes": [
+    {
+      "id": "file:4K_ML/subtitle_parse/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "4K_ML/subtitle_parse/__init__.py",
+      "summary": "subtitle_parse 패키지를 정의하는 빈 패키지 초기화 파일로, 자막 파싱 모듈들을 하나의 Python 패키지로 묶는다.",
+      "tags": ["entry-point", "패키지-초기화", "barrel"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/subtitle_parse/db.py",
+      "type": "file",
+      "name": "db.py",
+      "filePath": "4K_ML/subtitle_parse/db.py",
+      "summary": "AI DB(PostgREST/Supabase 스타일 REST)에 대한 자막 파싱 데이터 접근 계층으로, 대상 영화 조회, 자막 가져오기, 씬/대사 upsert, 파싱 상태 갱신을 HTTP로 수행한다.",
+      "tags": ["data-access", "rest-client", "service", "upsert", "환경변수"],
+      "complexity": "moderate",
+      "languageNotes": "os.getenv로 AI DB URL과 인증 헤더를 구성하고 httpx 클라이언트를 통해 PostgREST 스타일 REST 호출을 수행한다."
+    },
+    {
+      "id": "file:4K_ML/subtitle_parse/embed.py",
+      "type": "file",
+      "name": "embed.py",
+      "filePath": "4K_ML/subtitle_parse/embed.py",
+      "summary": "SentenceTransformer 모델을 지연 로딩하여 자막 텍스트 리스트를 임베딩 벡터로 변환하는 유틸리티 모듈이다.",
+      "tags": ["utility", "embedding", "ml", "lazy-load", "nlp"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/subtitle_parse/features.py",
+      "type": "file",
+      "name": "features.py",
+      "filePath": "4K_ML/subtitle_parse/features.py",
+      "summary": "자막 Cue 시퀀스로부터 직전 자막과의 시간 간격, 길이, 단어 수 등 씬 분할에 사용되는 라인 단위 피처를 추출한다.",
+      "tags": ["utility", "feature-engineering", "ml", "자막-처리"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/subtitle_parse/parse_subtitles.py",
+      "type": "file",
+      "name": "parse_subtitles.py",
+      "filePath": "4K_ML/subtitle_parse/parse_subtitles.py",
+      "summary": "자막 파싱 파이프라인의 진입점으로, SRT 파싱→피처 추출→임베딩→씬 분할을 거쳐 씬/대사 행을 만들고 AI DB에 upsert하며 대상 영화들을 순회 처리한다.",
+      "tags": ["entry-point", "pipeline", "orchestration", "ml", "자막-처리"],
+      "complexity": "moderate",
+      "languageNotes": "run() 함수가 httpx.Client 컨텍스트 안에서 대상 영화를 순회하며 단계별로 db 모듈 함수를 호출하는 배치 파이프라인 구조이다."
+    },
+    {
+      "id": "file:4K_ML/subtitle_parse/scenes.py",
+      "type": "file",
+      "name": "scenes.py",
+      "filePath": "4K_ML/subtitle_parse/scenes.py",
+      "summary": "시간 간격과 코사인 유사도 기반의 씬 경계 분할 로직 및 환경변수 기반 설정 로더를 제공하며, 최소 길이/라인 수 조건으로 경계를 게이팅한다.",
+      "tags": ["utility", "scene-detection", "ml", "algorithm", "환경변수"],
+      "complexity": "moderate",
+      "languageNotes": "numpy 기반 코사인 유사도 계산과 누적 임베딩 평균을 사용해 의미적 경계를 판정한다."
+    },
+    {
+      "id": "file:4K_ML/subtitle_parse/srt.py",
+      "type": "file",
+      "name": "srt.py",
+      "filePath": "4K_ML/subtitle_parse/srt.py",
+      "summary": "원시 SRT 텍스트를 파싱하여 인덱스/시작·종료 밀리초/텍스트를 담은 Cue 데이터클래스 리스트로 변환하며, 태그 제거와 잘못된 블록 건너뛰기를 처리한다.",
+      "tags": ["utility", "parser", "serialization", "data-model", "자막-처리"],
+      "complexity": "moderate",
+      "languageNotes": "정규식으로 타임스탬프를 추출하고 dataclass Cue로 결과를 표현한다."
+    },
+    {
+      "id": "file:4K_ML/tests/test_features.py",
+      "type": "file",
+      "name": "test_features.py",
+      "filePath": "4K_ML/tests/test_features.py",
+      "summary": "features 모듈의 line_features가 기본 케이스와 빈 입력에 대해 올바른 피처를 산출하는지 검증하는 단위 테스트이다.",
+      "tags": ["test", "unit-test", "feature-engineering"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/tests/test_parse_db.py",
+      "type": "file",
+      "name": "test_parse_db.py",
+      "filePath": "4K_ML/tests/test_parse_db.py",
+      "summary": "httpx MockTransport와 monkeypatch를 사용해 db 모듈의 대상 필터링, 씬 upsert 응답, 파싱 상태 POST 동작을 검증하는 단위 테스트이다.",
+      "tags": ["test", "unit-test", "data-access", "mock"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_ML/tests/test_parse_main.py",
+      "type": "file",
+      "name": "test_parse_main.py",
+      "filePath": "4K_ML/tests/test_parse_main.py",
+      "summary": "parse_subtitles의 parse_one이 씬/대사를 올바르게 생성하고 빈 입력 시 예외를 던지는지 monkeypatch로 의존성을 대체해 검증하는 단위 테스트이다.",
+      "tags": ["test", "unit-test", "pipeline", "mock"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_ML/tests/test_scenes.py",
+      "type": "file",
+      "name": "test_scenes.py",
+      "filePath": "4K_ML/tests/test_scenes.py",
+      "summary": "scenes 모듈의 split_scenes 경계 판정(시간 간격, 의미 유사도, 최소 길이/라인 게이팅)과 config_from_env 기본값을 다각도로 검증하는 단위 테스트이다.",
+      "tags": ["test", "unit-test", "scene-detection", "algorithm"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_ML/tests/test_srt.py",
+      "type": "file",
+      "name": "test_srt.py",
+      "filePath": "4K_ML/tests/test_srt.py",
+      "summary": "srt 모듈의 parse_srt가 멀티라인 병합, 태그 제거, SDH 괄호 유지, 잘못된/빈 블록 처리 등을 올바르게 수행하는지 검증하는 단위 테스트이다.",
+      "tags": ["test", "unit-test", "parser", "자막-처리"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_ML/subtitle_parse/db.py:_headers",
+      "type": "function",
+      "name": "_headers",
+      "filePath": "4K_ML/subtitle_parse/db.py",
+      "lineRange": [17, 24],
+      "summary": "AI DB REST 호출에 사용할 인증 및 콘텐츠 협상 헤더를 write/representation 옵션에 따라 구성한다.",
+      "tags": ["utility", "rest-client", "auth"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/subtitle_parse/db.py:fetch_targets",
+      "type": "function",
+      "name": "fetch_targets",
+      "filePath": "4K_ML/subtitle_parse/db.py",
+      "lineRange": [27, 35],
+      "summary": "AI DB에서 자막 파싱 대상이 되는 영화 목록을 조회하고 tmdb_id 등 필요한 필드만 추려 반환한다.",
+      "tags": ["data-access", "rest-client", "query"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/subtitle_parse/db.py:fetch_subtitle",
+      "type": "function",
+      "name": "fetch_subtitle",
+      "filePath": "4K_ML/subtitle_parse/db.py",
+      "lineRange": [38, 45],
+      "summary": "주어진 tmdb_id에 대한 자막 레코드를 AI DB에서 가져온다.",
+      "tags": ["data-access", "rest-client", "query"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/subtitle_parse/db.py:upsert_scenes",
+      "type": "function",
+      "name": "upsert_scenes",
+      "filePath": "4K_ML/subtitle_parse/db.py",
+      "lineRange": [48, 55],
+      "summary": "씬 행 리스트를 AI DB에 upsert로 저장하고 실패 시 RuntimeError를 발생시키며 생성된 행을 반환한다.",
+      "tags": ["data-access", "rest-client", "upsert"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/subtitle_parse/db.py:upsert_dialogues",
+      "type": "function",
+      "name": "upsert_dialogues",
+      "filePath": "4K_ML/subtitle_parse/db.py",
+      "lineRange": [58, 63],
+      "summary": "대사 행 리스트를 AI DB에 upsert로 저장하고 실패 시 RuntimeError를 발생시킨다.",
+      "tags": ["data-access", "rest-client", "upsert"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/subtitle_parse/db.py:set_parse_state",
+      "type": "function",
+      "name": "set_parse_state",
+      "filePath": "4K_ML/subtitle_parse/db.py",
+      "lineRange": [66, 73],
+      "summary": "특정 영화의 자막 파싱 상태(state/error/타임스탬프)를 AI DB에 기록한다.",
+      "tags": ["data-access", "rest-client", "상태-관리"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/subtitle_parse/embed.py:embed_texts",
+      "type": "function",
+      "name": "embed_texts",
+      "filePath": "4K_ML/subtitle_parse/embed.py",
+      "lineRange": [15, 19],
+      "summary": "SentenceTransformer 모델로 텍스트 리스트를 임베딩 벡터로 인코딩하며 빈 입력에 대해서는 0 벡터를 반환한다.",
+      "tags": ["utility", "embedding", "ml"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/subtitle_parse/features.py:line_features",
+      "type": "function",
+      "name": "line_features",
+      "filePath": "4K_ML/subtitle_parse/features.py",
+      "lineRange": [5, 24],
+      "summary": "Cue 리스트에서 직전 자막과의 시간 간격, 자막 길이, 단어 수 등 라인 단위 피처를 계산해 리스트로 반환한다.",
+      "tags": ["utility", "feature-engineering", "ml"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/subtitle_parse/parse_subtitles.py:parse_one",
+      "type": "function",
+      "name": "parse_one",
+      "filePath": "4K_ML/subtitle_parse/parse_subtitles.py",
+      "lineRange": [15, 52],
+      "summary": "단일 자막에 대해 SRT 파싱, 피처 추출, 임베딩, 씬 분할을 수행하고 씬/대사 행을 구성해 AI DB에 upsert한다.",
+      "tags": ["pipeline", "orchestration", "ml", "자막-처리"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_ML/subtitle_parse/parse_subtitles.py:run",
+      "type": "function",
+      "name": "run",
+      "filePath": "4K_ML/subtitle_parse/parse_subtitles.py",
+      "lineRange": [55, 76],
+      "summary": "환경변수 설정을 로드하고 대상 영화들을 순회하며 자막을 가져와 parse_one을 실행하고 파싱 상태와 진행 상황을 기록하는 배치 실행 엔트리이다.",
+      "tags": ["entry-point", "pipeline", "orchestration", "배치"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_ML/subtitle_parse/scenes.py:config_from_env",
+      "type": "function",
+      "name": "config_from_env",
+      "filePath": "4K_ML/subtitle_parse/scenes.py",
+      "lineRange": [11, 17],
+      "summary": "씬 분할에 사용되는 gap/유사도 임계값/최소 길이 등의 설정을 환경변수에서 읽어 기본값과 함께 반환한다.",
+      "tags": ["config", "환경변수", "utility"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/subtitle_parse/scenes.py:split_scenes",
+      "type": "function",
+      "name": "split_scenes",
+      "filePath": "4K_ML/subtitle_parse/scenes.py",
+      "lineRange": [31, 61],
+      "summary": "라인 피처와 임베딩을 입력받아 시간 간격과 코사인 유사도 기반으로 씬 경계를 판정하고 최소 길이/라인 수로 게이팅하여 씬 묶음을 생성한다.",
+      "tags": ["scene-detection", "algorithm", "ml"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:4K_ML/subtitle_parse/srt.py:Cue",
+      "type": "class",
+      "name": "Cue",
+      "filePath": "4K_ML/subtitle_parse/srt.py",
+      "lineRange": [10, 14],
+      "summary": "자막 한 단위를 표현하는 데이터클래스로 인덱스, 시작/종료 밀리초, 텍스트 필드를 담는다.",
+      "tags": ["data-model", "dataclass", "자막-처리"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/subtitle_parse/srt.py:parse_srt",
+      "type": "function",
+      "name": "parse_srt",
+      "filePath": "4K_ML/subtitle_parse/srt.py",
+      "lineRange": [25, 45],
+      "summary": "원시 SRT 텍스트를 블록 단위로 분리해 타임스탬프와 텍스트를 추출하고 태그 제거 및 잘못된 블록 건너뛰기를 거쳐 Cue 리스트를 생성한다.",
+      "tags": ["parser", "serialization", "자막-처리"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_ML/tests/test_parse_db.py:test_fetch_targets_filters",
+      "type": "function",
+      "name": "test_fetch_targets_filters",
+      "filePath": "4K_ML/tests/test_parse_db.py",
+      "lineRange": [15, 25],
+      "summary": "MockTransport로 응답을 모킹해 fetch_targets가 대상 영화를 올바르게 필터링하는지 검증한다.",
+      "tags": ["test", "unit-test", "mock"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/tests/test_parse_db.py:test_upsert_scenes_returns_rows",
+      "type": "function",
+      "name": "test_upsert_scenes_returns_rows",
+      "filePath": "4K_ML/tests/test_parse_db.py",
+      "lineRange": [28, 40],
+      "summary": "upsert_scenes가 representation 헤더를 보내고 생성된 행을 반환하는지 모킹 응답으로 검증한다.",
+      "tags": ["test", "unit-test", "mock"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/tests/test_parse_db.py:test_set_parse_state_posts",
+      "type": "function",
+      "name": "test_set_parse_state_posts",
+      "filePath": "4K_ML/tests/test_parse_db.py",
+      "lineRange": [43, 54],
+      "summary": "set_parse_state가 올바른 상태 페이로드를 POST로 전송하는지 모킹된 핸들러로 검증한다.",
+      "tags": ["test", "unit-test", "mock"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/tests/test_parse_main.py:test_parse_one_builds_scenes_and_dialogues",
+      "type": "function",
+      "name": "test_parse_one_builds_scenes_and_dialogues",
+      "filePath": "4K_ML/tests/test_parse_main.py",
+      "lineRange": [13, 39],
+      "summary": "임베딩과 DB 의존성을 monkeypatch로 대체해 parse_one이 씬과 대사 행을 올바르게 생성하는지 검증한다.",
+      "tags": ["test", "unit-test", "pipeline", "mock"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_ML/tests/test_scenes.py:test_gap_boundary_gated_by_min_ms",
+      "type": "function",
+      "name": "test_gap_boundary_gated_by_min_ms",
+      "filePath": "4K_ML/tests/test_scenes.py",
+      "lineRange": [18, 21],
+      "summary": "최소 지속 시간 게이팅으로 인해 시간 간격 기반 씬 경계가 억제되는지 검증한다.",
+      "tags": ["test", "unit-test", "scene-detection"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/tests/test_srt.py:test_skips_malformed_block_and_reindexes",
+      "type": "function",
+      "name": "test_skips_malformed_block_and_reindexes",
+      "filePath": "4K_ML/tests/test_srt.py",
+      "lineRange": [31, 37],
+      "summary": "parse_srt가 잘못된 SRT 블록을 건너뛰고 남은 Cue를 재인덱싱하는지 검증한다.",
+      "tags": ["test", "unit-test", "parser"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {"source": "file:4K_ML/subtitle_parse/features.py", "target": "file:4K_ML/subtitle_parse/srt.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/subtitle_parse/parse_subtitles.py", "target": "file:4K_ML/subtitle_parse/__init__.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/subtitle_parse/parse_subtitles.py", "target": "file:4K_ML/subtitle_parse/db.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/subtitle_parse/parse_subtitles.py", "target": "file:4K_ML/subtitle_parse/embed.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/subtitle_parse/parse_subtitles.py", "target": "file:4K_ML/subtitle_parse/features.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/subtitle_parse/parse_subtitles.py", "target": "file:4K_ML/subtitle_parse/scenes.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/subtitle_parse/parse_subtitles.py", "target": "file:4K_ML/subtitle_parse/srt.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/tests/test_features.py", "target": "file:4K_ML/subtitle_parse/features.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/tests/test_features.py", "target": "file:4K_ML/subtitle_parse/srt.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/tests/test_parse_db.py", "target": "file:4K_ML/subtitle_parse/__init__.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/tests/test_parse_db.py", "target": "file:4K_ML/subtitle_parse/db.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/tests/test_parse_main.py", "target": "file:4K_ML/subtitle_parse/__init__.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/tests/test_scenes.py", "target": "file:4K_ML/subtitle_parse/scenes.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/tests/test_srt.py", "target": "file:4K_ML/subtitle_parse/srt.py", "type": "imports", "direction": "forward", "weight": 0.7},
+
+    {"source": "file:4K_ML/subtitle_parse/db.py", "target": "function:4K_ML/subtitle_parse/db.py:_headers", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/subtitle_parse/db.py", "target": "function:4K_ML/subtitle_parse/db.py:fetch_targets", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/subtitle_parse/db.py", "target": "function:4K_ML/subtitle_parse/db.py:fetch_subtitle", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/subtitle_parse/db.py", "target": "function:4K_ML/subtitle_parse/db.py:upsert_scenes", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/subtitle_parse/db.py", "target": "function:4K_ML/subtitle_parse/db.py:upsert_dialogues", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/subtitle_parse/db.py", "target": "function:4K_ML/subtitle_parse/db.py:set_parse_state", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/subtitle_parse/db.py", "target": "function:4K_ML/subtitle_parse/db.py:fetch_targets", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_ML/subtitle_parse/db.py", "target": "function:4K_ML/subtitle_parse/db.py:fetch_subtitle", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_ML/subtitle_parse/db.py", "target": "function:4K_ML/subtitle_parse/db.py:upsert_scenes", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_ML/subtitle_parse/db.py", "target": "function:4K_ML/subtitle_parse/db.py:upsert_dialogues", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_ML/subtitle_parse/db.py", "target": "function:4K_ML/subtitle_parse/db.py:set_parse_state", "type": "exports", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:4K_ML/subtitle_parse/embed.py", "target": "function:4K_ML/subtitle_parse/embed.py:embed_texts", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/subtitle_parse/embed.py", "target": "function:4K_ML/subtitle_parse/embed.py:embed_texts", "type": "exports", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:4K_ML/subtitle_parse/features.py", "target": "function:4K_ML/subtitle_parse/features.py:line_features", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/subtitle_parse/features.py", "target": "function:4K_ML/subtitle_parse/features.py:line_features", "type": "exports", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:4K_ML/subtitle_parse/parse_subtitles.py", "target": "function:4K_ML/subtitle_parse/parse_subtitles.py:parse_one", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/subtitle_parse/parse_subtitles.py", "target": "function:4K_ML/subtitle_parse/parse_subtitles.py:run", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/subtitle_parse/parse_subtitles.py", "target": "function:4K_ML/subtitle_parse/parse_subtitles.py:parse_one", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_ML/subtitle_parse/parse_subtitles.py", "target": "function:4K_ML/subtitle_parse/parse_subtitles.py:run", "type": "exports", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:4K_ML/subtitle_parse/scenes.py", "target": "function:4K_ML/subtitle_parse/scenes.py:config_from_env", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/subtitle_parse/scenes.py", "target": "function:4K_ML/subtitle_parse/scenes.py:split_scenes", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/subtitle_parse/scenes.py", "target": "function:4K_ML/subtitle_parse/scenes.py:config_from_env", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_ML/subtitle_parse/scenes.py", "target": "function:4K_ML/subtitle_parse/scenes.py:split_scenes", "type": "exports", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:4K_ML/subtitle_parse/srt.py", "target": "class:4K_ML/subtitle_parse/srt.py:Cue", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/subtitle_parse/srt.py", "target": "function:4K_ML/subtitle_parse/srt.py:parse_srt", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/subtitle_parse/srt.py", "target": "class:4K_ML/subtitle_parse/srt.py:Cue", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_ML/subtitle_parse/srt.py", "target": "function:4K_ML/subtitle_parse/srt.py:parse_srt", "type": "exports", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:4K_ML/tests/test_parse_db.py", "target": "function:4K_ML/tests/test_parse_db.py:test_fetch_targets_filters", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/tests/test_parse_db.py", "target": "function:4K_ML/tests/test_parse_db.py:test_upsert_scenes_returns_rows", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/tests/test_parse_db.py", "target": "function:4K_ML/tests/test_parse_db.py:test_set_parse_state_posts", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/tests/test_parse_main.py", "target": "function:4K_ML/tests/test_parse_main.py:test_parse_one_builds_scenes_and_dialogues", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/tests/test_scenes.py", "target": "function:4K_ML/tests/test_scenes.py:test_gap_boundary_gated_by_min_ms", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/tests/test_srt.py", "target": "function:4K_ML/tests/test_srt.py:test_skips_malformed_block_and_reindexes", "type": "contains", "direction": "forward", "weight": 1.0},
+
+    {"source": "function:4K_ML/subtitle_parse/parse_subtitles.py:parse_one", "target": "function:4K_ML/subtitle_parse/srt.py:parse_srt", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_ML/subtitle_parse/parse_subtitles.py:parse_one", "target": "function:4K_ML/subtitle_parse/features.py:line_features", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_ML/subtitle_parse/parse_subtitles.py:parse_one", "target": "function:4K_ML/subtitle_parse/embed.py:embed_texts", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_ML/subtitle_parse/parse_subtitles.py:parse_one", "target": "function:4K_ML/subtitle_parse/scenes.py:split_scenes", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_ML/subtitle_parse/parse_subtitles.py:parse_one", "target": "function:4K_ML/subtitle_parse/db.py:upsert_scenes", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_ML/subtitle_parse/parse_subtitles.py:parse_one", "target": "function:4K_ML/subtitle_parse/db.py:upsert_dialogues", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_ML/subtitle_parse/parse_subtitles.py:run", "target": "function:4K_ML/subtitle_parse/scenes.py:config_from_env", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_ML/subtitle_parse/parse_subtitles.py:run", "target": "function:4K_ML/subtitle_parse/db.py:fetch_targets", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_ML/subtitle_parse/parse_subtitles.py:run", "target": "function:4K_ML/subtitle_parse/db.py:fetch_subtitle", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_ML/subtitle_parse/parse_subtitles.py:run", "target": "function:4K_ML/subtitle_parse/parse_subtitles.py:parse_one", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_ML/subtitle_parse/parse_subtitles.py:run", "target": "function:4K_ML/subtitle_parse/db.py:set_parse_state", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_ML/subtitle_parse/features.py:line_features", "target": "class:4K_ML/subtitle_parse/srt.py:Cue", "type": "depends_on", "direction": "forward", "weight": 0.6},
+
+    {"source": "file:4K_ML/subtitle_parse/features.py", "target": "file:4K_ML/tests/test_features.py", "type": "tested_by", "direction": "forward", "weight": 0.5},
+    {"source": "file:4K_ML/subtitle_parse/db.py", "target": "file:4K_ML/tests/test_parse_db.py", "type": "tested_by", "direction": "forward", "weight": 0.5},
+    {"source": "file:4K_ML/subtitle_parse/parse_subtitles.py", "target": "file:4K_ML/tests/test_parse_main.py", "type": "tested_by", "direction": "forward", "weight": 0.5},
+    {"source": "file:4K_ML/subtitle_parse/scenes.py", "target": "file:4K_ML/tests/test_scenes.py", "type": "tested_by", "direction": "forward", "weight": 0.5},
+    {"source": "file:4K_ML/subtitle_parse/srt.py", "target": "file:4K_ML/tests/test_srt.py", "type": "tested_by", "direction": "forward", "weight": 0.5}
+  ]
+}

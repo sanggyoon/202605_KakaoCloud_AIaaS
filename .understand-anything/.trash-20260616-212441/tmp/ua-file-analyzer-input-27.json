@@ -1,0 +1,35 @@
+{
+  "projectRoot": "/Users/sanggyoon/Documents/KakaoCloud_Project",
+  "batchFiles": [
+    {"path": "aws/terraform/alb.tf", "language": "terraform", "sizeLines": 100, "fileCategory": "infra"},
+    {"path": "aws/terraform/asg.tf", "language": "terraform", "sizeLines": 32, "fileCategory": "infra"},
+    {"path": "aws/terraform/compute.tf", "language": "terraform", "sizeLines": 43, "fileCategory": "infra"},
+    {"path": "aws/terraform/db.tf", "language": "terraform", "sizeLines": 98, "fileCategory": "infra"},
+    {"path": "aws/terraform/dns.tf", "language": "terraform", "sizeLines": 82, "fileCategory": "infra"},
+    {"path": "aws/terraform/dr_trigger.tf", "language": "terraform", "sizeLines": 102, "fileCategory": "infra"},
+    {"path": "aws/terraform/iam.tf", "language": "terraform", "sizeLines": 47, "fileCategory": "infra"},
+    {"path": "aws/terraform/network.tf", "language": "terraform", "sizeLines": 63, "fileCategory": "infra"},
+    {"path": "aws/terraform/outputs.tf", "language": "terraform", "sizeLines": 70, "fileCategory": "infra"},
+    {"path": "aws/terraform/postgrest.tf", "language": "terraform", "sizeLines": 47, "fileCategory": "infra"},
+    {"path": "aws/terraform/providers.tf", "language": "terraform", "sizeLines": 12, "fileCategory": "infra"},
+    {"path": "aws/terraform/security.tf", "language": "terraform", "sizeLines": 86, "fileCategory": "infra"},
+    {"path": "aws/terraform/variables.tf", "language": "terraform", "sizeLines": 122, "fileCategory": "infra"},
+    {"path": "aws/terraform/versions.tf", "language": "terraform", "sizeLines": 24, "fileCategory": "infra"}
+  ],
+  "batchImportData": {
+    "aws/terraform/alb.tf": [],
+    "aws/terraform/asg.tf": [],
+    "aws/terraform/compute.tf": [],
+    "aws/terraform/db.tf": [],
+    "aws/terraform/dns.tf": [],
+    "aws/terraform/dr_trigger.tf": [],
+    "aws/terraform/iam.tf": [],
+    "aws/terraform/network.tf": [],
+    "aws/terraform/outputs.tf": [],
+    "aws/terraform/postgrest.tf": [],
+    "aws/terraform/providers.tf": [],
+    "aws/terraform/security.tf": [],
+    "aws/terraform/variables.tf": [],
+    "aws/terraform/versions.tf": []
+  }
+}

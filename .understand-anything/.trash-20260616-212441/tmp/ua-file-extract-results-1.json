@@ -1,0 +1,3264 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 18,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "4K_ML/serving/predict_core.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 48,
+      "nonEmptyLines": 38,
+      "functions": [
+        {
+          "name": "load_artifacts",
+          "startLine": 15,
+          "endLine": 28,
+          "params": [
+            "model_dir",
+            "encoder_name",
+            "device"
+          ]
+        },
+        {
+          "name": "_clamp01",
+          "startLine": 31,
+          "endLine": 32,
+          "params": [
+            "x"
+          ]
+        },
+        {
+          "name": "score_instances",
+          "startLine": 35,
+          "endLine": 48,
+          "params": [
+            "model",
+            "scaler",
+            "tokenizer",
+            "max_len",
+            "instances"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "load_artifacts",
+          "line": 15,
+          "isDefault": false
+        },
+        {
+          "name": "_clamp01",
+          "line": 31,
+          "isDefault": false
+        },
+        {
+          "name": "score_instances",
+          "line": 35,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "load_artifacts",
+          "callee": "json.load",
+          "lineNumber": 20
+        },
+        {
+          "caller": "load_artifacts",
+          "callee": "open",
+          "lineNumber": 20
+        },
+        {
+          "caller": "load_artifacts",
+          "callee": "os.path.join",
+          "lineNumber": 20
+        },
+        {
+          "caller": "load_artifacts",
+          "callee": "Scaler.load",
+          "lineNumber": 21
+        },
+        {
+          "caller": "load_artifacts",
+          "callee": "os.path.join",
+          "lineNumber": 21
+        },
+        {
+          "caller": "load_artifacts",
+          "callee": "RobertaTokenizerFast.from_pretrained",
+          "lineNumber": 22
+        },
+        {
+          "caller": "load_artifacts",
+          "callee": "HybridRobertaRegressor",
+          "lineNumber": 23
+        },
+        {
+          "caller": "load_artifacts",
+          "callee": "build_encoder",
+          "lineNumber": 23
+        },
+        {
+          "caller": "load_artifacts",
+          "callee": "model.load_state_dict",
+          "lineNumber": 24
+        },
+        {
+          "caller": "load_artifacts",
+          "callee": "load_file",
+          "lineNumber": 24
+        },
+        {
+          "caller": "load_artifacts",
+          "callee": "os.path.join",
+          "lineNumber": 24
+        },
+        {
+          "caller": "load_artifacts",
+          "callee": "torch.cuda.is_available",
+          "lineNumber": 25
+        },
+        {
+          "caller": "load_artifacts",
+          "callee": "model.to",
+          "lineNumber": 26
+        },
+        {
+          "caller": "load_artifacts",
+          "callee": "model.eval",
+          "lineNumber": 27
+        },
+        {
+          "caller": "_clamp01",
+          "callee": "float",
+          "lineNumber": 32
+        },
+        {
+          "caller": "_clamp01",
+          "callee": "min",
+          "lineNumber": 32
+        },
+        {
+          "caller": "_clamp01",
+          "callee": "max",
+          "lineNumber": 32
+        },
+        {
+          "caller": "score_instances",
+          "callee": "next",
+          "lineNumber": 39
+        },
+        {
+          "caller": "score_instances",
+          "callee": "model.parameters",
+          "lineNumber": 39
+        },
+        {
+          "caller": "score_instances",
+          "callee": "scaler.transform",
+          "lineNumber": 40
+        },
+        {
+          "caller": "score_instances",
+          "callee": "compute_features",
+          "lineNumber": 40
+        },
+        {
+          "caller": "score_instances",
+          "callee": "tokenizer",
+          "lineNumber": 41
+        },
+        {
+          "caller": "score_instances",
+          "callee": "x.get",
+          "lineNumber": 41
+        },
+        {
+          "caller": "score_instances",
+          "callee": "torch.tensor(np.asarray(feats), dtype=torch.float).to",
+          "lineNumber": 43
+        },
+        {
+          "caller": "score_instances",
+          "callee": "torch.tensor",
+          "lineNumber": 43
+        },
+        {
+          "caller": "score_instances",
+          "callee": "np.asarray",
+          "lineNumber": 43
+        },
+        {
+          "caller": "score_instances",
+          "callee": "enc[\"input_ids\"].to",
+          "lineNumber": 44
+        },
+        {
+          "caller": "score_instances",
+          "callee": "enc[\"attention_mask\"].to",
+          "lineNumber": 45
+        },
+        {
+          "caller": "score_instances",
+          "callee": "torch.no_grad",
+          "lineNumber": 46
+        },
+        {
+          "caller": "score_instances",
+          "callee": "model(input_ids, attention_mask, numeric).cpu().numpy",
+          "lineNumber": 47
+        },
+        {
+          "caller": "score_instances",
+          "callee": "model(input_ids, attention_mask, numeric).cpu",
+          "lineNumber": 47
+        },
+        {
+          "caller": "score_instances",
+          "callee": "model",
+          "lineNumber": 47
+        },
+        {
+          "caller": "score_instances",
+          "callee": "_clamp01",
+          "lineNumber": 48
+        },
+        {
+          "caller": "score_instances",
+          "callee": "_clamp01",
+          "lineNumber": 48
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 3,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/serving/predictor.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 49,
+      "nonEmptyLines": 35,
+      "functions": [
+        {
+          "name": "create_app",
+          "startLine": 21,
+          "endLine": 46,
+          "params": [
+            "loader"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "PredictRequest",
+          "startLine": 17,
+          "endLine": 18,
+          "methods": [],
+          "properties": [
+            "instances"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "PredictRequest",
+          "line": 17,
+          "isDefault": false
+        },
+        {
+          "name": "create_app",
+          "line": 21,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "create_app",
+          "callee": "FastAPI",
+          "lineNumber": 22
+        },
+        {
+          "caller": "create_app",
+          "callee": "app.on_event",
+          "lineNumber": 25
+        },
+        {
+          "caller": "_load",
+          "callee": "os.getenv",
+          "lineNumber": 27
+        },
+        {
+          "caller": "_load",
+          "callee": "loader",
+          "lineNumber": 28
+        },
+        {
+          "caller": "_load",
+          "callee": "state.update",
+          "lineNumber": 29
+        },
+        {
+          "caller": "_load",
+          "callee": "int",
+          "lineNumber": 31
+        },
+        {
+          "caller": "_load",
+          "callee": "cfg.get",
+          "lineNumber": 31
+        },
+        {
+          "caller": "_load",
+          "callee": "cfg.get",
+          "lineNumber": 32
+        },
+        {
+          "caller": "create_app",
+          "callee": "app.get",
+          "lineNumber": 36
+        },
+        {
+          "caller": "ready",
+          "callee": "state.get",
+          "lineNumber": 38
+        },
+        {
+          "caller": "create_app",
+          "callee": "app.post",
+          "lineNumber": 40
+        },
+        {
+          "caller": "predict",
+          "callee": "score_instances",
+          "lineNumber": 42
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 2,
+        "functionCount": 1,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "4K_ML/serving/serve.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 7,
+      "nonEmptyLines": 5,
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/tests/test_predict_core.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 39,
+      "nonEmptyLines": 28,
+      "functions": [
+        {
+          "name": "_tiny_model",
+          "startLine": 16,
+          "endLine": 19,
+          "params": []
+        },
+        {
+          "name": "_inst",
+          "startLine": 22,
+          "endLine": 24,
+          "params": [
+            "text",
+            "prog",
+            "dur_ms",
+            "dcount",
+            "gap"
+          ]
+        },
+        {
+          "name": "test_score_instances_shape_and_range",
+          "startLine": 27,
+          "endLine": 34,
+          "params": []
+        },
+        {
+          "name": "test_score_instances_empty",
+          "startLine": 37,
+          "endLine": 39,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "_FakeTok",
+          "startLine": 9,
+          "endLine": 13,
+          "methods": [
+            "__call__"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "_FakeTok",
+          "line": 9,
+          "isDefault": false
+        },
+        {
+          "name": "_tiny_model",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "_inst",
+          "line": 22,
+          "isDefault": false
+        },
+        {
+          "name": "test_score_instances_shape_and_range",
+          "line": 27,
+          "isDefault": false
+        },
+        {
+          "name": "test_score_instances_empty",
+          "line": 37,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "__call__",
+          "callee": "len",
+          "lineNumber": 11
+        },
+        {
+          "caller": "__call__",
+          "callee": "torch.ones",
+          "lineNumber": 12
+        },
+        {
+          "caller": "__call__",
+          "callee": "torch.ones",
+          "lineNumber": 13
+        },
+        {
+          "caller": "_tiny_model",
+          "callee": "RobertaConfig",
+          "lineNumber": 17
+        },
+        {
+          "caller": "_tiny_model",
+          "callee": "HybridRobertaRegressor",
+          "lineNumber": 19
+        },
+        {
+          "caller": "_tiny_model",
+          "callee": "RobertaModel",
+          "lineNumber": 19
+        },
+        {
+          "caller": "test_score_instances_shape_and_range",
+          "callee": "_inst",
+          "lineNumber": 28
+        },
+        {
+          "caller": "test_score_instances_shape_and_range",
+          "callee": "_inst",
+          "lineNumber": 28
+        },
+        {
+          "caller": "test_score_instances_shape_and_range",
+          "callee": "Scaler().fit",
+          "lineNumber": 29
+        },
+        {
+          "caller": "test_score_instances_shape_and_range",
+          "callee": "Scaler",
+          "lineNumber": 29
+        },
+        {
+          "caller": "test_score_instances_shape_and_range",
+          "callee": "compute_features",
+          "lineNumber": 29
+        },
+        {
+          "caller": "test_score_instances_shape_and_range",
+          "callee": "score_instances",
+          "lineNumber": 30
+        },
+        {
+          "caller": "test_score_instances_shape_and_range",
+          "callee": "_tiny_model",
+          "lineNumber": 30
+        },
+        {
+          "caller": "test_score_instances_shape_and_range",
+          "callee": "_FakeTok",
+          "lineNumber": 30
+        },
+        {
+          "caller": "test_score_instances_shape_and_range",
+          "callee": "len",
+          "lineNumber": 31
+        },
+        {
+          "caller": "test_score_instances_shape_and_range",
+          "callee": "set",
+          "lineNumber": 33
+        },
+        {
+          "caller": "test_score_instances_empty",
+          "callee": "Scaler().fit",
+          "lineNumber": 38
+        },
+        {
+          "caller": "test_score_instances_empty",
+          "callee": "Scaler",
+          "lineNumber": 38
+        },
+        {
+          "caller": "test_score_instances_empty",
+          "callee": "score_instances",
+          "lineNumber": 39
+        },
+        {
+          "caller": "test_score_instances_empty",
+          "callee": "_tiny_model",
+          "lineNumber": 39
+        },
+        {
+          "caller": "test_score_instances_empty",
+          "callee": "_FakeTok",
+          "lineNumber": 39
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 5,
+        "functionCount": 4,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "4K_ML/tests/test_predictor.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 42,
+      "nonEmptyLines": 34,
+      "functions": [
+        {
+          "name": "_fake_loader",
+          "startLine": 17,
+          "endLine": 24,
+          "params": [
+            "model_dir"
+          ]
+        },
+        {
+          "name": "test_ready_and_predict",
+          "startLine": 27,
+          "endLine": 42,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "_FakeTok",
+          "startLine": 10,
+          "endLine": 14,
+          "methods": [
+            "__call__"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "_FakeTok",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "_fake_loader",
+          "line": 17,
+          "isDefault": false
+        },
+        {
+          "name": "test_ready_and_predict",
+          "line": 27,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "__call__",
+          "callee": "len",
+          "lineNumber": 12
+        },
+        {
+          "caller": "__call__",
+          "callee": "torch.ones",
+          "lineNumber": 13
+        },
+        {
+          "caller": "__call__",
+          "callee": "torch.ones",
+          "lineNumber": 14
+        },
+        {
+          "caller": "_fake_loader",
+          "callee": "RobertaConfig",
+          "lineNumber": 18
+        },
+        {
+          "caller": "_fake_loader",
+          "callee": "HybridRobertaRegressor",
+          "lineNumber": 20
+        },
+        {
+          "caller": "_fake_loader",
+          "callee": "RobertaModel",
+          "lineNumber": 20
+        },
+        {
+          "caller": "_fake_loader",
+          "callee": "Scaler().fit",
+          "lineNumber": 23
+        },
+        {
+          "caller": "_fake_loader",
+          "callee": "Scaler",
+          "lineNumber": 23
+        },
+        {
+          "caller": "_fake_loader",
+          "callee": "compute_features",
+          "lineNumber": 23
+        },
+        {
+          "caller": "_fake_loader",
+          "callee": "_FakeTok",
+          "lineNumber": 24
+        },
+        {
+          "caller": "test_ready_and_predict",
+          "callee": "create_app",
+          "lineNumber": 28
+        },
+        {
+          "caller": "test_ready_and_predict",
+          "callee": "TestClient",
+          "lineNumber": 29
+        },
+        {
+          "caller": "test_ready_and_predict",
+          "callee": "client.get",
+          "lineNumber": 30
+        },
+        {
+          "caller": "test_ready_and_predict",
+          "callee": "r.json",
+          "lineNumber": 31
+        },
+        {
+          "caller": "test_ready_and_predict",
+          "callee": "client.post",
+          "lineNumber": 35
+        },
+        {
+          "caller": "test_ready_and_predict",
+          "callee": "r.json",
+          "lineNumber": 37
+        },
+        {
+          "caller": "test_ready_and_predict",
+          "callee": "len",
+          "lineNumber": 39
+        },
+        {
+          "caller": "test_ready_and_predict",
+          "callee": "set",
+          "lineNumber": 40
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 3,
+        "functionCount": 2,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "4K_ML/tests/test_train_dataset.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 39,
+      "nonEmptyLines": 32,
+      "functions": [
+        {
+          "name": "test_split_movies_no_overlap_and_reproducible",
+          "startLine": 7,
+          "endLine": 14,
+          "params": []
+        },
+        {
+          "name": "test_scene_dataset_item_shapes",
+          "startLine": 24,
+          "endLine": 39,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "_FakeTok",
+          "startLine": 17,
+          "endLine": 21,
+          "methods": [
+            "__call__"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "test_split_movies_no_overlap_and_reproducible",
+          "line": 7,
+          "isDefault": false
+        },
+        {
+          "name": "_FakeTok",
+          "line": 17,
+          "isDefault": false
+        },
+        {
+          "name": "test_scene_dataset_item_shapes",
+          "line": 24,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "test_split_movies_no_overlap_and_reproducible",
+          "callee": "list",
+          "lineNumber": 8
+        },
+        {
+          "caller": "test_split_movies_no_overlap_and_reproducible",
+          "callee": "range",
+          "lineNumber": 8
+        },
+        {
+          "caller": "test_split_movies_no_overlap_and_reproducible",
+          "callee": "split_movies",
+          "lineNumber": 9
+        },
+        {
+          "caller": "test_split_movies_no_overlap_and_reproducible",
+          "callee": "len",
+          "lineNumber": 10
+        },
+        {
+          "caller": "test_split_movies_no_overlap_and_reproducible",
+          "callee": "len",
+          "lineNumber": 10
+        },
+        {
+          "caller": "test_split_movies_no_overlap_and_reproducible",
+          "callee": "len",
+          "lineNumber": 10
+        },
+        {
+          "caller": "test_split_movies_no_overlap_and_reproducible",
+          "callee": "set(tr).isdisjoint",
+          "lineNumber": 11
+        },
+        {
+          "caller": "test_split_movies_no_overlap_and_reproducible",
+          "callee": "set",
+          "lineNumber": 11
+        },
+        {
+          "caller": "test_split_movies_no_overlap_and_reproducible",
+          "callee": "set(tr).isdisjoint",
+          "lineNumber": 11
+        },
+        {
+          "caller": "test_split_movies_no_overlap_and_reproducible",
+          "callee": "set",
+          "lineNumber": 11
+        },
+        {
+          "caller": "test_split_movies_no_overlap_and_reproducible",
+          "callee": "set(va).isdisjoint",
+          "lineNumber": 11
+        },
+        {
+          "caller": "test_split_movies_no_overlap_and_reproducible",
+          "callee": "set",
+          "lineNumber": 11
+        },
+        {
+          "caller": "test_split_movies_no_overlap_and_reproducible",
+          "callee": "set",
+          "lineNumber": 12
+        },
+        {
+          "caller": "test_split_movies_no_overlap_and_reproducible",
+          "callee": "set",
+          "lineNumber": 12
+        },
+        {
+          "caller": "test_split_movies_no_overlap_and_reproducible",
+          "callee": "set",
+          "lineNumber": 12
+        },
+        {
+          "caller": "test_split_movies_no_overlap_and_reproducible",
+          "callee": "set",
+          "lineNumber": 12
+        },
+        {
+          "caller": "test_split_movies_no_overlap_and_reproducible",
+          "callee": "split_movies",
+          "lineNumber": 13
+        },
+        {
+          "caller": "__call__",
+          "callee": "torch.ones",
+          "lineNumber": 20
+        },
+        {
+          "caller": "__call__",
+          "callee": "torch.ones",
+          "lineNumber": 21
+        },
+        {
+          "caller": "test_scene_dataset_item_shapes",
+          "callee": "Scaler().fit",
+          "lineNumber": 31
+        },
+        {
+          "caller": "test_scene_dataset_item_shapes",
+          "callee": "Scaler",
+          "lineNumber": 31
+        },
+        {
+          "caller": "test_scene_dataset_item_shapes",
+          "callee": "compute_features",
+          "lineNumber": 31
+        },
+        {
+          "caller": "test_scene_dataset_item_shapes",
+          "callee": "SceneDataset",
+          "lineNumber": 32
+        },
+        {
+          "caller": "test_scene_dataset_item_shapes",
+          "callee": "_FakeTok",
+          "lineNumber": 32
+        },
+        {
+          "caller": "test_scene_dataset_item_shapes",
+          "callee": "len",
+          "lineNumber": 33
+        },
+        {
+          "caller": "test_scene_dataset_item_shapes",
+          "callee": "torch.allclose",
+          "lineNumber": 38
+        },
+        {
+          "caller": "test_scene_dataset_item_shapes",
+          "callee": "torch.tensor",
+          "lineNumber": 38
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 3,
+        "functionCount": 2,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "4K_ML/tests/test_train_db.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 81,
+      "nonEmptyLines": 63,
+      "functions": [
+        {
+          "name": "_client",
+          "startLine": 8,
+          "endLine": 9,
+          "params": [
+            "handler"
+          ]
+        },
+        {
+          "name": "_env",
+          "startLine": 12,
+          "endLine": 14,
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_fetch_labeled_movies",
+          "startLine": 17,
+          "endLine": 27,
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_fetch_movie_scenes_assembles",
+          "startLine": 30,
+          "endLine": 65,
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_upsert_model_version_payload",
+          "startLine": 68,
+          "endLine": 81,
+          "params": [
+            "monkeypatch"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "_client",
+          "line": 8,
+          "isDefault": false
+        },
+        {
+          "name": "_env",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "test_fetch_labeled_movies",
+          "line": 17,
+          "isDefault": false
+        },
+        {
+          "name": "test_fetch_movie_scenes_assembles",
+          "line": 30,
+          "isDefault": false
+        },
+        {
+          "name": "test_upsert_model_version_payload",
+          "line": 68,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_client",
+          "callee": "httpx.Client",
+          "lineNumber": 9
+        },
+        {
+          "caller": "_client",
+          "callee": "httpx.MockTransport",
+          "lineNumber": 9
+        },
+        {
+          "caller": "_env",
+          "callee": "monkeypatch.setenv",
+          "lineNumber": 13
+        },
+        {
+          "caller": "_env",
+          "callee": "monkeypatch.setenv",
+          "lineNumber": 14
+        },
+        {
+          "caller": "test_fetch_labeled_movies",
+          "callee": "_env",
+          "lineNumber": 18
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 21
+        },
+        {
+          "caller": "test_fetch_labeled_movies",
+          "callee": "db.fetch_labeled_movies",
+          "lineNumber": 27
+        },
+        {
+          "caller": "test_fetch_labeled_movies",
+          "callee": "_client",
+          "lineNumber": 27
+        },
+        {
+          "caller": "test_fetch_movie_scenes_assembles",
+          "callee": "_env",
+          "lineNumber": 31
+        },
+        {
+          "caller": "handler",
+          "callee": "str",
+          "lineNumber": 34
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 36
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 38
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 45
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 51
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 57
+        },
+        {
+          "caller": "test_fetch_movie_scenes_assembles",
+          "callee": "db.fetch_movie_scenes",
+          "lineNumber": 59
+        },
+        {
+          "caller": "test_fetch_movie_scenes_assembles",
+          "callee": "_client",
+          "lineNumber": 59
+        },
+        {
+          "caller": "test_fetch_movie_scenes_assembles",
+          "callee": "len",
+          "lineNumber": 61
+        },
+        {
+          "caller": "test_upsert_model_version_payload",
+          "callee": "_env",
+          "lineNumber": 69
+        },
+        {
+          "caller": "handler",
+          "callee": "str",
+          "lineNumber": 73
+        },
+        {
+          "caller": "handler",
+          "callee": "json.loads",
+          "lineNumber": 74
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 75
+        },
+        {
+          "caller": "test_upsert_model_version_payload",
+          "callee": "db.upsert_model_version",
+          "lineNumber": 77
+        },
+        {
+          "caller": "test_upsert_model_version_payload",
+          "callee": "_client",
+          "lineNumber": 77
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 5,
+        "functionCount": 5,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/tests/test_train_evaluate.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 21,
+      "nonEmptyLines": 13,
+      "functions": [
+        {
+          "name": "test_mae",
+          "startLine": 4,
+          "endLine": 5,
+          "params": []
+        },
+        {
+          "name": "test_pearson_perfect",
+          "startLine": 8,
+          "endLine": 9,
+          "params": []
+        },
+        {
+          "name": "test_pearson_constant_returns_zero",
+          "startLine": 12,
+          "endLine": 13,
+          "params": []
+        },
+        {
+          "name": "test_movie_spearman_averages_per_movie",
+          "startLine": 16,
+          "endLine": 21,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "test_mae",
+          "line": 4,
+          "isDefault": false
+        },
+        {
+          "name": "test_pearson_perfect",
+          "line": 8,
+          "isDefault": false
+        },
+        {
+          "name": "test_pearson_constant_returns_zero",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "test_movie_spearman_averages_per_movie",
+          "line": 16,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "test_mae",
+          "callee": "mae",
+          "lineNumber": 5
+        },
+        {
+          "caller": "test_pearson_perfect",
+          "callee": "pearson",
+          "lineNumber": 9
+        },
+        {
+          "caller": "test_pearson_constant_returns_zero",
+          "callee": "pearson",
+          "lineNumber": 13
+        },
+        {
+          "caller": "test_movie_spearman_averages_per_movie",
+          "callee": "abs",
+          "lineNumber": 21
+        },
+        {
+          "caller": "test_movie_spearman_averages_per_movie",
+          "callee": "movie_spearman",
+          "lineNumber": 21
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 4,
+        "functionCount": 4,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/tests/test_train_features.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 40,
+      "nonEmptyLines": 29,
+      "functions": [
+        {
+          "name": "test_feature_order",
+          "startLine": 6,
+          "endLine": 8,
+          "params": []
+        },
+        {
+          "name": "test_compute_features_values",
+          "startLine": 11,
+          "endLine": 16,
+          "params": []
+        },
+        {
+          "name": "test_compute_features_zero_duration_guard",
+          "startLine": 19,
+          "endLine": 23,
+          "params": []
+        },
+        {
+          "name": "test_scaler_fit_transform_and_roundtrip",
+          "startLine": 26,
+          "endLine": 34,
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_scaler_zero_std_no_nan",
+          "startLine": 37,
+          "endLine": 40,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "test_feature_order",
+          "line": 6,
+          "isDefault": false
+        },
+        {
+          "name": "test_compute_features_values",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "test_compute_features_zero_duration_guard",
+          "line": 19,
+          "isDefault": false
+        },
+        {
+          "name": "test_scaler_fit_transform_and_roundtrip",
+          "line": 26,
+          "isDefault": false
+        },
+        {
+          "name": "test_scaler_zero_std_no_nan",
+          "line": 37,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "test_compute_features_values",
+          "callee": "compute_features",
+          "lineNumber": 14
+        },
+        {
+          "caller": "test_compute_features_zero_duration_guard",
+          "callee": "compute_features",
+          "lineNumber": 22
+        },
+        {
+          "caller": "test_scaler_fit_transform_and_roundtrip",
+          "callee": "Scaler().fit",
+          "lineNumber": 28
+        },
+        {
+          "caller": "test_scaler_fit_transform_and_roundtrip",
+          "callee": "Scaler",
+          "lineNumber": 28
+        },
+        {
+          "caller": "test_scaler_fit_transform_and_roundtrip",
+          "callee": "sc.transform",
+          "lineNumber": 29
+        },
+        {
+          "caller": "test_scaler_fit_transform_and_roundtrip",
+          "callee": "np.allclose",
+          "lineNumber": 30
+        },
+        {
+          "caller": "test_scaler_fit_transform_and_roundtrip",
+          "callee": "Z.mean",
+          "lineNumber": 30
+        },
+        {
+          "caller": "test_scaler_fit_transform_and_roundtrip",
+          "callee": "sc.save",
+          "lineNumber": 32
+        },
+        {
+          "caller": "test_scaler_fit_transform_and_roundtrip",
+          "callee": "Scaler.load",
+          "lineNumber": 33
+        },
+        {
+          "caller": "test_scaler_fit_transform_and_roundtrip",
+          "callee": "np.allclose",
+          "lineNumber": 34
+        },
+        {
+          "caller": "test_scaler_fit_transform_and_roundtrip",
+          "callee": "sc2.transform",
+          "lineNumber": 34
+        },
+        {
+          "caller": "test_scaler_zero_std_no_nan",
+          "callee": "Scaler().fit",
+          "lineNumber": 39
+        },
+        {
+          "caller": "test_scaler_zero_std_no_nan",
+          "callee": "Scaler",
+          "lineNumber": 39
+        },
+        {
+          "caller": "test_scaler_zero_std_no_nan",
+          "callee": "np.isnan(sc.transform(X)).any",
+          "lineNumber": 40
+        },
+        {
+          "caller": "test_scaler_zero_std_no_nan",
+          "callee": "np.isnan",
+          "lineNumber": 40
+        },
+        {
+          "caller": "test_scaler_zero_std_no_nan",
+          "callee": "sc.transform",
+          "lineNumber": 40
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 5,
+        "functionCount": 5,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/tests/test_train_main.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 63,
+      "nonEmptyLines": 49,
+      "functions": [
+        {
+          "name": "_rec",
+          "startLine": 21,
+          "endLine": 25,
+          "params": [
+            "movie",
+            "idx",
+            "a",
+            "v"
+          ]
+        },
+        {
+          "name": "_tiny_model",
+          "startLine": 28,
+          "endLine": 31,
+          "params": []
+        },
+        {
+          "name": "test_run_trains_and_saves",
+          "startLine": 34,
+          "endLine": 63,
+          "params": [
+            "monkeypatch",
+            "tmp_path"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "_FakeTok",
+          "startLine": 10,
+          "endLine": 18,
+          "methods": [
+            "__call__",
+            "save_pretrained"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "_FakeTok",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "_rec",
+          "line": 21,
+          "isDefault": false
+        },
+        {
+          "name": "_tiny_model",
+          "line": 28,
+          "isDefault": false
+        },
+        {
+          "name": "test_run_trains_and_saves",
+          "line": 34,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "__call__",
+          "callee": "torch.ones",
+          "lineNumber": 12
+        },
+        {
+          "caller": "__call__",
+          "callee": "torch.ones",
+          "lineNumber": 13
+        },
+        {
+          "caller": "save_pretrained",
+          "callee": "os.makedirs",
+          "lineNumber": 17
+        },
+        {
+          "caller": "save_pretrained",
+          "callee": "open(f\"{path}/tokenizer.txt\", \"w\").close",
+          "lineNumber": 18
+        },
+        {
+          "caller": "save_pretrained",
+          "callee": "open",
+          "lineNumber": 18
+        },
+        {
+          "caller": "_tiny_model",
+          "callee": "RobertaConfig",
+          "lineNumber": 29
+        },
+        {
+          "caller": "_tiny_model",
+          "callee": "HybridRobertaRegressor",
+          "lineNumber": 31
+        },
+        {
+          "caller": "_tiny_model",
+          "callee": "RobertaModel",
+          "lineNumber": 31
+        },
+        {
+          "caller": "test_run_trains_and_saves",
+          "callee": "monkeypatch.setenv",
+          "lineNumber": 35
+        },
+        {
+          "caller": "test_run_trains_and_saves",
+          "callee": "_rec",
+          "lineNumber": 37
+        },
+        {
+          "caller": "test_run_trains_and_saves",
+          "callee": "range",
+          "lineNumber": 37
+        },
+        {
+          "caller": "test_run_trains_and_saves",
+          "callee": "range",
+          "lineNumber": 37
+        },
+        {
+          "caller": "test_run_trains_and_saves",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 38
+        },
+        {
+          "caller": "test_run_trains_and_saves",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 39
+        },
+        {
+          "caller": "test_run_trains_and_saves",
+          "callee": "_tiny_model",
+          "lineNumber": 39
+        },
+        {
+          "caller": "test_run_trains_and_saves",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 40
+        },
+        {
+          "caller": "test_run_trains_and_saves",
+          "callee": "_FakeTok",
+          "lineNumber": 40
+        },
+        {
+          "caller": "test_run_trains_and_saves",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 43
+        },
+        {
+          "caller": "test_run_trains_and_saves",
+          "callee": "upserts.update",
+          "lineNumber": 44
+        },
+        {
+          "caller": "test_run_trains_and_saves",
+          "callee": "tm.run",
+          "lineNumber": 47
+        },
+        {
+          "caller": "test_run_trains_and_saves",
+          "callee": "str",
+          "lineNumber": 47
+        },
+        {
+          "caller": "test_run_trains_and_saves",
+          "callee": "(out / \"scaler.json\").exists",
+          "lineNumber": 52
+        },
+        {
+          "caller": "test_run_trains_and_saves",
+          "callee": "(out / \"split.json\").exists",
+          "lineNumber": 53
+        },
+        {
+          "caller": "test_run_trains_and_saves",
+          "callee": "(out / \"config.json\").exists",
+          "lineNumber": 54
+        },
+        {
+          "caller": "test_run_trains_and_saves",
+          "callee": "(out / \"model.safetensors\").exists",
+          "lineNumber": 55
+        },
+        {
+          "caller": "test_run_trains_and_saves",
+          "callee": "json.loads",
+          "lineNumber": 62
+        },
+        {
+          "caller": "test_run_trains_and_saves",
+          "callee": "(out / \"split.json\").read_text",
+          "lineNumber": 62
+        },
+        {
+          "caller": "test_run_trains_and_saves",
+          "callee": "set(split[\"train\"]).isdisjoint",
+          "lineNumber": 63
+        },
+        {
+          "caller": "test_run_trains_and_saves",
+          "callee": "set",
+          "lineNumber": 63
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 4,
+        "functionCount": 3,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "4K_ML/tests/test_train_model_arch.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 21,
+      "nonEmptyLines": 16,
+      "functions": [
+        {
+          "name": "_tiny_encoder",
+          "startLine": 7,
+          "endLine": 10,
+          "params": []
+        },
+        {
+          "name": "test_forward_shape_and_range",
+          "startLine": 13,
+          "endLine": 21,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "_tiny_encoder",
+          "line": 7,
+          "isDefault": false
+        },
+        {
+          "name": "test_forward_shape_and_range",
+          "line": 13,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_tiny_encoder",
+          "callee": "RobertaConfig",
+          "lineNumber": 8
+        },
+        {
+          "caller": "_tiny_encoder",
+          "callee": "RobertaModel",
+          "lineNumber": 10
+        },
+        {
+          "caller": "test_forward_shape_and_range",
+          "callee": "HybridRobertaRegressor",
+          "lineNumber": 14
+        },
+        {
+          "caller": "test_forward_shape_and_range",
+          "callee": "_tiny_encoder",
+          "lineNumber": 14
+        },
+        {
+          "caller": "test_forward_shape_and_range",
+          "callee": "torch.randint",
+          "lineNumber": 16
+        },
+        {
+          "caller": "test_forward_shape_and_range",
+          "callee": "torch.ones",
+          "lineNumber": 17
+        },
+        {
+          "caller": "test_forward_shape_and_range",
+          "callee": "torch.randn",
+          "lineNumber": 18
+        },
+        {
+          "caller": "test_forward_shape_and_range",
+          "callee": "model",
+          "lineNumber": 19
+        },
+        {
+          "caller": "test_forward_shape_and_range",
+          "callee": "float",
+          "lineNumber": 21
+        },
+        {
+          "caller": "test_forward_shape_and_range",
+          "callee": "out.min",
+          "lineNumber": 21
+        },
+        {
+          "caller": "test_forward_shape_and_range",
+          "callee": "float",
+          "lineNumber": 21
+        },
+        {
+          "caller": "test_forward_shape_and_range",
+          "callee": "out.max",
+          "lineNumber": 21
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/train/__init__.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 1,
+      "nonEmptyLines": 0,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/train/dataset.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 41,
+      "nonEmptyLines": 33,
+      "functions": [
+        {
+          "name": "split_movies",
+          "startLine": 10,
+          "endLine": 17,
+          "params": [
+            "movie_ids",
+            "seed",
+            "ratios"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "SceneDataset",
+          "startLine": 20,
+          "endLine": 41,
+          "methods": [
+            "__init__",
+            "__len__",
+            "__getitem__"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "split_movies",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "SceneDataset",
+          "line": 20,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "split_movies",
+          "callee": "sorted",
+          "lineNumber": 12
+        },
+        {
+          "caller": "split_movies",
+          "callee": "random.Random(seed).shuffle",
+          "lineNumber": 13
+        },
+        {
+          "caller": "split_movies",
+          "callee": "random.Random",
+          "lineNumber": 13
+        },
+        {
+          "caller": "split_movies",
+          "callee": "len",
+          "lineNumber": 14
+        },
+        {
+          "caller": "split_movies",
+          "callee": "int",
+          "lineNumber": 15
+        },
+        {
+          "caller": "split_movies",
+          "callee": "int",
+          "lineNumber": 16
+        },
+        {
+          "caller": "__init__",
+          "callee": "scaler.transform",
+          "lineNumber": 25
+        },
+        {
+          "caller": "__init__",
+          "callee": "compute_features",
+          "lineNumber": 25
+        },
+        {
+          "caller": "__len__",
+          "callee": "len",
+          "lineNumber": 29
+        },
+        {
+          "caller": "__getitem__",
+          "callee": "self.tok",
+          "lineNumber": 33
+        },
+        {
+          "caller": "__getitem__",
+          "callee": "r.get",
+          "lineNumber": 33
+        },
+        {
+          "caller": "__getitem__",
+          "callee": "enc[\"input_ids\"].squeeze",
+          "lineNumber": 36
+        },
+        {
+          "caller": "__getitem__",
+          "callee": "enc[\"attention_mask\"].squeeze",
+          "lineNumber": 37
+        },
+        {
+          "caller": "__getitem__",
+          "callee": "torch.tensor",
+          "lineNumber": 38
+        },
+        {
+          "caller": "__getitem__",
+          "callee": "torch.tensor",
+          "lineNumber": 39
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 2,
+        "functionCount": 1,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "4K_ML/train/db.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 101,
+      "nonEmptyLines": 82,
+      "functions": [
+        {
+          "name": "_ai",
+          "startLine": 10,
+          "endLine": 11,
+          "params": []
+        },
+        {
+          "name": "_auth",
+          "startLine": 14,
+          "endLine": 16,
+          "params": []
+        },
+        {
+          "name": "_headers",
+          "startLine": 19,
+          "endLine": 25,
+          "params": [
+            "write"
+          ]
+        },
+        {
+          "name": "_get",
+          "startLine": 28,
+          "endLine": 33,
+          "params": [
+            "client",
+            "table",
+            "params"
+          ]
+        },
+        {
+          "name": "fetch_labeled_movies",
+          "startLine": 36,
+          "endLine": 40,
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "fetch_movie_scenes",
+          "startLine": 43,
+          "endLine": 92,
+          "params": [
+            "client",
+            "tmdb_id"
+          ]
+        },
+        {
+          "name": "upsert_model_version",
+          "startLine": 95,
+          "endLine": 101,
+          "params": [
+            "client",
+            "model_version",
+            "kind",
+            "metrics"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "_ai",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "_auth",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "_headers",
+          "line": 19,
+          "isDefault": false
+        },
+        {
+          "name": "_get",
+          "line": 28,
+          "isDefault": false
+        },
+        {
+          "name": "fetch_labeled_movies",
+          "line": 36,
+          "isDefault": false
+        },
+        {
+          "name": "fetch_movie_scenes",
+          "line": 43,
+          "isDefault": false
+        },
+        {
+          "name": "upsert_model_version",
+          "line": 95,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_ai",
+          "callee": "os.getenv",
+          "lineNumber": 11
+        },
+        {
+          "caller": "_ai",
+          "callee": "os.getenv",
+          "lineNumber": 11
+        },
+        {
+          "caller": "_auth",
+          "callee": "os.getenv",
+          "lineNumber": 15
+        },
+        {
+          "caller": "_auth",
+          "callee": "os.getenv",
+          "lineNumber": 16
+        },
+        {
+          "caller": "_headers",
+          "callee": "_ai",
+          "lineNumber": 20
+        },
+        {
+          "caller": "_get",
+          "callee": "_ai",
+          "lineNumber": 29
+        },
+        {
+          "caller": "_get",
+          "callee": "client.get",
+          "lineNumber": 30
+        },
+        {
+          "caller": "_get",
+          "callee": "_headers",
+          "lineNumber": 31
+        },
+        {
+          "caller": "_get",
+          "callee": "_auth",
+          "lineNumber": 31
+        },
+        {
+          "caller": "_get",
+          "callee": "r.raise_for_status",
+          "lineNumber": 32
+        },
+        {
+          "caller": "_get",
+          "callee": "r.json",
+          "lineNumber": 33
+        },
+        {
+          "caller": "fetch_labeled_movies",
+          "callee": "_get",
+          "lineNumber": 38
+        },
+        {
+          "caller": "fetch_labeled_movies",
+          "callee": "row.get",
+          "lineNumber": 40
+        },
+        {
+          "caller": "fetch_movie_scenes",
+          "callee": "_get",
+          "lineNumber": 49
+        },
+        {
+          "caller": "fetch_movie_scenes",
+          "callee": "_get",
+          "lineNumber": 53
+        },
+        {
+          "caller": "fetch_movie_scenes",
+          "callee": "_get",
+          "lineNumber": 58
+        },
+        {
+          "caller": "fetch_movie_scenes",
+          "callee": "\",\".join",
+          "lineNumber": 61
+        },
+        {
+          "caller": "fetch_movie_scenes",
+          "callee": "str",
+          "lineNumber": 61
+        },
+        {
+          "caller": "fetch_movie_scenes",
+          "callee": "_get",
+          "lineNumber": 62
+        },
+        {
+          "caller": "fetch_movie_scenes",
+          "callee": "d.get",
+          "lineNumber": 69
+        },
+        {
+          "caller": "fetch_movie_scenes",
+          "callee": "gaps.setdefault(d[\"scenes_id\"], []).append",
+          "lineNumber": 71
+        },
+        {
+          "caller": "fetch_movie_scenes",
+          "callee": "gaps.setdefault",
+          "lineNumber": 71
+        },
+        {
+          "caller": "fetch_movie_scenes",
+          "callee": "float",
+          "lineNumber": 71
+        },
+        {
+          "caller": "fetch_movie_scenes",
+          "callee": "label.get",
+          "lineNumber": 79
+        },
+        {
+          "caller": "fetch_movie_scenes",
+          "callee": "label.get",
+          "lineNumber": 80
+        },
+        {
+          "caller": "fetch_movie_scenes",
+          "callee": "gaps.get",
+          "lineNumber": 83
+        },
+        {
+          "caller": "fetch_movie_scenes",
+          "callee": "out.append",
+          "lineNumber": 84
+        },
+        {
+          "caller": "fetch_movie_scenes",
+          "callee": "s.get",
+          "lineNumber": 86
+        },
+        {
+          "caller": "fetch_movie_scenes",
+          "callee": "s.get",
+          "lineNumber": 86
+        },
+        {
+          "caller": "fetch_movie_scenes",
+          "callee": "s.get",
+          "lineNumber": 88
+        },
+        {
+          "caller": "fetch_movie_scenes",
+          "callee": "sum",
+          "lineNumber": 89
+        },
+        {
+          "caller": "fetch_movie_scenes",
+          "callee": "len",
+          "lineNumber": 89
+        },
+        {
+          "caller": "upsert_model_version",
+          "callee": "_ai",
+          "lineNumber": 96
+        },
+        {
+          "caller": "upsert_model_version",
+          "callee": "client.post",
+          "lineNumber": 98
+        },
+        {
+          "caller": "upsert_model_version",
+          "callee": "_headers",
+          "lineNumber": 99
+        },
+        {
+          "caller": "upsert_model_version",
+          "callee": "_auth",
+          "lineNumber": 99
+        },
+        {
+          "caller": "upsert_model_version",
+          "callee": "RuntimeError",
+          "lineNumber": 101
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 7,
+        "functionCount": 7,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/train/evaluate.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 34,
+      "nonEmptyLines": 28,
+      "functions": [
+        {
+          "name": "mae",
+          "startLine": 6,
+          "endLine": 9,
+          "params": [
+            "pred",
+            "true"
+          ]
+        },
+        {
+          "name": "pearson",
+          "startLine": 12,
+          "endLine": 17,
+          "params": [
+            "pred",
+            "true"
+          ]
+        },
+        {
+          "name": "movie_spearman",
+          "startLine": 20,
+          "endLine": 34,
+          "params": [
+            "pred",
+            "true",
+            "movie_ids"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "mae",
+          "line": 6,
+          "isDefault": false
+        },
+        {
+          "name": "pearson",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "movie_spearman",
+          "line": 20,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "mae",
+          "callee": "np.asarray",
+          "lineNumber": 7
+        },
+        {
+          "caller": "mae",
+          "callee": "np.asarray",
+          "lineNumber": 8
+        },
+        {
+          "caller": "mae",
+          "callee": "float",
+          "lineNumber": 9
+        },
+        {
+          "caller": "mae",
+          "callee": "np.mean",
+          "lineNumber": 9
+        },
+        {
+          "caller": "mae",
+          "callee": "np.abs",
+          "lineNumber": 9
+        },
+        {
+          "caller": "pearson",
+          "callee": "np.asarray",
+          "lineNumber": 13
+        },
+        {
+          "caller": "pearson",
+          "callee": "np.asarray",
+          "lineNumber": 14
+        },
+        {
+          "caller": "pearson",
+          "callee": "len",
+          "lineNumber": 15
+        },
+        {
+          "caller": "pearson",
+          "callee": "np.std",
+          "lineNumber": 15
+        },
+        {
+          "caller": "pearson",
+          "callee": "np.std",
+          "lineNumber": 15
+        },
+        {
+          "caller": "pearson",
+          "callee": "float",
+          "lineNumber": 17
+        },
+        {
+          "caller": "pearson",
+          "callee": "pearsonr",
+          "lineNumber": 17
+        },
+        {
+          "caller": "movie_spearman",
+          "callee": "zip",
+          "lineNumber": 23
+        },
+        {
+          "caller": "movie_spearman",
+          "callee": "by.setdefault",
+          "lineNumber": 24
+        },
+        {
+          "caller": "movie_spearman",
+          "callee": "by[m][0].append",
+          "lineNumber": 25
+        },
+        {
+          "caller": "movie_spearman",
+          "callee": "by[m][1].append",
+          "lineNumber": 26
+        },
+        {
+          "caller": "movie_spearman",
+          "callee": "by.values",
+          "lineNumber": 28
+        },
+        {
+          "caller": "movie_spearman",
+          "callee": "len",
+          "lineNumber": 29
+        },
+        {
+          "caller": "movie_spearman",
+          "callee": "np.std",
+          "lineNumber": 29
+        },
+        {
+          "caller": "movie_spearman",
+          "callee": "np.std",
+          "lineNumber": 29
+        },
+        {
+          "caller": "movie_spearman",
+          "callee": "spearmanr",
+          "lineNumber": 31
+        },
+        {
+          "caller": "movie_spearman",
+          "callee": "np.isnan",
+          "lineNumber": 32
+        },
+        {
+          "caller": "movie_spearman",
+          "callee": "vals.append",
+          "lineNumber": 33
+        },
+        {
+          "caller": "movie_spearman",
+          "callee": "float",
+          "lineNumber": 34
+        },
+        {
+          "caller": "movie_spearman",
+          "callee": "np.mean",
+          "lineNumber": 34
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/train/features.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 57,
+      "nonEmptyLines": 44,
+      "functions": [
+        {
+          "name": "compute_features",
+          "startLine": 10,
+          "endLine": 20,
+          "params": [
+            "scene"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "Scaler",
+          "startLine": 23,
+          "endLine": 57,
+          "methods": [
+            "__init__",
+            "fit",
+            "transform",
+            "to_dict",
+            "from_dict",
+            "save",
+            "load"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "compute_features",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "Scaler",
+          "line": 23,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "compute_features",
+          "callee": "max",
+          "lineNumber": 12
+        },
+        {
+          "caller": "compute_features",
+          "callee": "len",
+          "lineNumber": 13
+        },
+        {
+          "caller": "compute_features",
+          "callee": "(scene.get(\"text\") or \"\").split",
+          "lineNumber": 13
+        },
+        {
+          "caller": "compute_features",
+          "callee": "scene.get",
+          "lineNumber": 13
+        },
+        {
+          "caller": "compute_features",
+          "callee": "float",
+          "lineNumber": 15
+        },
+        {
+          "caller": "compute_features",
+          "callee": "scene.get",
+          "lineNumber": 15
+        },
+        {
+          "caller": "compute_features",
+          "callee": "float",
+          "lineNumber": 17
+        },
+        {
+          "caller": "compute_features",
+          "callee": "scene.get",
+          "lineNumber": 17
+        },
+        {
+          "caller": "compute_features",
+          "callee": "float",
+          "lineNumber": 19
+        },
+        {
+          "caller": "compute_features",
+          "callee": "scene.get",
+          "lineNumber": 19
+        },
+        {
+          "caller": "fit",
+          "callee": "np.asarray",
+          "lineNumber": 31
+        },
+        {
+          "caller": "fit",
+          "callee": "arr.mean",
+          "lineNumber": 32
+        },
+        {
+          "caller": "fit",
+          "callee": "arr.std",
+          "lineNumber": 33
+        },
+        {
+          "caller": "fit",
+          "callee": "np.where",
+          "lineNumber": 34
+        },
+        {
+          "caller": "transform",
+          "callee": "np.asarray",
+          "lineNumber": 38
+        },
+        {
+          "caller": "to_dict",
+          "callee": "float",
+          "lineNumber": 42
+        },
+        {
+          "caller": "to_dict",
+          "callee": "float",
+          "lineNumber": 43
+        },
+        {
+          "caller": "from_dict",
+          "callee": "cls",
+          "lineNumber": 48
+        },
+        {
+          "caller": "from_dict",
+          "callee": "np.asarray",
+          "lineNumber": 48
+        },
+        {
+          "caller": "from_dict",
+          "callee": "np.asarray",
+          "lineNumber": 48
+        },
+        {
+          "caller": "save",
+          "callee": "open",
+          "lineNumber": 51
+        },
+        {
+          "caller": "save",
+          "callee": "json.dump",
+          "lineNumber": 52
+        },
+        {
+          "caller": "save",
+          "callee": "self.to_dict",
+          "lineNumber": 52
+        },
+        {
+          "caller": "load",
+          "callee": "open",
+          "lineNumber": 56
+        },
+        {
+          "caller": "load",
+          "callee": "cls.from_dict",
+          "lineNumber": 57
+        },
+        {
+          "caller": "load",
+          "callee": "json.load",
+          "lineNumber": 57
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 1,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "4K_ML/train/model.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 28,
+      "nonEmptyLines": 23,
+      "functions": [
+        {
+          "name": "build_encoder",
+          "startLine": 26,
+          "endLine": 28,
+          "params": [
+            "name"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "HybridRobertaRegressor",
+          "startLine": 6,
+          "endLine": 23,
+          "methods": [
+            "__init__",
+            "forward"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "HybridRobertaRegressor",
+          "line": 6,
+          "isDefault": false
+        },
+        {
+          "name": "build_encoder",
+          "line": 26,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "__init__",
+          "callee": "super().__init__",
+          "lineNumber": 8
+        },
+        {
+          "caller": "__init__",
+          "callee": "super",
+          "lineNumber": 8
+        },
+        {
+          "caller": "__init__",
+          "callee": "nn.Sequential",
+          "lineNumber": 11
+        },
+        {
+          "caller": "__init__",
+          "callee": "nn.Linear",
+          "lineNumber": 12
+        },
+        {
+          "caller": "__init__",
+          "callee": "nn.ReLU",
+          "lineNumber": 13
+        },
+        {
+          "caller": "__init__",
+          "callee": "nn.Dropout",
+          "lineNumber": 14
+        },
+        {
+          "caller": "__init__",
+          "callee": "nn.Linear",
+          "lineNumber": 15
+        },
+        {
+          "caller": "__init__",
+          "callee": "nn.Sigmoid",
+          "lineNumber": 16
+        },
+        {
+          "caller": "forward",
+          "callee": "self.encoder",
+          "lineNumber": 20
+        },
+        {
+          "caller": "forward",
+          "callee": "torch.cat",
+          "lineNumber": 22
+        },
+        {
+          "caller": "forward",
+          "callee": "self.head",
+          "lineNumber": 23
+        },
+        {
+          "caller": "build_encoder",
+          "callee": "RobertaModel.from_pretrained",
+          "lineNumber": 28
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 1,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "4K_ML/train/train_model.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 166,
+      "nonEmptyLines": 138,
+      "functions": [
+        {
+          "name": "load_training_data",
+          "startLine": 21,
+          "endLine": 26,
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "build_model",
+          "startLine": 29,
+          "endLine": 30,
+          "params": [
+            "name"
+          ]
+        },
+        {
+          "name": "_load_tokenizer",
+          "startLine": 33,
+          "endLine": 35,
+          "params": [
+            "name"
+          ]
+        },
+        {
+          "name": "_records_for",
+          "startLine": 38,
+          "endLine": 39,
+          "params": [
+            "records",
+            "movie_set"
+          ]
+        },
+        {
+          "name": "_predict",
+          "startLine": 42,
+          "endLine": 52,
+          "params": [
+            "model",
+            "records",
+            "tok",
+            "scaler",
+            "device",
+            "batch_size",
+            "max_len"
+          ]
+        },
+        {
+          "name": "_val_mae",
+          "startLine": 55,
+          "endLine": 60,
+          "params": [
+            "model",
+            "records",
+            "tok",
+            "scaler",
+            "device",
+            "batch_size",
+            "max_len"
+          ]
+        },
+        {
+          "name": "_save",
+          "startLine": 63,
+          "endLine": 73,
+          "params": [
+            "out_dir",
+            "model",
+            "tok",
+            "scaler",
+            "split",
+            "config"
+          ]
+        },
+        {
+          "name": "run",
+          "startLine": 76,
+          "endLine": 162,
+          "params": [
+            "out_dir",
+            "model_name",
+            "max_epochs",
+            "batch_size",
+            "lr",
+            "patience",
+            "seed",
+            "max_len"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "load_training_data",
+          "line": 21,
+          "isDefault": false
+        },
+        {
+          "name": "build_model",
+          "line": 29,
+          "isDefault": false
+        },
+        {
+          "name": "_load_tokenizer",
+          "line": 33,
+          "isDefault": false
+        },
+        {
+          "name": "_records_for",
+          "line": 38,
+          "isDefault": false
+        },
+        {
+          "name": "_predict",
+          "line": 42,
+          "isDefault": false
+        },
+        {
+          "name": "_val_mae",
+          "line": 55,
+          "isDefault": false
+        },
+        {
+          "name": "_save",
+          "line": 63,
+          "isDefault": false
+        },
+        {
+          "name": "run",
+          "line": 76,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "load_training_data",
+          "callee": "db.fetch_labeled_movies",
+          "lineNumber": 24
+        },
+        {
+          "caller": "load_training_data",
+          "callee": "records.extend",
+          "lineNumber": 25
+        },
+        {
+          "caller": "load_training_data",
+          "callee": "db.fetch_movie_scenes",
+          "lineNumber": 25
+        },
+        {
+          "caller": "build_model",
+          "callee": "HybridRobertaRegressor",
+          "lineNumber": 30
+        },
+        {
+          "caller": "build_model",
+          "callee": "build_encoder",
+          "lineNumber": 30
+        },
+        {
+          "caller": "_load_tokenizer",
+          "callee": "RobertaTokenizerFast.from_pretrained",
+          "lineNumber": 35
+        },
+        {
+          "caller": "_predict",
+          "callee": "model.eval",
+          "lineNumber": 43
+        },
+        {
+          "caller": "_predict",
+          "callee": "SceneDataset",
+          "lineNumber": 44
+        },
+        {
+          "caller": "_predict",
+          "callee": "DataLoader",
+          "lineNumber": 45
+        },
+        {
+          "caller": "_predict",
+          "callee": "torch.no_grad",
+          "lineNumber": 47
+        },
+        {
+          "caller": "_predict",
+          "callee": "model",
+          "lineNumber": 49
+        },
+        {
+          "caller": "_predict",
+          "callee": "b[\"input_ids\"].to",
+          "lineNumber": 49
+        },
+        {
+          "caller": "_predict",
+          "callee": "b[\"attention_mask\"].to",
+          "lineNumber": 49
+        },
+        {
+          "caller": "_predict",
+          "callee": "b[\"numeric\"].to",
+          "lineNumber": 50
+        },
+        {
+          "caller": "_predict",
+          "callee": "preds.append",
+          "lineNumber": 51
+        },
+        {
+          "caller": "_predict",
+          "callee": "out.cpu().numpy",
+          "lineNumber": 51
+        },
+        {
+          "caller": "_predict",
+          "callee": "out.cpu",
+          "lineNumber": 51
+        },
+        {
+          "caller": "_predict",
+          "callee": "np.concatenate",
+          "lineNumber": 52
+        },
+        {
+          "caller": "_predict",
+          "callee": "np.zeros",
+          "lineNumber": 52
+        },
+        {
+          "caller": "_val_mae",
+          "callee": "float",
+          "lineNumber": 57
+        },
+        {
+          "caller": "_val_mae",
+          "callee": "_predict",
+          "lineNumber": 58
+        },
+        {
+          "caller": "_val_mae",
+          "callee": "np.array",
+          "lineNumber": 59
+        },
+        {
+          "caller": "_val_mae",
+          "callee": "evaluate.mae",
+          "lineNumber": 60
+        },
+        {
+          "caller": "_save",
+          "callee": "os.makedirs",
+          "lineNumber": 65
+        },
+        {
+          "caller": "_save",
+          "callee": "save_file",
+          "lineNumber": 66
+        },
+        {
+          "caller": "_save",
+          "callee": "v.contiguous",
+          "lineNumber": 66
+        },
+        {
+          "caller": "_save",
+          "callee": "model.state_dict().items",
+          "lineNumber": 66
+        },
+        {
+          "caller": "_save",
+          "callee": "model.state_dict",
+          "lineNumber": 66
+        },
+        {
+          "caller": "_save",
+          "callee": "os.path.join",
+          "lineNumber": 67
+        },
+        {
+          "caller": "_save",
+          "callee": "scaler.save",
+          "lineNumber": 68
+        },
+        {
+          "caller": "_save",
+          "callee": "os.path.join",
+          "lineNumber": 68
+        },
+        {
+          "caller": "_save",
+          "callee": "open",
+          "lineNumber": 69
+        },
+        {
+          "caller": "_save",
+          "callee": "os.path.join",
+          "lineNumber": 69
+        },
+        {
+          "caller": "_save",
+          "callee": "json.dump",
+          "lineNumber": 70
+        },
+        {
+          "caller": "_save",
+          "callee": "open",
+          "lineNumber": 71
+        },
+        {
+          "caller": "_save",
+          "callee": "os.path.join",
+          "lineNumber": 71
+        },
+        {
+          "caller": "_save",
+          "callee": "json.dump",
+          "lineNumber": 72
+        },
+        {
+          "caller": "_save",
+          "callee": "tok.save_pretrained",
+          "lineNumber": 73
+        },
+        {
+          "caller": "run",
+          "callee": "os.getenv",
+          "lineNumber": 78
+        },
+        {
+          "caller": "run",
+          "callee": "SystemExit",
+          "lineNumber": 79
+        },
+        {
+          "caller": "run",
+          "callee": "os.getenv",
+          "lineNumber": 80
+        },
+        {
+          "caller": "run",
+          "callee": "torch.manual_seed",
+          "lineNumber": 81
+        },
+        {
+          "caller": "run",
+          "callee": "np.random.seed",
+          "lineNumber": 82
+        },
+        {
+          "caller": "run",
+          "callee": "httpx.Client",
+          "lineNumber": 85
+        },
+        {
+          "caller": "run",
+          "callee": "load_training_data",
+          "lineNumber": 86
+        },
+        {
+          "caller": "run",
+          "callee": "SystemExit",
+          "lineNumber": 88
+        },
+        {
+          "caller": "run",
+          "callee": "sorted",
+          "lineNumber": 89
+        },
+        {
+          "caller": "run",
+          "callee": "split_movies",
+          "lineNumber": 90
+        },
+        {
+          "caller": "run",
+          "callee": "_records_for",
+          "lineNumber": 91
+        },
+        {
+          "caller": "run",
+          "callee": "set",
+          "lineNumber": 91
+        },
+        {
+          "caller": "run",
+          "callee": "_records_for",
+          "lineNumber": 92
+        },
+        {
+          "caller": "run",
+          "callee": "set",
+          "lineNumber": 92
+        },
+        {
+          "caller": "run",
+          "callee": "_records_for",
+          "lineNumber": 93
+        },
+        {
+          "caller": "run",
+          "callee": "set",
+          "lineNumber": 93
+        },
+        {
+          "caller": "run",
+          "callee": "Scaler().fit",
+          "lineNumber": 95
+        },
+        {
+          "caller": "run",
+          "callee": "Scaler",
+          "lineNumber": 95
+        },
+        {
+          "caller": "run",
+          "callee": "compute_features",
+          "lineNumber": 95
+        },
+        {
+          "caller": "run",
+          "callee": "_load_tokenizer",
+          "lineNumber": 96
+        },
+        {
+          "caller": "run",
+          "callee": "torch.cuda.is_available",
+          "lineNumber": 97
+        },
+        {
+          "caller": "run",
+          "callee": "build_model(model_name).to",
+          "lineNumber": 98
+        },
+        {
+          "caller": "run",
+          "callee": "build_model",
+          "lineNumber": 98
+        },
+        {
+          "caller": "run",
+          "callee": "DataLoader",
+          "lineNumber": 100
+        },
+        {
+          "caller": "run",
+          "callee": "SceneDataset",
+          "lineNumber": 100
+        },
+        {
+          "caller": "run",
+          "callee": "torch.optim.AdamW",
+          "lineNumber": 102
+        },
+        {
+          "caller": "run",
+          "callee": "model.parameters",
+          "lineNumber": 102
+        },
+        {
+          "caller": "run",
+          "callee": "torch.amp.GradScaler",
+          "lineNumber": 104
+        },
+        {
+          "caller": "run",
+          "callee": "torch.nn.MSELoss",
+          "lineNumber": 105
+        },
+        {
+          "caller": "run",
+          "callee": "float",
+          "lineNumber": 107
+        },
+        {
+          "caller": "run",
+          "callee": "range",
+          "lineNumber": 110
+        },
+        {
+          "caller": "run",
+          "callee": "model.train",
+          "lineNumber": 111
+        },
+        {
+          "caller": "run",
+          "callee": "opt.zero_grad",
+          "lineNumber": 113
+        },
+        {
+          "caller": "run",
+          "callee": "torch.amp.autocast",
+          "lineNumber": 114
+        },
+        {
+          "caller": "run",
+          "callee": "model",
+          "lineNumber": 115
+        },
+        {
+          "caller": "run",
+          "callee": "b[\"input_ids\"].to",
+          "lineNumber": 115
+        },
+        {
+          "caller": "run",
+          "callee": "b[\"attention_mask\"].to",
+          "lineNumber": 115
+        },
+        {
+          "caller": "run",
+          "callee": "b[\"numeric\"].to",
+          "lineNumber": 116
+        },
+        {
+          "caller": "run",
+          "callee": "lossfn",
+          "lineNumber": 117
+        },
+        {
+          "caller": "run",
+          "callee": "b[\"target\"].to",
+          "lineNumber": 117
+        },
+        {
+          "caller": "run",
+          "callee": "gscaler.scale(loss).backward",
+          "lineNumber": 118
+        },
+        {
+          "caller": "run",
+          "callee": "gscaler.scale",
+          "lineNumber": 118
+        },
+        {
+          "caller": "run",
+          "callee": "gscaler.step",
+          "lineNumber": 119
+        },
+        {
+          "caller": "run",
+          "callee": "gscaler.update",
+          "lineNumber": 120
+        },
+        {
+          "caller": "run",
+          "callee": "_val_mae",
+          "lineNumber": 121
+        },
+        {
+          "caller": "run",
+          "callee": "print",
+          "lineNumber": 122
+        },
+        {
+          "caller": "run",
+          "callee": "v.detach().cpu().clone",
+          "lineNumber": 125
+        },
+        {
+          "caller": "run",
+          "callee": "v.detach().cpu",
+          "lineNumber": 125
+        },
+        {
+          "caller": "run",
+          "callee": "v.detach",
+          "lineNumber": 125
+        },
+        {
+          "caller": "run",
+          "callee": "model.state_dict().items",
+          "lineNumber": 125
+        },
+        {
+          "caller": "run",
+          "callee": "model.state_dict",
+          "lineNumber": 125
+        },
+        {
+          "caller": "run",
+          "callee": "print",
+          "lineNumber": 130
+        },
+        {
+          "caller": "run",
+          "callee": "model.load_state_dict",
+          "lineNumber": 133
+        },
+        {
+          "caller": "run",
+          "callee": "_predict",
+          "lineNumber": 137
+        },
+        {
+          "caller": "run",
+          "callee": "np.array",
+          "lineNumber": 138
+        },
+        {
+          "caller": "run",
+          "callee": "evaluate.mae",
+          "lineNumber": 141
+        },
+        {
+          "caller": "run",
+          "callee": "evaluate.mae",
+          "lineNumber": 142
+        },
+        {
+          "caller": "run",
+          "callee": "evaluate.movie_spearman",
+          "lineNumber": 143
+        },
+        {
+          "caller": "run",
+          "callee": "list",
+          "lineNumber": 144
+        },
+        {
+          "caller": "run",
+          "callee": "list",
+          "lineNumber": 144
+        },
+        {
+          "caller": "run",
+          "callee": "evaluate.movie_spearman",
+          "lineNumber": 145
+        },
+        {
+          "caller": "run",
+          "callee": "list",
+          "lineNumber": 146
+        },
+        {
+          "caller": "run",
+          "callee": "list",
+          "lineNumber": 146
+        },
+        {
+          "caller": "run",
+          "callee": "evaluate.pearson",
+          "lineNumber": 147
+        },
+        {
+          "caller": "run",
+          "callee": "evaluate.pearson",
+          "lineNumber": 148
+        },
+        {
+          "caller": "run",
+          "callee": "len",
+          "lineNumber": 149
+        },
+        {
+          "caller": "run",
+          "callee": "_save",
+          "lineNumber": 156
+        },
+        {
+          "caller": "run",
+          "callee": "db.upsert_model_version",
+          "lineNumber": 160
+        },
+        {
+          "caller": "run",
+          "callee": "print",
+          "lineNumber": 161
+        }
+      ],
+      "metrics": {
+        "importCount": 6,
+        "exportCount": 8,
+        "functionCount": 8,
+        "classCount": 0
+      }
+    }
+  ]
+}

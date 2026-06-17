@@ -1,0 +1,17 @@
+{
+  "projectRoot": "/Users/sanggyoon/Documents/KakaoCloud_Project",
+  "batchFiles": [
+    {"path": "Ansible/manifests/4k-ml/cronworkflow-parse.yaml", "language": "yaml", "sizeLines": 16, "fileCategory": "config"},
+    {"path": "Ansible/manifests/4k-ml/cronworkflow-score.yaml", "language": "yaml", "sizeLines": 16, "fileCategory": "config"},
+    {"path": "Ansible/manifests/4k-ml/cronworkflow-vector.yaml", "language": "yaml", "sizeLines": 16, "fileCategory": "config"},
+    {"path": "Ansible/manifests/4k-ml/inferenceservice-roberta-va.yaml", "language": "yaml", "sizeLines": 52, "fileCategory": "config"},
+    {"path": "Ansible/manifests/4k-ml/pvc-models.yaml", "language": "yaml", "sizeLines": 13, "fileCategory": "config"},
+    {"path": "Ansible/manifests/4k-ml/workflowtemplate-generate-vectors.yaml", "language": "yaml", "sizeLines": 18, "fileCategory": "config"},
+    {"path": "Ansible/manifests/4k-ml/workflowtemplate-llm-labeling.yaml", "language": "yaml", "sizeLines": 18, "fileCategory": "config"},
+    {"path": "Ansible/manifests/4k-ml/workflowtemplate-score-scenes-gpu.yaml", "language": "yaml", "sizeLines": 32, "fileCategory": "config"},
+    {"path": "Ansible/manifests/4k-ml/workflowtemplate-score-scenes.yaml", "language": "yaml", "sizeLines": 21, "fileCategory": "config"},
+    {"path": "Ansible/manifests/4k-ml/workflowtemplate-subtitle-parse.yaml", "language": "yaml", "sizeLines": 24, "fileCategory": "config"},
+    {"path": "Ansible/manifests/4k-ml/workflowtemplate-train-roberta.yaml", "language": "yaml", "sizeLines": 35, "fileCategory": "config"}
+  ],
+  "batchImportData": {}
+}

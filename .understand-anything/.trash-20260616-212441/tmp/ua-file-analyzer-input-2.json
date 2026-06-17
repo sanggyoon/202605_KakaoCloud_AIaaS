@@ -1,0 +1,166 @@
+{
+  "projectRoot": "/Users/sanggyoon/Documents/KakaoCloud_Project",
+  "batchFiles": [
+    {
+      "path": "4K_BE/app/__init__.py",
+      "language": "python",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_BE/app/backfill_popular.py",
+      "language": "python",
+      "sizeLines": 113,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_BE/app/jobs.py",
+      "language": "python",
+      "sizeLines": 72,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_BE/app/main.py",
+      "language": "python",
+      "sizeLines": 564,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_BE/app/subtitle_collect.py",
+      "language": "python",
+      "sizeLines": 317,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_BE/tests/test_active_model.py",
+      "language": "python",
+      "sizeLines": 41,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_BE/tests/test_backfill.py",
+      "language": "python",
+      "sizeLines": 102,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_BE/tests/test_collect_one.py",
+      "language": "python",
+      "sizeLines": 56,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_BE/tests/test_delete_movie.py",
+      "language": "python",
+      "sizeLines": 39,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_BE/tests/test_jobs.py",
+      "language": "python",
+      "sizeLines": 55,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_BE/tests/test_main_jobs.py",
+      "language": "python",
+      "sizeLines": 41,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_BE/tests/test_main_recent.py",
+      "language": "python",
+      "sizeLines": 38,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_BE/tests/test_reprocess.py",
+      "language": "python",
+      "sizeLines": 52,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_BE/tests/test_stats.py",
+      "language": "python",
+      "sizeLines": 85,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_BE/tests/test_subtitle_collect.py",
+      "language": "python",
+      "sizeLines": 290,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_BE/tests/test_tmdb_common.py",
+      "language": "python",
+      "sizeLines": 108,
+      "fileCategory": "code"
+    },
+    {
+      "path": "4K_BE/tests/test_visits_range.py",
+      "language": "python",
+      "sizeLines": 36,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "4K_BE/app/__init__.py": [],
+    "4K_BE/app/backfill_popular.py": [
+      "4K_BE/app/__init__.py"
+    ],
+    "4K_BE/app/jobs.py": [],
+    "4K_BE/app/main.py": [
+      "4K_BE/app/__init__.py",
+      "4K_BE/app/jobs.py"
+    ],
+    "4K_BE/app/subtitle_collect.py": [
+      "4K_BE/app/__init__.py"
+    ],
+    "4K_BE/tests/test_active_model.py": [
+      "4K_BE/app/__init__.py",
+      "4K_BE/app/main.py"
+    ],
+    "4K_BE/tests/test_backfill.py": [
+      "4K_BE/app/__init__.py"
+    ],
+    "4K_BE/tests/test_collect_one.py": [
+      "4K_BE/app/__init__.py"
+    ],
+    "4K_BE/tests/test_delete_movie.py": [
+      "4K_BE/app/__init__.py",
+      "4K_BE/app/main.py"
+    ],
+    "4K_BE/tests/test_jobs.py": [
+      "4K_BE/app/__init__.py",
+      "4K_BE/app/jobs.py"
+    ],
+    "4K_BE/tests/test_main_jobs.py": [
+      "4K_BE/app/__init__.py",
+      "4K_BE/app/jobs.py",
+      "4K_BE/app/main.py"
+    ],
+    "4K_BE/tests/test_main_recent.py": [
+      "4K_BE/app/__init__.py",
+      "4K_BE/app/main.py"
+    ],
+    "4K_BE/tests/test_reprocess.py": [
+      "4K_BE/app/__init__.py",
+      "4K_BE/app/main.py"
+    ],
+    "4K_BE/tests/test_stats.py": [
+      "4K_BE/app/__init__.py",
+      "4K_BE/app/main.py"
+    ],
+    "4K_BE/tests/test_subtitle_collect.py": [
+      "4K_BE/app/__init__.py"
+    ],
+    "4K_BE/tests/test_tmdb_common.py": [
+      "4K_BE/app/__init__.py"
+    ],
+    "4K_BE/tests/test_visits_range.py": [
+      "4K_BE/app/__init__.py",
+      "4K_BE/app/main.py"
+    ]
+  }
+}

@@ -1,0 +1,4166 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 17,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "4K_FE/app/components/BackgroundThread.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 239,
+      "nonEmptyLines": 205,
+      "functions": [
+        {
+          "name": "Threads",
+          "startLine": 128,
+          "endLine": 237,
+          "params": [
+            "{\n  color = [1, 1, 1],\n  amplitude = 1,\n  distance = 0,\n  enableMouseInteraction = false,\n  ...rest\n}"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Threads",
+          "callee": "useRef",
+          "lineNumber": 135
+        },
+        {
+          "caller": "Threads",
+          "callee": "useRef",
+          "lineNumber": 136
+        },
+        {
+          "caller": "Threads",
+          "callee": "useEffect",
+          "lineNumber": 138
+        },
+        {
+          "caller": "Threads",
+          "callee": "gl.clearColor",
+          "lineNumber": 145
+        },
+        {
+          "caller": "Threads",
+          "callee": "gl.enable",
+          "lineNumber": 146
+        },
+        {
+          "caller": "Threads",
+          "callee": "gl.blendFunc",
+          "lineNumber": 147
+        },
+        {
+          "caller": "Threads",
+          "callee": "container.appendChild",
+          "lineNumber": 148
+        },
+        {
+          "caller": "resize",
+          "callee": "renderer.setSize",
+          "lineNumber": 174
+        },
+        {
+          "caller": "Threads",
+          "callee": "window.addEventListener",
+          "lineNumber": 179
+        },
+        {
+          "caller": "Threads",
+          "callee": "resize",
+          "lineNumber": 180
+        },
+        {
+          "caller": "handleMouseMove",
+          "callee": "container.getBoundingClientRect",
+          "lineNumber": 186
+        },
+        {
+          "caller": "Threads",
+          "callee": "container.addEventListener",
+          "lineNumber": 195
+        },
+        {
+          "caller": "Threads",
+          "callee": "container.addEventListener",
+          "lineNumber": 196
+        },
+        {
+          "caller": "update",
+          "callee": "renderer.render",
+          "lineNumber": 212
+        },
+        {
+          "caller": "update",
+          "callee": "requestAnimationFrame",
+          "lineNumber": 213
+        },
+        {
+          "caller": "Threads",
+          "callee": "requestAnimationFrame",
+          "lineNumber": 215
+        },
+        {
+          "caller": "Threads",
+          "callee": "cancelAnimationFrame",
+          "lineNumber": 219
+        },
+        {
+          "caller": "Threads",
+          "callee": "window.removeEventListener",
+          "lineNumber": 220
+        },
+        {
+          "caller": "Threads",
+          "callee": "container.removeEventListener",
+          "lineNumber": 223
+        },
+        {
+          "caller": "Threads",
+          "callee": "container.removeEventListener",
+          "lineNumber": 224
+        },
+        {
+          "caller": "Threads",
+          "callee": "container.contains",
+          "lineNumber": 226
+        },
+        {
+          "caller": "Threads",
+          "callee": "container.removeChild",
+          "lineNumber": 226
+        },
+        {
+          "caller": "Threads",
+          "callee": "gl.getExtension('WEBGL_lose_context')?.loseContext",
+          "lineNumber": 227
+        },
+        {
+          "caller": "Threads",
+          "callee": "gl.getExtension",
+          "lineNumber": 227
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/components/ClimaxGraph.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 142,
+      "nonEmptyLines": 131,
+      "functions": [
+        {
+          "name": "ClimaxGraph",
+          "startLine": 15,
+          "endLine": 142,
+          "params": [
+            "{ data, valence, height = 380 }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ClimaxGraph",
+          "line": 15,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "ClimaxGraph",
+          "callee": "Math.min",
+          "lineNumber": 23
+        },
+        {
+          "caller": "ClimaxGraph",
+          "callee": "Math.max",
+          "lineNumber": 24
+        },
+        {
+          "caller": "ClimaxGraph",
+          "callee": "data.map",
+          "lineNumber": 29
+        },
+        {
+          "caller": "ClimaxGraph",
+          "callee": "toX",
+          "lineNumber": 29
+        },
+        {
+          "caller": "ClimaxGraph",
+          "callee": "toY",
+          "lineNumber": 29
+        },
+        {
+          "caller": "ClimaxGraph",
+          "callee": "catmullRomPath",
+          "lineNumber": 30
+        },
+        {
+          "caller": "ClimaxGraph",
+          "callee": "valenceGradientStops",
+          "lineNumber": 33
+        },
+        {
+          "caller": "ClimaxGraph",
+          "callee": "valenceToUnit",
+          "lineNumber": 34
+        },
+        {
+          "caller": "ClimaxGraph",
+          "callee": "useRef",
+          "lineNumber": 37
+        },
+        {
+          "caller": "ClimaxGraph",
+          "callee": "useState",
+          "lineNumber": 38
+        },
+        {
+          "caller": "onMove",
+          "callee": "el.getBoundingClientRect",
+          "lineNumber": 42
+        },
+        {
+          "caller": "onMove",
+          "callee": "Math.min",
+          "lineNumber": 43
+        },
+        {
+          "caller": "onMove",
+          "callee": "Math.max",
+          "lineNumber": 43
+        },
+        {
+          "caller": "onMove",
+          "callee": "setHover",
+          "lineNumber": 44
+        },
+        {
+          "caller": "onMove",
+          "callee": "Math.round",
+          "lineNumber": 44
+        },
+        {
+          "caller": "ClimaxGraph",
+          "callee": "toX",
+          "lineNumber": 47
+        },
+        {
+          "caller": "ClimaxGraph",
+          "callee": "toY",
+          "lineNumber": 48
+        },
+        {
+          "caller": "ClimaxGraph",
+          "callee": "Math.round",
+          "lineNumber": 49
+        },
+        {
+          "caller": "ClimaxGraph",
+          "callee": "Math.round",
+          "lineNumber": 50
+        },
+        {
+          "caller": "ClimaxGraph",
+          "callee": "toDisplayScale",
+          "lineNumber": 50
+        },
+        {
+          "caller": "ClimaxGraph",
+          "callee": "valenceColorAt",
+          "lineNumber": 52
+        },
+        {
+          "caller": "ClimaxGraph",
+          "callee": "Math.min",
+          "lineNumber": 54
+        },
+        {
+          "caller": "ClimaxGraph",
+          "callee": "Math.max",
+          "lineNumber": 54
+        },
+        {
+          "caller": "ClimaxGraph",
+          "callee": "setHover",
+          "lineNumber": 61
+        },
+        {
+          "caller": "ClimaxGraph",
+          "callee": "stops.map",
+          "lineNumber": 76
+        },
+        {
+          "caller": "ClimaxGraph",
+          "callee": "(s.offset * 100).toFixed",
+          "lineNumber": 77
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/components/DetailOverlay.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 650,
+      "nonEmptyLines": 627,
+      "functions": [
+        {
+          "name": "DetailOverlay",
+          "startLine": 33,
+          "endLine": 650,
+          "params": [
+            "{\n  movie,\n  onClose,\n  onSelectMovie,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "DetailOverlay",
+          "line": 33,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "DetailOverlay",
+          "callee": "genreList",
+          "lineNumber": 38
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "castList",
+          "lineNumber": 39
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "useState",
+          "lineNumber": 41
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "useState",
+          "lineNumber": 42
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "useState",
+          "lineNumber": 43
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "useState",
+          "lineNumber": 44
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "useState",
+          "lineNumber": 47
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "useEffect",
+          "lineNumber": 50
+        },
+        {
+          "caller": "onKey",
+          "callee": "onClose",
+          "lineNumber": 52
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "window.addEventListener",
+          "lineNumber": 54
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "window.removeEventListener",
+          "lineNumber": 55
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "useEffect",
+          "lineNumber": 60
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "setVector",
+          "lineNumber": 61
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "setValence",
+          "lineNumber": 62
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "setVectorLoading",
+          "lineNumber": 63
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "setSimilar",
+          "lineNumber": 64
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "setSimilarLoading",
+          "lineNumber": 65
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "Promise.all([\n      fetchVectorPair(movie.tmdb_id),\n      fetchPreferredMovies([movie.tmdb_id], [], 50),\n    ]).then",
+          "lineNumber": 67
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "Promise.all",
+          "lineNumber": 67
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "fetchVectorPair",
+          "lineNumber": 68
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "fetchPreferredMovies",
+          "lineNumber": 69
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "setVector",
+          "lineNumber": 71
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "setValence",
+          "lineNumber": 72
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "setVectorLoading",
+          "lineNumber": 73
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "rawCandidates.filter",
+          "lineNumber": 75
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "setSimilar",
+          "lineNumber": 79
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "setSimilarLoading",
+          "lineNumber": 80
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "fetchMovieVectorPairs",
+          "lineNumber": 85
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "candidates.map",
+          "lineNumber": 86
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "meanCenter",
+          "lineNumber": 89
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "candidates\n        .map((m: Movie) => {\n          const cp = pairMap.get(m.tmdb_id);\n          if (!cp) return null;\n          const aSim = cosineSimilarity(qArousal, cp.arousal);\n          const vSim =\n            qValenceC && cp.valence.length\n              ? cosineSimilarity(qValenceC, meanCenter(cp.valence))\n              : aSim; // valence 없으면 arousal로 대체(가중 왜곡 방지)\n          return {\n            movie: m,\n            arousal: cp.arousal,\n            valence: cp.valence,\n            sim: 0.5 * aSim + 0.5 * vSim,\n          };\n        })\n        .filter(\n          (\n            x,\n          ): x is {\n            movie: Movie;\n            arousal: number[];\n            valence: number[];\n            sim: number;\n          } => x !== null,\n        )\n        .sort((a, b) => b.sim - a.sim)\n        .slice(0, 4)\n        .map",
+          "lineNumber": 91
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "candidates\n        .map((m: Movie) => {\n          const cp = pairMap.get(m.tmdb_id);\n          if (!cp) return null;\n          const aSim = cosineSimilarity(qArousal, cp.arousal);\n          const vSim =\n            qValenceC && cp.valence.length\n              ? cosineSimilarity(qValenceC, meanCenter(cp.valence))\n              : aSim; // valence 없으면 arousal로 대체(가중 왜곡 방지)\n          return {\n            movie: m,\n            arousal: cp.arousal,\n            valence: cp.valence,\n            sim: 0.5 * aSim + 0.5 * vSim,\n          };\n        })\n        .filter(\n          (\n            x,\n          ): x is {\n            movie: Movie;\n            arousal: number[];\n            valence: number[];\n            sim: number;\n          } => x !== null,\n        )\n        .sort((a, b) => b.sim - a.sim)\n        .slice",
+          "lineNumber": 91
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "candidates\n        .map((m: Movie) => {\n          const cp = pairMap.get(m.tmdb_id);\n          if (!cp) return null;\n          const aSim = cosineSimilarity(qArousal, cp.arousal);\n          const vSim =\n            qValenceC && cp.valence.length\n              ? cosineSimilarity(qValenceC, meanCenter(cp.valence))\n              : aSim; // valence 없으면 arousal로 대체(가중 왜곡 방지)\n          return {\n            movie: m,\n            arousal: cp.arousal,\n            valence: cp.valence,\n            sim: 0.5 * aSim + 0.5 * vSim,\n          };\n        })\n        .filter(\n          (\n            x,\n          ): x is {\n            movie: Movie;\n            arousal: number[];\n            valence: number[];\n            sim: number;\n          } => x !== null,\n        )\n        .sort",
+          "lineNumber": 91
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "candidates\n        .map((m: Movie) => {\n          const cp = pairMap.get(m.tmdb_id);\n          if (!cp) return null;\n          const aSim = cosineSimilarity(qArousal, cp.arousal);\n          const vSim =\n            qValenceC && cp.valence.length\n              ? cosineSimilarity(qValenceC, meanCenter(cp.valence))\n              : aSim; // valence 없으면 arousal로 대체(가중 왜곡 방지)\n          return {\n            movie: m,\n            arousal: cp.arousal,\n            valence: cp.valence,\n            sim: 0.5 * aSim + 0.5 * vSim,\n          };\n        })\n        .filter",
+          "lineNumber": 91
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "candidates\n        .map",
+          "lineNumber": 91
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "pairMap.get",
+          "lineNumber": 93
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "cosineSimilarity",
+          "lineNumber": 95
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "cosineSimilarity",
+          "lineNumber": 98
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "meanCenter",
+          "lineNumber": 98
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "Math.round",
+          "lineNumber": 123
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "setSimilar",
+          "lineNumber": 126
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "setSimilarLoading",
+          "lineNumber": 127
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "genres.map",
+          "lineNumber": 238
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "Array.from({ length: 4 }).map",
+          "lineNumber": 361
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "Array.from",
+          "lineNumber": 361
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "similar.map",
+          "lineNumber": 374
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "posterUrl",
+          "lineNumber": 376
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "genreList(m.genre).slice",
+          "lineNumber": 377
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "genreList",
+          "lineNumber": 377
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "climaxDescriptor",
+          "lineNumber": 378
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "onSelectMovie",
+          "lineNumber": 382
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "simGenres.join",
+          "lineNumber": 506
+        },
+        {
+          "caller": "DetailOverlay",
+          "callee": "cast.join",
+          "lineNumber": 578
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/components/FilterBar.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 683,
+      "nonEmptyLines": 665,
+      "functions": [
+        {
+          "name": "FilterRow",
+          "startLine": 19,
+          "endLine": 72,
+          "params": [
+            "{\n  label,\n  options,\n  value,\n  onChange,\n}"
+          ]
+        },
+        {
+          "name": "MultiFilterRow",
+          "startLine": 75,
+          "endLine": 132,
+          "params": [
+            "{\n  label,\n  options,\n  values,\n  onChange,\n}"
+          ]
+        },
+        {
+          "name": "YearStepper",
+          "startLine": 135,
+          "endLine": 245,
+          "params": [
+            "{\n  value,\n  min,\n  max,\n  onChange,\n}"
+          ]
+        },
+        {
+          "name": "YearRangeRow",
+          "startLine": 248,
+          "endLine": 415,
+          "params": [
+            "{\n  min,\n  max,\n  value,\n  onChange,\n}"
+          ]
+        },
+        {
+          "name": "PrefRow",
+          "startLine": 418,
+          "endLine": 516,
+          "params": [
+            "{\n  label,\n  ids,\n  movies,\n  onRemove,\n  accent,\n}"
+          ]
+        },
+        {
+          "name": "FilterBar",
+          "startLine": 518,
+          "endLine": 683,
+          "params": [
+            "{\n  open,\n  draft,\n  movies,\n  onChangeDraft,\n  onSearch,\n  onReset,\n  search,\n  onSearchChange,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "FilterBar",
+          "line": 518,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "FilterRow",
+          "callee": "label.toUpperCase",
+          "lineNumber": 42
+        },
+        {
+          "caller": "FilterRow",
+          "callee": "options.map",
+          "lineNumber": 45
+        },
+        {
+          "caller": "FilterRow",
+          "callee": "onChange",
+          "lineNumber": 50
+        },
+        {
+          "caller": "MultiFilterRow",
+          "callee": "label.toUpperCase",
+          "lineNumber": 98
+        },
+        {
+          "caller": "MultiFilterRow",
+          "callee": "options.map",
+          "lineNumber": 101
+        },
+        {
+          "caller": "MultiFilterRow",
+          "callee": "values.includes",
+          "lineNumber": 102
+        },
+        {
+          "caller": "MultiFilterRow",
+          "callee": "onChange",
+          "lineNumber": 107
+        },
+        {
+          "caller": "MultiFilterRow",
+          "callee": "values.filter",
+          "lineNumber": 108
+        },
+        {
+          "caller": "YearStepper",
+          "callee": "onChange",
+          "lineNumber": 173
+        },
+        {
+          "caller": "YearStepper",
+          "callee": "Math.max",
+          "lineNumber": 173
+        },
+        {
+          "caller": "YearStepper",
+          "callee": "arrowBtn",
+          "lineNumber": 175
+        },
+        {
+          "caller": "YearStepper",
+          "callee": "onChange",
+          "lineNumber": 218
+        },
+        {
+          "caller": "YearStepper",
+          "callee": "Math.min",
+          "lineNumber": 218
+        },
+        {
+          "caller": "YearStepper",
+          "callee": "arrowBtn",
+          "lineNumber": 220
+        },
+        {
+          "caller": "YearRangeRow",
+          "callee": "useRef",
+          "lineNumber": 259
+        },
+        {
+          "caller": "YearRangeRow",
+          "callee": "useState",
+          "lineNumber": 260
+        },
+        {
+          "caller": "YearRangeRow",
+          "callee": "Math.max",
+          "lineNumber": 263
+        },
+        {
+          "caller": "YearRangeRow",
+          "callee": "Math.min",
+          "lineNumber": 263
+        },
+        {
+          "caller": "YearRangeRow",
+          "callee": "Math.min",
+          "lineNumber": 264
+        },
+        {
+          "caller": "YearRangeRow",
+          "callee": "Math.max",
+          "lineNumber": 264
+        },
+        {
+          "caller": "YearRangeRow",
+          "callee": "useEffect",
+          "lineNumber": 272
+        },
+        {
+          "caller": "onMove",
+          "callee": "el.getBoundingClientRect",
+          "lineNumber": 277
+        },
+        {
+          "caller": "onMove",
+          "callee": "Math.max",
+          "lineNumber": 278
+        },
+        {
+          "caller": "onMove",
+          "callee": "Math.min",
+          "lineNumber": 278
+        },
+        {
+          "caller": "onMove",
+          "callee": "Math.round",
+          "lineNumber": 279
+        },
+        {
+          "caller": "onMove",
+          "callee": "onChange",
+          "lineNumber": 280
+        },
+        {
+          "caller": "onMove",
+          "callee": "Math.min",
+          "lineNumber": 280
+        },
+        {
+          "caller": "onMove",
+          "callee": "onChange",
+          "lineNumber": 281
+        },
+        {
+          "caller": "onMove",
+          "callee": "Math.max",
+          "lineNumber": 281
+        },
+        {
+          "caller": "onUp",
+          "callee": "setDragging",
+          "lineNumber": 283
+        },
+        {
+          "caller": "YearRangeRow",
+          "callee": "window.addEventListener",
+          "lineNumber": 284
+        },
+        {
+          "caller": "YearRangeRow",
+          "callee": "window.addEventListener",
+          "lineNumber": 285
+        },
+        {
+          "caller": "YearRangeRow",
+          "callee": "window.removeEventListener",
+          "lineNumber": 287
+        },
+        {
+          "caller": "YearRangeRow",
+          "callee": "window.removeEventListener",
+          "lineNumber": 288
+        },
+        {
+          "caller": "YearRangeRow",
+          "callee": "onChange",
+          "lineNumber": 319
+        },
+        {
+          "caller": "YearRangeRow",
+          "callee": "Array.from({ length: max - min + 1 }, (_, i) => i + min)\n            .filter((y) => y % 5 === 0)\n            .map",
+          "lineNumber": 344
+        },
+        {
+          "caller": "YearRangeRow",
+          "callee": "Array.from({ length: max - min + 1 }, (_, i) => i + min)\n            .filter",
+          "lineNumber": 344
+        },
+        {
+          "caller": "YearRangeRow",
+          "callee": "Array.from",
+          "lineNumber": 344
+        },
+        {
+          "caller": "YearRangeRow",
+          "callee": "(['from', 'to'] as const).map",
+          "lineNumber": 379
+        },
+        {
+          "caller": "YearRangeRow",
+          "callee": "setDragging",
+          "lineNumber": 384
+        },
+        {
+          "caller": "YearRangeRow",
+          "callee": "onChange",
+          "lineNumber": 410
+        },
+        {
+          "caller": "PrefRow",
+          "callee": "label.toUpperCase",
+          "lineNumber": 443
+        },
+        {
+          "caller": "PrefRow",
+          "callee": "ids.map",
+          "lineNumber": 460
+        },
+        {
+          "caller": "PrefRow",
+          "callee": "movies.find",
+          "lineNumber": 461
+        },
+        {
+          "caller": "PrefRow",
+          "callee": "onRemove",
+          "lineNumber": 483
+        },
+        {
+          "caller": "removeLike",
+          "callee": "onChangeDraft",
+          "lineNumber": 529
+        },
+        {
+          "caller": "removeLike",
+          "callee": "draft.likes.filter",
+          "lineNumber": 529
+        },
+        {
+          "caller": "removeDislike",
+          "callee": "onChangeDraft",
+          "lineNumber": 531
+        },
+        {
+          "caller": "removeDislike",
+          "callee": "draft.dislikes.filter",
+          "lineNumber": 533
+        },
+        {
+          "caller": "FilterBar",
+          "callee": "new Date().getFullYear",
+          "lineNumber": 538
+        },
+        {
+          "caller": "FilterBar",
+          "callee": "onSearchChange",
+          "lineNumber": 573
+        },
+        {
+          "caller": "FilterBar",
+          "callee": "onChangeDraft",
+          "lineNumber": 581
+        },
+        {
+          "caller": "FilterBar",
+          "callee": "onChangeDraft",
+          "lineNumber": 588
+        },
+        {
+          "caller": "FilterBar",
+          "callee": "draft.dislikeGenres.filter",
+          "lineNumber": 591
+        },
+        {
+          "caller": "FilterBar",
+          "callee": "onChangeDraft",
+          "lineNumber": 600
+        },
+        {
+          "caller": "FilterBar",
+          "callee": "v.includes",
+          "lineNumber": 603
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 6,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/components/MiniGraph.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 48,
+      "nonEmptyLines": 42,
+      "functions": [
+        {
+          "name": "MiniGraph",
+          "startLine": 16,
+          "endLine": 48,
+          "params": [
+            "{ data, valence, color = 'var(--accent)', height = 40 }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "MiniGraph",
+          "line": 16,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "MiniGraph",
+          "callee": "useId().replace",
+          "lineNumber": 17
+        },
+        {
+          "caller": "MiniGraph",
+          "callee": "useId",
+          "lineNumber": 17
+        },
+        {
+          "caller": "MiniGraph",
+          "callee": "toDisplayScale",
+          "lineNumber": 22
+        },
+        {
+          "caller": "MiniGraph",
+          "callee": "data.map",
+          "lineNumber": 23
+        },
+        {
+          "caller": "MiniGraph",
+          "callee": "catmullRomPath",
+          "lineNumber": 25
+        },
+        {
+          "caller": "MiniGraph",
+          "callee": "valenceGradientStops",
+          "lineNumber": 27
+        },
+        {
+          "caller": "MiniGraph",
+          "callee": "Math.floor",
+          "lineNumber": 29
+        },
+        {
+          "caller": "MiniGraph",
+          "callee": "stops.map",
+          "lineNumber": 36
+        },
+        {
+          "caller": "MiniGraph",
+          "callee": "(s.offset * 100).toFixed",
+          "lineNumber": 37
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/components/MovieDetailModal.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 456,
+      "nonEmptyLines": 425,
+      "functions": [
+        {
+          "name": "MovieDetailModal",
+          "startLine": 54,
+          "endLine": 400,
+          "params": [
+            "{\n  tmdbId,\n  fallbackTitle,\n  onClose,\n}"
+          ]
+        },
+        {
+          "name": "Field",
+          "startLine": 411,
+          "endLine": 418,
+          "params": [
+            "{ label, children }"
+          ]
+        },
+        {
+          "name": "Section",
+          "startLine": 420,
+          "endLine": 432,
+          "params": [
+            "{ title, children }"
+          ]
+        },
+        {
+          "name": "KV",
+          "startLine": 434,
+          "endLine": 441,
+          "params": [
+            "{ k, v }"
+          ]
+        },
+        {
+          "name": "Badge",
+          "startLine": 443,
+          "endLine": 456,
+          "params": [
+            "{ label, value, ok }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "MovieDetailModal",
+          "line": 54,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "MovieDetailModal",
+          "callee": "useState",
+          "lineNumber": 63
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "useState",
+          "lineNumber": 64
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "useState",
+          "lineNumber": 65
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "useState",
+          "lineNumber": 66
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "useState",
+          "lineNumber": 67
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "useState",
+          "lineNumber": 70
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "useState",
+          "lineNumber": 72
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "useState",
+          "lineNumber": 73
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "useState",
+          "lineNumber": 74
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "useCallback",
+          "lineNumber": 76
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "setLoading",
+          "lineNumber": 77
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "setError",
+          "lineNumber": 78
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "fetch",
+          "lineNumber": 80
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "res.json",
+          "lineNumber": 81
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "setError",
+          "lineNumber": 83
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "setMeta",
+          "lineNumber": 86
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "setProcessing",
+          "lineNumber": 87
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "String",
+          "lineNumber": 93
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "setForm",
+          "lineNumber": 95
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "setError",
+          "lineNumber": 97
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "setLoading",
+          "lineNumber": 99
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "useEffect",
+          "lineNumber": 103
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "load",
+          "lineNumber": 104
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "useEffect",
+          "lineNumber": 108
+        },
+        {
+          "caller": "onKey",
+          "callee": "onClose",
+          "lineNumber": 109
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "window.addEventListener",
+          "lineNumber": 110
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "window.removeEventListener",
+          "lineNumber": 111
+        },
+        {
+          "caller": "setField",
+          "callee": "setForm",
+          "lineNumber": 115
+        },
+        {
+          "caller": "handleSave",
+          "callee": "setSaving",
+          "lineNumber": 118
+        },
+        {
+          "caller": "handleSave",
+          "callee": "setSaveMsg",
+          "lineNumber": 119
+        },
+        {
+          "caller": "handleSave",
+          "callee": "raw.trim",
+          "lineNumber": 125
+        },
+        {
+          "caller": "handleSave",
+          "callee": "(form[key as string] ?? '').trim",
+          "lineNumber": 128
+        },
+        {
+          "caller": "handleSave",
+          "callee": "Number",
+          "lineNumber": 132
+        },
+        {
+          "caller": "handleSave",
+          "callee": "Number.isNaN",
+          "lineNumber": 133
+        },
+        {
+          "caller": "handleSave",
+          "callee": "setSaveMsg",
+          "lineNumber": 134
+        },
+        {
+          "caller": "handleSave",
+          "callee": "setSaving",
+          "lineNumber": 135
+        },
+        {
+          "caller": "handleSave",
+          "callee": "fetch",
+          "lineNumber": 144
+        },
+        {
+          "caller": "handleSave",
+          "callee": "JSON.stringify",
+          "lineNumber": 147
+        },
+        {
+          "caller": "handleSave",
+          "callee": "res.json",
+          "lineNumber": 149
+        },
+        {
+          "caller": "handleSave",
+          "callee": "setSaveMsg",
+          "lineNumber": 151
+        },
+        {
+          "caller": "handleSave",
+          "callee": "setSaveMsg",
+          "lineNumber": 154
+        },
+        {
+          "caller": "handleSave",
+          "callee": "load",
+          "lineNumber": 156
+        },
+        {
+          "caller": "handleSave",
+          "callee": "setSaveMsg",
+          "lineNumber": 158
+        },
+        {
+          "caller": "handleSave",
+          "callee": "setSaving",
+          "lineNumber": 160
+        },
+        {
+          "caller": "handleRefresh",
+          "callee": "window.confirm",
+          "lineNumber": 167
+        },
+        {
+          "caller": "handleRefresh",
+          "callee": "setRefreshing",
+          "lineNumber": 170
+        },
+        {
+          "caller": "handleRefresh",
+          "callee": "setSaveMsg",
+          "lineNumber": 171
+        },
+        {
+          "caller": "handleRefresh",
+          "callee": "fetch",
+          "lineNumber": 173
+        },
+        {
+          "caller": "handleRefresh",
+          "callee": "JSON.stringify",
+          "lineNumber": 176
+        },
+        {
+          "caller": "handleRefresh",
+          "callee": "res.json",
+          "lineNumber": 178
+        },
+        {
+          "caller": "handleRefresh",
+          "callee": "setSaveMsg",
+          "lineNumber": 180
+        },
+        {
+          "caller": "handleRefresh",
+          "callee": "load",
+          "lineNumber": 183
+        },
+        {
+          "caller": "handleRefresh",
+          "callee": "setSaveMsg",
+          "lineNumber": 184
+        },
+        {
+          "caller": "handleRefresh",
+          "callee": "setSaveMsg",
+          "lineNumber": 186
+        },
+        {
+          "caller": "handleRefresh",
+          "callee": "setRefreshing",
+          "lineNumber": 188
+        },
+        {
+          "caller": "handleReprocess",
+          "callee": "window.confirm",
+          "lineNumber": 193
+        },
+        {
+          "caller": "handleReprocess",
+          "callee": "setReprocessing",
+          "lineNumber": 194
+        },
+        {
+          "caller": "handleReprocess",
+          "callee": "setSaveMsg",
+          "lineNumber": 195
+        },
+        {
+          "caller": "handleReprocess",
+          "callee": "fetch",
+          "lineNumber": 197
+        },
+        {
+          "caller": "handleReprocess",
+          "callee": "res.json",
+          "lineNumber": 198
+        },
+        {
+          "caller": "handleReprocess",
+          "callee": "setSaveMsg",
+          "lineNumber": 200
+        },
+        {
+          "caller": "handleReprocess",
+          "callee": "setSaveMsg",
+          "lineNumber": 203
+        },
+        {
+          "caller": "handleReprocess",
+          "callee": "load",
+          "lineNumber": 204
+        },
+        {
+          "caller": "handleReprocess",
+          "callee": "setSaveMsg",
+          "lineNumber": 206
+        },
+        {
+          "caller": "handleReprocess",
+          "callee": "setReprocessing",
+          "lineNumber": 208
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "posterUrl",
+          "lineNumber": 212
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "e.stopPropagation",
+          "lineNumber": 225
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "String",
+          "lineNumber": 283
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "String",
+          "lineNumber": 284
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "String",
+          "lineNumber": 285
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "String",
+          "lineNumber": 286
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "String",
+          "lineNumber": 287
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "NUM_FIELDS.map",
+          "lineNumber": 295
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "setField",
+          "lineNumber": 300
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "TEXT_FIELDS.map",
+          "lineNumber": 307
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "setField",
+          "lineNumber": 312
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "setField",
+          "lineNumber": 319
+        },
+        {
+          "caller": "MovieDetailModal",
+          "callee": "saveMsg.includes",
+          "lineNumber": 372
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 5,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/components/PosterCard.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 329,
+      "nonEmptyLines": 317,
+      "functions": [
+        {
+          "name": "PosterCard",
+          "startLine": 19,
+          "endLine": 329,
+          "params": [
+            "{\n  movie,\n  isHovered,\n  onHover,\n  onClick,\n  pref,\n  onTogglePref,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "PosterCard",
+          "line": 19,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "PosterCard",
+          "callee": "useState",
+          "lineNumber": 27
+        },
+        {
+          "caller": "PosterCard",
+          "callee": "useState",
+          "lineNumber": 29
+        },
+        {
+          "caller": "PosterCard",
+          "callee": "posterUrl",
+          "lineNumber": 31
+        },
+        {
+          "caller": "PosterCard",
+          "callee": "genreList",
+          "lineNumber": 32
+        },
+        {
+          "caller": "handleMouseMove",
+          "callee": "e.currentTarget.getBoundingClientRect",
+          "lineNumber": 36
+        },
+        {
+          "caller": "handleMouseMove",
+          "callee": "setRot",
+          "lineNumber": 39
+        },
+        {
+          "caller": "handleMouseMove",
+          "callee": "setGlare",
+          "lineNumber": 40
+        },
+        {
+          "caller": "handleMouseLeave",
+          "callee": "setRot",
+          "lineNumber": 44
+        },
+        {
+          "caller": "handleMouseLeave",
+          "callee": "setGlare",
+          "lineNumber": 45
+        },
+        {
+          "caller": "handleMouseLeave",
+          "callee": "onHover",
+          "lineNumber": 46
+        },
+        {
+          "caller": "PosterCard",
+          "callee": "onHover",
+          "lineNumber": 51
+        },
+        {
+          "caller": "PosterCard",
+          "callee": "genres.slice(0, 2).map",
+          "lineNumber": 189
+        },
+        {
+          "caller": "PosterCard",
+          "callee": "genres.slice",
+          "lineNumber": 189
+        },
+        {
+          "caller": "PosterCard",
+          "callee": "e.stopPropagation",
+          "lineNumber": 249
+        },
+        {
+          "caller": "PosterCard",
+          "callee": "onTogglePref",
+          "lineNumber": 250
+        },
+        {
+          "caller": "PosterCard",
+          "callee": "e.stopPropagation",
+          "lineNumber": 286
+        },
+        {
+          "caller": "PosterCard",
+          "callee": "onTogglePref",
+          "lineNumber": 287
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/components/RandomModal.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 192,
+      "nonEmptyLines": 175,
+      "functions": [
+        {
+          "name": "fetchRandomFromServer",
+          "startLine": 13,
+          "endLine": 33,
+          "params": []
+        },
+        {
+          "name": "RandomModal",
+          "startLine": 35,
+          "endLine": 192,
+          "params": [
+            "{ movies, onClose, onPick }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "RandomModal",
+          "line": 35,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "fetchRandomFromServer",
+          "callee": "fetch",
+          "lineNumber": 16
+        },
+        {
+          "caller": "fetchRandomFromServer",
+          "callee": "countRes.headers.get",
+          "lineNumber": 19
+        },
+        {
+          "caller": "fetchRandomFromServer",
+          "callee": "parseInt",
+          "lineNumber": 20
+        },
+        {
+          "caller": "fetchRandomFromServer",
+          "callee": "range.split",
+          "lineNumber": 20
+        },
+        {
+          "caller": "fetchRandomFromServer",
+          "callee": "Math.floor",
+          "lineNumber": 23
+        },
+        {
+          "caller": "fetchRandomFromServer",
+          "callee": "Math.random",
+          "lineNumber": 23
+        },
+        {
+          "caller": "fetchRandomFromServer",
+          "callee": "fetch",
+          "lineNumber": 24
+        },
+        {
+          "caller": "fetchRandomFromServer",
+          "callee": "res.json",
+          "lineNumber": 28
+        },
+        {
+          "caller": "fetchRandomFromServer",
+          "callee": "Array.isArray",
+          "lineNumber": 29
+        },
+        {
+          "caller": "RandomModal",
+          "callee": "useState",
+          "lineNumber": 36
+        },
+        {
+          "caller": "RandomModal",
+          "callee": "useState",
+          "lineNumber": 37
+        },
+        {
+          "caller": "RandomModal",
+          "callee": "useState",
+          "lineNumber": 38
+        },
+        {
+          "caller": "RandomModal",
+          "callee": "useRef",
+          "lineNumber": 41
+        },
+        {
+          "caller": "RandomModal",
+          "callee": "useRef",
+          "lineNumber": 42
+        },
+        {
+          "caller": "RandomModal",
+          "callee": "useCallback",
+          "lineNumber": 44
+        },
+        {
+          "caller": "RandomModal",
+          "callee": "fetchRandomFromServer().then",
+          "lineNumber": 47
+        },
+        {
+          "caller": "RandomModal",
+          "callee": "fetchRandomFromServer",
+          "lineNumber": 47
+        },
+        {
+          "caller": "RandomModal",
+          "callee": "setPicked",
+          "lineNumber": 50
+        },
+        {
+          "caller": "RandomModal",
+          "callee": "setShuffling",
+          "lineNumber": 51
+        },
+        {
+          "caller": "RandomModal",
+          "callee": "useEffect",
+          "lineNumber": 57
+        },
+        {
+          "caller": "RandomModal",
+          "callee": "startFetch",
+          "lineNumber": 58
+        },
+        {
+          "caller": "RandomModal",
+          "callee": "useEffect",
+          "lineNumber": 62
+        },
+        {
+          "caller": "RandomModal",
+          "callee": "setInterval",
+          "lineNumber": 72
+        },
+        {
+          "caller": "RandomModal",
+          "callee": "setPicked",
+          "lineNumber": 74
+        },
+        {
+          "caller": "RandomModal",
+          "callee": "Math.floor",
+          "lineNumber": 74
+        },
+        {
+          "caller": "RandomModal",
+          "callee": "Math.random",
+          "lineNumber": 74
+        },
+        {
+          "caller": "RandomModal",
+          "callee": "setRolls",
+          "lineNumber": 75
+        },
+        {
+          "caller": "RandomModal",
+          "callee": "clearInterval",
+          "lineNumber": 82
+        },
+        {
+          "caller": "RandomModal",
+          "callee": "setPicked",
+          "lineNumber": 83
+        },
+        {
+          "caller": "RandomModal",
+          "callee": "setShuffling",
+          "lineNumber": 84
+        },
+        {
+          "caller": "RandomModal",
+          "callee": "clearInterval",
+          "lineNumber": 92
+        },
+        {
+          "caller": "handleReroll",
+          "callee": "setRolls",
+          "lineNumber": 97
+        },
+        {
+          "caller": "handleReroll",
+          "callee": "setShuffling",
+          "lineNumber": 98
+        },
+        {
+          "caller": "handleReroll",
+          "callee": "startFetch",
+          "lineNumber": 99
+        },
+        {
+          "caller": "RandomModal",
+          "callee": "posterUrl",
+          "lineNumber": 102
+        },
+        {
+          "caller": "RandomModal",
+          "callee": "genreList(picked.genre).slice",
+          "lineNumber": 103
+        },
+        {
+          "caller": "RandomModal",
+          "callee": "genreList",
+          "lineNumber": 103
+        },
+        {
+          "caller": "RandomModal",
+          "callee": "e.stopPropagation",
+          "lineNumber": 111
+        },
+        {
+          "caller": "RandomModal",
+          "callee": "genres.map",
+          "lineNumber": 159
+        },
+        {
+          "caller": "RandomModal",
+          "callee": "onPick",
+          "lineNumber": 182
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/components/Tutorial.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 225,
+      "nonEmptyLines": 213,
+      "functions": [
+        {
+          "name": "Tutorial",
+          "startLine": 68,
+          "endLine": 225,
+          "params": [
+            "{ step, onNext, onSkip, onComplete }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Tutorial",
+          "line": 68,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Tutorial",
+          "callee": "useState",
+          "lineNumber": 69
+        },
+        {
+          "caller": "Tutorial",
+          "callee": "e.stopPropagation",
+          "lineNumber": 77
+        },
+        {
+          "caller": "Tutorial",
+          "callee": "setCardHovered",
+          "lineNumber": 140
+        },
+        {
+          "caller": "Tutorial",
+          "callee": "setCardHovered",
+          "lineNumber": 141
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/dashboard/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 687,
+      "nonEmptyLines": 654,
+      "functions": [
+        {
+          "name": "Dashboard",
+          "startLine": 33,
+          "endLine": 687,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "Dashboard",
+          "line": 33,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Dashboard",
+          "callee": "useRouter",
+          "lineNumber": 34
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "useEffect",
+          "lineNumber": 36
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "logVisit",
+          "lineNumber": 37
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "useState",
+          "lineNumber": 40
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "useState",
+          "lineNumber": 41
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "useState",
+          "lineNumber": 42
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "useState",
+          "lineNumber": 43
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "useRef",
+          "lineNumber": 45
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "useRef",
+          "lineNumber": 46
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "useRef",
+          "lineNumber": 48
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "useState",
+          "lineNumber": 50
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "getRecentIds",
+          "lineNumber": 51
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "useState",
+          "lineNumber": 53
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "useState",
+          "lineNumber": 54
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "useState",
+          "lineNumber": 56
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "useState",
+          "lineNumber": 57
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "useState",
+          "lineNumber": 58
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "useState",
+          "lineNumber": 60
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "useState",
+          "lineNumber": 61
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "useState",
+          "lineNumber": 62
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "useState",
+          "lineNumber": 64
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "localStorage.getItem",
+          "lineNumber": 66
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "useCallback",
+          "lineNumber": 70
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "setLoadingMore",
+          "lineNumber": 73
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "encodeURIComponent",
+          "lineNumber": 79
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "filters.dislikes.join",
+          "lineNumber": 82
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "encodeURIComponent",
+          "lineNumber": 85
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "fetch(url, { headers: { apikey: SUPABASE_ANON_KEY } })\n      .then((r) => r.json())\n      .then((data: Movie[]) => {\n        const arr = Array.isArray(data) ? data : [];\n        // offset=0이면 새 목록으로 교체, 이후엔 누적\n        setMovies((prev) => (offset === 0 ? arr : [...prev, ...arr]));\n        offsetRef.current = offset + arr.length;\n        // 반환된 수가 PAGE_SIZE보다 적으면 마지막 페이지\n        setHasMore(arr.length === PAGE_SIZE);\n      })\n      .catch(() => {})\n      .finally",
+          "lineNumber": 88
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "fetch(url, { headers: { apikey: SUPABASE_ANON_KEY } })\n      .then((r) => r.json())\n      .then((data: Movie[]) => {\n        const arr = Array.isArray(data) ? data : [];\n        // offset=0이면 새 목록으로 교체, 이후엔 누적\n        setMovies((prev) => (offset === 0 ? arr : [...prev, ...arr]));\n        offsetRef.current = offset + arr.length;\n        // 반환된 수가 PAGE_SIZE보다 적으면 마지막 페이지\n        setHasMore(arr.length === PAGE_SIZE);\n      })\n      .catch",
+          "lineNumber": 88
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "fetch(url, { headers: { apikey: SUPABASE_ANON_KEY } })\n      .then((r) => r.json())\n      .then",
+          "lineNumber": 88
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "fetch(url, { headers: { apikey: SUPABASE_ANON_KEY } })\n      .then",
+          "lineNumber": 88
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "fetch",
+          "lineNumber": 88
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "r.json",
+          "lineNumber": 89
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "Array.isArray",
+          "lineNumber": 91
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "setMovies",
+          "lineNumber": 93
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "setHasMore",
+          "lineNumber": 96
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "setLoading",
+          "lineNumber": 101
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "setLoadingMore",
+          "lineNumber": 102
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "useRef",
+          "lineNumber": 108
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "useEffect",
+          "lineNumber": 109
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "setMovies",
+          "lineNumber": 112
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "setLoading",
+          "lineNumber": 114
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "setHasMore",
+          "lineNumber": 117
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "fetchPreferredMovies(applied.likes, applied.dislikes).then",
+          "lineNumber": 118
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "fetchPreferredMovies",
+          "lineNumber": 118
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "setMovies",
+          "lineNumber": 119
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "setLoading",
+          "lineNumber": 120
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "setHasMore",
+          "lineNumber": 123
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "fetchMovies",
+          "lineNumber": 124
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "useEffect",
+          "lineNumber": 129
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "fetchMovies",
+          "lineNumber": 135
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "observer.observe",
+          "lineNumber": 140
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "observer.disconnect",
+          "lineNumber": 141
+        },
+        {
+          "caller": "closeTutorial",
+          "callee": "setTutorialStep",
+          "lineNumber": 145
+        },
+        {
+          "caller": "closeTutorial",
+          "callee": "localStorage.setItem",
+          "lineNumber": 146
+        },
+        {
+          "caller": "handleOpenDetail",
+          "callee": "addRecentId",
+          "lineNumber": 150
+        },
+        {
+          "caller": "handleOpenDetail",
+          "callee": "setRecentIds",
+          "lineNumber": 151
+        },
+        {
+          "caller": "handleOpenDetail",
+          "callee": "getRecentIds",
+          "lineNumber": 151
+        },
+        {
+          "caller": "handleOpenDetail",
+          "callee": "setDetail",
+          "lineNumber": 152
+        },
+        {
+          "caller": "handleDeleteRecent",
+          "callee": "e.stopPropagation",
+          "lineNumber": 156
+        },
+        {
+          "caller": "handleDeleteRecent",
+          "callee": "removeRecentId",
+          "lineNumber": 157
+        },
+        {
+          "caller": "handleDeleteRecent",
+          "callee": "setRecentIds",
+          "lineNumber": 158
+        },
+        {
+          "caller": "handleDeleteRecent",
+          "callee": "getRecentIds",
+          "lineNumber": 158
+        },
+        {
+          "caller": "togglePref",
+          "callee": "movies.find",
+          "lineNumber": 163
+        },
+        {
+          "caller": "togglePref",
+          "callee": "setPrefMovieCache",
+          "lineNumber": 164
+        },
+        {
+          "caller": "togglePref",
+          "callee": "new Map(prev).set",
+          "lineNumber": 164
+        },
+        {
+          "caller": "togglePref",
+          "callee": "setDraft",
+          "lineNumber": 165
+        },
+        {
+          "caller": "togglePref",
+          "callee": "d.likes.includes",
+          "lineNumber": 167
+        },
+        {
+          "caller": "togglePref",
+          "callee": "d.likes.filter",
+          "lineNumber": 170
+        },
+        {
+          "caller": "togglePref",
+          "callee": "d.dislikes.filter",
+          "lineNumber": 171
+        },
+        {
+          "caller": "togglePref",
+          "callee": "d.dislikes.includes",
+          "lineNumber": 174
+        },
+        {
+          "caller": "togglePref",
+          "callee": "d.dislikes.filter",
+          "lineNumber": 178
+        },
+        {
+          "caller": "togglePref",
+          "callee": "d.likes.filter",
+          "lineNumber": 180
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "movies.filter",
+          "lineNumber": 189
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "m.genre?.toLowerCase().includes",
+          "lineNumber": 193
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "m.genre?.toLowerCase",
+          "lineNumber": 193
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "applied.genre.toLowerCase",
+          "lineNumber": 193
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "applied.dislikeGenres.some",
+          "lineNumber": 194
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "m.genre?.toLowerCase().includes",
+          "lineNumber": 194
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "m.genre?.toLowerCase",
+          "lineNumber": 194
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "g.toLowerCase",
+          "lineNumber": 194
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "search.toLowerCase",
+          "lineNumber": 197
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "m.title.toLowerCase().includes",
+          "lineNumber": 199
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "m.title.toLowerCase",
+          "lineNumber": 199
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "Boolean",
+          "lineNumber": 200
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "m.original_title?.toLowerCase().includes",
+          "lineNumber": 200
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "m.original_title?.toLowerCase",
+          "lineNumber": 200
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "recentIds\n    .map((id) => movies.find((m) => m.tmdb_id === id))\n    .filter((m): m is Movie => Boolean(m))\n    .slice",
+          "lineNumber": 205
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "recentIds\n    .map((id) => movies.find((m) => m.tmdb_id === id))\n    .filter",
+          "lineNumber": 205
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "recentIds\n    .map",
+          "lineNumber": 205
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "movies.find",
+          "lineNumber": 206
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "Boolean",
+          "lineNumber": 207
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "useState",
+          "lineNumber": 215
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "useEffect",
+          "lineNumber": 216
+        },
+        {
+          "caller": "onScroll",
+          "callee": "setShowTopBtn",
+          "lineNumber": 217
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "window.addEventListener",
+          "lineNumber": 218
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "window.removeEventListener",
+          "lineNumber": 219
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "router.push",
+          "lineNumber": 288
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "setSearch",
+          "lineNumber": 341
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "setFilterOpen",
+          "lineNumber": 361
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "setRandomOpen",
+          "lineNumber": 406
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "setTutorialStep",
+          "lineNumber": 439
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "Array.from",
+          "lineNumber": 475
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "prefMovieCache.values",
+          "lineNumber": 475
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "setApplied",
+          "lineNumber": 477
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "setFilterOpen",
+          "lineNumber": 477
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "setDraft",
+          "lineNumber": 478
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "setPrefMovieCache",
+          "lineNumber": 478
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "recentMovies.map",
+          "lineNumber": 505
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "draft.likes.includes",
+          "lineNumber": 507
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "draft.dislikes.includes",
+          "lineNumber": 509
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "setHoveredKey",
+          "lineNumber": 517
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "handleOpenDetail",
+          "lineNumber": 518
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "handleDeleteRecent",
+          "lineNumber": 523
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "Array.from({ length: 12 }).map",
+          "lineNumber": 574
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "Array.from",
+          "lineNumber": 574
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "filtered.map",
+          "lineNumber": 587
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "draft.likes.includes",
+          "lineNumber": 589
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "draft.dislikes.includes",
+          "lineNumber": 591
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "setHoveredKey",
+          "lineNumber": 599
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "handleOpenDetail",
+          "lineNumber": 600
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "setDetail",
+          "lineNumber": 637
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "setDetail",
+          "lineNumber": 639
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "handleOpenDetail",
+          "lineNumber": 640
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "setRandomOpen",
+          "lineNumber": 647
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "setRandomOpen",
+          "lineNumber": 649
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "handleOpenDetail",
+          "lineNumber": 650
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "setTutorialStep",
+          "lineNumber": 659
+        },
+        {
+          "caller": "Dashboard",
+          "callee": "window.scrollTo",
+          "lineNumber": 667
+        }
+      ],
+      "metrics": {
+        "importCount": 7,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/lib/climax.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 137,
+      "nonEmptyLines": 126,
+      "functions": [
+        {
+          "name": "cosineSimilarity",
+          "startLine": 3,
+          "endLine": 14,
+          "params": [
+            "a",
+            "b"
+          ]
+        },
+        {
+          "name": "zscore",
+          "startLine": 17,
+          "endLine": 24,
+          "params": [
+            "v"
+          ]
+        },
+        {
+          "name": "toDisplayScale",
+          "startLine": 27,
+          "endLine": 30,
+          "params": [
+            "v"
+          ]
+        },
+        {
+          "name": "countPeaks",
+          "startLine": 34,
+          "endLine": 52,
+          "params": [
+            "v"
+          ]
+        },
+        {
+          "name": "climaxMetrics",
+          "startLine": 60,
+          "endLine": 71,
+          "params": [
+            "v"
+          ]
+        },
+        {
+          "name": "topPeaks",
+          "startLine": 80,
+          "endLine": 100,
+          "params": [
+            "v",
+            "n"
+          ]
+        },
+        {
+          "name": "climaxDescriptor",
+          "startLine": 103,
+          "endLine": 130,
+          "params": [
+            "v"
+          ]
+        },
+        {
+          "name": "meanCenter",
+          "startLine": 133,
+          "endLine": 137,
+          "params": [
+            "v"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "cosineSimilarity",
+          "line": 3,
+          "isDefault": false
+        },
+        {
+          "name": "toDisplayScale",
+          "line": 27,
+          "isDefault": false
+        },
+        {
+          "name": "climaxMetrics",
+          "line": 60,
+          "isDefault": false
+        },
+        {
+          "name": "topPeaks",
+          "line": 80,
+          "isDefault": false
+        },
+        {
+          "name": "climaxDescriptor",
+          "line": 103,
+          "isDefault": false
+        },
+        {
+          "name": "meanCenter",
+          "line": 133,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "cosineSimilarity",
+          "callee": "Math.min",
+          "lineNumber": 4
+        },
+        {
+          "caller": "cosineSimilarity",
+          "callee": "Math.sqrt",
+          "lineNumber": 13
+        },
+        {
+          "caller": "cosineSimilarity",
+          "callee": "Math.sqrt",
+          "lineNumber": 13
+        },
+        {
+          "caller": "zscore",
+          "callee": "v.reduce",
+          "lineNumber": 20
+        },
+        {
+          "caller": "zscore",
+          "callee": "v.reduce",
+          "lineNumber": 21
+        },
+        {
+          "caller": "zscore",
+          "callee": "Math.sqrt",
+          "lineNumber": 22
+        },
+        {
+          "caller": "zscore",
+          "callee": "v.map",
+          "lineNumber": 23
+        },
+        {
+          "caller": "toDisplayScale",
+          "callee": "zscore",
+          "lineNumber": 28
+        },
+        {
+          "caller": "toDisplayScale",
+          "callee": "z.map",
+          "lineNumber": 29
+        },
+        {
+          "caller": "toDisplayScale",
+          "callee": "Math.min",
+          "lineNumber": 29
+        },
+        {
+          "caller": "toDisplayScale",
+          "callee": "Math.max",
+          "lineNumber": 29
+        },
+        {
+          "caller": "countPeaks",
+          "callee": "zscore",
+          "lineNumber": 37
+        },
+        {
+          "caller": "countPeaks",
+          "callee": "Math.max",
+          "lineNumber": 39
+        },
+        {
+          "caller": "countPeaks",
+          "callee": "Math.round",
+          "lineNumber": 39
+        },
+        {
+          "caller": "countPeaks",
+          "callee": "Math.max",
+          "lineNumber": 44
+        },
+        {
+          "caller": "countPeaks",
+          "callee": "Math.min",
+          "lineNumber": 44
+        },
+        {
+          "caller": "countPeaks",
+          "callee": "peaks.push",
+          "lineNumber": 49
+        },
+        {
+          "caller": "climaxMetrics",
+          "callee": "zscore",
+          "lineNumber": 62
+        },
+        {
+          "caller": "climaxMetrics",
+          "callee": "Math.min",
+          "lineNumber": 65
+        },
+        {
+          "caller": "climaxMetrics",
+          "callee": "Math.max",
+          "lineNumber": 65
+        },
+        {
+          "caller": "climaxMetrics",
+          "callee": "Math.round",
+          "lineNumber": 67
+        },
+        {
+          "caller": "climaxMetrics",
+          "callee": "Math.round",
+          "lineNumber": 68
+        },
+        {
+          "caller": "climaxMetrics",
+          "callee": "countPeaks",
+          "lineNumber": 69
+        },
+        {
+          "caller": "topPeaks",
+          "callee": "zscore",
+          "lineNumber": 82
+        },
+        {
+          "caller": "topPeaks",
+          "callee": "toDisplayScale",
+          "lineNumber": 83
+        },
+        {
+          "caller": "topPeaks",
+          "callee": "countPeaks",
+          "lineNumber": 84
+        },
+        {
+          "caller": "topPeaks",
+          "callee": "[...cand].sort((a, b) => z[b] - z[a]).slice",
+          "lineNumber": 90
+        },
+        {
+          "caller": "topPeaks",
+          "callee": "[...cand].sort",
+          "lineNumber": 90
+        },
+        {
+          "caller": "topPeaks",
+          "callee": "byHeight.map",
+          "lineNumber": 91
+        },
+        {
+          "caller": "topPeaks",
+          "callee": "ranked.sort",
+          "lineNumber": 92
+        },
+        {
+          "caller": "topPeaks",
+          "callee": "ranked.map",
+          "lineNumber": 94
+        },
+        {
+          "caller": "topPeaks",
+          "callee": "Math.max",
+          "lineNumber": 95
+        },
+        {
+          "caller": "topPeaks",
+          "callee": "Math.round",
+          "lineNumber": 98
+        },
+        {
+          "caller": "climaxDescriptor",
+          "callee": "climaxMetrics",
+          "lineNumber": 105
+        },
+        {
+          "caller": "climaxDescriptor",
+          "callee": "toDisplayScale",
+          "lineNumber": 106
+        },
+        {
+          "caller": "climaxDescriptor",
+          "callee": "Math.max",
+          "lineNumber": 108
+        },
+        {
+          "caller": "climaxDescriptor",
+          "callee": "Math.floor",
+          "lineNumber": 108
+        },
+        {
+          "caller": "climaxDescriptor",
+          "callee": "avg",
+          "lineNumber": 114
+        },
+        {
+          "caller": "climaxDescriptor",
+          "callee": "avg",
+          "lineNumber": 115
+        },
+        {
+          "caller": "meanCenter",
+          "callee": "v.reduce",
+          "lineNumber": 135
+        },
+        {
+          "caller": "meanCenter",
+          "callee": "v.map",
+          "lineNumber": 136
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 6,
+        "functionCount": 8,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/lib/color.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 52,
+      "nonEmptyLines": 46,
+      "functions": [
+        {
+          "name": "lerp",
+          "startLine": 9,
+          "endLine": 11,
+          "params": [
+            "a",
+            "b",
+            "t"
+          ]
+        },
+        {
+          "name": "hex",
+          "startLine": 12,
+          "endLine": 14,
+          "params": [
+            "c"
+          ]
+        },
+        {
+          "name": "valenceColorAt",
+          "startLine": 17,
+          "endLine": 25,
+          "params": [
+            "t"
+          ]
+        },
+        {
+          "name": "valenceToUnit",
+          "startLine": 28,
+          "endLine": 34,
+          "params": [
+            "valence"
+          ]
+        },
+        {
+          "name": "valenceGradientStops",
+          "startLine": 42,
+          "endLine": 52,
+          "params": [
+            "valence",
+            "n"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "valenceColorAt",
+          "line": 17,
+          "isDefault": false
+        },
+        {
+          "name": "valenceToUnit",
+          "line": 28,
+          "isDefault": false
+        },
+        {
+          "name": "valenceGradientStops",
+          "line": 42,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "lerp",
+          "callee": "Math.round",
+          "lineNumber": 10
+        },
+        {
+          "caller": "hex",
+          "callee": "c.map((x) => x.toString(16).padStart(2, '0')).join",
+          "lineNumber": 13
+        },
+        {
+          "caller": "hex",
+          "callee": "c.map",
+          "lineNumber": 13
+        },
+        {
+          "caller": "hex",
+          "callee": "x.toString(16).padStart",
+          "lineNumber": 13
+        },
+        {
+          "caller": "hex",
+          "callee": "x.toString",
+          "lineNumber": 13
+        },
+        {
+          "caller": "valenceColorAt",
+          "callee": "Math.min",
+          "lineNumber": 18
+        },
+        {
+          "caller": "valenceColorAt",
+          "callee": "Math.max",
+          "lineNumber": 18
+        },
+        {
+          "caller": "valenceColorAt",
+          "callee": "[0, 1, 2].map",
+          "lineNumber": 22
+        },
+        {
+          "caller": "valenceColorAt",
+          "callee": "lerp",
+          "lineNumber": 22
+        },
+        {
+          "caller": "valenceColorAt",
+          "callee": "[0, 1, 2].map",
+          "lineNumber": 23
+        },
+        {
+          "caller": "valenceColorAt",
+          "callee": "lerp",
+          "lineNumber": 23
+        },
+        {
+          "caller": "valenceColorAt",
+          "callee": "hex",
+          "lineNumber": 24
+        },
+        {
+          "caller": "valenceToUnit",
+          "callee": "Math.min",
+          "lineNumber": 30
+        },
+        {
+          "caller": "valenceToUnit",
+          "callee": "Math.max",
+          "lineNumber": 31
+        },
+        {
+          "caller": "valenceToUnit",
+          "callee": "valence.map",
+          "lineNumber": 33
+        },
+        {
+          "caller": "valenceGradientStops",
+          "callee": "valenceToUnit",
+          "lineNumber": 44
+        },
+        {
+          "caller": "valenceGradientStops",
+          "callee": "Math.round",
+          "lineNumber": 48
+        },
+        {
+          "caller": "valenceGradientStops",
+          "callee": "stops.push",
+          "lineNumber": 49
+        },
+        {
+          "caller": "valenceGradientStops",
+          "callee": "valenceColorAt",
+          "lineNumber": 49
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 5,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/lib/data.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 265,
+      "nonEmptyLines": 244,
+      "functions": [
+        {
+          "name": "posterUrl",
+          "startLine": 20,
+          "endLine": 23,
+          "params": [
+            "path"
+          ]
+        },
+        {
+          "name": "genreList",
+          "startLine": 26,
+          "endLine": 29,
+          "params": [
+            "genre"
+          ]
+        },
+        {
+          "name": "castList",
+          "startLine": 31,
+          "endLine": 34,
+          "params": [
+            "actors"
+          ]
+        },
+        {
+          "name": "fetchPreferredMovies",
+          "startLine": 71,
+          "endLine": 87,
+          "params": [
+            "likeIds",
+            "dislikeIds",
+            "matchCount"
+          ]
+        },
+        {
+          "name": "fetchSimilarMovies",
+          "startLine": 91,
+          "endLine": 106,
+          "params": [
+            "movieId",
+            "count"
+          ]
+        },
+        {
+          "name": "fetchMovieVectors",
+          "startLine": 109,
+          "endLine": 125,
+          "params": [
+            "tmdbIds"
+          ]
+        },
+        {
+          "name": "fetchVector",
+          "startLine": 129,
+          "endLine": 145,
+          "params": [
+            "tmdbId"
+          ]
+        },
+        {
+          "name": "getActiveVersion",
+          "startLine": 149,
+          "endLine": 166,
+          "params": []
+        },
+        {
+          "name": "fetchVectorPair",
+          "startLine": 169,
+          "endLine": 191,
+          "params": [
+            "tmdbId"
+          ]
+        },
+        {
+          "name": "fetchMovieVectorPairs",
+          "startLine": 194,
+          "endLine": 219,
+          "params": [
+            "tmdbIds"
+          ]
+        },
+        {
+          "name": "getRecentIds",
+          "startLine": 224,
+          "endLine": 230,
+          "params": []
+        },
+        {
+          "name": "addRecentId",
+          "startLine": 232,
+          "endLine": 235,
+          "params": [
+            "tmdbId"
+          ]
+        },
+        {
+          "name": "removeRecentId",
+          "startLine": 237,
+          "endLine": 239,
+          "params": [
+            "tmdbId"
+          ]
+        },
+        {
+          "name": "logVisit",
+          "startLine": 243,
+          "endLine": 265,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "posterUrl",
+          "line": 20,
+          "isDefault": false
+        },
+        {
+          "name": "genreList",
+          "line": 26,
+          "isDefault": false
+        },
+        {
+          "name": "castList",
+          "line": 31,
+          "isDefault": false
+        },
+        {
+          "name": "SUPABASE_URL",
+          "line": 41,
+          "isDefault": false
+        },
+        {
+          "name": "SUPABASE_ANON_KEY",
+          "line": 43,
+          "isDefault": false
+        },
+        {
+          "name": "GENRES",
+          "line": 47,
+          "isDefault": false
+        },
+        {
+          "name": "INITIAL_FILTERS",
+          "line": 62,
+          "isDefault": false
+        },
+        {
+          "name": "fetchPreferredMovies",
+          "line": 71,
+          "isDefault": false
+        },
+        {
+          "name": "fetchSimilarMovies",
+          "line": 91,
+          "isDefault": false
+        },
+        {
+          "name": "fetchMovieVectors",
+          "line": 109,
+          "isDefault": false
+        },
+        {
+          "name": "fetchVector",
+          "line": 129,
+          "isDefault": false
+        },
+        {
+          "name": "getActiveVersion",
+          "line": 149,
+          "isDefault": false
+        },
+        {
+          "name": "fetchVectorPair",
+          "line": 169,
+          "isDefault": false
+        },
+        {
+          "name": "fetchMovieVectorPairs",
+          "line": 194,
+          "isDefault": false
+        },
+        {
+          "name": "getRecentIds",
+          "line": 224,
+          "isDefault": false
+        },
+        {
+          "name": "addRecentId",
+          "line": 232,
+          "isDefault": false
+        },
+        {
+          "name": "removeRecentId",
+          "line": 237,
+          "isDefault": false
+        },
+        {
+          "name": "logVisit",
+          "line": 243,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "genreList",
+          "callee": "genre.split(',').map((g) => g.trim()).filter",
+          "lineNumber": 28
+        },
+        {
+          "caller": "genreList",
+          "callee": "genre.split(',').map",
+          "lineNumber": 28
+        },
+        {
+          "caller": "genreList",
+          "callee": "genre.split",
+          "lineNumber": 28
+        },
+        {
+          "caller": "genreList",
+          "callee": "g.trim",
+          "lineNumber": 28
+        },
+        {
+          "caller": "castList",
+          "callee": "actors.split(',').map((a) => a.trim()).filter",
+          "lineNumber": 33
+        },
+        {
+          "caller": "castList",
+          "callee": "actors.split(',').map",
+          "lineNumber": 33
+        },
+        {
+          "caller": "castList",
+          "callee": "actors.split",
+          "lineNumber": 33
+        },
+        {
+          "caller": "castList",
+          "callee": "a.trim",
+          "lineNumber": 33
+        },
+        {
+          "caller": "fetchPreferredMovies",
+          "callee": "fetch",
+          "lineNumber": 77
+        },
+        {
+          "caller": "fetchPreferredMovies",
+          "callee": "JSON.stringify",
+          "lineNumber": 80
+        },
+        {
+          "caller": "fetchPreferredMovies",
+          "callee": "res.json",
+          "lineNumber": 83
+        },
+        {
+          "caller": "fetchSimilarMovies",
+          "callee": "fetch",
+          "lineNumber": 93
+        },
+        {
+          "caller": "fetchSimilarMovies",
+          "callee": "JSON.stringify",
+          "lineNumber": 99
+        },
+        {
+          "caller": "fetchSimilarMovies",
+          "callee": "res.json",
+          "lineNumber": 102
+        },
+        {
+          "caller": "fetchMovieVectors",
+          "callee": "fetch",
+          "lineNumber": 113
+        },
+        {
+          "caller": "fetchMovieVectors",
+          "callee": "tmdbIds.join",
+          "lineNumber": 114
+        },
+        {
+          "caller": "fetchMovieVectors",
+          "callee": "res.json",
+          "lineNumber": 118
+        },
+        {
+          "caller": "fetchMovieVectors",
+          "callee": "Array.isArray",
+          "lineNumber": 120
+        },
+        {
+          "caller": "fetchMovieVectors",
+          "callee": "JSON.parse",
+          "lineNumber": 120
+        },
+        {
+          "caller": "fetchMovieVectors",
+          "callee": "map.set",
+          "lineNumber": 121
+        },
+        {
+          "caller": "fetchVector",
+          "callee": "fetch",
+          "lineNumber": 131
+        },
+        {
+          "caller": "fetchVector",
+          "callee": "res.json",
+          "lineNumber": 136
+        },
+        {
+          "caller": "fetchVector",
+          "callee": "Array.isArray",
+          "lineNumber": 139
+        },
+        {
+          "caller": "fetchVector",
+          "callee": "JSON.parse",
+          "lineNumber": 140
+        },
+        {
+          "caller": "getActiveVersion",
+          "callee": "fetch",
+          "lineNumber": 152
+        },
+        {
+          "caller": "getActiveVersion",
+          "callee": "res.json",
+          "lineNumber": 157
+        },
+        {
+          "caller": "fetchVectorPair",
+          "callee": "getActiveVersion",
+          "lineNumber": 173
+        },
+        {
+          "caller": "fetchVectorPair",
+          "callee": "fetch",
+          "lineNumber": 174
+        },
+        {
+          "caller": "fetchVectorPair",
+          "callee": "res.json",
+          "lineNumber": 179
+        },
+        {
+          "caller": "fetchVectorPair",
+          "callee": "Array.isArray",
+          "lineNumber": 183
+        },
+        {
+          "caller": "fetchVectorPair",
+          "callee": "JSON.parse",
+          "lineNumber": 183
+        },
+        {
+          "caller": "fetchVectorPair",
+          "callee": "r.vector_version.endsWith",
+          "lineNumber": 184
+        },
+        {
+          "caller": "fetchVectorPair",
+          "callee": "r.vector_version.endsWith",
+          "lineNumber": 185
+        },
+        {
+          "caller": "fetchMovieVectorPairs",
+          "callee": "getActiveVersion",
+          "lineNumber": 200
+        },
+        {
+          "caller": "fetchMovieVectorPairs",
+          "callee": "fetch",
+          "lineNumber": 201
+        },
+        {
+          "caller": "fetchMovieVectorPairs",
+          "callee": "tmdbIds.join",
+          "lineNumber": 202
+        },
+        {
+          "caller": "fetchMovieVectorPairs",
+          "callee": "res.json",
+          "lineNumber": 206
+        },
+        {
+          "caller": "fetchMovieVectorPairs",
+          "callee": "Array.isArray",
+          "lineNumber": 208
+        },
+        {
+          "caller": "fetchMovieVectorPairs",
+          "callee": "JSON.parse",
+          "lineNumber": 208
+        },
+        {
+          "caller": "fetchMovieVectorPairs",
+          "callee": "map.get",
+          "lineNumber": 209
+        },
+        {
+          "caller": "fetchMovieVectorPairs",
+          "callee": "r.vector_version.endsWith",
+          "lineNumber": 210
+        },
+        {
+          "caller": "fetchMovieVectorPairs",
+          "callee": "r.vector_version.endsWith",
+          "lineNumber": 211
+        },
+        {
+          "caller": "fetchMovieVectorPairs",
+          "callee": "map.set",
+          "lineNumber": 212
+        },
+        {
+          "caller": "fetchMovieVectorPairs",
+          "callee": "map.delete",
+          "lineNumber": 214
+        },
+        {
+          "caller": "getRecentIds",
+          "callee": "JSON.parse",
+          "lineNumber": 226
+        },
+        {
+          "caller": "getRecentIds",
+          "callee": "localStorage.getItem",
+          "lineNumber": 226
+        },
+        {
+          "caller": "addRecentId",
+          "callee": "getRecentIds().filter",
+          "lineNumber": 233
+        },
+        {
+          "caller": "addRecentId",
+          "callee": "getRecentIds",
+          "lineNumber": 233
+        },
+        {
+          "caller": "addRecentId",
+          "callee": "localStorage.setItem",
+          "lineNumber": 234
+        },
+        {
+          "caller": "addRecentId",
+          "callee": "JSON.stringify",
+          "lineNumber": 234
+        },
+        {
+          "caller": "addRecentId",
+          "callee": "[tmdbId, ...ids].slice",
+          "lineNumber": 234
+        },
+        {
+          "caller": "removeRecentId",
+          "callee": "localStorage.setItem",
+          "lineNumber": 238
+        },
+        {
+          "caller": "removeRecentId",
+          "callee": "JSON.stringify",
+          "lineNumber": 238
+        },
+        {
+          "caller": "removeRecentId",
+          "callee": "getRecentIds().filter",
+          "lineNumber": 238
+        },
+        {
+          "caller": "removeRecentId",
+          "callee": "getRecentIds",
+          "lineNumber": 238
+        },
+        {
+          "caller": "logVisit",
+          "callee": "new Date().toISOString().slice",
+          "lineNumber": 246
+        },
+        {
+          "caller": "logVisit",
+          "callee": "new Date().toISOString",
+          "lineNumber": 246
+        },
+        {
+          "caller": "logVisit",
+          "callee": "localStorage.getItem",
+          "lineNumber": 247
+        },
+        {
+          "caller": "logVisit",
+          "callee": "localStorage.getItem",
+          "lineNumber": 249
+        },
+        {
+          "caller": "logVisit",
+          "callee": "crypto.randomUUID",
+          "lineNumber": 251
+        },
+        {
+          "caller": "logVisit",
+          "callee": "localStorage.setItem",
+          "lineNumber": 252
+        },
+        {
+          "caller": "logVisit",
+          "callee": "localStorage.setItem",
+          "lineNumber": 254
+        },
+        {
+          "caller": "logVisit",
+          "callee": "fetch('/api/visit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({ visitor_id: visitorId }),\n      keepalive: true,\n    }).catch",
+          "lineNumber": 256
+        },
+        {
+          "caller": "logVisit",
+          "callee": "fetch",
+          "lineNumber": 256
+        },
+        {
+          "caller": "logVisit",
+          "callee": "JSON.stringify",
+          "lineNumber": 259
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 18,
+        "functionCount": 14,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/lib/svgPath.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 20,
+      "nonEmptyLines": 19,
+      "functions": [
+        {
+          "name": "catmullRomPath",
+          "startLine": 4,
+          "endLine": 20,
+          "params": [
+            "pts"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "catmullRomPath",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "catmullRomPath",
+          "callee": "pts.map((p) => `${p[0]},${p[1]}`).join",
+          "lineNumber": 6
+        },
+        {
+          "caller": "catmullRomPath",
+          "callee": "pts.map",
+          "lineNumber": 6
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/movie_list/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 324,
+      "nonEmptyLines": 306,
+      "functions": [
+        {
+          "name": "MovieListPage",
+          "startLine": 19,
+          "endLine": 306,
+          "params": []
+        },
+        {
+          "name": "paginationBtn",
+          "startLine": 314,
+          "endLine": 324,
+          "params": [
+            "disabled"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "MovieListPage",
+          "line": 19,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "MovieListPage",
+          "callee": "useRouter",
+          "lineNumber": 20
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "useState",
+          "lineNumber": 21
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "useState",
+          "lineNumber": 22
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "useState",
+          "lineNumber": 23
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "useState",
+          "lineNumber": 24
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "useState",
+          "lineNumber": 26
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "useState",
+          "lineNumber": 28
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "useState",
+          "lineNumber": 29
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "useState",
+          "lineNumber": 31
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "useCallback",
+          "lineNumber": 33
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "setLoading",
+          "lineNumber": 34
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "q.trim",
+          "lineNumber": 36
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "encodeURIComponent",
+          "lineNumber": 37
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "fetch",
+          "lineNumber": 39
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "res.json",
+          "lineNumber": 40
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "setMovies",
+          "lineNumber": 41
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "setTotalPages",
+          "lineNumber": 42
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "setMovies",
+          "lineNumber": 44
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "setLoading",
+          "lineNumber": 46
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "useEffect",
+          "lineNumber": 50
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "fetchMovies",
+          "lineNumber": 51
+        },
+        {
+          "caller": "runSearch",
+          "callee": "setPage",
+          "lineNumber": 56
+        },
+        {
+          "caller": "runSearch",
+          "callee": "setActiveQuery",
+          "lineNumber": 57
+        },
+        {
+          "caller": "runSearch",
+          "callee": "q.trim",
+          "lineNumber": 57
+        },
+        {
+          "caller": "handleLogout",
+          "callee": "fetch",
+          "lineNumber": 62
+        },
+        {
+          "caller": "handleLogout",
+          "callee": "router.replace",
+          "lineNumber": 63
+        },
+        {
+          "caller": "handleLogout",
+          "callee": "router.refresh",
+          "lineNumber": 64
+        },
+        {
+          "caller": "handleAdd",
+          "callee": "setPending",
+          "lineNumber": 68
+        },
+        {
+          "caller": "handleAdd",
+          "callee": "new Set(s).add",
+          "lineNumber": 68
+        },
+        {
+          "caller": "handleAdd",
+          "callee": "fetch",
+          "lineNumber": 70
+        },
+        {
+          "caller": "handleAdd",
+          "callee": "JSON.stringify",
+          "lineNumber": 73
+        },
+        {
+          "caller": "handleAdd",
+          "callee": "setMovies",
+          "lineNumber": 76
+        },
+        {
+          "caller": "handleAdd",
+          "callee": "prev.map",
+          "lineNumber": 76
+        },
+        {
+          "caller": "handleAdd",
+          "callee": "setPending",
+          "lineNumber": 78
+        },
+        {
+          "caller": "handleAdd",
+          "callee": "n.delete",
+          "lineNumber": 78
+        },
+        {
+          "caller": "handleDelete",
+          "callee": "setPending",
+          "lineNumber": 83
+        },
+        {
+          "caller": "handleDelete",
+          "callee": "new Set(s).add",
+          "lineNumber": 83
+        },
+        {
+          "caller": "handleDelete",
+          "callee": "fetch",
+          "lineNumber": 85
+        },
+        {
+          "caller": "handleDelete",
+          "callee": "setMovies",
+          "lineNumber": 86
+        },
+        {
+          "caller": "handleDelete",
+          "callee": "prev.map",
+          "lineNumber": 86
+        },
+        {
+          "caller": "handleDelete",
+          "callee": "setPending",
+          "lineNumber": 88
+        },
+        {
+          "caller": "handleDelete",
+          "callee": "n.delete",
+          "lineNumber": 88
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "router.push",
+          "lineNumber": 108
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "router.push",
+          "lineNumber": 118
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "e.preventDefault",
+          "lineNumber": 127
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "runSearch",
+          "lineNumber": 127
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "setQuery",
+          "lineNumber": 133
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "setQuery",
+          "lineNumber": 147
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "runSearch",
+          "lineNumber": 147
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "setPage",
+          "lineNumber": 173
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "Math.max",
+          "lineNumber": 173
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "paginationBtn",
+          "lineNumber": 175
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "setPage",
+          "lineNumber": 183
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "Math.min",
+          "lineNumber": 183
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "paginationBtn",
+          "lineNumber": 185
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "Array.from({ length: 20 }).map",
+          "lineNumber": 212
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "Array.from",
+          "lineNumber": 212
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "movies.map",
+          "lineNumber": 225
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "posterUrl",
+          "lineNumber": 226
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "pending.has",
+          "lineNumber": 227
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "m.release_date?.slice",
+          "lineNumber": 228
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "setDetail",
+          "lineNumber": 239
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "handleDelete",
+          "lineNumber": 272
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "handleAdd",
+          "lineNumber": 272
+        },
+        {
+          "caller": "MovieListPage",
+          "callee": "setDetail",
+          "lineNumber": 301
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/movie_list/recent/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 95,
+      "nonEmptyLines": 89,
+      "functions": [
+        {
+          "name": "RecentPage",
+          "startLine": 17,
+          "endLine": 95,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "RecentPage",
+          "line": 17,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "RecentPage",
+          "callee": "useRouter",
+          "lineNumber": 18
+        },
+        {
+          "caller": "RecentPage",
+          "callee": "useState",
+          "lineNumber": 19
+        },
+        {
+          "caller": "RecentPage",
+          "callee": "useState",
+          "lineNumber": 20
+        },
+        {
+          "caller": "RecentPage",
+          "callee": "useEffect",
+          "lineNumber": 22
+        },
+        {
+          "caller": "RecentPage",
+          "callee": "(async () => {\n      try {\n        const res = await fetch('/api/manager/movies/recent?limit=100');\n        const data = await res.json();\n        setMovies(data.movies ?? []);\n      } catch {\n        setMovies([]);\n      } finally {\n        setLoading(false);\n      }\n    })",
+          "lineNumber": 23
+        },
+        {
+          "caller": "RecentPage",
+          "callee": "fetch",
+          "lineNumber": 25
+        },
+        {
+          "caller": "RecentPage",
+          "callee": "res.json",
+          "lineNumber": 26
+        },
+        {
+          "caller": "RecentPage",
+          "callee": "setMovies",
+          "lineNumber": 27
+        },
+        {
+          "caller": "RecentPage",
+          "callee": "setMovies",
+          "lineNumber": 29
+        },
+        {
+          "caller": "RecentPage",
+          "callee": "setLoading",
+          "lineNumber": 31
+        },
+        {
+          "caller": "RecentPage",
+          "callee": "router.push",
+          "lineNumber": 41
+        },
+        {
+          "caller": "RecentPage",
+          "callee": "movies.map",
+          "lineNumber": 64
+        },
+        {
+          "caller": "RecentPage",
+          "callee": "posterUrl",
+          "lineNumber": 69
+        },
+        {
+          "caller": "RecentPage",
+          "callee": "new Date(m.created_at).toLocaleString",
+          "lineNumber": 86
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 189,
+      "nonEmptyLines": 180,
+      "functions": [
+        {
+          "name": "OnboardingPage",
+          "startLine": 9,
+          "endLine": 189,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "OnboardingPage",
+          "line": 9,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "OnboardingPage",
+          "callee": "useRouter",
+          "lineNumber": 10
+        },
+        {
+          "caller": "OnboardingPage",
+          "callee": "useEffect",
+          "lineNumber": 12
+        },
+        {
+          "caller": "OnboardingPage",
+          "callee": "logVisit",
+          "lineNumber": 13
+        },
+        {
+          "caller": "OnboardingPage",
+          "callee": "router.push",
+          "lineNumber": 143
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "nodes": [
+    {
+      "id": "service:Ansible/manifests/4k-be/backfill-cronjob.yaml",
+      "type": "service",
+      "name": "backfill-cronjob.yaml",
+      "filePath": "Ansible/manifests/4k-be/backfill-cronjob.yaml",
+      "summary": "be 네임스페이스에서 매일 KST 03:00에 app.backfill_popular 모듈을 실행하는 K8s CronJob으로, 4k-be 이미지를 사용해 인기 영화 데이터를 신규 300건까지 backfill한다.",
+      "tags": ["infrastructure", "kubernetes", "cronjob", "deployment", "backfill"],
+      "complexity": "simple",
+      "languageNotes": "concurrencyPolicy: Forbid + OnFailure restartPolicy로 중복 실행을 방지하고 실패 시 재시도(backoffLimit 2)를 허용."
+    },
+    {
+      "id": "service:Ansible/manifests/4k-be/deployment.yaml",
+      "type": "service",
+      "name": "deployment.yaml",
+      "filePath": "Ansible/manifests/4k-be/deployment.yaml",
+      "summary": "be 네임스페이스에 backend FastAPI 서버(4k-be 이미지)를 단일 replica로 배포하는 K8s Deployment로, 8000 포트와 /health 기반 readiness/liveness probe를 구성한다.",
+      "tags": ["infrastructure", "kubernetes", "deployment", "backend", "health-check"],
+      "complexity": "simple",
+      "languageNotes": "nodeSelector workload=app으로 앱 전용 노드에 스케줄링하며 secretRef로 환경변수를 주입."
+    },
+    {
+      "id": "config:Ansible/manifests/4k-be/kustomization.yaml",
+      "type": "config",
+      "name": "kustomization.yaml",
+      "filePath": "Ansible/manifests/4k-be/kustomization.yaml",
+      "summary": "be 네임스페이스의 deployment/service/cronjob 매니페스트를 묶고 4k-be 이미지 태그(da138ef)를 고정하는 Kustomize 오버레이 진입점.",
+      "tags": ["infrastructure", "kubernetes", "kustomize", "configuration", "entry-point"],
+      "complexity": "simple",
+      "languageNotes": "images 필드로 이미지 태그를 한 곳에서 오버라이드해 GitOps 배포 시 버전을 갱신."
+    },
+    {
+      "id": "service:Ansible/manifests/4k-be/service.yaml",
+      "type": "service",
+      "name": "service.yaml",
+      "filePath": "Ansible/manifests/4k-be/service.yaml",
+      "summary": "be 네임스페이스에서 app=backend Pod를 8000 포트로 노출하는 ClusterIP K8s Service.",
+      "tags": ["infrastructure", "kubernetes", "service", "networking", "backend"],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:Ansible/manifests/4k-be/subtitle-cronjob.yaml",
+      "type": "service",
+      "name": "subtitle-cronjob.yaml",
+      "filePath": "Ansible/manifests/4k-be/subtitle-cronjob.yaml",
+      "summary": "be 네임스페이스에서 매일 KST 04:00에 app.subtitle_collect 모듈을 실행하는 K8s CronJob으로, 4k-be 이미지를 사용해 자막 데이터를 신규 300건까지 수집한다.",
+      "tags": ["infrastructure", "kubernetes", "cronjob", "subtitle", "data-pipeline"],
+      "complexity": "simple",
+      "languageNotes": "concurrencyPolicy: Forbid로 중복 수집을 막고 backfill-cronjob과 1시간 간격으로 스케줄을 분리."
+    }
+  ],
+  "edges": [
+    {
+      "source": "config:Ansible/manifests/4k-be/kustomization.yaml",
+      "target": "service:Ansible/manifests/4k-be/deployment.yaml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Ansible/manifests/4k-be/kustomization.yaml",
+      "target": "service:Ansible/manifests/4k-be/service.yaml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Ansible/manifests/4k-be/kustomization.yaml",
+      "target": "service:Ansible/manifests/4k-be/backfill-cronjob.yaml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Ansible/manifests/4k-be/kustomization.yaml",
+      "target": "service:Ansible/manifests/4k-be/subtitle-cronjob.yaml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:Ansible/manifests/4k-be/service.yaml",
+      "target": "service:Ansible/manifests/4k-be/deployment.yaml",
+      "type": "routes",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

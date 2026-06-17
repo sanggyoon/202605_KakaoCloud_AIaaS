@@ -1,0 +1,13 @@
+{
+  "projectRoot": "/Users/sanggyoon/Documents/KakaoCloud_Project",
+  "batchFiles": [
+    {"path": ".github/workflows/deploy-4k-be.yml", "language": "yaml", "sizeLines": 64, "fileCategory": "infra"},
+    {"path": ".github/workflows/deploy-4k-fe.yml", "language": "yaml", "sizeLines": 64, "fileCategory": "infra"},
+    {"path": ".github/workflows/deploy-4k-ml.yml", "language": "yaml", "sizeLines": 78, "fileCategory": "infra"}
+  ],
+  "batchImportData": {
+    ".github/workflows/deploy-4k-be.yml": [],
+    ".github/workflows/deploy-4k-fe.yml": [],
+    ".github/workflows/deploy-4k-ml.yml": []
+  }
+}

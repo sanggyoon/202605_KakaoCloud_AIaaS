@@ -1,0 +1,15 @@
+{
+  "projectRoot": "/Users/sanggyoon/Documents/KakaoCloud_Project",
+  "batchFiles": [
+    {"path": "Ansible/manifests/test/gpu-test.yaml", "language": "yaml", "sizeLines": 15, "fileCategory": "config"},
+    {"path": "Ansible/manifests/test/hello-wf-ai.yaml", "language": "yaml", "sizeLines": 14, "fileCategory": "config"},
+    {"path": "Ansible/manifests/test/llm-labeling-run.yaml", "language": "yaml", "sizeLines": 9, "fileCategory": "config"},
+    {"path": "Ansible/manifests/test/test-nginx.yaml", "language": "yaml", "sizeLines": 52, "fileCategory": "config"}
+  ],
+  "batchImportData": {
+    "Ansible/manifests/test/gpu-test.yaml": [],
+    "Ansible/manifests/test/hello-wf-ai.yaml": [],
+    "Ansible/manifests/test/llm-labeling-run.yaml": [],
+    "Ansible/manifests/test/test-nginx.yaml": []
+  }
+}

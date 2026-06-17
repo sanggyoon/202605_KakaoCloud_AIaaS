@@ -1,0 +1,16 @@
+{
+  "fixedSectionOk": true,
+  "nodesRecovered": 11,
+  "edgesRestored": 13,
+  "crossBatchEdgesAdded": 0,
+  "typesRemapped": 0,
+  "complexityRemapped": 0,
+  "notes": [
+    "13개 드롭된 엣지는 모두 batch가 contains/calls 엣지만 emit하고 대상 function 노드는 emit하지 않아 발생. merge script가 dangling으로 정상 드롭함.",
+    "복구한 11개 function 노드: 9개 Next.js route handler(GET/POST/PATCH) + RootLayout 컴포넌트 + 2개 pytest 테스트 함수. 모두 실제 소스 파일에서 확인하고 정확한 lineRange/summary로 생성.",
+    "calls 엣지 2개의 대상 function:4K_ML/generate_vectors/generate_vectors.py:select_vector_targets 는 이미 그래프에 존재해 calls 엣지도 정상 복구됨.",
+    "file→file imports 엣지는 batch 데이터와 대조한 결과 누락 없음. 명시적 IMPORT_MAP이 프롬프트에 제공되지 않아 speculative 엣지는 추가하지 않음.",
+    "Fixed 섹션: 모든 complexity 값이 simple/moderate/complex로 정규화됨(unknown 없음), unknown node type 없음. ID 보정 비율은 systemic LLM 패턴 수준으로 보이며 별도 upstream 이슈 플래그 불필요.",
+    "최종 무결성: 447 nodes / 670 edges, 중복 노드ID 0, 중복 엣지 0, dangling 엣지 0."
+  ]
+}

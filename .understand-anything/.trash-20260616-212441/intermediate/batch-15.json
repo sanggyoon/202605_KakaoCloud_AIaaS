@@ -1,0 +1,76 @@
+{
+  "nodes": [
+    {
+      "id": "config:4K_FE/.env.example",
+      "type": "config",
+      "name": ".env.example",
+      "filePath": "4K_FE/.env.example",
+      "summary": "프론트엔드 환경변수 템플릿으로, 매니저 페이지 로그인 자격증명(MANAGER_ID/PASSWORD), 세션 서명 시크릿, 백엔드 내부 URL, Supabase 접속 정보(NEXT_PUBLIC_)를 정의한다.",
+      "tags": ["configuration", "환경변수", "security", "supabase"],
+      "complexity": "simple",
+      "languageNotes": "NEXT_PUBLIC_ 접두사 변수는 next/docker build 시점에 번들에 inline되며, data.peakly.art는 Route53 failover로 카카오↔AWS DR 전환을 DNS가 처리."
+    },
+    {
+      "id": "document:4K_FE/AGENTS.md",
+      "type": "document",
+      "name": "AGENTS.md",
+      "filePath": "4K_FE/AGENTS.md",
+      "summary": "AI 코딩 에이전트에게 이 프로젝트가 breaking change가 포함된 비표준 Next.js 버전임을 경고하고, 코드 작성 전 node_modules의 가이드를 참고하도록 지시하는 규칙 문서.",
+      "tags": ["documentation", "ai-agent", "nextjs", "guidelines"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:4K_FE/CLAUDE.md",
+      "type": "document",
+      "name": "CLAUDE.md",
+      "filePath": "4K_FE/CLAUDE.md",
+      "summary": "Claude Code용 프로젝트 지침 파일로, AGENTS.md를 @import하여 동일한 에이전트 규칙을 재사용한다.",
+      "tags": ["documentation", "ai-agent", "claude"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:4K_FE/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "4K_FE/README.md",
+      "summary": "create-next-app 기반의 기본 프론트엔드 README로 개발 서버 실행(Getting Started), 학습 자료, Vercel 배포 안내를 담은 3개 섹션 문서.",
+      "tags": ["documentation", "entry-point", "nextjs", "overview"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:4K_FE/package.json",
+      "type": "config",
+      "name": "package.json",
+      "filePath": "4K_FE/package.json",
+      "summary": "4K Cinema 프론트엔드(kakao)의 npm 매니페스트로 Next.js 16.2.5/React 19/Tailwind 4 기반 의존성과 dev/build/start/lint 스크립트를 정의한다.",
+      "tags": ["configuration", "build-system", "nextjs", "dependencies"],
+      "complexity": "simple",
+      "languageNotes": "Next.js 16 + React 19 + Tailwind v4(@tailwindcss/postcss)의 최신 스택 조합이며, ogl(WebGL 렌더링) 의존성으로 climax 그래프 시각화를 구현."
+    },
+    {
+      "id": "config:4K_FE/tsconfig.json",
+      "type": "config",
+      "name": "tsconfig.json",
+      "filePath": "4K_FE/tsconfig.json",
+      "summary": "프론트엔드 TypeScript 컴파일러 설정으로 strict 모드, Next.js 플러그인, compilerOptions/include/exclude를 정의한다.",
+      "tags": ["configuration", "typescript", "build-system"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "config:4K_FE/package.json",
+      "target": "config:4K_FE/tsconfig.json",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:4K_FE/CLAUDE.md",
+      "target": "document:4K_FE/AGENTS.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

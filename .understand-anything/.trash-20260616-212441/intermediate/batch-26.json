@@ -1,0 +1,111 @@
+{
+  "nodes": [
+    {
+      "id": "config:aws/.env.example",
+      "type": "config",
+      "name": ".env.example",
+      "filePath": "aws/.env.example",
+      "summary": "AWS DR 앱 스택용 환경변수 템플릿. TMDB API 키, Supabase(데이터) URL/키, 매니저 로그인 계정 및 세션 시크릿을 정의한다.",
+      "tags": ["configuration", "환경변수", "security", "secrets", "infrastructure"],
+      "complexity": "simple",
+      "languageNotes": "실제 .env 의 예시 파일로, 운영 시 복사(cp .env.example .env) 후 값을 채워 docker compose 에서 env_file 로 주입한다."
+    },
+    {
+      "id": "document:aws/COST-OPTIMIZATION.md",
+      "type": "document",
+      "name": "COST-OPTIMIZATION.md",
+      "filePath": "aws/COST-OPTIMIZATION.md",
+      "summary": "AWS DR 인프라 비용 최적화 문서. NAT 게이트웨이 제거 및 DB 인스턴스 다운사이즈를 통한 비용 절감 방안과 그에 따른 보안 트레이드오프, 복원 방법을 12개 섹션으로 정리한다.",
+      "tags": ["documentation", "cost-optimization", "infrastructure", "aws", "운영"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:aws/DR-DB-RUNBOOK.md",
+      "type": "document",
+      "name": "DR-DB-RUNBOOK.md",
+      "filePath": "aws/DR-DB-RUNBOOK.md",
+      "summary": "DR DB 운영 런북. WireGuard 터널 구성, 카카오 Postgres↔AWS 레플리카 논리 복제 설정, PostgREST/도메인 failover, 수동 승격 및 역동기화 절차를 단계별로 안내한다.",
+      "tags": ["documentation", "runbook", "disaster-recovery", "database", "replication"],
+      "complexity": "complex"
+    },
+    {
+      "id": "service:aws/docker-compose.yml",
+      "type": "service",
+      "name": "docker-compose.yml",
+      "filePath": "aws/docker-compose.yml",
+      "summary": "AWS Burst/DR 워밍스탠바이 앱 스택을 정의하는 docker-compose. 카카오 K3s와 동일한 GHCR 이미지로 frontend(Next.js)와 backend(FastAPI)를 EC2에서 기동한다.",
+      "tags": ["orchestration", "infrastructure", "docker-compose", "disaster-recovery", "deployment"],
+      "complexity": "moderate",
+      "languageNotes": "frontend만 ALB로 공개(3000), backend는 expose로 내부망 한정. depends_on service_healthy 와 healthcheck로 기동 순서를 제어한다."
+    },
+    {
+      "id": "service:aws/docker-compose.yml:backend",
+      "type": "service",
+      "name": "backend",
+      "filePath": "aws/docker-compose.yml",
+      "summary": "FastAPI 백엔드 컨테이너 서비스. GHCR 4k-be 이미지를 사용하고 8000 포트를 컴포즈 내부망에만 expose하며 urllib 기반 healthcheck를 수행한다.",
+      "tags": ["service", "backend", "fastapi", "containerization"],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:aws/docker-compose.yml:frontend",
+      "type": "service",
+      "name": "frontend",
+      "filePath": "aws/docker-compose.yml",
+      "summary": "Next.js 프런트엔드 컨테이너 서비스. GHCR 4k-fe 이미지를 사용해 3000 포트를 ALB로 공개하고 backend가 healthy해진 뒤 기동하며 BE_INTERNAL_URL로 백엔드를 가리킨다.",
+      "tags": ["service", "frontend", "nextjs", "containerization"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "service:aws/docker-compose.yml",
+      "target": "service:aws/docker-compose.yml:backend",
+      "type": "deploys",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "service:aws/docker-compose.yml",
+      "target": "service:aws/docker-compose.yml:frontend",
+      "type": "deploys",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "service:aws/docker-compose.yml:frontend",
+      "target": "service:aws/docker-compose.yml:backend",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:aws/.env.example",
+      "target": "service:aws/docker-compose.yml",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:aws/COST-OPTIMIZATION.md",
+      "target": "service:aws/docker-compose.yml",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:aws/DR-DB-RUNBOOK.md",
+      "target": "service:aws/docker-compose.yml",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:aws/COST-OPTIMIZATION.md",
+      "target": "document:aws/DR-DB-RUNBOOK.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

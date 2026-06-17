@@ -1,0 +1,13 @@
+{
+  "projectRoot": "/Users/sanggyoon/Documents/KakaoCloud_Project",
+  "batchFiles": [
+    {"path": "4K_BE/pytest.ini", "language": "config", "sizeLines": 3, "fileCategory": "config"},
+    {"path": "4K_BE/requirements-dev.txt", "language": "txt", "sizeLines": 3, "fileCategory": "docs"},
+    {"path": "4K_BE/requirements.txt", "language": "txt", "sizeLines": 4, "fileCategory": "docs"}
+  ],
+  "batchImportData": {
+    "4K_BE/pytest.ini": [],
+    "4K_BE/requirements-dev.txt": [],
+    "4K_BE/requirements.txt": []
+  }
+}

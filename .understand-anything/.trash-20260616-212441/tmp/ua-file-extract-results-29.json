@@ -1,0 +1,1065 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 22,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "4K_ML/.python-version",
+      "language": "unknown",
+      "fileCategory": "code",
+      "totalLines": 1,
+      "nonEmptyLines": 1,
+      "metrics": {}
+    },
+    {
+      "path": "4K_ML/db/__init__.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 1,
+      "nonEmptyLines": 0,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/db/apply_schema.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 24,
+      "nonEmptyLines": 19,
+      "functions": [
+        {
+          "name": "apply_schema",
+          "startLine": 9,
+          "endLine": 15,
+          "params": [
+            "dsn",
+            "sql_path"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "apply_schema",
+          "line": 9,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "apply_schema",
+          "callee": "open",
+          "lineNumber": 11
+        },
+        {
+          "caller": "apply_schema",
+          "callee": "f.read",
+          "lineNumber": 12
+        },
+        {
+          "caller": "apply_schema",
+          "callee": "psycopg.connect",
+          "lineNumber": 14
+        },
+        {
+          "caller": "apply_schema",
+          "callee": "conn.execute",
+          "lineNumber": 15
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/generate_vectors/transform.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 43,
+      "nonEmptyLines": 37,
+      "functions": [
+        {
+          "name": "_resample_smooth",
+          "startLine": 15,
+          "endLine": 29,
+          "params": [
+            "points"
+          ]
+        },
+        {
+          "name": "process_axis",
+          "startLine": 32,
+          "endLine": 43,
+          "params": [
+            "points",
+            "axis"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "_resample_smooth",
+          "line": 15,
+          "isDefault": false
+        },
+        {
+          "name": "process_axis",
+          "line": 32,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_resample_smooth",
+          "callee": "len",
+          "lineNumber": 16
+        },
+        {
+          "caller": "_resample_smooth",
+          "callee": "sorted",
+          "lineNumber": 18
+        },
+        {
+          "caller": "_resample_smooth",
+          "callee": "np.array",
+          "lineNumber": 19
+        },
+        {
+          "caller": "_resample_smooth",
+          "callee": "np.array",
+          "lineNumber": 20
+        },
+        {
+          "caller": "_resample_smooth",
+          "callee": "np.linspace",
+          "lineNumber": 22
+        },
+        {
+          "caller": "_resample_smooth",
+          "callee": "np.interp",
+          "lineNumber": 23
+        },
+        {
+          "caller": "_resample_smooth",
+          "callee": "min",
+          "lineNumber": 24
+        },
+        {
+          "caller": "_resample_smooth",
+          "callee": "len",
+          "lineNumber": 24
+        },
+        {
+          "caller": "_resample_smooth",
+          "callee": "savgol_filter",
+          "lineNumber": 29
+        },
+        {
+          "caller": "process_axis",
+          "callee": "_resample_smooth",
+          "lineNumber": 34
+        },
+        {
+          "caller": "process_axis",
+          "callee": "float",
+          "lineNumber": 38
+        },
+        {
+          "caller": "process_axis",
+          "callee": "sm.std",
+          "lineNumber": 38
+        },
+        {
+          "caller": "process_axis",
+          "callee": "((sm - sm.mean()) / std).tolist",
+          "lineNumber": 41
+        },
+        {
+          "caller": "process_axis",
+          "callee": "sm.mean",
+          "lineNumber": 41
+        },
+        {
+          "caller": "process_axis",
+          "callee": "np.clip(sm, 0.0, 1.0).tolist",
+          "lineNumber": 43
+        },
+        {
+          "caller": "process_axis",
+          "callee": "np.clip",
+          "lineNumber": 43
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/pytest.ini",
+      "language": "config",
+      "fileCategory": "config",
+      "totalLines": 2,
+      "nonEmptyLines": 2,
+      "metrics": {}
+    },
+    {
+      "path": "4K_ML/requirements.txt",
+      "language": "txt",
+      "fileCategory": "docs",
+      "totalLines": 18,
+      "nonEmptyLines": 18,
+      "metrics": {}
+    },
+    {
+      "path": "4K_ML/serving/promote.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 39,
+      "nonEmptyLines": 31,
+      "functions": [
+        {
+          "name": "decide",
+          "startLine": 4,
+          "endLine": 14,
+          "params": [
+            "current",
+            "candidate",
+            "mae_tol"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "decide",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "decide",
+          "callee": "current.get",
+          "lineNumber": 6
+        },
+        {
+          "caller": "decide",
+          "callee": "candidate.get",
+          "lineNumber": 7
+        },
+        {
+          "caller": "decide",
+          "callee": "current.get",
+          "lineNumber": 8
+        },
+        {
+          "caller": "decide",
+          "callee": "candidate.get",
+          "lineNumber": 9
+        },
+        {
+          "caller": "metrics",
+          "callee": "httpx.get",
+          "lineNumber": 30
+        },
+        {
+          "caller": "metrics",
+          "callee": "r.raise_for_status",
+          "lineNumber": 33
+        },
+        {
+          "caller": "metrics",
+          "callee": "r.json",
+          "lineNumber": 34
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/tests/__init__.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 1,
+      "nonEmptyLines": 0,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/tests/test_gen_transform.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 41,
+      "nonEmptyLines": 31,
+      "functions": [
+        {
+          "name": "_peak_points",
+          "startLine": 5,
+          "endLine": 7,
+          "params": []
+        },
+        {
+          "name": "test_arousal_zscore_centered_unit_variance",
+          "startLine": 10,
+          "endLine": 17,
+          "params": []
+        },
+        {
+          "name": "test_valence_raw_keeps_scale",
+          "startLine": 20,
+          "endLine": 27,
+          "params": []
+        },
+        {
+          "name": "test_flat_arousal_none_valence_raw",
+          "startLine": 30,
+          "endLine": 35,
+          "params": []
+        },
+        {
+          "name": "test_too_few_scenes_none",
+          "startLine": 38,
+          "endLine": 41,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "_peak_points",
+          "line": 5,
+          "isDefault": false
+        },
+        {
+          "name": "test_arousal_zscore_centered_unit_variance",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "test_valence_raw_keeps_scale",
+          "line": 20,
+          "isDefault": false
+        },
+        {
+          "name": "test_flat_arousal_none_valence_raw",
+          "line": 30,
+          "isDefault": false
+        },
+        {
+          "name": "test_too_few_scenes_none",
+          "line": 38,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "test_arousal_zscore_centered_unit_variance",
+          "callee": "process_axis",
+          "lineNumber": 11
+        },
+        {
+          "caller": "test_arousal_zscore_centered_unit_variance",
+          "callee": "_peak_points",
+          "lineNumber": 11
+        },
+        {
+          "caller": "test_arousal_zscore_centered_unit_variance",
+          "callee": "np.array",
+          "lineNumber": 13
+        },
+        {
+          "caller": "test_arousal_zscore_centered_unit_variance",
+          "callee": "len",
+          "lineNumber": 14
+        },
+        {
+          "caller": "test_arousal_zscore_centered_unit_variance",
+          "callee": "abs",
+          "lineNumber": 15
+        },
+        {
+          "caller": "test_arousal_zscore_centered_unit_variance",
+          "callee": "arr.mean",
+          "lineNumber": 15
+        },
+        {
+          "caller": "test_arousal_zscore_centered_unit_variance",
+          "callee": "abs",
+          "lineNumber": 16
+        },
+        {
+          "caller": "test_arousal_zscore_centered_unit_variance",
+          "callee": "arr.std",
+          "lineNumber": 16
+        },
+        {
+          "caller": "test_arousal_zscore_centered_unit_variance",
+          "callee": "int",
+          "lineNumber": 17
+        },
+        {
+          "caller": "test_arousal_zscore_centered_unit_variance",
+          "callee": "arr.argmax",
+          "lineNumber": 17
+        },
+        {
+          "caller": "test_valence_raw_keeps_scale",
+          "callee": "process_axis",
+          "lineNumber": 21
+        },
+        {
+          "caller": "test_valence_raw_keeps_scale",
+          "callee": "_peak_points",
+          "lineNumber": 21
+        },
+        {
+          "caller": "test_valence_raw_keeps_scale",
+          "callee": "np.array",
+          "lineNumber": 23
+        },
+        {
+          "caller": "test_valence_raw_keeps_scale",
+          "callee": "len",
+          "lineNumber": 24
+        },
+        {
+          "caller": "test_valence_raw_keeps_scale",
+          "callee": "arr.min",
+          "lineNumber": 25
+        },
+        {
+          "caller": "test_valence_raw_keeps_scale",
+          "callee": "arr.max",
+          "lineNumber": 25
+        },
+        {
+          "caller": "test_valence_raw_keeps_scale",
+          "callee": "arr.max",
+          "lineNumber": 26
+        },
+        {
+          "caller": "test_valence_raw_keeps_scale",
+          "callee": "arr.mean",
+          "lineNumber": 27
+        },
+        {
+          "caller": "test_flat_arousal_none_valence_raw",
+          "callee": "range",
+          "lineNumber": 31
+        },
+        {
+          "caller": "test_flat_arousal_none_valence_raw",
+          "callee": "process_axis",
+          "lineNumber": 32
+        },
+        {
+          "caller": "test_flat_arousal_none_valence_raw",
+          "callee": "process_axis",
+          "lineNumber": 33
+        },
+        {
+          "caller": "test_flat_arousal_none_valence_raw",
+          "callee": "len",
+          "lineNumber": 34
+        },
+        {
+          "caller": "test_flat_arousal_none_valence_raw",
+          "callee": "all",
+          "lineNumber": 35
+        },
+        {
+          "caller": "test_flat_arousal_none_valence_raw",
+          "callee": "abs",
+          "lineNumber": 35
+        },
+        {
+          "caller": "test_too_few_scenes_none",
+          "callee": "process_axis",
+          "lineNumber": 40
+        },
+        {
+          "caller": "test_too_few_scenes_none",
+          "callee": "process_axis",
+          "lineNumber": 41
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 5,
+        "functionCount": 5,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/tests/test_promote.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 28,
+      "nonEmptyLines": 20,
+      "functions": [
+        {
+          "name": "test_promote_when_better_or_equal",
+          "startLine": 4,
+          "endLine": 8,
+          "params": []
+        },
+        {
+          "name": "test_hold_when_spearman_worse",
+          "startLine": 11,
+          "endLine": 15,
+          "params": []
+        },
+        {
+          "name": "test_hold_when_mae_worse_beyond_tol",
+          "startLine": 18,
+          "endLine": 22,
+          "params": []
+        },
+        {
+          "name": "test_hold_on_missing_metrics",
+          "startLine": 25,
+          "endLine": 28,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "test_promote_when_better_or_equal",
+          "line": 4,
+          "isDefault": false
+        },
+        {
+          "name": "test_hold_when_spearman_worse",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "test_hold_when_mae_worse_beyond_tol",
+          "line": 18,
+          "isDefault": false
+        },
+        {
+          "name": "test_hold_on_missing_metrics",
+          "line": 25,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "test_promote_when_better_or_equal",
+          "callee": "decide",
+          "lineNumber": 7
+        },
+        {
+          "caller": "test_hold_when_spearman_worse",
+          "callee": "decide",
+          "lineNumber": 14
+        },
+        {
+          "caller": "test_hold_when_mae_worse_beyond_tol",
+          "callee": "decide",
+          "lineNumber": 21
+        },
+        {
+          "caller": "test_hold_on_missing_metrics",
+          "callee": "decide",
+          "lineNumber": 26
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 4,
+        "functionCount": 4,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/tests/test_schema.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 64,
+      "nonEmptyLines": 51,
+      "functions": [
+        {
+          "name": "clean_db",
+          "startLine": 23,
+          "endLine": 27,
+          "params": []
+        },
+        {
+          "name": "test_apply_creates_all_tables",
+          "startLine": 30,
+          "endLine": 38,
+          "params": [
+            "clean_db"
+          ]
+        },
+        {
+          "name": "test_apply_is_idempotent",
+          "startLine": 41,
+          "endLine": 43,
+          "params": [
+            "clean_db"
+          ]
+        },
+        {
+          "name": "test_scene_scores_requires_known_model_version",
+          "startLine": 46,
+          "endLine": 64,
+          "params": [
+            "clean_db"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "clean_db",
+          "line": 22,
+          "isDefault": false
+        },
+        {
+          "name": "test_apply_creates_all_tables",
+          "line": 30,
+          "isDefault": false
+        },
+        {
+          "name": "test_apply_is_idempotent",
+          "line": 41,
+          "isDefault": false
+        },
+        {
+          "name": "test_scene_scores_requires_known_model_version",
+          "line": 46,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "clean_db",
+          "callee": "psycopg.connect",
+          "lineNumber": 25
+        },
+        {
+          "caller": "clean_db",
+          "callee": "conn.execute",
+          "lineNumber": 26
+        },
+        {
+          "caller": "clean_db",
+          "callee": "\", \".join",
+          "lineNumber": 26
+        },
+        {
+          "caller": "test_apply_creates_all_tables",
+          "callee": "apply_schema",
+          "lineNumber": 31
+        },
+        {
+          "caller": "test_apply_creates_all_tables",
+          "callee": "str",
+          "lineNumber": 31
+        },
+        {
+          "caller": "test_apply_creates_all_tables",
+          "callee": "psycopg.connect",
+          "lineNumber": 32
+        },
+        {
+          "caller": "test_apply_creates_all_tables",
+          "callee": "conn.execute(\n            \"select table_name from information_schema.tables \"\n            \"where table_schema='public'\"\n        ).fetchall",
+          "lineNumber": 33
+        },
+        {
+          "caller": "test_apply_creates_all_tables",
+          "callee": "conn.execute",
+          "lineNumber": 33
+        },
+        {
+          "caller": "test_apply_creates_all_tables",
+          "callee": "set",
+          "lineNumber": 38
+        },
+        {
+          "caller": "test_apply_is_idempotent",
+          "callee": "apply_schema",
+          "lineNumber": 42
+        },
+        {
+          "caller": "test_apply_is_idempotent",
+          "callee": "str",
+          "lineNumber": 42
+        },
+        {
+          "caller": "test_apply_is_idempotent",
+          "callee": "apply_schema",
+          "lineNumber": 43
+        },
+        {
+          "caller": "test_apply_is_idempotent",
+          "callee": "str",
+          "lineNumber": 43
+        },
+        {
+          "caller": "test_scene_scores_requires_known_model_version",
+          "callee": "apply_schema",
+          "lineNumber": 47
+        },
+        {
+          "caller": "test_scene_scores_requires_known_model_version",
+          "callee": "str",
+          "lineNumber": 47
+        },
+        {
+          "caller": "test_scene_scores_requires_known_model_version",
+          "callee": "psycopg.connect",
+          "lineNumber": 48
+        },
+        {
+          "caller": "test_scene_scores_requires_known_model_version",
+          "callee": "conn.execute",
+          "lineNumber": 49
+        },
+        {
+          "caller": "test_scene_scores_requires_known_model_version",
+          "callee": "conn.execute(\"select id from subtitles where tmdb_id=1\").fetchone",
+          "lineNumber": 50
+        },
+        {
+          "caller": "test_scene_scores_requires_known_model_version",
+          "callee": "conn.execute",
+          "lineNumber": 50
+        },
+        {
+          "caller": "test_scene_scores_requires_known_model_version",
+          "callee": "conn.execute",
+          "lineNumber": 51
+        },
+        {
+          "caller": "test_scene_scores_requires_known_model_version",
+          "callee": "conn.execute(\"select id from scenes limit 1\").fetchone",
+          "lineNumber": 57
+        },
+        {
+          "caller": "test_scene_scores_requires_known_model_version",
+          "callee": "conn.execute",
+          "lineNumber": 57
+        },
+        {
+          "caller": "test_scene_scores_requires_known_model_version",
+          "callee": "pytest.raises",
+          "lineNumber": 59
+        },
+        {
+          "caller": "test_scene_scores_requires_known_model_version",
+          "callee": "conn.execute",
+          "lineNumber": 60
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 4,
+        "functionCount": 4,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "Ansible/ansible.cfg",
+      "language": "config",
+      "fileCategory": "config",
+      "totalLines": 11,
+      "nonEmptyLines": 10,
+      "metrics": {}
+    },
+    {
+      "path": "Ansible/group_vars/all.yaml",
+      "language": "yaml",
+      "fileCategory": "config",
+      "totalLines": 1,
+      "nonEmptyLines": 0,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 0
+      }
+    },
+    {
+      "path": "Ansible/helm-values/ingress-nginx.yaml",
+      "language": "yaml",
+      "fileCategory": "config",
+      "totalLines": 11,
+      "nonEmptyLines": 11,
+      "sections": [
+        {
+          "heading": "controller",
+          "level": 1,
+          "line": 1
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 1
+      }
+    },
+    {
+      "path": "Ansible/helm-values/longhorn.yaml",
+      "language": "yaml",
+      "fileCategory": "config",
+      "totalLines": 21,
+      "nonEmptyLines": 17,
+      "sections": [
+        {
+          "heading": "defaultSettings",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "longhornManager",
+          "level": 1,
+          "line": 8
+        },
+        {
+          "heading": "longhornDriver",
+          "level": 1,
+          "line": 12
+        },
+        {
+          "heading": "longhornUI",
+          "level": 1,
+          "line": 16
+        },
+        {
+          "heading": "persistence",
+          "level": 1,
+          "line": 19
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 5
+      }
+    },
+    {
+      "path": "aws/terraform/.terraform.lock.hcl",
+      "language": "hcl",
+      "fileCategory": "code",
+      "totalLines": 46,
+      "nonEmptyLines": 44,
+      "metrics": {}
+    },
+    {
+      "path": "aws/terraform/lambda/dr_controller.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 56,
+      "nonEmptyLines": 46,
+      "functions": [
+        {
+          "name": "_kakao_healthy",
+          "startLine": 20,
+          "endLine": 32,
+          "params": []
+        },
+        {
+          "name": "handler",
+          "startLine": 35,
+          "endLine": 56,
+          "params": [
+            "event",
+            "context"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "_kakao_healthy",
+          "line": 20,
+          "isDefault": false
+        },
+        {
+          "name": "handler",
+          "line": 35,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_kakao_healthy",
+          "callee": "route53.get_health_check_status",
+          "lineNumber": 22
+        },
+        {
+          "caller": "_kakao_healthy",
+          "callee": "resp.get",
+          "lineNumber": 23
+        },
+        {
+          "caller": "_kakao_healthy",
+          "callee": "sum",
+          "lineNumber": 27
+        },
+        {
+          "caller": "_kakao_healthy",
+          "callee": "o.get(\"StatusReport\", {}).get",
+          "lineNumber": 30
+        },
+        {
+          "caller": "_kakao_healthy",
+          "callee": "o.get",
+          "lineNumber": 30
+        },
+        {
+          "caller": "_kakao_healthy",
+          "callee": "len",
+          "lineNumber": 32
+        },
+        {
+          "caller": "handler",
+          "callee": "_kakao_healthy",
+          "lineNumber": 36
+        },
+        {
+          "caller": "handler",
+          "callee": "autoscaling.describe_auto_scaling_groups",
+          "lineNumber": 39
+        },
+        {
+          "caller": "handler",
+          "callee": "print",
+          "lineNumber": 43
+        },
+        {
+          "caller": "handler",
+          "callee": "print",
+          "lineNumber": 48
+        },
+        {
+          "caller": "handler",
+          "callee": "autoscaling.set_desired_capacity",
+          "lineNumber": 51
+        },
+        {
+          "caller": "handler",
+          "callee": "print",
+          "lineNumber": 56
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "aws/terraform/ssm-params.sh.example",
+      "language": "example",
+      "fileCategory": "code",
+      "totalLines": 26,
+      "nonEmptyLines": 21,
+      "metrics": {}
+    },
+    {
+      "path": "aws/terraform/terraform.tfvars.example",
+      "language": "example",
+      "fileCategory": "code",
+      "totalLines": 20,
+      "nonEmptyLines": 14,
+      "metrics": {}
+    },
+    {
+      "path": "aws/terraform/user_data_db.sh.tftpl",
+      "language": "tftpl",
+      "fileCategory": "code",
+      "totalLines": 38,
+      "nonEmptyLines": 33,
+      "metrics": {}
+    },
+    {
+      "path": "aws/terraform/user_data.sh.tftpl",
+      "language": "tftpl",
+      "fileCategory": "code",
+      "totalLines": 48,
+      "nonEmptyLines": 41,
+      "metrics": {}
+    },
+    {
+      "path": "readme.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 107,
+      "nonEmptyLines": 80,
+      "sections": [
+        {
+          "heading": "KakaoCloud AIaaS Project",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "라이브 서비스",
+          "level": 2,
+          "line": 7
+        },
+        {
+          "heading": "기술 스택",
+          "level": 2,
+          "line": 19
+        },
+        {
+          "heading": "배포 파이프라인 요약",
+          "level": 2,
+          "line": 34
+        },
+        {
+          "heading": "저장소 구조",
+          "level": 2,
+          "line": 44
+        },
+        {
+          "heading": "문서",
+          "level": 2,
+          "line": 62
+        },
+        {
+          "heading": "클러스터 구성",
+          "level": 2,
+          "line": 74
+        },
+        {
+          "heading": "빠른 명령어 참고",
+          "level": 2,
+          "line": 86
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 8
+      }
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "projectRoot": "/Users/sanggyoon/Documents/KakaoCloud_Project",
+  "batchFiles": [
+    {"path": "4K_ML/serving/predict_core.py", "language": "python", "sizeLines": 48, "fileCategory": "code"},
+    {"path": "4K_ML/serving/predictor.py", "language": "python", "sizeLines": 49, "fileCategory": "code"},
+    {"path": "4K_ML/serving/serve.py", "language": "python", "sizeLines": 7, "fileCategory": "code"},
+    {"path": "4K_ML/tests/test_predict_core.py", "language": "python", "sizeLines": 39, "fileCategory": "code"},
+    {"path": "4K_ML/tests/test_predictor.py", "language": "python", "sizeLines": 42, "fileCategory": "code"},
+    {"path": "4K_ML/tests/test_train_dataset.py", "language": "python", "sizeLines": 39, "fileCategory": "code"},
+    {"path": "4K_ML/tests/test_train_db.py", "language": "python", "sizeLines": 81, "fileCategory": "code"},
+    {"path": "4K_ML/tests/test_train_evaluate.py", "language": "python", "sizeLines": 21, "fileCategory": "code"},
+    {"path": "4K_ML/tests/test_train_features.py", "language": "python", "sizeLines": 40, "fileCategory": "code"},
+    {"path": "4K_ML/tests/test_train_main.py", "language": "python", "sizeLines": 63, "fileCategory": "code"},
+    {"path": "4K_ML/tests/test_train_model_arch.py", "language": "python", "sizeLines": 21, "fileCategory": "code"},
+    {"path": "4K_ML/train/__init__.py", "language": "python", "sizeLines": 0, "fileCategory": "code"},
+    {"path": "4K_ML/train/dataset.py", "language": "python", "sizeLines": 41, "fileCategory": "code"},
+    {"path": "4K_ML/train/db.py", "language": "python", "sizeLines": 101, "fileCategory": "code"},
+    {"path": "4K_ML/train/evaluate.py", "language": "python", "sizeLines": 34, "fileCategory": "code"},
+    {"path": "4K_ML/train/features.py", "language": "python", "sizeLines": 57, "fileCategory": "code"},
+    {"path": "4K_ML/train/model.py", "language": "python", "sizeLines": 28, "fileCategory": "code"},
+    {"path": "4K_ML/train/train_model.py", "language": "python", "sizeLines": 166, "fileCategory": "code"}
+  ],
+  "batchImportData": {
+    "4K_ML/serving/predict_core.py": ["4K_ML/train/features.py", "4K_ML/train/model.py"],
+    "4K_ML/serving/predictor.py": ["4K_ML/serving/predict_core.py"],
+    "4K_ML/serving/serve.py": ["4K_ML/serving/predictor.py"],
+    "4K_ML/tests/test_predict_core.py": ["4K_ML/serving/predict_core.py", "4K_ML/train/features.py", "4K_ML/train/model.py"],
+    "4K_ML/tests/test_predictor.py": ["4K_ML/serving/predictor.py", "4K_ML/train/features.py", "4K_ML/train/model.py"],
+    "4K_ML/tests/test_train_dataset.py": ["4K_ML/train/dataset.py", "4K_ML/train/features.py"],
+    "4K_ML/tests/test_train_db.py": ["4K_ML/train/__init__.py", "4K_ML/train/db.py"],
+    "4K_ML/tests/test_train_evaluate.py": ["4K_ML/train/evaluate.py"],
+    "4K_ML/tests/test_train_features.py": ["4K_ML/train/features.py"],
+    "4K_ML/tests/test_train_main.py": ["4K_ML/train/__init__.py", "4K_ML/train/model.py"],
+    "4K_ML/tests/test_train_model_arch.py": ["4K_ML/train/model.py"],
+    "4K_ML/train/__init__.py": [],
+    "4K_ML/train/dataset.py": ["4K_ML/train/features.py"],
+    "4K_ML/train/db.py": [],
+    "4K_ML/train/evaluate.py": [],
+    "4K_ML/train/features.py": [],
+    "4K_ML/train/model.py": [],
+    "4K_ML/train/train_model.py": ["4K_ML/train/__init__.py", "4K_ML/train/dataset.py", "4K_ML/train/db.py", "4K_ML/train/evaluate.py", "4K_ML/train/features.py", "4K_ML/train/model.py"]
+  }
+}

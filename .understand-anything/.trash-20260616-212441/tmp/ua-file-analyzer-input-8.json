@@ -1,0 +1,16 @@
+{
+  "projectRoot": "/Users/sanggyoon/Documents/KakaoCloud_Project",
+  "batchFiles": [
+    {"path": "4K_ML/generate_vectors/__init__.py", "language": "python", "sizeLines": 0, "fileCategory": "code"},
+    {"path": "4K_ML/generate_vectors/db.py", "language": "python", "sizeLines": 197, "fileCategory": "code"},
+    {"path": "4K_ML/tests/test_gen_db.py", "language": "python", "sizeLines": 48, "fileCategory": "code"}
+  ],
+  "batchImportData": {
+    "4K_ML/generate_vectors/__init__.py": [],
+    "4K_ML/generate_vectors/db.py": [],
+    "4K_ML/tests/test_gen_db.py": [
+      "4K_ML/generate_vectors/__init__.py",
+      "4K_ML/generate_vectors/db.py"
+    ]
+  }
+}

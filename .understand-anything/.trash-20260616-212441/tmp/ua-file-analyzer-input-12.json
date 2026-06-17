@@ -1,0 +1,11 @@
+{
+  "projectRoot": "/Users/sanggyoon/Documents/KakaoCloud_Project",
+  "batchFiles": [
+    {"path": "4K_ML/.dockerignore", "language": "unknown", "sizeLines": 7, "fileCategory": "infra"},
+    {"path": "4K_ML/Dockerfile", "language": "dockerfile", "sizeLines": 37, "fileCategory": "infra"}
+  ],
+  "batchImportData": {
+    "4K_ML/.dockerignore": [],
+    "4K_ML/Dockerfile": []
+  }
+}

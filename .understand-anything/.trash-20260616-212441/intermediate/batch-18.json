@@ -1,0 +1,79 @@
+{
+  "nodes": [
+    {
+      "id": "service:Ansible/manifests/4k-fe/deployment.yaml",
+      "type": "service",
+      "name": "deployment.yaml",
+      "filePath": "Ansible/manifests/4k-fe/deployment.yaml",
+      "summary": "4k-fe 프론트엔드(Next.js)를 fe 네임스페이스에 2 replica로 배포하는 K8s Deployment. backend 내부 URL, 매니저 로그인 자격증명, 세션 시크릿을 env로 주입하고 3000 포트에 readiness/liveness probe와 CPU/메모리 limit을 설정한다.",
+      "tags": ["infrastructure", "deployment", "kubernetes", "frontend", "containerization"],
+      "complexity": "moderate",
+      "languageNotes": "MANAGER_PASSWORD/MANAGER_SESSION_SECRET가 평문 env로 하드코딩되어 있음 — 운영에서는 Secret 분리 권장(주석에도 명시)."
+    },
+    {
+      "id": "service:Ansible/manifests/4k-fe/ingress.yaml",
+      "type": "service",
+      "name": "ingress.yaml",
+      "filePath": "Ansible/manifests/4k-fe/ingress.yaml",
+      "summary": "frontend 서비스를 외부에 노출하는 nginx Ingress. cert-manager(letsencrypt-prod)로 TLS를 자동 발급하며 신규 도메인(peakly.art, www.peakly.art)과 구 도메인(cinema.4kakao.kro.kr)을 별도 secret으로 분리해 라우팅한다.",
+      "tags": ["infrastructure", "ingress", "kubernetes", "tls", "routing"],
+      "complexity": "moderate",
+      "languageNotes": "도메인 전환 과정 — apex+www를 별도 TLS secret으로 두어 기존 인증서 영향 없이 신규 도메인 추가."
+    },
+    {
+      "id": "config:Ansible/manifests/4k-fe/kustomization.yaml",
+      "type": "config",
+      "name": "kustomization.yaml",
+      "filePath": "Ansible/manifests/4k-fe/kustomization.yaml",
+      "summary": "4k-fe 매니페스트(deployment/service/ingress)를 fe 네임스페이스로 묶는 Kustomize 진입점. CI가 갱신하는 이미지 태그(ba9154c)를 ghcr.io/sanggyoon/4k-fe에 오버레이한다.",
+      "tags": ["infrastructure", "kustomize", "kubernetes", "configuration", "build-system"],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:Ansible/manifests/4k-fe/service.yaml",
+      "type": "service",
+      "name": "service.yaml",
+      "filePath": "Ansible/manifests/4k-fe/service.yaml",
+      "summary": "frontend Pod(app=frontend)를 ClusterIP로 노출하는 K8s Service. 80 포트로 들어온 트래픽을 컨테이너 3000 포트로 전달한다.",
+      "tags": ["infrastructure", "kubernetes", "service", "networking", "frontend"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "config:Ansible/manifests/4k-fe/kustomization.yaml",
+      "target": "service:Ansible/manifests/4k-fe/deployment.yaml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Ansible/manifests/4k-fe/kustomization.yaml",
+      "target": "service:Ansible/manifests/4k-fe/service.yaml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Ansible/manifests/4k-fe/kustomization.yaml",
+      "target": "service:Ansible/manifests/4k-fe/ingress.yaml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:Ansible/manifests/4k-fe/ingress.yaml",
+      "target": "service:Ansible/manifests/4k-fe/service.yaml",
+      "type": "routes",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:Ansible/manifests/4k-fe/service.yaml",
+      "target": "service:Ansible/manifests/4k-fe/deployment.yaml",
+      "type": "serves",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

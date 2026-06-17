@@ -1,0 +1,45 @@
+{
+  "nodes": [
+    {
+      "id": "config:Ansible/manifests/test/gpu-test.yaml",
+      "type": "config",
+      "name": "gpu-test.yaml",
+      "filePath": "Ansible/manifests/test/gpu-test.yaml",
+      "summary": "ai 네임스페이스에서 nvidia runtimeClass와 GPU 1개를 요청해 nvidia-smi를 실행하는 CUDA GPU 동작 검증용 일회성 Pod 매니페스트.",
+      "tags": ["kubernetes", "gpu", "테스트", "smoke-test", "infrastructure"],
+      "complexity": "simple",
+      "languageNotes": "runtimeClassName: nvidia와 nvidia.com/gpu 리소스 limit으로 GPU 노드 스케줄링을 검증한다."
+    },
+    {
+      "id": "config:Ansible/manifests/test/hello-wf-ai.yaml",
+      "type": "config",
+      "name": "hello-wf-ai.yaml",
+      "filePath": "Ansible/manifests/test/hello-wf-ai.yaml",
+      "summary": "ai 네임스페이스에서 argo-workflow 서비스 어카운트로 busybox echo를 실행하는 Argo Workflows 동작 확인용 Hello World 워크플로.",
+      "tags": ["argo-workflows", "테스트", "smoke-test", "ci-cd", "kubernetes"],
+      "complexity": "simple",
+      "languageNotes": "generateName으로 실행 시마다 고유 워크플로 이름을 생성한다."
+    },
+    {
+      "id": "config:Ansible/manifests/test/llm-labeling-run.yaml",
+      "type": "config",
+      "name": "llm-labeling-run.yaml",
+      "filePath": "Ansible/manifests/test/llm-labeling-run.yaml",
+      "summary": "ai 네임스페이스의 llm-labeling WorkflowTemplate을 1회 실행하기 위한 Argo Workflow 트리거 매니페스트.",
+      "tags": ["argo-workflows", "ml-pipeline", "labeling", "kubernetes", "trigger"],
+      "complexity": "simple",
+      "languageNotes": "workflowTemplateRef로 사전 등록된 WorkflowTemplate을 참조해 실행한다."
+    },
+    {
+      "id": "config:Ansible/manifests/test/test-nginx.yaml",
+      "type": "config",
+      "name": "test-nginx.yaml",
+      "filePath": "Ansible/manifests/test/test-nginx.yaml",
+      "summary": "fe 네임스페이스에 nginx Deployment(2 replicas), Service, Ingress를 배포해 클러스터 트래픽 라우팅을 검증하는 테스트 매니페스트.",
+      "tags": ["kubernetes", "nginx", "ingress", "테스트", "deployment"],
+      "complexity": "moderate",
+      "languageNotes": "Deployment/Service/Ingress 3개 문서를 ---로 구분하며, nginx ingressClass로 / 경로를 서비스에 라우팅한다."
+    }
+  ],
+  "edges": []
+}

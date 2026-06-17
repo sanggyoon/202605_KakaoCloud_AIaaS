@@ -1,0 +1,23 @@
+{
+  "projectRoot": "/Users/sanggyoon/Documents/KakaoCloud_Project",
+  "batchFiles": [
+    {"path": "Ansible/values/values-ai.yaml", "language": "yaml", "sizeLines": 107, "fileCategory": "config"},
+    {"path": "Ansible/values/values-argo-workflows.yaml", "language": "yaml", "sizeLines": 9, "fileCategory": "config"},
+    {"path": "Ansible/values/values-argocd.yaml", "language": "yaml", "sizeLines": 38, "fileCategory": "config"},
+    {"path": "Ansible/values/values-data.yaml", "language": "yaml", "sizeLines": 104, "fileCategory": "config"},
+    {"path": "Ansible/values/values-loki.yaml", "language": "yaml", "sizeLines": 93, "fileCategory": "config"},
+    {"path": "Ansible/values/values-prometheus.yaml", "language": "yaml", "sizeLines": 74, "fileCategory": "config"},
+    {"path": "Ansible/values/values-promtail.yaml", "language": "yaml", "sizeLines": 16, "fileCategory": "config"},
+    {"path": "Ansible/values/values-redis.yaml", "language": "yaml", "sizeLines": 33, "fileCategory": "config"}
+  ],
+  "batchImportData": {
+    "Ansible/values/values-ai.yaml": [],
+    "Ansible/values/values-argo-workflows.yaml": [],
+    "Ansible/values/values-argocd.yaml": [],
+    "Ansible/values/values-data.yaml": [],
+    "Ansible/values/values-loki.yaml": [],
+    "Ansible/values/values-prometheus.yaml": [],
+    "Ansible/values/values-promtail.yaml": [],
+    "Ansible/values/values-redis.yaml": []
+  }
+}

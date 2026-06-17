@@ -1,0 +1,2491 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 25,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "4K_BE/.python-version",
+      "language": "unknown",
+      "fileCategory": "code",
+      "totalLines": 1,
+      "nonEmptyLines": 1,
+      "metrics": {}
+    },
+    {
+      "path": "4K_BE/app/tmdb_common.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 131,
+      "nonEmptyLines": 109,
+      "functions": [
+        {
+          "name": "_tmdb_key",
+          "startLine": 11,
+          "endLine": 12,
+          "params": []
+        },
+        {
+          "name": "data_url",
+          "startLine": 15,
+          "endLine": 16,
+          "params": []
+        },
+        {
+          "name": "_data_key",
+          "startLine": 19,
+          "endLine": 20,
+          "params": []
+        },
+        {
+          "name": "sb_headers",
+          "startLine": 23,
+          "endLine": 32,
+          "params": [
+            "resolution"
+          ]
+        },
+        {
+          "name": "pick_trailer",
+          "startLine": 35,
+          "endLine": 46,
+          "params": [
+            "videos"
+          ]
+        },
+        {
+          "name": "build_movie",
+          "startLine": 49,
+          "endLine": 73,
+          "params": [
+            "d",
+            "tmdb_id"
+          ]
+        },
+        {
+          "name": "tmdb_discover",
+          "startLine": 76,
+          "endLine": 93,
+          "params": [
+            "client",
+            "sort_by",
+            "page"
+          ]
+        },
+        {
+          "name": "fetch_movie",
+          "startLine": 96,
+          "endLine": 105,
+          "params": [
+            "client",
+            "tmdb_id"
+          ]
+        },
+        {
+          "name": "get_existing_tmdb_ids",
+          "startLine": 108,
+          "endLine": 117,
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "upsert_movies",
+          "startLine": 120,
+          "endLine": 131,
+          "params": [
+            "client",
+            "rows",
+            "resolution"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "_tmdb_key",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "data_url",
+          "line": 15,
+          "isDefault": false
+        },
+        {
+          "name": "_data_key",
+          "line": 19,
+          "isDefault": false
+        },
+        {
+          "name": "sb_headers",
+          "line": 23,
+          "isDefault": false
+        },
+        {
+          "name": "pick_trailer",
+          "line": 35,
+          "isDefault": false
+        },
+        {
+          "name": "build_movie",
+          "line": 49,
+          "isDefault": false
+        },
+        {
+          "name": "tmdb_discover",
+          "line": 76,
+          "isDefault": false
+        },
+        {
+          "name": "fetch_movie",
+          "line": 96,
+          "isDefault": false
+        },
+        {
+          "name": "get_existing_tmdb_ids",
+          "line": 108,
+          "isDefault": false
+        },
+        {
+          "name": "upsert_movies",
+          "line": 120,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_tmdb_key",
+          "callee": "os.getenv",
+          "lineNumber": 12
+        },
+        {
+          "caller": "data_url",
+          "callee": "os.getenv",
+          "lineNumber": 16
+        },
+        {
+          "caller": "_data_key",
+          "callee": "os.getenv",
+          "lineNumber": 20
+        },
+        {
+          "caller": "sb_headers",
+          "callee": "_data_key",
+          "lineNumber": 26
+        },
+        {
+          "caller": "pick_trailer",
+          "callee": "v.get",
+          "lineNumber": 38
+        },
+        {
+          "caller": "pick_trailer",
+          "callee": "next",
+          "lineNumber": 43
+        },
+        {
+          "caller": "pick_trailer",
+          "callee": "pred",
+          "lineNumber": 43
+        },
+        {
+          "caller": "build_movie",
+          "callee": "d.get(\"credits\", {}).get",
+          "lineNumber": 51
+        },
+        {
+          "caller": "build_movie",
+          "callee": "d.get",
+          "lineNumber": 51
+        },
+        {
+          "caller": "build_movie",
+          "callee": "next",
+          "lineNumber": 52
+        },
+        {
+          "caller": "build_movie",
+          "callee": "\", \".join",
+          "lineNumber": 53
+        },
+        {
+          "caller": "build_movie",
+          "callee": "d.get(\"credits\", {}).get",
+          "lineNumber": 53
+        },
+        {
+          "caller": "build_movie",
+          "callee": "d.get",
+          "lineNumber": 53
+        },
+        {
+          "caller": "build_movie",
+          "callee": "d.get",
+          "lineNumber": 55
+        },
+        {
+          "caller": "build_movie",
+          "callee": "int",
+          "lineNumber": 57
+        },
+        {
+          "caller": "build_movie",
+          "callee": "d.get",
+          "lineNumber": 62
+        },
+        {
+          "caller": "build_movie",
+          "callee": "d.get",
+          "lineNumber": 63
+        },
+        {
+          "caller": "build_movie",
+          "callee": "d.get",
+          "lineNumber": 64
+        },
+        {
+          "caller": "build_movie",
+          "callee": "d.get",
+          "lineNumber": 65
+        },
+        {
+          "caller": "build_movie",
+          "callee": "d.get",
+          "lineNumber": 68
+        },
+        {
+          "caller": "build_movie",
+          "callee": "\", \".join",
+          "lineNumber": 69
+        },
+        {
+          "caller": "build_movie",
+          "callee": "d.get",
+          "lineNumber": 69
+        },
+        {
+          "caller": "build_movie",
+          "callee": "d.get",
+          "lineNumber": 71
+        },
+        {
+          "caller": "build_movie",
+          "callee": "pick_trailer",
+          "lineNumber": 72
+        },
+        {
+          "caller": "build_movie",
+          "callee": "d.get(\"videos\", {}).get",
+          "lineNumber": 72
+        },
+        {
+          "caller": "build_movie",
+          "callee": "d.get",
+          "lineNumber": 72
+        },
+        {
+          "caller": "tmdb_discover",
+          "callee": "client.get",
+          "lineNumber": 79
+        },
+        {
+          "caller": "tmdb_discover",
+          "callee": "_tmdb_key",
+          "lineNumber": 82
+        },
+        {
+          "caller": "tmdb_discover",
+          "callee": "r.json().get",
+          "lineNumber": 93
+        },
+        {
+          "caller": "tmdb_discover",
+          "callee": "r.json",
+          "lineNumber": 93
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "client.get",
+          "lineNumber": 98
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "_tmdb_key",
+          "lineNumber": 100
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "build_movie",
+          "lineNumber": 105
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "r.json",
+          "lineNumber": 105
+        },
+        {
+          "caller": "get_existing_tmdb_ids",
+          "callee": "client.get",
+          "lineNumber": 110
+        },
+        {
+          "caller": "get_existing_tmdb_ids",
+          "callee": "data_url",
+          "lineNumber": 111
+        },
+        {
+          "caller": "get_existing_tmdb_ids",
+          "callee": "sb_headers",
+          "lineNumber": 113
+        },
+        {
+          "caller": "get_existing_tmdb_ids",
+          "callee": "set",
+          "lineNumber": 116
+        },
+        {
+          "caller": "get_existing_tmdb_ids",
+          "callee": "r.json",
+          "lineNumber": 117
+        },
+        {
+          "caller": "upsert_movies",
+          "callee": "client.post",
+          "lineNumber": 125
+        },
+        {
+          "caller": "upsert_movies",
+          "callee": "data_url",
+          "lineNumber": 126
+        },
+        {
+          "caller": "upsert_movies",
+          "callee": "sb_headers",
+          "lineNumber": 129
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 10,
+        "functionCount": 10,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_BE/DB_SCRIPTS/seed_movies.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 279,
+      "nonEmptyLines": 243,
+      "functions": [
+        {
+          "name": "tmdb_get",
+          "startLine": 77,
+          "endLine": 85,
+          "params": [
+            "path",
+            "params"
+          ]
+        },
+        {
+          "name": "pick_trailer",
+          "startLine": 88,
+          "endLine": 101,
+          "params": [
+            "videos"
+          ]
+        },
+        {
+          "name": "fetch_movie",
+          "startLine": 104,
+          "endLine": 147,
+          "params": [
+            "tmdb_id"
+          ]
+        },
+        {
+          "name": "get_existing_tmdb_ids",
+          "startLine": 150,
+          "endLine": 168,
+          "params": []
+        },
+        {
+          "name": "verify_insert",
+          "startLine": 171,
+          "endLine": 182,
+          "params": [
+            "tmdb_id"
+          ]
+        },
+        {
+          "name": "upsert_batch",
+          "startLine": 185,
+          "endLine": 211,
+          "params": [
+            "movies"
+          ]
+        },
+        {
+          "name": "main",
+          "startLine": 214,
+          "endLine": 275,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "tmdb_get",
+          "line": 77,
+          "isDefault": false
+        },
+        {
+          "name": "pick_trailer",
+          "line": 88,
+          "isDefault": false
+        },
+        {
+          "name": "fetch_movie",
+          "line": 104,
+          "isDefault": false
+        },
+        {
+          "name": "get_existing_tmdb_ids",
+          "line": 150,
+          "isDefault": false
+        },
+        {
+          "name": "verify_insert",
+          "line": 171,
+          "isDefault": false
+        },
+        {
+          "name": "upsert_batch",
+          "line": 185,
+          "isDefault": false
+        },
+        {
+          "name": "main",
+          "line": 214,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "tmdb_get",
+          "callee": "httpx.get",
+          "lineNumber": 79
+        },
+        {
+          "caller": "tmdb_get",
+          "callee": "r.raise_for_status",
+          "lineNumber": 84
+        },
+        {
+          "caller": "tmdb_get",
+          "callee": "r.json",
+          "lineNumber": 85
+        },
+        {
+          "caller": "pick_trailer",
+          "callee": "v.get",
+          "lineNumber": 93
+        },
+        {
+          "caller": "pick_trailer",
+          "callee": "next",
+          "lineNumber": 98
+        },
+        {
+          "caller": "pick_trailer",
+          "callee": "pred",
+          "lineNumber": 98
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "tmdb_get",
+          "lineNumber": 110
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "print",
+          "lineNumber": 112
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "print",
+          "lineNumber": 115
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "d.get(\"credits\", {}).get",
+          "lineNumber": 119
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "d.get",
+          "lineNumber": 119
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "next",
+          "lineNumber": 120
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "\", \".join",
+          "lineNumber": 123
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "d.get(\"credits\", {}).get",
+          "lineNumber": 123
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "d.get",
+          "lineNumber": 123
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "pick_trailer",
+          "lineNumber": 125
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "d.get(\"videos\", {}).get",
+          "lineNumber": 125
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "d.get",
+          "lineNumber": 125
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "d.get",
+          "lineNumber": 128
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "int",
+          "lineNumber": 130
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "d.get",
+          "lineNumber": 136
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "d.get",
+          "lineNumber": 137
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "d.get",
+          "lineNumber": 138
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "d.get",
+          "lineNumber": 139
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "d.get",
+          "lineNumber": 142
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "\", \".join",
+          "lineNumber": 143
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "d.get",
+          "lineNumber": 143
+        },
+        {
+          "caller": "fetch_movie",
+          "callee": "d.get",
+          "lineNumber": 145
+        },
+        {
+          "caller": "get_existing_tmdb_ids",
+          "callee": "httpx.get",
+          "lineNumber": 155
+        },
+        {
+          "caller": "get_existing_tmdb_ids",
+          "callee": "print",
+          "lineNumber": 164
+        },
+        {
+          "caller": "get_existing_tmdb_ids",
+          "callee": "set",
+          "lineNumber": 165
+        },
+        {
+          "caller": "get_existing_tmdb_ids",
+          "callee": "r.json",
+          "lineNumber": 166
+        },
+        {
+          "caller": "get_existing_tmdb_ids",
+          "callee": "print",
+          "lineNumber": 167
+        },
+        {
+          "caller": "get_existing_tmdb_ids",
+          "callee": "len",
+          "lineNumber": 167
+        },
+        {
+          "caller": "verify_insert",
+          "callee": "httpx.get",
+          "lineNumber": 174
+        },
+        {
+          "caller": "verify_insert",
+          "callee": "len",
+          "lineNumber": 182
+        },
+        {
+          "caller": "verify_insert",
+          "callee": "r.json",
+          "lineNumber": 182
+        },
+        {
+          "caller": "upsert_batch",
+          "callee": "httpx.post",
+          "lineNumber": 199
+        },
+        {
+          "caller": "upsert_batch",
+          "callee": "print",
+          "lineNumber": 208
+        },
+        {
+          "caller": "upsert_batch",
+          "callee": "print",
+          "lineNumber": 210
+        },
+        {
+          "caller": "upsert_batch",
+          "callee": "len",
+          "lineNumber": 210
+        },
+        {
+          "caller": "main",
+          "callee": "SystemExit",
+          "lineNumber": 216
+        },
+        {
+          "caller": "main",
+          "callee": "SystemExit",
+          "lineNumber": 218
+        },
+        {
+          "caller": "main",
+          "callee": "get_existing_tmdb_ids",
+          "lineNumber": 221
+        },
+        {
+          "caller": "main",
+          "callee": "len",
+          "lineNumber": 224
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 225
+        },
+        {
+          "caller": "main",
+          "callee": "len",
+          "lineNumber": 225
+        },
+        {
+          "caller": "main",
+          "callee": "len",
+          "lineNumber": 225
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 229
+        },
+        {
+          "caller": "main",
+          "callee": "fetch_movie",
+          "lineNumber": 230
+        },
+        {
+          "caller": "main",
+          "callee": "upsert_batch",
+          "lineNumber": 232
+        },
+        {
+          "caller": "main",
+          "callee": "verify_insert",
+          "lineNumber": 234
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 236
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 238
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 241
+        },
+        {
+          "caller": "main",
+          "callee": "len",
+          "lineNumber": 244
+        },
+        {
+          "caller": "main",
+          "callee": "enumerate",
+          "lineNumber": 250
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 251
+        },
+        {
+          "caller": "main",
+          "callee": "fetch_movie",
+          "lineNumber": 252
+        },
+        {
+          "caller": "main",
+          "callee": "batch.append",
+          "lineNumber": 255
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 256
+        },
+        {
+          "caller": "main",
+          "callee": "failed.append",
+          "lineNumber": 258
+        },
+        {
+          "caller": "main",
+          "callee": "len",
+          "lineNumber": 261
+        },
+        {
+          "caller": "main",
+          "callee": "upsert_batch",
+          "lineNumber": 262
+        },
+        {
+          "caller": "main",
+          "callee": "batch.clear",
+          "lineNumber": 263
+        },
+        {
+          "caller": "main",
+          "callee": "time.sleep",
+          "lineNumber": 265
+        },
+        {
+          "caller": "main",
+          "callee": "upsert_batch",
+          "lineNumber": 269
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 271
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 272
+        },
+        {
+          "caller": "main",
+          "callee": "len",
+          "lineNumber": 272
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 273
+        },
+        {
+          "caller": "main",
+          "callee": "len",
+          "lineNumber": 273
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 275
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 7,
+        "functionCount": 7,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_BE/DB_SCRIPTS/visits_schema.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 9,
+      "nonEmptyLines": 8,
+      "definitions": [
+        {
+          "name": "visits",
+          "kind": "table",
+          "fields": [
+            "id",
+            "visitor_id",
+            "created_at"
+          ],
+          "startLine": 3,
+          "endLine": 7
+        },
+        {
+          "name": "visits_created_at_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 9,
+          "endLine": 9
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 2
+      }
+    },
+    {
+      "path": "4K_BE/tests/__init__.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 1,
+      "nonEmptyLines": 0,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/api/manager/active-model/route.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 7,
+      "nonEmptyLines": 6,
+      "functions": [
+        {
+          "name": "GET",
+          "startLine": 3,
+          "endLine": 7,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "GET",
+          "line": 3,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "GET",
+          "callee": "fetch",
+          "lineNumber": 4
+        },
+        {
+          "caller": "GET",
+          "callee": "res.json",
+          "lineNumber": 5
+        },
+        {
+          "caller": "GET",
+          "callee": "Response.json",
+          "lineNumber": 6
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/api/manager/jobs/[type]/route.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 13,
+      "nonEmptyLines": 11,
+      "functions": [
+        {
+          "name": "GET",
+          "startLine": 6,
+          "endLine": 13,
+          "params": [
+            "_request",
+            "{ params }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "dynamic",
+          "line": 2,
+          "isDefault": false
+        },
+        {
+          "name": "GET",
+          "line": 6,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "GET",
+          "callee": "fetch",
+          "lineNumber": 8
+        },
+        {
+          "caller": "GET",
+          "callee": "encodeURIComponent",
+          "lineNumber": 8
+        },
+        {
+          "caller": "GET",
+          "callee": "res.text",
+          "lineNumber": 9
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/api/manager/movies/[tmdb_id]/reprocess/route.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 14,
+      "nonEmptyLines": 13,
+      "functions": [
+        {
+          "name": "POST",
+          "startLine": 3,
+          "endLine": 14,
+          "params": [
+            "_request",
+            "{ params }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "POST",
+          "line": 3,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "POST",
+          "callee": "fetch",
+          "lineNumber": 8
+        },
+        {
+          "caller": "POST",
+          "callee": "res.json",
+          "lineNumber": 12
+        },
+        {
+          "caller": "POST",
+          "callee": "Response.json",
+          "lineNumber": 13
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/api/manager/movies/[tmdb_id]/route.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 36,
+      "nonEmptyLines": 33,
+      "functions": [
+        {
+          "name": "GET",
+          "startLine": 3,
+          "endLine": 11,
+          "params": [
+            "_request",
+            "{ params }"
+          ]
+        },
+        {
+          "name": "PATCH",
+          "startLine": 13,
+          "endLine": 26,
+          "params": [
+            "request",
+            "{ params }"
+          ]
+        },
+        {
+          "name": "DELETE",
+          "startLine": 28,
+          "endLine": 36,
+          "params": [
+            "_request",
+            "{ params }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "GET",
+          "line": 3,
+          "isDefault": false
+        },
+        {
+          "name": "PATCH",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "DELETE",
+          "line": 28,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "GET",
+          "callee": "fetch",
+          "lineNumber": 8
+        },
+        {
+          "caller": "GET",
+          "callee": "res.json",
+          "lineNumber": 9
+        },
+        {
+          "caller": "GET",
+          "callee": "Response.json",
+          "lineNumber": 10
+        },
+        {
+          "caller": "PATCH",
+          "callee": "request.json",
+          "lineNumber": 18
+        },
+        {
+          "caller": "PATCH",
+          "callee": "fetch",
+          "lineNumber": 19
+        },
+        {
+          "caller": "PATCH",
+          "callee": "JSON.stringify",
+          "lineNumber": 22
+        },
+        {
+          "caller": "PATCH",
+          "callee": "res.json",
+          "lineNumber": 24
+        },
+        {
+          "caller": "PATCH",
+          "callee": "Response.json",
+          "lineNumber": 25
+        },
+        {
+          "caller": "DELETE",
+          "callee": "fetch",
+          "lineNumber": 33
+        },
+        {
+          "caller": "DELETE",
+          "callee": "res.json",
+          "lineNumber": 34
+        },
+        {
+          "caller": "DELETE",
+          "callee": "Response.json",
+          "lineNumber": 35
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/api/manager/movies/backfill/route.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 14,
+      "nonEmptyLines": 12,
+      "functions": [
+        {
+          "name": "POST",
+          "startLine": 6,
+          "endLine": 14,
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "dynamic",
+          "line": 2,
+          "isDefault": false
+        },
+        {
+          "name": "POST",
+          "line": 6,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "POST",
+          "callee": "new URL(request.url).searchParams.get",
+          "lineNumber": 7
+        },
+        {
+          "caller": "POST",
+          "callee": "encodeURIComponent",
+          "lineNumber": 8
+        },
+        {
+          "caller": "POST",
+          "callee": "fetch",
+          "lineNumber": 9
+        },
+        {
+          "caller": "POST",
+          "callee": "res.text",
+          "lineNumber": 10
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/api/manager/movies/recent/route.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 9,
+      "nonEmptyLines": 8,
+      "functions": [
+        {
+          "name": "GET",
+          "startLine": 3,
+          "endLine": 9,
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "GET",
+          "line": 3,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "GET",
+          "callee": "searchParams.get",
+          "lineNumber": 5
+        },
+        {
+          "caller": "GET",
+          "callee": "fetch",
+          "lineNumber": 6
+        },
+        {
+          "caller": "GET",
+          "callee": "res.json",
+          "lineNumber": 7
+        },
+        {
+          "caller": "GET",
+          "callee": "Response.json",
+          "lineNumber": 8
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/api/manager/movies/route.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 18,
+      "nonEmptyLines": 15,
+      "functions": [
+        {
+          "name": "GET",
+          "startLine": 4,
+          "endLine": 11,
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "POST",
+          "startLine": 13,
+          "endLine": 18,
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "GET",
+          "line": 4,
+          "isDefault": false
+        },
+        {
+          "name": "POST",
+          "line": 13,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "GET",
+          "callee": "searchParams.get",
+          "lineNumber": 6
+        },
+        {
+          "caller": "GET",
+          "callee": "fetch",
+          "lineNumber": 8
+        },
+        {
+          "caller": "GET",
+          "callee": "res.json",
+          "lineNumber": 9
+        },
+        {
+          "caller": "GET",
+          "callee": "Response.json",
+          "lineNumber": 10
+        },
+        {
+          "caller": "POST",
+          "callee": "request.json",
+          "lineNumber": 14
+        },
+        {
+          "caller": "POST",
+          "callee": "fetch",
+          "lineNumber": 15
+        },
+        {
+          "caller": "POST",
+          "callee": "res.json",
+          "lineNumber": 16
+        },
+        {
+          "caller": "POST",
+          "callee": "Response.json",
+          "lineNumber": 17
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/api/manager/movies/search/route.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 15,
+      "nonEmptyLines": 13,
+      "functions": [
+        {
+          "name": "GET",
+          "startLine": 4,
+          "endLine": 15,
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "GET",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "GET",
+          "callee": "searchParams.get",
+          "lineNumber": 6
+        },
+        {
+          "caller": "GET",
+          "callee": "searchParams.get",
+          "lineNumber": 7
+        },
+        {
+          "caller": "GET",
+          "callee": "fetch",
+          "lineNumber": 9
+        },
+        {
+          "caller": "GET",
+          "callee": "encodeURIComponent",
+          "lineNumber": 10
+        },
+        {
+          "caller": "GET",
+          "callee": "res.json",
+          "lineNumber": 13
+        },
+        {
+          "caller": "GET",
+          "callee": "Response.json",
+          "lineNumber": 14
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/api/manager/stats/route.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 8,
+      "nonEmptyLines": 7,
+      "functions": [
+        {
+          "name": "GET",
+          "startLine": 4,
+          "endLine": 8,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "GET",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "GET",
+          "callee": "fetch",
+          "lineNumber": 5
+        },
+        {
+          "caller": "GET",
+          "callee": "res.json",
+          "lineNumber": 6
+        },
+        {
+          "caller": "GET",
+          "callee": "Response.json",
+          "lineNumber": 7
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/api/manager/subtitles/collect/route.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 14,
+      "nonEmptyLines": 12,
+      "functions": [
+        {
+          "name": "POST",
+          "startLine": 6,
+          "endLine": 14,
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "dynamic",
+          "line": 2,
+          "isDefault": false
+        },
+        {
+          "name": "POST",
+          "line": 6,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "POST",
+          "callee": "new URL(request.url).searchParams.get",
+          "lineNumber": 7
+        },
+        {
+          "caller": "POST",
+          "callee": "encodeURIComponent",
+          "lineNumber": 8
+        },
+        {
+          "caller": "POST",
+          "callee": "fetch",
+          "lineNumber": 9
+        },
+        {
+          "caller": "POST",
+          "callee": "res.text",
+          "lineNumber": 10
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/api/manager/subtitles/remaining/route.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 8,
+      "nonEmptyLines": 7,
+      "functions": [
+        {
+          "name": "GET",
+          "startLine": 4,
+          "endLine": 8,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "GET",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "GET",
+          "callee": "fetch",
+          "lineNumber": 5
+        },
+        {
+          "caller": "GET",
+          "callee": "res.json",
+          "lineNumber": 6
+        },
+        {
+          "caller": "GET",
+          "callee": "Response.json",
+          "lineNumber": 7
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/api/manager/visits/range/route.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 8,
+      "nonEmptyLines": 7,
+      "functions": [
+        {
+          "name": "GET",
+          "startLine": 3,
+          "endLine": 8,
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "GET",
+          "line": 3,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "GET",
+          "callee": "new URL(request.url).searchParams.toString",
+          "lineNumber": 4
+        },
+        {
+          "caller": "GET",
+          "callee": "fetch",
+          "lineNumber": 5
+        },
+        {
+          "caller": "GET",
+          "callee": "res.json",
+          "lineNumber": 6
+        },
+        {
+          "caller": "GET",
+          "callee": "Response.json",
+          "lineNumber": 7
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/api/visit/route.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 18,
+      "nonEmptyLines": 17,
+      "functions": [
+        {
+          "name": "POST",
+          "startLine": 4,
+          "endLine": 18,
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "POST",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "POST",
+          "callee": "request.json",
+          "lineNumber": 6
+        },
+        {
+          "caller": "POST",
+          "callee": "fetch",
+          "lineNumber": 7
+        },
+        {
+          "caller": "POST",
+          "callee": "JSON.stringify",
+          "lineNumber": 10
+        },
+        {
+          "caller": "POST",
+          "callee": "res.json().catch",
+          "lineNumber": 12
+        },
+        {
+          "caller": "POST",
+          "callee": "res.json",
+          "lineNumber": 12
+        },
+        {
+          "caller": "POST",
+          "callee": "Response.json",
+          "lineNumber": 13
+        },
+        {
+          "caller": "POST",
+          "callee": "Response.json",
+          "lineNumber": 16
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/globals.css",
+      "language": "css",
+      "fileCategory": "markup",
+      "totalLines": 178,
+      "nonEmptyLines": 152,
+      "metrics": {}
+    },
+    {
+      "path": "4K_FE/app/layout.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 48,
+      "nonEmptyLines": 42,
+      "functions": [
+        {
+          "name": "RootLayout",
+          "startLine": 35,
+          "endLine": 48,
+          "params": [
+            "{\n  children,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "metadata",
+          "line": 29,
+          "isDefault": false
+        },
+        {
+          "name": "RootLayout",
+          "line": 35,
+          "isDefault": true
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 2,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/login/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 116,
+      "nonEmptyLines": 107,
+      "functions": [
+        {
+          "name": "LoginPage",
+          "startLine": 7,
+          "endLine": 107,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "LoginPage",
+          "line": 7,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "LoginPage",
+          "callee": "useRouter",
+          "lineNumber": 8
+        },
+        {
+          "caller": "LoginPage",
+          "callee": "useState",
+          "lineNumber": 9
+        },
+        {
+          "caller": "LoginPage",
+          "callee": "useState",
+          "lineNumber": 10
+        },
+        {
+          "caller": "LoginPage",
+          "callee": "useState",
+          "lineNumber": 11
+        },
+        {
+          "caller": "LoginPage",
+          "callee": "useState",
+          "lineNumber": 12
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "e.preventDefault",
+          "lineNumber": 15
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "setLoading",
+          "lineNumber": 16
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "setError",
+          "lineNumber": 17
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "fetch",
+          "lineNumber": 19
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "JSON.stringify",
+          "lineNumber": 22
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "res.json",
+          "lineNumber": 24
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "setError",
+          "lineNumber": 26
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "new URLSearchParams(window.location.search).get",
+          "lineNumber": 30
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "router.replace",
+          "lineNumber": 31
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "next.startsWith",
+          "lineNumber": 31
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "router.refresh",
+          "lineNumber": 32
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "setError",
+          "lineNumber": 34
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "setLoading",
+          "lineNumber": 36
+        },
+        {
+          "caller": "LoginPage",
+          "callee": "setId",
+          "lineNumber": 69
+        },
+        {
+          "caller": "LoginPage",
+          "callee": "setPassword",
+          "lineNumber": 81
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/manager/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 509,
+      "nonEmptyLines": 473,
+      "functions": [
+        {
+          "name": "_failedJob",
+          "startLine": 43,
+          "endLine": 46,
+          "params": [
+            "error"
+          ]
+        },
+        {
+          "name": "startAndPoll",
+          "startLine": 49,
+          "endLine": 79,
+          "params": [
+            "startUrl",
+            "jobType",
+            "setJob",
+            "onDone"
+          ]
+        },
+        {
+          "name": "JobBanner",
+          "startLine": 81,
+          "endLine": 121,
+          "params": [
+            "{ job, label, onClose }"
+          ]
+        },
+        {
+          "name": "ManagerPage",
+          "startLine": 123,
+          "endLine": 367,
+          "params": []
+        },
+        {
+          "name": "fmtMetric",
+          "startLine": 369,
+          "endLine": 371,
+          "params": [
+            "n"
+          ]
+        },
+        {
+          "name": "StatCard",
+          "startLine": 373,
+          "endLine": 385,
+          "params": [
+            "{ label, value, accent }"
+          ]
+        },
+        {
+          "name": "LinkRow",
+          "startLine": 387,
+          "endLine": 408,
+          "params": [
+            "{ label, desc, href, onClick }"
+          ]
+        },
+        {
+          "name": "CollectCard",
+          "startLine": 410,
+          "endLine": 449,
+          "params": [
+            "props"
+          ]
+        },
+        {
+          "name": "actionBtn",
+          "startLine": 500,
+          "endLine": 509,
+          "params": [
+            "disabled"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ManagerPage",
+          "line": 123,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "startAndPoll",
+          "callee": "fetch",
+          "lineNumber": 56
+        },
+        {
+          "caller": "startAndPoll",
+          "callee": "res.json",
+          "lineNumber": 58
+        },
+        {
+          "caller": "startAndPoll",
+          "callee": "setJob",
+          "lineNumber": 59
+        },
+        {
+          "caller": "startAndPoll",
+          "callee": "setJob",
+          "lineNumber": 61
+        },
+        {
+          "caller": "startAndPoll",
+          "callee": "_failedJob",
+          "lineNumber": 61
+        },
+        {
+          "caller": "startAndPoll",
+          "callee": "String",
+          "lineNumber": 61
+        },
+        {
+          "caller": "startAndPoll",
+          "callee": "setInterval",
+          "lineNumber": 64
+        },
+        {
+          "caller": "startAndPoll",
+          "callee": "fetch",
+          "lineNumber": 66
+        },
+        {
+          "caller": "startAndPoll",
+          "callee": "r.json",
+          "lineNumber": 68
+        },
+        {
+          "caller": "startAndPoll",
+          "callee": "setJob",
+          "lineNumber": 70
+        },
+        {
+          "caller": "startAndPoll",
+          "callee": "clearInterval",
+          "lineNumber": 72
+        },
+        {
+          "caller": "startAndPoll",
+          "callee": "onDone",
+          "lineNumber": 73
+        },
+        {
+          "caller": "JobBanner",
+          "callee": "Math.min",
+          "lineNumber": 82
+        },
+        {
+          "caller": "JobBanner",
+          "callee": "Math.round",
+          "lineNumber": 82
+        },
+        {
+          "caller": "JobBanner",
+          "callee": "Math.max",
+          "lineNumber": 82
+        },
+        {
+          "caller": "JobBanner",
+          "callee": "job.log.slice(-200).join",
+          "lineNumber": 116
+        },
+        {
+          "caller": "JobBanner",
+          "callee": "job.log.slice",
+          "lineNumber": 116
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "useRouter",
+          "lineNumber": 124
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "useState",
+          "lineNumber": 125
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "useState",
+          "lineNumber": 126
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "useState",
+          "lineNumber": 128
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "useState",
+          "lineNumber": 129
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "useState",
+          "lineNumber": 131
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "useState",
+          "lineNumber": 133
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "useState",
+          "lineNumber": 134
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "useState",
+          "lineNumber": 135
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "new Date().toISOString().slice",
+          "lineNumber": 136
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "new Date().toISOString",
+          "lineNumber": 136
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "new Date(Date.now() - 30 * 86400000).toISOString().slice",
+          "lineNumber": 137
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "new Date(Date.now() - 30 * 86400000).toISOString",
+          "lineNumber": 137
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "Date.now",
+          "lineNumber": 137
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "useState",
+          "lineNumber": 138
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "useState",
+          "lineNumber": 139
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "useState",
+          "lineNumber": 140
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "useState",
+          "lineNumber": 141
+        },
+        {
+          "caller": "fetchRange",
+          "callee": "setRangeLoading",
+          "lineNumber": 145
+        },
+        {
+          "caller": "fetchRange",
+          "callee": "fetch",
+          "lineNumber": 147
+        },
+        {
+          "caller": "fetchRange",
+          "callee": "res.json",
+          "lineNumber": 148
+        },
+        {
+          "caller": "fetchRange",
+          "callee": "setRangeCount",
+          "lineNumber": 149
+        },
+        {
+          "caller": "fetchRange",
+          "callee": "setRangeCount",
+          "lineNumber": 151
+        },
+        {
+          "caller": "fetchRange",
+          "callee": "setRangeLoading",
+          "lineNumber": 153
+        },
+        {
+          "caller": "fetchStats",
+          "callee": "setStatsLoading",
+          "lineNumber": 158
+        },
+        {
+          "caller": "fetchStats",
+          "callee": "fetch",
+          "lineNumber": 160
+        },
+        {
+          "caller": "fetchStats",
+          "callee": "setStats",
+          "lineNumber": 162
+        },
+        {
+          "caller": "fetchStats",
+          "callee": "res.json",
+          "lineNumber": 162
+        },
+        {
+          "caller": "fetchStats",
+          "callee": "setStats",
+          "lineNumber": 164
+        },
+        {
+          "caller": "fetchStats",
+          "callee": "setStatsLoading",
+          "lineNumber": 166
+        },
+        {
+          "caller": "fetchRemaining",
+          "callee": "fetch",
+          "lineNumber": 172
+        },
+        {
+          "caller": "fetchRemaining",
+          "callee": "res.json",
+          "lineNumber": 174
+        },
+        {
+          "caller": "fetchRemaining",
+          "callee": "setRemaining",
+          "lineNumber": 175
+        },
+        {
+          "caller": "fetchRemaining",
+          "callee": "setRemaining",
+          "lineNumber": 177
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "useEffect",
+          "lineNumber": 181
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "fetchStats",
+          "lineNumber": 182
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "fetchRemaining",
+          "lineNumber": 183
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "fetch('/api/manager/active-model', { cache: 'no-store' })\n      .then((r) => r.json())\n      .then((d) => setActiveModel(d))\n      .catch",
+          "lineNumber": 184
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "fetch('/api/manager/active-model', { cache: 'no-store' })\n      .then((r) => r.json())\n      .then",
+          "lineNumber": 184
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "fetch('/api/manager/active-model', { cache: 'no-store' })\n      .then",
+          "lineNumber": 184
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "fetch",
+          "lineNumber": 184
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "r.json",
+          "lineNumber": 185
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "setActiveModel",
+          "lineNumber": 186
+        },
+        {
+          "caller": "runBackfill",
+          "callee": "Math.max",
+          "lineNumber": 193
+        },
+        {
+          "caller": "runBackfill",
+          "callee": "Math.min",
+          "lineNumber": 193
+        },
+        {
+          "caller": "runBackfill",
+          "callee": "startAndPoll",
+          "lineNumber": 194
+        },
+        {
+          "caller": "runCollect",
+          "callee": "Math.max",
+          "lineNumber": 200
+        },
+        {
+          "caller": "runCollect",
+          "callee": "Math.min",
+          "lineNumber": 200
+        },
+        {
+          "caller": "runCollect",
+          "callee": "startAndPoll",
+          "lineNumber": 201
+        },
+        {
+          "caller": "runCollect",
+          "callee": "fetchStats",
+          "lineNumber": 202
+        },
+        {
+          "caller": "runCollect",
+          "callee": "fetchRemaining",
+          "lineNumber": 203
+        },
+        {
+          "caller": "handleLogout",
+          "callee": "fetch",
+          "lineNumber": 208
+        },
+        {
+          "caller": "handleLogout",
+          "callee": "router.replace",
+          "lineNumber": 209
+        },
+        {
+          "caller": "handleLogout",
+          "callee": "router.refresh",
+          "lineNumber": 210
+        },
+        {
+          "caller": "fmt",
+          "callee": "n.toLocaleString",
+          "lineNumber": 214
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "fmt",
+          "lineNumber": 255
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "fmt",
+          "lineNumber": 256
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "fmt",
+          "lineNumber": 257
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "fmt",
+          "lineNumber": 258
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "setVStart",
+          "lineNumber": 260
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "setVEnd",
+          "lineNumber": 261
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "actionBtn",
+          "lineNumber": 263
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "rangeCount.toLocaleString",
+          "lineNumber": 270
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "Object.values(stats?.processing?.subtitle_state ?? {}).reduce((a, b) => a + b, 0).toLocaleString",
+          "lineNumber": 285
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "Object.values(stats?.processing?.subtitle_state ?? {}).reduce",
+          "lineNumber": 285
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "Object.values",
+          "lineNumber": 285
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "PROC_STAGES.map",
+          "lineNumber": 291
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "Object.entries(counts).sort",
+          "lineNumber": 293
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "Object.entries",
+          "lineNumber": 293
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "entries.map",
+          "lineNumber": 299
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "n.toLocaleString",
+          "lineNumber": 302
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "router.push",
+          "lineNumber": 316
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "fmtMetric",
+          "lineNumber": 336
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "fmtMetric",
+          "lineNumber": 337
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "fmtMetric",
+          "lineNumber": 338
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "fmtMetric",
+          "lineNumber": 339
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "setBackfill",
+          "lineNumber": 351
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "remaining.toLocaleString",
+          "lineNumber": 361
+        },
+        {
+          "caller": "ManagerPage",
+          "callee": "setCollect",
+          "lineNumber": 362
+        },
+        {
+          "caller": "fmtMetric",
+          "callee": "n.toFixed",
+          "lineNumber": 370
+        },
+        {
+          "caller": "CollectCard",
+          "callee": "props.setN",
+          "lineNumber": 426
+        },
+        {
+          "caller": "CollectCard",
+          "callee": "Math.max",
+          "lineNumber": 426
+        },
+        {
+          "caller": "CollectCard",
+          "callee": "Number",
+          "lineNumber": 426
+        },
+        {
+          "caller": "CollectCard",
+          "callee": "actionBtn",
+          "lineNumber": 430
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 9,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/eslint.config.mjs",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 18,
+      "nonEmptyLines": 16,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/next.config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 7,
+      "nonEmptyLines": 5,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/postcss.config.mjs",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 7,
+      "nonEmptyLines": 6,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    }
+  ]
+}

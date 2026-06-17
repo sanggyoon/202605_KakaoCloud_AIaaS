@@ -1,0 +1,164 @@
+{
+  "nodes": [
+    {
+      "id": "config:Ansible/manifests/apps/argo-workflow-rbac-ai.yaml",
+      "type": "config",
+      "name": "argo-workflow-rbac-ai.yaml",
+      "filePath": "Ansible/manifests/apps/argo-workflow-rbac-ai.yaml",
+      "summary": "ai 네임스페이스에서 Argo Workflow 파드를 실행하기 위한 RBAC 매니페스트로, argo-workflow ServiceAccount와 pods/pods-log/pods-exec 및 workflowtaskresults 권한을 가진 Role, RoleBinding을 정의한다.",
+      "tags": ["configuration", "kubernetes", "rbac", "argo-workflows", "security"],
+      "complexity": "simple",
+      "languageNotes": "ServiceAccount + Role + RoleBinding 3개 문서를 '---'로 묶은 multi-document YAML."
+    },
+    {
+      "id": "config:Ansible/manifests/apps/argo-workflows-ingress.yaml",
+      "type": "config",
+      "name": "argo-workflows-ingress.yaml",
+      "filePath": "Ansible/manifests/apps/argo-workflows-ingress.yaml",
+      "summary": "workflows.peakly.art 호스트로 들어오는 트래픽을 argo 네임스페이스의 argo-workflows-server(2746)로 라우팅하는 nginx Ingress로, cert-manager TLS와 basic auth를 적용한다.",
+      "tags": ["configuration", "kubernetes", "ingress", "argo-workflows", "tls"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/manifests/apps/cluster-issuer.yaml",
+      "type": "config",
+      "name": "cluster-issuer.yaml",
+      "filePath": "Ansible/manifests/apps/cluster-issuer.yaml",
+      "summary": "cert-manager의 Let's Encrypt ClusterIssuer 두 개(staging, prod)를 정의해 HTTP-01 챌린지로 클러스터 전역 TLS 인증서 발급을 담당한다.",
+      "tags": ["configuration", "kubernetes", "cert-manager", "tls", "security"],
+      "complexity": "simple",
+      "languageNotes": "테스트용 letsencrypt-staging과 운영용 letsencrypt-prod 두 ClusterIssuer를 분리해 정의."
+    },
+    {
+      "id": "config:Ansible/manifests/apps/ingress-nginx-config.yaml",
+      "type": "config",
+      "name": "ingress-nginx-config.yaml",
+      "filePath": "Ansible/manifests/apps/ingress-nginx-config.yaml",
+      "summary": "ingress-nginx 컨트롤러의 ConfigMap으로, 업스트림 액세스 로그를 JSON 포맷으로 출력하도록 log-format-upstream과 log-format-escape-json을 설정한다.",
+      "tags": ["configuration", "kubernetes", "ingress", "logging", "monitoring"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/manifests/apps/ingress-studio.yaml",
+      "type": "config",
+      "name": "ingress-studio.yaml",
+      "filePath": "Ansible/manifests/apps/ingress-studio.yaml",
+      "summary": "data/ai Supabase Studio·REST API, Grafana, ArgoCD 등 주요 서비스에 대한 6개의 nginx Ingress를 정의해 peakly.art 도메인으로 외부 노출하며 cert-manager TLS와 basic auth를 적용한다.",
+      "tags": ["configuration", "kubernetes", "ingress", "tls", "deployment"],
+      "complexity": "complex",
+      "languageNotes": "6개 Ingress를 multi-document YAML로 묶음. 각 서비스마다 4kakao.kro.kr(전환 후 제거)와 peakly.art 두 호스트를 함께 매핑."
+    },
+    {
+      "id": "service:Ansible/manifests/apps/ingress-studio.yaml:supabase-data-studio",
+      "type": "service",
+      "name": "supabase-data-studio",
+      "filePath": "Ansible/manifests/apps/ingress-studio.yaml",
+      "summary": "data.peakly.art 트래픽을 data 네임스페이스의 supabase-data-supabase-studio(3000)로 라우팅하는 Ingress이며 basic auth로 보호된다.",
+      "tags": ["kubernetes", "ingress", "supabase", "studio"],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:Ansible/manifests/apps/ingress-studio.yaml:supabase-data-api",
+      "type": "service",
+      "name": "supabase-data-api",
+      "filePath": "Ansible/manifests/apps/ingress-studio.yaml",
+      "summary": "data Supabase REST API(Kong, 8000)로 /rest/v1·/auth/v1·/storage/v1 경로를 라우팅하는 Ingress로, Supabase JWT 인증을 사용한다.",
+      "tags": ["kubernetes", "ingress", "supabase", "api", "kong"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "service:Ansible/manifests/apps/ingress-studio.yaml:supabase-ai-studio",
+      "type": "service",
+      "name": "supabase-ai-studio",
+      "filePath": "Ansible/manifests/apps/ingress-studio.yaml",
+      "summary": "ai.peakly.art 트래픽을 ai 네임스페이스의 supabase-ai-supabase-studio(3000)로 라우팅하는 Ingress이며 basic auth로 보호된다.",
+      "tags": ["kubernetes", "ingress", "supabase", "studio"],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:Ansible/manifests/apps/ingress-studio.yaml:supabase-ai-api",
+      "type": "service",
+      "name": "supabase-ai-api",
+      "filePath": "Ansible/manifests/apps/ingress-studio.yaml",
+      "summary": "ai Supabase REST API(Kong, 8000)로 /rest/v1·/auth/v1·/storage/v1 경로를 라우팅하는 Ingress로, Supabase JWT 인증을 사용한다.",
+      "tags": ["kubernetes", "ingress", "supabase", "api", "kong"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "service:Ansible/manifests/apps/ingress-studio.yaml:grafana",
+      "type": "service",
+      "name": "grafana",
+      "filePath": "Ansible/manifests/apps/ingress-studio.yaml",
+      "summary": "grafana.peakly.art 트래픽을 monitoring 네임스페이스의 kube-prometheus-stack-grafana(80)로 라우팅하는 Ingress.",
+      "tags": ["kubernetes", "ingress", "grafana", "monitoring"],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:Ansible/manifests/apps/ingress-studio.yaml:argocd",
+      "type": "service",
+      "name": "argocd",
+      "filePath": "Ansible/manifests/apps/ingress-studio.yaml",
+      "summary": "argocd.peakly.art 트래픽을 argocd 네임스페이스의 argocd-server(80)로 라우팅하는 Ingress.",
+      "tags": ["kubernetes", "ingress", "argocd", "gitops"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "config:Ansible/manifests/apps/ingress-studio.yaml",
+      "target": "service:Ansible/manifests/apps/ingress-studio.yaml:supabase-data-studio",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:Ansible/manifests/apps/ingress-studio.yaml",
+      "target": "service:Ansible/manifests/apps/ingress-studio.yaml:supabase-data-api",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:Ansible/manifests/apps/ingress-studio.yaml",
+      "target": "service:Ansible/manifests/apps/ingress-studio.yaml:supabase-ai-studio",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:Ansible/manifests/apps/ingress-studio.yaml",
+      "target": "service:Ansible/manifests/apps/ingress-studio.yaml:supabase-ai-api",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:Ansible/manifests/apps/ingress-studio.yaml",
+      "target": "service:Ansible/manifests/apps/ingress-studio.yaml:grafana",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:Ansible/manifests/apps/ingress-studio.yaml",
+      "target": "service:Ansible/manifests/apps/ingress-studio.yaml:argocd",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:Ansible/manifests/apps/argo-workflows-ingress.yaml",
+      "target": "config:Ansible/manifests/apps/cluster-issuer.yaml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Ansible/manifests/apps/ingress-studio.yaml",
+      "target": "config:Ansible/manifests/apps/cluster-issuer.yaml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "projectRoot": "/Users/sanggyoon/Documents/KakaoCloud_Project",
+  "batchFiles": [
+    {"path": "Documents/CICD 전략.md", "language": "markdown", "sizeLines": 387, "fileCategory": "docs"},
+    {"path": "Documents/서비스 개요.md", "language": "markdown", "sizeLines": 212, "fileCategory": "docs"},
+    {"path": "Documents/인프라 구축 기록.md", "language": "markdown", "sizeLines": 528, "fileCategory": "docs"},
+    {"path": "Documents/인프라 구축 방법(명령어).md", "language": "markdown", "sizeLines": 507, "fileCategory": "docs"},
+    {"path": "Documents/프로젝트 디렉토리 구조.md", "language": "markdown", "sizeLines": 302, "fileCategory": "docs"}
+  ],
+  "batchImportData": {
+    "Documents/CICD 전략.md": [],
+    "Documents/서비스 개요.md": [],
+    "Documents/인프라 구축 기록.md": [],
+    "Documents/인프라 구축 방법(명령어).md": [],
+    "Documents/프로젝트 디렉토리 구조.md": []
+  }
+}

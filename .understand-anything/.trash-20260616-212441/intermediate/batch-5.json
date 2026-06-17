@@ -1,0 +1,211 @@
+{
+  "nodes": [
+    {
+      "id": "file:4K_ML/labeling/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "4K_ML/labeling/__init__.py",
+      "summary": "labeling 패키지를 정의하는 빈 패키지 초기화 파일로, 디렉터리를 Python 임포트 가능한 모듈로 만든다.",
+      "tags": ["entry-point", "package-init", "labeling"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/labeling/batch.py",
+      "type": "file",
+      "name": "batch.py",
+      "filePath": "4K_ML/labeling/batch.py",
+      "summary": "Anthropic Message Batches API를 사용해 영화별 씬 라벨링 요청을 구성·제출·폴링·수집하는 배치 처리 모듈이다.",
+      "tags": ["service", "batch-processing", "anthropic", "labeling"],
+      "complexity": "simple",
+      "languageNotes": "Anthropic SDK의 Request / MessageCreateParamsNonStreaming 타입을 사용한 배치 메시지 작업 패턴."
+    },
+    {
+      "id": "file:4K_ML/labeling/db.py",
+      "type": "file",
+      "name": "db.py",
+      "filePath": "4K_ML/labeling/db.py",
+      "summary": "PostgREST 기반 AI DB에 대한 라벨링 대상 조회, 씬 조회, 모델 버전 보장, 씬 점수 upsert, 라벨 상태 갱신을 담당하는 데이터 액세스 계층이다.",
+      "tags": ["service", "database", "postgrest", "data-access"],
+      "complexity": "moderate",
+      "languageNotes": "httpx 클라이언트와 환경변수 기반 PostgREST 인증 헤더(Prefer: resolution/return) 패턴 사용."
+    },
+    {
+      "id": "file:4K_ML/labeling/label_scenes.py",
+      "type": "file",
+      "name": "label_scenes.py",
+      "filePath": "4K_ML/labeling/label_scenes.py",
+      "summary": "씬 라벨링 파이프라인의 엔트리포인트로, DB에서 대상을 가져와 Anthropic 배치 라벨링을 실행하고 결과 점수를 DB에 기록한다.",
+      "tags": ["entry-point", "pipeline", "orchestration", "labeling"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_ML/labeling/prompt.py",
+      "type": "file",
+      "name": "prompt.py",
+      "filePath": "4K_ML/labeling/prompt.py",
+      "summary": "씬 라벨링용 LLM 프롬프트(루브릭, 출력 스키마)와 씬 리스트를 인덱싱된 사용자 메시지로 변환하는 헬퍼를 정의한다.",
+      "tags": ["utility", "prompt", "llm", "labeling"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/tests/test_label_batch.py",
+      "type": "file",
+      "name": "test_label_batch.py",
+      "filePath": "4K_ML/tests/test_label_batch.py",
+      "summary": "labeling.batch 모듈의 요청 구성, 제출, 폴링, 결과 수집 동작을 검증하는 pytest 단위 테스트이다.",
+      "tags": ["test", "batch-processing", "labeling"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_ML/tests/test_label_db.py",
+      "type": "file",
+      "name": "test_label_db.py",
+      "filePath": "4K_ML/tests/test_label_db.py",
+      "summary": "httpx MockTransport로 PostgREST 응답을 모킹하여 labeling.db의 조회·upsert·상태 갱신 로직을 검증하는 단위 테스트이다.",
+      "tags": ["test", "database", "labeling"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_ML/tests/test_label_main.py",
+      "type": "file",
+      "name": "test_label_main.py",
+      "filePath": "4K_ML/tests/test_label_main.py",
+      "summary": "monkeypatch로 의존성을 대체하여 label_scenes의 _clamp, parse_to_rows, run 파이프라인 동작과 실패 플래깅을 검증하는 단위 테스트이다.",
+      "tags": ["test", "pipeline", "labeling"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:4K_ML/tests/test_label_prompt.py",
+      "type": "file",
+      "name": "test_label_prompt.py",
+      "filePath": "4K_ML/tests/test_label_prompt.py",
+      "summary": "프롬프트 사용자 메시지가 씬을 인덱싱하는지와 루브릭/출력 스키마가 두 축만 포함하는지 검증하는 단위 테스트이다.",
+      "tags": ["test", "prompt", "labeling"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/labeling/batch.py:build_requests",
+      "type": "function",
+      "name": "build_requests",
+      "filePath": "4K_ML/labeling/batch.py",
+      "lineRange": [14, 30],
+      "summary": "영화별 씬 데이터를 Anthropic 배치 Request 객체 리스트로 변환하며, 사용자 메시지와 출력 스키마 파라미터를 구성한다.",
+      "tags": ["batch-processing", "factory", "anthropic"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/labeling/batch.py:collect",
+      "type": "function",
+      "name": "collect",
+      "filePath": "4K_ML/labeling/batch.py",
+      "lineRange": [47, 58],
+      "summary": "완료된 배치의 결과 스트림을 순회하며 custom_id 기준으로 JSON 응답을 파싱하고 성공/실패를 플래깅한다.",
+      "tags": ["batch-processing", "serialization", "anthropic"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/labeling/db.py:fetch_scenes",
+      "type": "function",
+      "name": "fetch_scenes",
+      "filePath": "4K_ML/labeling/db.py",
+      "lineRange": [42, 59],
+      "summary": "주어진 tmdb_id에 대해 씬과 자막 데이터를 두 번의 PostgREST GET 호출로 조회한다.",
+      "tags": ["data-access", "postgrest", "database"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/labeling/db.py:ensure_model_versions",
+      "type": "function",
+      "name": "ensure_model_versions",
+      "filePath": "4K_ML/labeling/db.py",
+      "lineRange": [62, 73],
+      "summary": "라벨링에 사용할 모델 버전 레코드를 PostgREST에 POST하여 존재를 보장하고 실패 시 예외를 던진다.",
+      "tags": ["data-access", "postgrest", "database"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/labeling/db.py:set_label_state",
+      "type": "function",
+      "name": "set_label_state",
+      "filePath": "4K_ML/labeling/db.py",
+      "lineRange": [84, 91],
+      "summary": "특정 영화의 라벨링 상태(state/error/timestamp)를 PostgREST에 POST하여 갱신한다.",
+      "tags": ["data-access", "postgrest", "database"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/labeling/label_scenes.py:parse_to_rows",
+      "type": "function",
+      "name": "parse_to_rows",
+      "filePath": "4K_ML/labeling/label_scenes.py",
+      "lineRange": [19, 30],
+      "summary": "LLM이 파싱한 결과를 씬 ID 매핑을 이용해 두 축(점수)별 DB upsert 행 리스트로 변환한다.",
+      "tags": ["serialization", "data-transform", "labeling"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/labeling/label_scenes.py:run",
+      "type": "function",
+      "name": "run",
+      "filePath": "4K_ML/labeling/label_scenes.py",
+      "lineRange": [33, 73],
+      "summary": "라벨링 파이프라인 전체 실행 함수로, 환경변수 검증·DB 대상 조회·배치 제출/폴링/수집·점수 upsert·상태 갱신을 오케스트레이션한다.",
+      "tags": ["orchestration", "pipeline", "entry-point"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_ML/labeling/prompt.py:build_user_message",
+      "type": "function",
+      "name": "build_user_message",
+      "filePath": "4K_ML/labeling/prompt.py",
+      "lineRange": [43, 46],
+      "summary": "씬 리스트를 인덱스가 부여된 텍스트 사용자 메시지로 결합하여 LLM 입력으로 만든다.",
+      "tags": ["prompt", "utility", "llm"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {"source": "file:4K_ML/labeling/batch.py", "target": "file:4K_ML/labeling/prompt.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/labeling/label_scenes.py", "target": "file:4K_ML/labeling/__init__.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/labeling/label_scenes.py", "target": "file:4K_ML/labeling/batch.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/labeling/label_scenes.py", "target": "file:4K_ML/labeling/db.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/tests/test_label_batch.py", "target": "file:4K_ML/labeling/__init__.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/tests/test_label_batch.py", "target": "file:4K_ML/labeling/batch.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/tests/test_label_db.py", "target": "file:4K_ML/labeling/__init__.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/tests/test_label_db.py", "target": "file:4K_ML/labeling/db.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/tests/test_label_main.py", "target": "file:4K_ML/labeling/__init__.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/tests/test_label_main.py", "target": "file:4K_ML/labeling/db.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:4K_ML/tests/test_label_prompt.py", "target": "file:4K_ML/labeling/prompt.py", "type": "imports", "direction": "forward", "weight": 0.7},
+
+    {"source": "file:4K_ML/labeling/batch.py", "target": "function:4K_ML/labeling/batch.py:build_requests", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/labeling/batch.py", "target": "function:4K_ML/labeling/batch.py:collect", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/labeling/db.py", "target": "function:4K_ML/labeling/db.py:fetch_scenes", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/labeling/db.py", "target": "function:4K_ML/labeling/db.py:ensure_model_versions", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/labeling/db.py", "target": "function:4K_ML/labeling/db.py:set_label_state", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/labeling/label_scenes.py", "target": "function:4K_ML/labeling/label_scenes.py:parse_to_rows", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/labeling/label_scenes.py", "target": "function:4K_ML/labeling/label_scenes.py:run", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:4K_ML/labeling/prompt.py", "target": "function:4K_ML/labeling/prompt.py:build_user_message", "type": "contains", "direction": "forward", "weight": 1.0},
+
+    {"source": "file:4K_ML/labeling/batch.py", "target": "function:4K_ML/labeling/batch.py:build_requests", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_ML/labeling/batch.py", "target": "function:4K_ML/labeling/batch.py:collect", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_ML/labeling/db.py", "target": "function:4K_ML/labeling/db.py:fetch_scenes", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_ML/labeling/db.py", "target": "function:4K_ML/labeling/db.py:ensure_model_versions", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_ML/labeling/db.py", "target": "function:4K_ML/labeling/db.py:set_label_state", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_ML/labeling/label_scenes.py", "target": "function:4K_ML/labeling/label_scenes.py:parse_to_rows", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_ML/labeling/label_scenes.py", "target": "function:4K_ML/labeling/label_scenes.py:run", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:4K_ML/labeling/prompt.py", "target": "function:4K_ML/labeling/prompt.py:build_user_message", "type": "exports", "direction": "forward", "weight": 0.8},
+
+    {"source": "function:4K_ML/labeling/batch.py:build_requests", "target": "function:4K_ML/labeling/prompt.py:build_user_message", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_ML/labeling/label_scenes.py:run", "target": "function:4K_ML/labeling/db.py:ensure_model_versions", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_ML/labeling/label_scenes.py:run", "target": "function:4K_ML/labeling/db.py:fetch_scenes", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_ML/labeling/label_scenes.py:run", "target": "function:4K_ML/labeling/db.py:set_label_state", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_ML/labeling/label_scenes.py:run", "target": "function:4K_ML/labeling/batch.py:build_requests", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_ML/labeling/label_scenes.py:run", "target": "function:4K_ML/labeling/batch.py:collect", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "function:4K_ML/labeling/label_scenes.py:run", "target": "function:4K_ML/labeling/label_scenes.py:parse_to_rows", "type": "calls", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:4K_ML/labeling/batch.py", "target": "file:4K_ML/tests/test_label_batch.py", "type": "tested_by", "direction": "forward", "weight": 0.5},
+    {"source": "file:4K_ML/labeling/db.py", "target": "file:4K_ML/tests/test_label_db.py", "type": "tested_by", "direction": "forward", "weight": 0.5},
+    {"source": "file:4K_ML/labeling/label_scenes.py", "target": "file:4K_ML/tests/test_label_main.py", "type": "tested_by", "direction": "forward", "weight": 0.5},
+    {"source": "file:4K_ML/labeling/prompt.py", "target": "file:4K_ML/tests/test_label_prompt.py", "type": "tested_by", "direction": "forward", "weight": 0.5}
+  ]
+}

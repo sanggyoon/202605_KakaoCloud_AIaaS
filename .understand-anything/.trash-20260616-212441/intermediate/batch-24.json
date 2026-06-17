@@ -1,0 +1,93 @@
+{
+  "nodes": [
+    {
+      "id": "config:Ansible/values/values-ai.yaml",
+      "type": "config",
+      "name": "values-ai.yaml",
+      "filePath": "Ansible/values/values-ai.yaml",
+      "summary": "AI 서비스(ML 추론) Helm 배포 values 파일로 secret, deployment, environment, persistence, ingress 섹션을 정의해 추론 워크로드의 K8s 리소스를 구성한다.",
+      "tags": ["configuration", "helm-values", "deployment", "ai-service", "kubernetes"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:Ansible/values/values-argo-workflows.yaml",
+      "type": "config",
+      "name": "values-argo-workflows.yaml",
+      "filePath": "Ansible/values/values-argo-workflows.yaml",
+      "summary": "Argo Workflows Helm 차트 values 파일로 singleNamespace, crds, server 설정을 통해 ML 파이프라인 워크플로 엔진을 구성한다.",
+      "tags": ["configuration", "helm-values", "argo-workflows", "ci-cd", "kubernetes"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/values/values-argocd.yaml",
+      "type": "config",
+      "name": "values-argocd.yaml",
+      "filePath": "Ansible/values/values-argocd.yaml",
+      "summary": "ArgoCD Helm 차트 values 파일로 global, server, repoServer, controller, redis, dex 등 GitOps 배포 컴포넌트를 구성한다.",
+      "tags": ["configuration", "helm-values", "argocd", "gitops", "kubernetes"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/values/values-data.yaml",
+      "type": "config",
+      "name": "values-data.yaml",
+      "filePath": "Ansible/values/values-data.yaml",
+      "summary": "데이터 수집/처리 서비스의 Helm 배포 values 파일로 secret, deployment, image, environment, persistence 섹션을 정의해 데이터 워크로드를 구성한다.",
+      "tags": ["configuration", "helm-values", "deployment", "data-pipeline", "kubernetes"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:Ansible/values/values-loki.yaml",
+      "type": "config",
+      "name": "values-loki.yaml",
+      "filePath": "Ansible/values/values-loki.yaml",
+      "summary": "Grafana Loki 로그 집계 시스템의 Helm values 파일로 singleBinary 배포 모드, 각 컴포넌트(ingester/querier/compactor 등), minio 스토리지를 구성한다.",
+      "tags": ["configuration", "helm-values", "monitoring", "logging", "kubernetes"],
+      "complexity": "moderate",
+      "languageNotes": "Loki를 singleBinary 모드로 배포하면 마이크로서비스 컴포넌트를 단일 바이너리로 통합해 소규모 클러스터에 적합하다."
+    },
+    {
+      "id": "config:Ansible/values/values-prometheus.yaml",
+      "type": "config",
+      "name": "values-prometheus.yaml",
+      "filePath": "Ansible/values/values-prometheus.yaml",
+      "summary": "kube-prometheus-stack Helm values 파일로 prometheus, grafana, alertmanager, nodeExporter, kube-state-metrics 등 모니터링 스택을 구성한다.",
+      "tags": ["configuration", "helm-values", "monitoring", "prometheus", "kubernetes"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:Ansible/values/values-promtail.yaml",
+      "type": "config",
+      "name": "values-promtail.yaml",
+      "filePath": "Ansible/values/values-promtail.yaml",
+      "summary": "Promtail 로그 수집 에이전트의 Helm values 파일로 Loki 전송 config, tolerations, resources를 정의해 노드별 로그를 수집한다.",
+      "tags": ["configuration", "helm-values", "logging", "monitoring", "kubernetes"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/values/values-redis.yaml",
+      "type": "config",
+      "name": "values-redis.yaml",
+      "filePath": "Ansible/values/values-redis.yaml",
+      "summary": "Redis Helm 차트 values 파일로 architecture, auth, master, replica, metrics 설정을 통해 캐시/세션 저장소를 구성한다.",
+      "tags": ["configuration", "helm-values", "redis", "cache", "kubernetes"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "config:Ansible/values/values-promtail.yaml",
+      "target": "config:Ansible/values/values-loki.yaml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Ansible/values/values-loki.yaml",
+      "target": "config:Ansible/values/values-prometheus.yaml",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

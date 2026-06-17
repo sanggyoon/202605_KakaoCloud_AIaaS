@@ -1,0 +1,7 @@
+{
+  "projectRoot": "/Users/sanggyoon/Documents/KakaoCloud_Project",
+  "batchFiles": [
+    {"path": "4K_BE/Dockerfile", "language": "dockerfile", "sizeLines": 12, "fileCategory": "infra"}
+  ],
+  "batchImportData": {"4K_BE/Dockerfile": []}
+}

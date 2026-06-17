@@ -1,0 +1,303 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 4,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "4K_FE/app/api/manager/auth/login/route.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 26,
+      "nonEmptyLines": 22,
+      "functions": [
+        {
+          "name": "POST",
+          "startLine": 4,
+          "endLine": 26,
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "POST",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "POST",
+          "callee": "request.json",
+          "lineNumber": 7
+        },
+        {
+          "caller": "POST",
+          "callee": "Response.json",
+          "lineNumber": 9
+        },
+        {
+          "caller": "POST",
+          "callee": "verifyCredentials",
+          "lineNumber": 12
+        },
+        {
+          "caller": "POST",
+          "callee": "Response.json",
+          "lineNumber": 13
+        },
+        {
+          "caller": "POST",
+          "callee": "cookies",
+          "lineNumber": 16
+        },
+        {
+          "caller": "POST",
+          "callee": "cookieStore.set",
+          "lineNumber": 17
+        },
+        {
+          "caller": "POST",
+          "callee": "sessionToken",
+          "lineNumber": 17
+        },
+        {
+          "caller": "POST",
+          "callee": "Response.json",
+          "lineNumber": 25
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/api/manager/auth/logout/route.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 8,
+      "nonEmptyLines": 7,
+      "functions": [
+        {
+          "name": "POST",
+          "startLine": 4,
+          "endLine": 8,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "POST",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "POST",
+          "callee": "cookies",
+          "lineNumber": 5
+        },
+        {
+          "caller": "POST",
+          "callee": "cookieStore.delete",
+          "lineNumber": 6
+        },
+        {
+          "caller": "POST",
+          "callee": "Response.json",
+          "lineNumber": 7
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/app/lib/auth.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 32,
+      "nonEmptyLines": 27,
+      "functions": [
+        {
+          "name": "verifyCredentials",
+          "startLine": 16,
+          "endLine": 18,
+          "params": [
+            "id",
+            "password"
+          ]
+        },
+        {
+          "name": "sessionToken",
+          "startLine": 21,
+          "endLine": 23,
+          "params": []
+        },
+        {
+          "name": "isValidSession",
+          "startLine": 26,
+          "endLine": 32,
+          "params": [
+            "token"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "SESSION_COOKIE",
+          "line": 5,
+          "isDefault": false
+        },
+        {
+          "name": "SESSION_MAX_AGE",
+          "line": 7,
+          "isDefault": false
+        },
+        {
+          "name": "verifyCredentials",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "sessionToken",
+          "line": 21,
+          "isDefault": false
+        },
+        {
+          "name": "isValidSession",
+          "line": 26,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "sessionToken",
+          "callee": "crypto.createHmac('sha256', SESSION_SECRET).update(`${MANAGER_ID}:manager`).digest",
+          "lineNumber": 22
+        },
+        {
+          "caller": "sessionToken",
+          "callee": "crypto.createHmac('sha256', SESSION_SECRET).update",
+          "lineNumber": 22
+        },
+        {
+          "caller": "sessionToken",
+          "callee": "crypto.createHmac",
+          "lineNumber": 22
+        },
+        {
+          "caller": "isValidSession",
+          "callee": "sessionToken",
+          "lineNumber": 28
+        },
+        {
+          "caller": "isValidSession",
+          "callee": "Buffer.from",
+          "lineNumber": 29
+        },
+        {
+          "caller": "isValidSession",
+          "callee": "Buffer.from",
+          "lineNumber": 30
+        },
+        {
+          "caller": "isValidSession",
+          "callee": "crypto.timingSafeEqual",
+          "lineNumber": 31
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 5,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_FE/proxy.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 36,
+      "nonEmptyLines": 31,
+      "functions": [
+        {
+          "name": "proxy",
+          "startLine": 7,
+          "endLine": 24,
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "proxy",
+          "line": 7,
+          "isDefault": false
+        },
+        {
+          "name": "config",
+          "line": 26,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "proxy",
+          "callee": "request.cookies.get",
+          "lineNumber": 8
+        },
+        {
+          "caller": "proxy",
+          "callee": "isValidSession",
+          "lineNumber": 9
+        },
+        {
+          "caller": "proxy",
+          "callee": "NextResponse.next",
+          "lineNumber": 10
+        },
+        {
+          "caller": "proxy",
+          "callee": "pathname.startsWith",
+          "lineNumber": 16
+        },
+        {
+          "caller": "proxy",
+          "callee": "pathname.startsWith",
+          "lineNumber": 16
+        },
+        {
+          "caller": "proxy",
+          "callee": "NextResponse.json",
+          "lineNumber": 17
+        },
+        {
+          "caller": "proxy",
+          "callee": "loginUrl.searchParams.set",
+          "lineNumber": 22
+        },
+        {
+          "caller": "proxy",
+          "callee": "NextResponse.redirect",
+          "lineNumber": 23
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 2,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    }
+  ]
+}

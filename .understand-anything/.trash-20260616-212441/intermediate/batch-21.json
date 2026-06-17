@@ -1,0 +1,72 @@
+{
+  "nodes": [
+    {
+      "id": "config:Ansible/manifests/argocd/argocd-app-4k-be.yaml",
+      "type": "config",
+      "name": "argocd-app-4k-be.yaml",
+      "filePath": "Ansible/manifests/argocd/argocd-app-4k-be.yaml",
+      "summary": "백엔드(4k-be) 서비스를 배포하는 ArgoCD Application 매니페스트. Git repo의 Ansible/manifests/4k-be 경로를 be 네임스페이스에 GitOps로 동기화한다.",
+      "tags": ["argocd", "gitops", "deployment", "ci-cd", "configuration"],
+      "complexity": "simple",
+      "languageNotes": "ArgoCD Application CRD: single source(repoURL+path) → cluster destination 패턴."
+    },
+    {
+      "id": "config:Ansible/manifests/argocd/argocd-app-4k-fe.yaml",
+      "type": "config",
+      "name": "argocd-app-4k-fe.yaml",
+      "filePath": "Ansible/manifests/argocd/argocd-app-4k-fe.yaml",
+      "summary": "프론트엔드(4k-fe) 서비스를 배포하는 ArgoCD Application 매니페스트. Ansible/manifests/4k-fe 경로를 fe 네임스페이스에 GitOps로 동기화한다.",
+      "tags": ["argocd", "gitops", "deployment", "ci-cd", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/manifests/argocd/argocd-app-4k-ml.yaml",
+      "type": "config",
+      "name": "argocd-app-4k-ml.yaml",
+      "filePath": "Ansible/manifests/argocd/argocd-app-4k-ml.yaml",
+      "summary": "ML(4k-ml) 워크로드를 배포하는 ArgoCD Application 매니페스트. Ansible/manifests/4k-ml 경로를 ai 네임스페이스에 GitOps로 동기화한다.",
+      "tags": ["argocd", "gitops", "deployment", "machine-learning", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/manifests/argocd/argocd-app-argo-workflows.yaml",
+      "type": "config",
+      "name": "argocd-app-argo-workflows.yaml",
+      "filePath": "Ansible/manifests/argocd/argocd-app-argo-workflows.yaml",
+      "summary": "Argo Workflows를 설치하는 multi-source ArgoCD Application. argo-helm 차트(v1.0.14)와 Git repo의 values를 결합해 argo 네임스페이스에 배포한다.",
+      "tags": ["argocd", "gitops", "helm", "argo-workflows", "orchestration"],
+      "complexity": "simple",
+      "languageNotes": "Multi-source ArgoCD Application: Helm chart repo + Git repo(values) 조합."
+    },
+    {
+      "id": "config:Ansible/manifests/argocd/argocd-app-infra.yaml",
+      "type": "config",
+      "name": "argocd-app-infra.yaml",
+      "filePath": "Ansible/manifests/argocd/argocd-app-infra.yaml",
+      "summary": "공용 인프라 매니페스트(Ansible/manifests/apps)를 default 네임스페이스에 GitOps로 배포하는 ArgoCD Application.",
+      "tags": ["argocd", "gitops", "infrastructure", "deployment", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Ansible/manifests/argocd/argocd-app-supabase-ai.yaml",
+      "type": "config",
+      "name": "argocd-app-supabase-ai.yaml",
+      "filePath": "Ansible/manifests/argocd/argocd-app-supabase-ai.yaml",
+      "summary": "AI용 Supabase 인스턴스를 배포하는 multi-source ArgoCD Application. supabase Helm 차트(0.5.6)와 Git values를 결합해 ai 네임스페이스에 동기화한다.",
+      "tags": ["argocd", "gitops", "helm", "supabase", "database"],
+      "complexity": "simple",
+      "languageNotes": "Multi-source ArgoCD Application: Supabase Helm chart + Git repo values."
+    },
+    {
+      "id": "config:Ansible/manifests/argocd/argocd-app-supabase-data.yaml",
+      "type": "config",
+      "name": "argocd-app-supabase-data.yaml",
+      "filePath": "Ansible/manifests/argocd/argocd-app-supabase-data.yaml",
+      "summary": "데이터용 Supabase 인스턴스를 배포하는 multi-source ArgoCD Application. supabase Helm 차트(0.5.6)와 Git values를 결합해 data 네임스페이스에 동기화한다.",
+      "tags": ["argocd", "gitops", "helm", "supabase", "database"],
+      "complexity": "simple",
+      "languageNotes": "Multi-source ArgoCD Application: Supabase Helm chart + Git repo values."
+    }
+  ],
+  "edges": []
+}

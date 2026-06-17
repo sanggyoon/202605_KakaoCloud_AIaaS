@@ -1,0 +1,336 @@
+{
+  "nodes": [
+    {
+      "id": "file:4K_ML/generate_vectors/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "4K_ML/generate_vectors/__init__.py",
+      "summary": "generate_vectors 패키지를 정의하는 빈 패키지 초기화 파일.",
+      "tags": ["entry-point", "패키지-초기화", "python"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:4K_ML/generate_vectors/db.py",
+      "type": "file",
+      "name": "db.py",
+      "filePath": "4K_ML/generate_vectors/db.py",
+      "summary": "ML 벡터 생성 파이프라인의 DB 접근 계층으로, AI DB와 Data DB(PostgREST 스타일 REST API)에 대해 scene/axis 점수 조회, 벡터 upsert, has_vector 상태 동기화를 수행한다.",
+      "tags": ["service", "database", "data-access", "rest-client", "vector-pipeline"],
+      "complexity": "moderate",
+      "languageNotes": "env 변수 기반으로 두 개의 REST 백엔드(AI DB / Data DB)에 인증·접근하며, range 기반 batching과 PostgREST in.() 필터를 사용해 페이지네이션 및 대량 upsert를 처리한다."
+    },
+    {
+      "id": "file:4K_ML/tests/test_gen_db.py",
+      "type": "file",
+      "name": "test_gen_db.py",
+      "filePath": "4K_ML/tests/test_gen_db.py",
+      "summary": "db.py의 build_series 조인 로직과 fetch_axis_scores 페이지네이션 동작을 검증하는 pytest 단위 테스트.",
+      "tags": ["test", "pytest", "vector-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/generate_vectors/db.py:_ai_get_all",
+      "type": "function",
+      "name": "_ai_get_all",
+      "filePath": "4K_ML/generate_vectors/db.py",
+      "lineRange": [30, 44],
+      "summary": "AI DB의 지정 테이블을 range 헤더 기반 페이지네이션으로 전체 행을 누적 조회하는 내부 헬퍼.",
+      "tags": ["data-access", "pagination", "rest-client"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/generate_vectors/db.py:fetch_scene_index",
+      "type": "function",
+      "name": "fetch_scene_index",
+      "filePath": "4K_ML/generate_vectors/db.py",
+      "lineRange": [47, 53],
+      "summary": "AI DB에서 scene 인덱스를 조회해 자막 매핑을 결합한 룩업 구조를 반환한다.",
+      "tags": ["data-access", "serialization", "vector-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/generate_vectors/db.py:fetch_axis_scores",
+      "type": "function",
+      "name": "fetch_axis_scores",
+      "filePath": "4K_ML/generate_vectors/db.py",
+      "lineRange": [56, 59],
+      "summary": "특정 model_version_axis에 해당하는 axis 점수를 AI DB에서 조회한다.",
+      "tags": ["data-access", "rest-client", "vector-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/generate_vectors/db.py:build_series",
+      "type": "function",
+      "name": "build_series",
+      "filePath": "4K_ML/generate_vectors/db.py",
+      "lineRange": [62, 73],
+      "summary": "axis 점수와 scene 인덱스를 조인해 tmdb_id별 시계열 점수 시리즈를 구성한다.",
+      "tags": ["serialization", "data-transform", "vector-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/generate_vectors/db.py:upsert_vectors",
+      "type": "function",
+      "name": "upsert_vectors",
+      "filePath": "4K_ML/generate_vectors/db.py",
+      "lineRange": [95, 105],
+      "summary": "생성된 벡터 행들을 Data DB에 배치 단위로 upsert하고 실패 시 RuntimeError를 발생시킨다.",
+      "tags": ["data-access", "batch", "rest-client"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/generate_vectors/db.py:set_has_vector",
+      "type": "function",
+      "name": "set_has_vector",
+      "filePath": "4K_ML/generate_vectors/db.py",
+      "lineRange": [108, 119],
+      "summary": "주어진 tmdb_id 목록에 대해 Data DB의 has_vector 플래그를 배치로 PATCH 갱신한다.",
+      "tags": ["data-access", "batch", "state-sync"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/generate_vectors/db.py:fetch_active_version",
+      "type": "function",
+      "name": "fetch_active_version",
+      "filePath": "4K_ML/generate_vectors/db.py",
+      "lineRange": [122, 133],
+      "summary": "AI DB에서 현재 활성화된 모델 버전 정보를 조회한다.",
+      "tags": ["data-access", "rest-client", "vector-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/generate_vectors/db.py:fetch_vectored_tmdbs",
+      "type": "function",
+      "name": "fetch_vectored_tmdbs",
+      "filePath": "4K_ML/generate_vectors/db.py",
+      "lineRange": [136, 154],
+      "summary": "특정 version_axis에 대해 이미 벡터가 생성된 tmdb_id 집합을 Data DB에서 페이지네이션 조회한다.",
+      "tags": ["data-access", "pagination", "vector-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/generate_vectors/db.py:reconcile_has_vector",
+      "type": "function",
+      "name": "reconcile_has_vector",
+      "filePath": "4K_ML/generate_vectors/db.py",
+      "lineRange": [157, 182],
+      "summary": "활성 tmdb 집합과 Data DB의 has_vector 상태를 대조해 불일치를 배치 PATCH로 정정한다.",
+      "tags": ["data-access", "state-sync", "batch"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:4K_ML/generate_vectors/db.py:set_vector_state",
+      "type": "function",
+      "name": "set_vector_state",
+      "filePath": "4K_ML/generate_vectors/db.py",
+      "lineRange": [185, 197],
+      "summary": "주어진 tmdb_id 목록에 대해 AI DB의 벡터 상태를 배치 PATCH로 갱신하고 실패 시 RuntimeError를 발생시킨다.",
+      "tags": ["data-access", "state-sync", "batch"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/tests/test_gen_db.py:test_build_series_joins_score_scene_subtitle",
+      "type": "function",
+      "name": "test_build_series_joins_score_scene_subtitle",
+      "filePath": "4K_ML/tests/test_gen_db.py",
+      "lineRange": [4, 25],
+      "summary": "build_series가 axis 점수와 scene/자막 인덱스를 올바르게 조인하는지 검증하는 테스트.",
+      "tags": ["test", "pytest", "vector-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:4K_ML/tests/test_gen_db.py:test_fetch_axis_scores_paginates",
+      "type": "function",
+      "name": "test_fetch_axis_scores_paginates",
+      "filePath": "4K_ML/tests/test_gen_db.py",
+      "lineRange": [28, 48],
+      "summary": "monkeypatch로 가짜 클라이언트를 주입해 fetch_axis_scores의 페이지네이션 누적 동작을 검증하는 테스트.",
+      "tags": ["test", "pytest", "pagination"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:4K_ML/generate_vectors/db.py",
+      "target": "function:4K_ML/generate_vectors/db.py:_ai_get_all",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/generate_vectors/db.py",
+      "target": "function:4K_ML/generate_vectors/db.py:fetch_scene_index",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/generate_vectors/db.py",
+      "target": "function:4K_ML/generate_vectors/db.py:fetch_axis_scores",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/generate_vectors/db.py",
+      "target": "function:4K_ML/generate_vectors/db.py:build_series",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/generate_vectors/db.py",
+      "target": "function:4K_ML/generate_vectors/db.py:upsert_vectors",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/generate_vectors/db.py",
+      "target": "function:4K_ML/generate_vectors/db.py:set_has_vector",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/generate_vectors/db.py",
+      "target": "function:4K_ML/generate_vectors/db.py:fetch_active_version",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/generate_vectors/db.py",
+      "target": "function:4K_ML/generate_vectors/db.py:fetch_vectored_tmdbs",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/generate_vectors/db.py",
+      "target": "function:4K_ML/generate_vectors/db.py:reconcile_has_vector",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/generate_vectors/db.py",
+      "target": "function:4K_ML/generate_vectors/db.py:set_vector_state",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/generate_vectors/db.py",
+      "target": "function:4K_ML/generate_vectors/db.py:fetch_scene_index",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_ML/generate_vectors/db.py",
+      "target": "function:4K_ML/generate_vectors/db.py:fetch_axis_scores",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_ML/generate_vectors/db.py",
+      "target": "function:4K_ML/generate_vectors/db.py:build_series",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_ML/generate_vectors/db.py",
+      "target": "function:4K_ML/generate_vectors/db.py:upsert_vectors",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_ML/generate_vectors/db.py",
+      "target": "function:4K_ML/generate_vectors/db.py:set_has_vector",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_ML/generate_vectors/db.py",
+      "target": "function:4K_ML/generate_vectors/db.py:fetch_active_version",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_ML/generate_vectors/db.py",
+      "target": "function:4K_ML/generate_vectors/db.py:fetch_vectored_tmdbs",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_ML/generate_vectors/db.py",
+      "target": "function:4K_ML/generate_vectors/db.py:reconcile_has_vector",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_ML/generate_vectors/db.py",
+      "target": "function:4K_ML/generate_vectors/db.py:set_vector_state",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:4K_ML/tests/test_gen_db.py",
+      "target": "function:4K_ML/tests/test_gen_db.py:test_build_series_joins_score_scene_subtitle",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/tests/test_gen_db.py",
+      "target": "function:4K_ML/tests/test_gen_db.py:test_fetch_axis_scores_paginates",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:4K_ML/tests/test_gen_db.py",
+      "target": "file:4K_ML/generate_vectors/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_ML/tests/test_gen_db.py",
+      "target": "file:4K_ML/generate_vectors/db.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:4K_ML/generate_vectors/db.py",
+      "target": "file:4K_ML/tests/test_gen_db.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "function:4K_ML/tests/test_gen_db.py:test_build_series_joins_score_scene_subtitle",
+      "target": "function:4K_ML/generate_vectors/db.py:build_series",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:4K_ML/tests/test_gen_db.py:test_fetch_axis_scores_paginates",
+      "target": "function:4K_ML/generate_vectors/db.py:fetch_axis_scores",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

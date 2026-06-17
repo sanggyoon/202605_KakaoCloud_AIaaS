@@ -1,35 +1,4 @@
 {
-  "project": {
-    "name": "4K Cinema (Peakly)",
-    "description": "KakaoCloud 기반 K3s 클러스터 위에 구축한 '4K Cinema' 영화 추천 서비스와 전체 인프라를 관리하는 모노레포. Next.js 16 프론트엔드(4K_FE), FastAPI 백엔드(4K_BE), ML 파이프라인(4K_ML: 자막 파싱·라벨링·학습·서빙·벡터 생성)으로 구성되며, Supabase(Postgres+pgvector)와 Redis를 데이터 계층으로, Ansible/Terraform/ArgoCD GitOps와 Prometheus·Grafana·Loki 관측 스택으로 운영된다.",
-    "languages": [
-      "css",
-      "dockerfile",
-      "hcl",
-      "javascript",
-      "json",
-      "markdown",
-      "python",
-      "sql",
-      "terraform",
-      "typescript",
-      "yaml"
-    ],
-    "frameworks": [
-      "React",
-      "Next.js",
-      "Tailwind CSS",
-      "FastAPI",
-      "Uvicorn",
-      "pytest",
-      "Docker",
-      "Docker Compose",
-      "Terraform",
-      "GitHub Actions"
-    ],
-    "analyzedAt": "2026-06-16T12:23:09.408Z",
-    "gitCommitHash": "44ca06bdd39eb8f7f92e199d4e095bb9a8475e04"
-  },
   "nodes": [
     {
       "id": "file:4K_ML/serving/predict_core.py",
@@ -7068,14 +7037,14 @@
       "target": "function:4K_ML/serving/predict_core.py:load_artifacts",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/serving/predict_core.py",
       "target": "function:4K_ML/serving/predict_core.py:score_instances",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/serving/predict_core.py",
@@ -7131,7 +7100,7 @@
       "target": "function:4K_ML/serving/predictor.py:create_app",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/serving/predictor.py",
@@ -7341,14 +7310,14 @@
       "target": "function:4K_ML/train/dataset.py:split_movies",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/train/dataset.py",
       "target": "class:4K_ML/train/dataset.py:SceneDataset",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/train/dataset.py",
@@ -7383,21 +7352,21 @@
       "target": "function:4K_ML/train/db.py:_headers",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/train/db.py",
       "target": "function:4K_ML/train/db.py:fetch_movie_scenes",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/train/db.py",
       "target": "function:4K_ML/train/db.py:upsert_model_version",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/train/db.py",
@@ -7418,14 +7387,14 @@
       "target": "function:4K_ML/train/evaluate.py:movie_spearman",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/train/evaluate.py",
       "target": "function:4K_ML/train/evaluate.py:pearson",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/train/evaluate.py",
@@ -7446,14 +7415,14 @@
       "target": "function:4K_ML/train/features.py:compute_features",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/train/features.py",
       "target": "class:4K_ML/train/features.py:Scaler",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/train/features.py",
@@ -7474,14 +7443,14 @@
       "target": "class:4K_ML/train/model.py:HybridRobertaRegressor",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/train/model.py",
       "target": "function:4K_ML/train/model.py:build_encoder",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/train/model.py",
@@ -7502,28 +7471,28 @@
       "target": "function:4K_ML/train/train_model.py:run",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/train/train_model.py",
       "target": "function:4K_ML/train/train_model.py:_predict",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/train/train_model.py",
       "target": "function:4K_ML/train/train_model.py:_save",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/train/train_model.py",
       "target": "function:4K_ML/train/train_model.py:load_training_data",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/train/train_model.py",
@@ -7824,14 +7793,14 @@
       "target": "function:4K_BE/app/backfill_popular.py:backfill_events",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/backfill_popular.py",
       "target": "function:4K_BE/app/backfill_popular.py:config_from_env",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/backfill_popular.py",
@@ -7852,14 +7821,14 @@
       "target": "function:4K_BE/app/jobs.py:_run",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/jobs.py",
       "target": "function:4K_BE/app/jobs.py:start",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/jobs.py",
@@ -7873,175 +7842,175 @@
       "target": "function:4K_BE/app/main.py:list_movies",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/main.py",
       "target": "function:4K_BE/app/main.py:search_movies",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/main.py",
       "target": "function:4K_BE/app/main.py:recent_movies",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/main.py",
       "target": "function:4K_BE/app/main.py:movie_detail",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/main.py",
       "target": "function:4K_BE/app/main.py:_movie_processing",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/main.py",
       "target": "function:4K_BE/app/main.py:update_movie",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/main.py",
       "target": "function:4K_BE/app/main.py:add_movie",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/main.py",
       "target": "function:4K_BE/app/main.py:_reset_processing",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/main.py",
       "target": "function:4K_BE/app/main.py:delete_movie",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/main.py",
       "target": "function:4K_BE/app/main.py:log_visit",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/main.py",
       "target": "function:4K_BE/app/main.py:_count",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/main.py",
       "target": "function:4K_BE/app/main.py:active_model",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/main.py",
       "target": "function:4K_BE/app/main.py:_processing_counts",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/main.py",
       "target": "function:4K_BE/app/main.py:visits_range",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/main.py",
       "target": "function:4K_BE/app/main.py:stats",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/main.py",
       "target": "function:4K_BE/app/main.py:_active_base",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/subtitle_collect.py",
       "target": "function:4K_BE/app/subtitle_collect.py:collect_events",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/subtitle_collect.py",
       "target": "function:4K_BE/app/subtitle_collect.py:collect_one",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/subtitle_collect.py",
       "target": "function:4K_BE/app/subtitle_collect.py:search",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/subtitle_collect.py",
       "target": "function:4K_BE/app/subtitle_collect.py:choose",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/subtitle_collect.py",
       "target": "function:4K_BE/app/subtitle_collect.py:_largest_srt",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/subtitle_collect.py",
       "target": "function:4K_BE/app/subtitle_collect.py:set_status",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/subtitle_collect.py",
       "target": "function:4K_BE/app/subtitle_collect.py:save_subtitle",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/subtitle_collect.py",
       "target": "function:4K_BE/app/subtitle_collect.py:fetch_status",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/subtitle_collect.py",
       "target": "function:4K_BE/app/subtitle_collect.py:run",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/subtitle_collect.py",
@@ -8265,14 +8234,14 @@
       "target": "function:4K_FE/app/components/BackgroundThread.tsx:Threads",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/components/ClimaxGraph.tsx",
       "target": "function:4K_FE/app/components/ClimaxGraph.tsx:ClimaxGraph",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/components/ClimaxGraph.tsx",
@@ -8307,7 +8276,7 @@
       "target": "function:4K_FE/app/components/DetailOverlay.tsx:DetailOverlay",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/components/DetailOverlay.tsx",
@@ -8384,7 +8353,7 @@
       "target": "function:4K_FE/app/components/FilterBar.tsx:FilterBar",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/components/FilterBar.tsx",
@@ -8398,35 +8367,35 @@
       "target": "function:4K_FE/app/components/FilterBar.tsx:YearRangeRow",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/components/FilterBar.tsx",
       "target": "function:4K_FE/app/components/FilterBar.tsx:PrefRow",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/components/FilterBar.tsx",
       "target": "function:4K_FE/app/components/FilterBar.tsx:YearStepper",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/components/FilterBar.tsx",
       "target": "function:4K_FE/app/components/FilterBar.tsx:FilterRow",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/components/FilterBar.tsx",
       "target": "function:4K_FE/app/components/FilterBar.tsx:MultiFilterRow",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/components/FilterBar.tsx",
@@ -8440,7 +8409,7 @@
       "target": "function:4K_FE/app/components/MiniGraph.tsx:MiniGraph",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/components/MiniGraph.tsx",
@@ -8475,7 +8444,7 @@
       "target": "function:4K_FE/app/components/MovieDetailModal.tsx:MovieDetailModal",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/components/MovieDetailModal.tsx",
@@ -8496,7 +8465,7 @@
       "target": "function:4K_FE/app/components/PosterCard.tsx:PosterCard",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/components/PosterCard.tsx",
@@ -8517,7 +8486,7 @@
       "target": "function:4K_FE/app/components/RandomModal.tsx:RandomModal",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/components/RandomModal.tsx",
@@ -8531,7 +8500,7 @@
       "target": "function:4K_FE/app/components/RandomModal.tsx:fetchRandomFromServer",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/components/RandomModal.tsx",
@@ -8545,7 +8514,7 @@
       "target": "function:4K_FE/app/components/Tutorial.tsx:Tutorial",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/components/Tutorial.tsx",
@@ -8566,7 +8535,7 @@
       "target": "function:4K_FE/app/dashboard/page.tsx:Dashboard",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/dashboard/page.tsx",
@@ -8643,7 +8612,7 @@
       "target": "function:4K_FE/app/lib/climax.ts:cosineSimilarity",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/lib/climax.ts",
@@ -8657,14 +8626,14 @@
       "target": "function:4K_FE/app/lib/climax.ts:countPeaks",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/lib/climax.ts",
       "target": "function:4K_FE/app/lib/climax.ts:topPeaks",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/lib/climax.ts",
@@ -8678,7 +8647,7 @@
       "target": "function:4K_FE/app/lib/climax.ts:climaxDescriptor",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/lib/climax.ts",
@@ -8692,7 +8661,7 @@
       "target": "function:4K_FE/app/lib/climax.ts:climaxMetrics",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/lib/climax.ts",
@@ -8706,7 +8675,7 @@
       "target": "function:4K_FE/app/lib/color.ts:valenceGradientStops",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/lib/color.ts",
@@ -8720,7 +8689,7 @@
       "target": "function:4K_FE/app/lib/data.ts:fetchPreferredMovies",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/lib/data.ts",
@@ -8734,7 +8703,7 @@
       "target": "function:4K_FE/app/lib/data.ts:fetchMovieVectorPairs",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/lib/data.ts",
@@ -8748,7 +8717,7 @@
       "target": "function:4K_FE/app/lib/data.ts:fetchVectorPair",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/lib/data.ts",
@@ -8762,7 +8731,7 @@
       "target": "function:4K_FE/app/lib/data.ts:logVisit",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/lib/data.ts",
@@ -8776,7 +8745,7 @@
       "target": "function:4K_FE/app/lib/data.ts:fetchMovieVectors",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/lib/data.ts",
@@ -8790,7 +8759,7 @@
       "target": "function:4K_FE/app/lib/data.ts:getActiveVersion",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/lib/data.ts",
@@ -8804,7 +8773,7 @@
       "target": "function:4K_FE/app/movie_list/page.tsx:MovieListPage",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/movie_list/page.tsx",
@@ -8832,7 +8801,7 @@
       "target": "function:4K_FE/app/movie_list/recent/page.tsx:RecentPage",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/movie_list/recent/page.tsx",
@@ -8853,7 +8822,7 @@
       "target": "function:4K_FE/app/page.tsx:OnboardingPage",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/page.tsx",
@@ -8979,42 +8948,42 @@
       "target": "function:4K_ML/subtitle_parse/db.py:_headers",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/subtitle_parse/db.py",
       "target": "function:4K_ML/subtitle_parse/db.py:fetch_targets",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/subtitle_parse/db.py",
       "target": "function:4K_ML/subtitle_parse/db.py:fetch_subtitle",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/subtitle_parse/db.py",
       "target": "function:4K_ML/subtitle_parse/db.py:upsert_scenes",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/subtitle_parse/db.py",
       "target": "function:4K_ML/subtitle_parse/db.py:upsert_dialogues",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/subtitle_parse/db.py",
       "target": "function:4K_ML/subtitle_parse/db.py:set_parse_state",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/subtitle_parse/db.py",
@@ -9056,7 +9025,7 @@
       "target": "function:4K_ML/subtitle_parse/embed.py:embed_texts",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/subtitle_parse/embed.py",
@@ -9070,7 +9039,7 @@
       "target": "function:4K_ML/subtitle_parse/features.py:line_features",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/subtitle_parse/features.py",
@@ -9084,14 +9053,14 @@
       "target": "function:4K_ML/subtitle_parse/parse_subtitles.py:parse_one",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/subtitle_parse/parse_subtitles.py",
       "target": "function:4K_ML/subtitle_parse/parse_subtitles.py:run",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/subtitle_parse/parse_subtitles.py",
@@ -9112,14 +9081,14 @@
       "target": "function:4K_ML/subtitle_parse/scenes.py:config_from_env",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/subtitle_parse/scenes.py",
       "target": "function:4K_ML/subtitle_parse/scenes.py:split_scenes",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/subtitle_parse/scenes.py",
@@ -9140,14 +9109,14 @@
       "target": "class:4K_ML/subtitle_parse/srt.py:Cue",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/subtitle_parse/srt.py",
       "target": "function:4K_ML/subtitle_parse/srt.py:parse_srt",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/subtitle_parse/srt.py",
@@ -9168,42 +9137,42 @@
       "target": "function:4K_ML/tests/test_parse_db.py:test_fetch_targets_filters",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/tests/test_parse_db.py",
       "target": "function:4K_ML/tests/test_parse_db.py:test_upsert_scenes_returns_rows",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/tests/test_parse_db.py",
       "target": "function:4K_ML/tests/test_parse_db.py:test_set_parse_state_posts",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/tests/test_parse_main.py",
       "target": "function:4K_ML/tests/test_parse_main.py:test_parse_one_builds_scenes_and_dialogues",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/tests/test_scenes.py",
       "target": "function:4K_ML/tests/test_scenes.py:test_gap_boundary_gated_by_min_ms",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/tests/test_srt.py",
       "target": "function:4K_ML/tests/test_srt.py:test_skips_malformed_block_and_reindexes",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "function:4K_ML/subtitle_parse/parse_subtitles.py:parse_one",
@@ -9406,56 +9375,56 @@
       "target": "function:4K_ML/labeling/batch.py:build_requests",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/labeling/batch.py",
       "target": "function:4K_ML/labeling/batch.py:collect",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/labeling/db.py",
       "target": "function:4K_ML/labeling/db.py:fetch_scenes",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/labeling/db.py",
       "target": "function:4K_ML/labeling/db.py:ensure_model_versions",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/labeling/db.py",
       "target": "function:4K_ML/labeling/db.py:set_label_state",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/labeling/label_scenes.py",
       "target": "function:4K_ML/labeling/label_scenes.py:parse_to_rows",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/labeling/label_scenes.py",
       "target": "function:4K_ML/labeling/label_scenes.py:run",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/labeling/prompt.py",
       "target": "function:4K_ML/labeling/prompt.py:build_user_message",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/labeling/batch.py",
@@ -9665,49 +9634,49 @@
       "target": "function:4K_ML/serving/db.py:_get_all",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/serving/db.py",
       "target": "function:4K_ML/serving/db.py:fetch_active_version",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/serving/db.py",
       "target": "function:4K_ML/serving/db.py:select_score_targets",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/serving/db.py",
       "target": "function:4K_ML/serving/db.py:fetch_score_targets",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/serving/db.py",
       "target": "function:4K_ML/serving/db.py:fetch_movie_scenes_for_scoring",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/serving/db.py",
       "target": "function:4K_ML/serving/db.py:ensure_model_versions",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/serving/db.py",
       "target": "function:4K_ML/serving/db.py:set_score_state",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/serving/db.py",
@@ -9784,14 +9753,14 @@
       "target": "function:4K_ML/serving/score_scenes.py:run",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/serving/score_scenes.py",
       "target": "function:4K_ML/serving/score_scenes.py:call_predictor",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/serving/score_scenes.py",
@@ -9847,14 +9816,14 @@
       "target": "function:4K_ML/serving/score_scenes_gpu.py:run",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/serving/score_scenes_gpu.py",
       "target": "function:4K_ML/serving/score_scenes_gpu.py:scene_score_rows",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/serving/score_scenes_gpu.py",
@@ -9931,49 +9900,49 @@
       "target": "function:4K_ML/tests/test_score_gpu.py:test_run_flow_loads_active_model_and_upserts",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/tests/test_score_main.py",
       "target": "function:4K_ML/tests/test_score_main.py:test_run_scores_and_states",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/tests/test_score_main.py",
       "target": "function:4K_ML/tests/test_score_main.py:test_run_flags_failed",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/tests/test_score_targets.py",
       "target": "function:4K_ML/tests/test_score_targets.py:test_select_targets_only_missing_and_parsed",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/tests/test_serving_db.py",
       "target": "function:4K_ML/tests/test_serving_db.py:test_fetch_score_targets",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/tests/test_serving_db.py",
       "target": "function:4K_ML/tests/test_serving_db.py:test_fetch_movie_scenes_for_scoring",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/tests/test_serving_db.py",
       "target": "function:4K_ML/tests/test_serving_db.py:test_upsert_scene_scores_and_state",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/serving/score_scenes_gpu.py",
@@ -10008,7 +9977,7 @@
       "target": "function:4K_FE/app/api/manager/auth/login/route.ts:POST",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/api/manager/auth/login/route.ts",
@@ -10043,7 +10012,7 @@
       "target": "function:4K_FE/app/api/manager/auth/logout/route.ts:POST",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/api/manager/auth/logout/route.ts",
@@ -10064,7 +10033,7 @@
       "target": "function:4K_FE/app/lib/auth.ts:verifyCredentials",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/lib/auth.ts",
@@ -10078,7 +10047,7 @@
       "target": "function:4K_FE/app/lib/auth.ts:sessionToken",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/lib/auth.ts",
@@ -10092,7 +10061,7 @@
       "target": "function:4K_FE/app/lib/auth.ts:isValidSession",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/lib/auth.ts",
@@ -10113,7 +10082,7 @@
       "target": "function:4K_FE/proxy.ts:proxy",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/proxy.ts",
@@ -10141,70 +10110,70 @@
       "target": "function:4K_ML/generate_vectors/db.py:_ai_get_all",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/generate_vectors/db.py",
       "target": "function:4K_ML/generate_vectors/db.py:fetch_scene_index",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/generate_vectors/db.py",
       "target": "function:4K_ML/generate_vectors/db.py:fetch_axis_scores",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/generate_vectors/db.py",
       "target": "function:4K_ML/generate_vectors/db.py:build_series",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/generate_vectors/db.py",
       "target": "function:4K_ML/generate_vectors/db.py:upsert_vectors",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/generate_vectors/db.py",
       "target": "function:4K_ML/generate_vectors/db.py:set_has_vector",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/generate_vectors/db.py",
       "target": "function:4K_ML/generate_vectors/db.py:fetch_active_version",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/generate_vectors/db.py",
       "target": "function:4K_ML/generate_vectors/db.py:fetch_vectored_tmdbs",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/generate_vectors/db.py",
       "target": "function:4K_ML/generate_vectors/db.py:reconcile_has_vector",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/generate_vectors/db.py",
       "target": "function:4K_ML/generate_vectors/db.py:set_vector_state",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/generate_vectors/db.py",
@@ -10274,14 +10243,14 @@
       "target": "function:4K_ML/tests/test_gen_db.py:test_build_series_joins_score_scene_subtitle",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/tests/test_gen_db.py",
       "target": "function:4K_ML/tests/test_gen_db.py:test_fetch_axis_scores_paginates",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/tests/test_gen_db.py",
@@ -10323,21 +10292,21 @@
       "target": "function:4K_ML/generate_vectors/generate_vectors.py:select_vector_targets",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/generate_vectors/generate_vectors.py",
       "target": "function:4K_ML/generate_vectors/generate_vectors.py:build_rows",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/generate_vectors/generate_vectors.py",
       "target": "function:4K_ML/generate_vectors/generate_vectors.py:run",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/generate_vectors/generate_vectors.py",
@@ -10365,7 +10334,7 @@
       "target": "function:4K_ML/tests/test_gen_run.py:test_build_rows_arousal_required_valence_optional",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/tests/test_gen_run.py",
@@ -11149,49 +11118,49 @@
       "target": "function:4K_BE/app/tmdb_common.py:sb_headers",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/tmdb_common.py",
       "target": "function:4K_BE/app/tmdb_common.py:pick_trailer",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/tmdb_common.py",
       "target": "function:4K_BE/app/tmdb_common.py:build_movie",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/tmdb_common.py",
       "target": "function:4K_BE/app/tmdb_common.py:tmdb_discover",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/tmdb_common.py",
       "target": "function:4K_BE/app/tmdb_common.py:fetch_movie",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/tmdb_common.py",
       "target": "function:4K_BE/app/tmdb_common.py:get_existing_tmdb_ids",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/tmdb_common.py",
       "target": "function:4K_BE/app/tmdb_common.py:upsert_movies",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/app/tmdb_common.py",
@@ -11275,42 +11244,42 @@
       "target": "function:4K_BE/DB_SCRIPTS/seed_movies.py:tmdb_get",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/DB_SCRIPTS/seed_movies.py",
       "target": "function:4K_BE/DB_SCRIPTS/seed_movies.py:fetch_movie",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/DB_SCRIPTS/seed_movies.py",
       "target": "function:4K_BE/DB_SCRIPTS/seed_movies.py:get_existing_tmdb_ids",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/DB_SCRIPTS/seed_movies.py",
       "target": "function:4K_BE/DB_SCRIPTS/seed_movies.py:verify_insert",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/DB_SCRIPTS/seed_movies.py",
       "target": "function:4K_BE/DB_SCRIPTS/seed_movies.py:upsert_batch",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_BE/DB_SCRIPTS/seed_movies.py",
       "target": "function:4K_BE/DB_SCRIPTS/seed_movies.py:main",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "function:4K_BE/DB_SCRIPTS/seed_movies.py:fetch_movie",
@@ -11380,7 +11349,7 @@
       "target": "function:4K_FE/app/login/page.tsx:LoginPage",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/login/page.tsx",
@@ -11394,35 +11363,35 @@
       "target": "function:4K_FE/app/manager/page.tsx:startAndPoll",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/manager/page.tsx",
       "target": "function:4K_FE/app/manager/page.tsx:JobBanner",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/manager/page.tsx",
       "target": "function:4K_FE/app/manager/page.tsx:ManagerPage",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/manager/page.tsx",
       "target": "function:4K_FE/app/manager/page.tsx:CollectCard",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/manager/page.tsx",
       "target": "function:4K_FE/app/manager/page.tsx:LinkRow",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/manager/page.tsx",
@@ -11436,14 +11405,14 @@
       "target": "function:4K_FE/app/manager/page.tsx:JobBanner",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "function:4K_FE/app/manager/page.tsx:ManagerPage",
       "target": "function:4K_FE/app/manager/page.tsx:CollectCard",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "function:4K_FE/app/manager/page.tsx:ManagerPage",
@@ -11527,7 +11496,7 @@
       "target": "function:4K_ML/db/apply_schema.py:apply_schema",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/db/apply_schema.py",
@@ -11541,14 +11510,14 @@
       "target": "function:4K_ML/generate_vectors/transform.py:_resample_smooth",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/generate_vectors/transform.py",
       "target": "function:4K_ML/generate_vectors/transform.py:process_axis",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/generate_vectors/transform.py",
@@ -11562,7 +11531,7 @@
       "target": "function:4K_ML/serving/promote.py:decide",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/serving/promote.py",
@@ -11576,14 +11545,14 @@
       "target": "function:aws/terraform/lambda/dr_controller.py:_kakao_healthy",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:aws/terraform/lambda/dr_controller.py",
       "target": "function:aws/terraform/lambda/dr_controller.py:handler",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:aws/terraform/lambda/dr_controller.py",
@@ -11667,14 +11636,14 @@
       "target": "function:4K_ML/tests/test_vector_targets.py:test_only_unvectored_movies",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_ML/tests/test_vector_targets.py",
       "target": "function:4K_ML/tests/test_vector_targets.py:test_all_vectored_returns_empty",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "function:4K_ML/tests/test_vector_targets.py:test_only_unvectored_movies",
@@ -11695,63 +11664,63 @@
       "target": "function:4K_FE/app/api/manager/active-model/route.ts:GET",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/api/manager/jobs/[type]/route.ts",
       "target": "function:4K_FE/app/api/manager/jobs/[type]/route.ts:GET",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/api/manager/movies/[tmdb_id]/reprocess/route.ts",
       "target": "function:4K_FE/app/api/manager/movies/[tmdb_id]/reprocess/route.ts:POST",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/api/manager/movies/[tmdb_id]/route.ts",
       "target": "function:4K_FE/app/api/manager/movies/[tmdb_id]/route.ts:PATCH",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/api/manager/movies/backfill/route.ts",
       "target": "function:4K_FE/app/api/manager/movies/backfill/route.ts:POST",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/api/manager/movies/route.ts",
       "target": "function:4K_FE/app/api/manager/movies/route.ts:GET",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/api/manager/movies/search/route.ts",
       "target": "function:4K_FE/app/api/manager/movies/search/route.ts:GET",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/api/visit/route.ts",
       "target": "function:4K_FE/app/api/visit/route.ts:POST",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     },
     {
       "source": "file:4K_FE/app/layout.tsx",
       "target": "function:4K_FE/app/layout.tsx:RootLayout",
       "type": "contains",
       "direction": "forward",
-      "weight": 1
+      "weight": 1.0
     }
   ],
   "layers": [
@@ -12257,140 +12226,6 @@
         "document:4K_ML/requirements.txt",
         "document:readme.md"
       ]
-    }
-  ],
-  "tour": [
-    {
-      "order": 1,
-      "title": "프로젝트 개요와 monorepo 구조",
-      "description": "README와 서비스 개요 문서로 4K Cinema(Peakly)가 무엇인지 파악합니다. 이 서비스는 영화의 climax-graph(감정 기복 시계열)를 분석해 비슷한 영화를 추천하는 KakaoCloud k3s 기반 peak-score 추천 서비스입니다. 두 문서는 라이브 서비스, FE/BE/ML 기술 스택, 배포 파이프라인, 그리고 4K_FE·4K_BE·4K_ML로 나뉜 monorepo 구조와 화면 구성(랜딩/대시보드/매니저)을 한눈에 보여줍니다.",
-      "nodeIds": [
-        "document:readme.md",
-        "document:Documents/서비스 개요.md",
-        "document:Documents/프로젝트 디렉토리 구조.md"
-      ]
-    },
-    {
-      "order": 2,
-      "title": "Frontend 진입: 온보딩 → 대시보드",
-      "description": "공개 FE 경험의 시작점입니다. page.tsx는 서비스 진입 시 보이는 온보딩/랜딩 페이지로 대시보드로의 진입을 안내하고, dashboard/page.tsx는 무한 스크롤 영화 목록·필터 검색·선호 관리·상세 오버레이·랜덤 추천·튜토리얼을 통합 조율하는 메인 화면입니다. 1단계의 화면 구성이 실제 Next.js 16 App Router 코드로 어떻게 구현되는지 확인하세요.",
-      "nodeIds": [
-        "file:4K_FE/app/page.tsx",
-        "file:4K_FE/app/dashboard/page.tsx"
-      ],
-      "languageLesson": "Next.js App Router에서 app/page.tsx는 라우트의 기본 화면이고 디렉터리 이름이 곧 URL 경로가 됩니다. 별도 설정 없이 폴더 구조가 라우팅을 정의합니다."
-    },
-    {
-      "order": 3,
-      "title": "Climax graph와 유사 영화 추천 로직",
-      "description": "이 서비스의 핵심 개념이 담긴 단계입니다. ClimaxGraph 컴포넌트는 영화의 arousal/valence 시계열을 Catmull-Rom 곡선과 valence 그라데이션(높이는 arousal, 색은 valence)으로 그리는 SVG 시각화이고, DetailOverlay는 이를 상세 화면에서 노출합니다. climax.ts는 코사인 유사도·z-score 정규화·피크 검출 등 추천의 수학적 토대를 제공합니다.",
-      "nodeIds": [
-        "file:4K_FE/app/components/ClimaxGraph.tsx",
-        "file:4K_FE/app/components/DetailOverlay.tsx",
-        "file:4K_FE/app/lib/climax.ts"
-      ],
-      "languageLesson": "코사인 유사도는 두 movie_vector의 방향 유사성을 측정합니다. z-score로 정규화한 벡터에 적용하면 절대 강도가 아닌 감정 곡선의 '모양'이 비슷한 영화를 찾을 수 있습니다."
-    },
-    {
-      "order": 4,
-      "title": "FE 데이터 액세스 계층",
-      "description": "data.ts는 FE에서 fan-in이 가장 높은 데이터 액세스 계층으로, Supabase REST 기반으로 영화/벡터 fetch, 추천 후보 조회, 포스터·장르 헬퍼, 최근 본 영화 localStorage 관리, 방문 로깅을 제공합니다. 2~3단계 화면들이 모두 이 모듈을 거쳐 데이터를 가져오므로, FE→BE/Supabase 데이터 경로의 첫 관문입니다.",
-      "nodeIds": [
-        "file:4K_FE/app/lib/data.ts"
-      ]
-    },
-    {
-      "order": 5,
-      "title": "Backend API: FastAPI 엔트리포인트",
-      "description": "main.py는 fan-out이 가장 높은(30) 백엔드 중심으로, FastAPI 애플리케이션 엔트리포인트입니다. 영화 목록/검색/상세, 백필·자막 수집 잡 트리거, 매니저용 CRUD, 방문 로깅 및 통계 엔드포인트를 제공합니다. 4단계 FE 데이터 계층이 호출하는 서버 측 API가 여기에 정의되어 FE→BE 데이터 경로가 완성됩니다.",
-      "nodeIds": [
-        "file:4K_BE/app/main.py"
-      ]
-    },
-    {
-      "order": 6,
-      "title": "매니저 대시보드와 운영 작업",
-      "description": "manager/page.tsx는 통계/방문/백필/자막 수집을 관리하는 매니저 대시보드로, 작업 시작과 진행 상황 실시간 폴링 UI를 제공합니다. 5단계 BE의 잡 트리거 엔드포인트를 호출해 데이터 수집과 backfill을 운영자가 수동으로 제어하는 방식을 보여주며, 공개 FE와 구분되는 내부 운영 화면입니다.",
-      "nodeIds": [
-        "file:4K_FE/app/manager/page.tsx",
-        "file:4K_BE/app/backfill_popular.py",
-        "file:4K_BE/app/subtitle_collect.py"
-      ]
-    },
-    {
-      "order": 7,
-      "title": "데이터 모델: AI DB 스키마",
-      "description": "schema.sql은 ML 파이프라인의 핵심 스키마로, 자막(subtitles)→씬(scenes)→대사(dialogues) 계층과 모델 버전(model_versions)·씬 점수(scene_scores)·처리 상태(processing_status) 테이블을 정의합니다. 이후 8~11단계 ML 파이프라인이 읽고 쓰는 데이터 구조이며, 특히 model_versions의 active-model 버전 관리가 서빙과 추론의 기준이 됩니다.",
-      "nodeIds": [
-        "schema:4K_ML/db/schema.sql",
-        "table:4K_ML/db/schema.sql:model_versions",
-        "table:4K_BE/DB_SCRIPTS/visits_schema.sql"
-      ],
-      "languageLesson": "SQL 스키마의 외래키는 subtitles→scenes→dialogues의 계층 관계를 강제합니다. model_versions 테이블은 활성 모델 한 개를 표시해 서빙·채점이 어떤 버전 기준으로 동작할지 결정합니다."
-    },
-    {
-      "order": 8,
-      "title": "ML 1단계: 자막 파싱 → 씬 분할",
-      "description": "ML peak-score 파이프라인의 출발점입니다. parse_subtitles.py는 SRT 파싱→피처 추출→임베딩→씬 분할을 거쳐 씬/대사 행을 만들고 AI DB(7단계 스키마)에 upsert하며 대상 영화들을 순회 처리합니다. 원시 자막을 분석 가능한 장면 단위로 구조화하는 단계로, 이후 모든 스코어링의 입력이 됩니다.",
-      "nodeIds": [
-        "file:4K_ML/subtitle_parse/parse_subtitles.py",
-        "file:4K_ML/subtitle_parse/srt.py"
-      ]
-    },
-    {
-      "order": 9,
-      "title": "ML 2단계: roberta-va 장면 스코어링",
-      "description": "분할된 장면에 감정 점수를 매기는 단계입니다. score_scenes.py는 원격 KServe/HTTP 예측기를 호출해 장면의 peak score를 산출하고 AI DB에 반영하는 CPU 채점 엔트리이며, score_scenes_gpu.py는 GPU 배치용 변형입니다. roberta-va 모델로 각 장면의 arousal/valence를 추론해 scene_scores 테이블을 채웁니다.",
-      "nodeIds": [
-        "file:4K_ML/serving/score_scenes.py",
-        "file:4K_ML/serving/score_scenes_gpu.py",
-        "file:4K_ML/serving/db.py"
-      ]
-    },
-    {
-      "order": 10,
-      "title": "ML 3단계: z-score + savgol 벡터 생성",
-      "description": "장면 점수를 영화 단위 movie_vector로 집약하는 단계입니다. generate_vectors/db.py는 AI DB와 Data DB(PostgREST 스타일 REST)에 대해 scene/axis 점수 조회, 벡터 upsert, has_vector 상태 동기화를 수행합니다. z-score 정규화와 Savitzky-Golay 평활화를 거친 벡터가 3단계 FE의 코사인 유사도 추천에 그대로 쓰입니다.",
-      "nodeIds": [
-        "file:4K_ML/generate_vectors/db.py"
-      ],
-      "languageLesson": "Savitzky-Golay 필터는 시계열의 큰 추세는 유지하면서 잡음을 줄이는 평활화 기법입니다. z-score 정규화와 결합하면 영화마다 길이·강도가 달라도 비교 가능한 감정 곡선 벡터가 만들어집니다."
-    },
-    {
-      "order": 11,
-      "title": "ML 학습과 active-model 버전 관리·서빙",
-      "description": "모델을 학습하고 서빙하는 단계입니다. train_model.py는 AI DB에서 데이터를 로드·분할·스케일링하고 HybridRobertaRegressor를 AMP·조기종료로 학습한 뒤 아티팩트 저장과 model_versions upsert까지 수행합니다. predict_core.py는 학습된 모델과 스케일러/토크나이저를 로드해 0~1 범위 peak-score를 추론하는 서빙 핵심 로직으로, KServe InferenceService로 노출됩니다.",
-      "nodeIds": [
-        "file:4K_ML/train/train_model.py",
-        "file:4K_ML/train/model.py",
-        "file:4K_ML/serving/predict_core.py",
-        "service:Ansible/manifests/4k-ml/inferenceservice-roberta-va.yaml"
-      ]
-    },
-    {
-      "order": 12,
-      "title": "Argo 자동화: cron 파이프라인 + GPU 배치",
-      "description": "8~11단계의 ML 파이프라인을 자동화하는 Argo Workflows입니다. cronworkflow-parse/score/vector는 자막 파싱·장면 채점·벡터 생성을 주기적으로 실행하고, workflowtemplate-score-scenes-gpu는 GPU 배치 채점을 정의합니다. 신규 영화가 들어오면 사람 개입 없이 parse→score→vector가 흐르도록 스케줄링하는 GitOps 운영의 핵심입니다.",
-      "nodeIds": [
-        "pipeline:Ansible/manifests/4k-ml/cronworkflow-parse.yaml",
-        "pipeline:Ansible/manifests/4k-ml/cronworkflow-score.yaml",
-        "pipeline:Ansible/manifests/4k-ml/cronworkflow-vector.yaml",
-        "pipeline:Ansible/manifests/4k-ml/workflowtemplate-score-scenes-gpu.yaml"
-      ],
-      "languageLesson": "Argo CronWorkflow는 k8s 안에서 cron 스케줄로 WorkflowTemplate을 실행합니다. 재사용 가능한 템플릿을 cron이 호출하는 구조라 파이프라인 단계를 조합·교체하기 쉽습니다."
-    },
-    {
-      "order": 13,
-      "title": "Infra·GitOps·DR: k3s, ArgoCD, AWS failover",
-      "description": "전체 시스템을 떠받치는 인프라 계층으로 투어를 마무리합니다. Ansible playbook이 k3s 클러스터를 프로비저닝하고, ArgoCD app 매니페스트가 manifests를 GitOps로 동기화하며, GitHub Actions가 이미지 빌드·배포를 담당합니다. AWS Terraform의 dr_trigger와 DR 런북은 KakaoCloud 장애 시 Route53 health check로 AWS failover를 자동 트리거하는 재해복구 전략을 정의합니다.",
-      "nodeIds": [
-        "config:Ansible/playbooks/02-k3s-server.yml",
-        "config:Ansible/manifests/argocd/argocd-app-4k-ml.yaml",
-        "pipeline:.github/workflows/deploy-4k-ml.yml",
-        "resource:aws/terraform/dr_trigger.tf",
-        "document:aws/DR-DB-RUNBOOK.md"
-      ],
-      "languageLesson": "GitOps에서는 git 저장소가 클러스터의 desired state이고 ArgoCD가 이를 지속 동기화합니다. Terraform의 Route53 health check + Lambda는 primary 장애를 감지해 DNS를 DR 사이트로 전환하는 자동 failover를 구성합니다."
     }
   ]
 }

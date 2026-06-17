@@ -1,0 +1,23 @@
+{
+  "nodes": [
+    {
+      "id": "service:4K_BE/Dockerfile",
+      "type": "service",
+      "name": "Dockerfile",
+      "filePath": "4K_BE/Dockerfile",
+      "summary": "FastAPI 백엔드를 python:3.11-slim 기반으로 컨테이너화하는 Dockerfile. requirements.txt 설치 후 app/ 디렉터리를 복사하고 8000 포트에서 uvicorn으로 app.main:app을 실행한다.",
+      "tags": ["containerization", "infrastructure", "deployment", "fastapi", "backend"],
+      "complexity": "simple",
+      "languageNotes": "단일 스테이지 빌드로, --no-cache-dir 옵션으로 pip 캐시를 제거해 이미지 크기를 줄인다."
+    }
+  ],
+  "edges": [
+    {
+      "source": "service:4K_BE/Dockerfile",
+      "target": "file:4K_BE/app/main.py",
+      "type": "deploys",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

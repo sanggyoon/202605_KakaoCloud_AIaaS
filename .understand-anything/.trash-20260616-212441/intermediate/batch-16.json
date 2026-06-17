@@ -1,0 +1,204 @@
+{
+  "nodes": [
+    {
+      "id": "schema:4K_ML/db/p1_migrations.sql",
+      "type": "schema",
+      "name": "p1_migrations.sql",
+      "filePath": "4K_ML/db/p1_migrations.sql",
+      "summary": "vm5(ai)와 vm4(data) DB에 대한 P1 마이그레이션. model_versions에 active 플래그 추가, 고아 scene_scores 정리, FE용 active_model_version 미러 테이블(app_config) 생성을 수행한다.",
+      "tags": ["database", "migration", "schema-definition", "model-versioning"],
+      "complexity": "simple",
+      "languageNotes": "ALTER ... ADD COLUMN IF NOT EXISTS / CREATE TABLE IF NOT EXISTS / INSERT ... ON CONFLICT 으로 멱등성을 확보한 마이그레이션 패턴."
+    },
+    {
+      "id": "table:4K_ML/db/p1_migrations.sql:app_config",
+      "type": "table",
+      "name": "app_config",
+      "filePath": "4K_ML/db/p1_migrations.sql",
+      "lineRange": [14, 17],
+      "summary": "key/value 형태의 설정 미러 테이블. FE가 anon SELECT로 active_model_version 같은 활성 모델 버전을 읽기 위한 용도로 생성된다.",
+      "tags": ["database", "config", "key-value", "data-model"],
+      "complexity": "simple"
+    },
+    {
+      "id": "schema:4K_ML/db/rpc_arousal_version_filter.sql",
+      "type": "schema",
+      "name": "rpc_arousal_version_filter.sql",
+      "filePath": "4K_ML/db/rpc_arousal_version_filter.sql",
+      "summary": "vm4 추천 RPC find_preferred_movies를 재정의하여 movie_vectors의 'roberta-va-v1::arousal' 버전만 참조하도록 버전 필터를 추가하는 plpgsql 함수 정의. 선호/비선호 tmdb_id centroid 거리 기반으로 영화를 추천한다.",
+      "tags": ["database", "recommendation", "stored-procedure", "vector-search", "schema-definition"],
+      "complexity": "moderate",
+      "languageNotes": "pgvector의 <-> 거리 연산자와 plpgsql STABLE 함수, CREATE OR REPLACE FUNCTION ... RETURNS SETOF 패턴 사용."
+    },
+    {
+      "id": "schema:4K_ML/db/schema.sql",
+      "type": "schema",
+      "name": "schema.sql",
+      "filePath": "4K_ML/db/schema.sql",
+      "summary": "ML 파이프라인 핵심 스키마. 자막(subtitles)→씬(scenes)→대사(dialogues) 계층과 모델 버전(model_versions), 씬 점수(scene_scores), 처리 상태(processing_status) 테이블 및 인덱스를 정의한다.",
+      "tags": ["database", "schema-definition", "data-model", "ml-pipeline"],
+      "complexity": "moderate",
+      "languageNotes": "외래키로 자막-씬-대사 정규화 계층을 구성하고 조회 성능을 위해 FK 컬럼에 보조 인덱스를 추가한 패턴."
+    },
+    {
+      "id": "table:4K_ML/db/schema.sql:subtitles",
+      "type": "table",
+      "name": "subtitles",
+      "filePath": "4K_ML/db/schema.sql",
+      "lineRange": [4, 14],
+      "summary": "원본 자막 메타데이터와 raw_text를 저장하는 최상위 테이블. tmdb_id, language, provider, SDH 여부 등을 담는다.",
+      "tags": ["database", "data-model", "subtitles"],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:4K_ML/db/schema.sql:scenes",
+      "type": "table",
+      "name": "scenes",
+      "filePath": "4K_ML/db/schema.sql",
+      "lineRange": [17, 29],
+      "summary": "자막을 씬 단위로 분할한 결과를 저장하는 테이블. subtitles_id FK, scene_index, 시간 범위(start_ms/end_ms), progress_ratio, 분할 방법을 담는다.",
+      "tags": ["database", "data-model", "scene-segmentation"],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:4K_ML/db/schema.sql:dialogues",
+      "type": "table",
+      "name": "dialogues",
+      "filePath": "4K_ML/db/schema.sql",
+      "lineRange": [33, 47],
+      "summary": "개별 대사 라인을 저장하는 테이블. subtitles_id/scenes_id FK, 타이밍과 문자/단어 수, 직전 간격 등 통계 컬럼을 포함한다.",
+      "tags": ["database", "data-model", "dialogue"],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:4K_ML/db/schema.sql:model_versions",
+      "type": "table",
+      "name": "model_versions",
+      "filePath": "4K_ML/db/schema.sql",
+      "lineRange": [52, 58],
+      "summary": "점수화에 사용된 모델 버전 메타데이터(kind, description, metrics)를 기록하는 테이블. scene_scores가 참조하는 버전 기준이 된다.",
+      "tags": ["database", "data-model", "model-versioning"],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:4K_ML/db/schema.sql:scene_scores",
+      "type": "table",
+      "name": "scene_scores",
+      "filePath": "4K_ML/db/schema.sql",
+      "lineRange": [61, 68],
+      "summary": "씬별 peak 점수를 모델 버전과 함께 저장하는 테이블. scenes_id FK와 model_version으로 점수를 식별한다.",
+      "tags": ["database", "data-model", "scoring"],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:4K_ML/db/schema.sql:processing_status",
+      "type": "table",
+      "name": "processing_status",
+      "filePath": "4K_ML/db/schema.sql",
+      "lineRange": [72, 82],
+      "summary": "tmdb_id별 파이프라인 단계(subtitle/parse/label/score/vector) 진행 상태와 에러, 재시도 횟수를 추적하는 상태 테이블.",
+      "tags": ["database", "data-model", "pipeline-status"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "schema:4K_ML/db/p1_migrations.sql",
+      "target": "table:4K_ML/db/p1_migrations.sql:app_config",
+      "type": "migrates",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "schema:4K_ML/db/p1_migrations.sql",
+      "target": "table:4K_ML/db/schema.sql:model_versions",
+      "type": "migrates",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "schema:4K_ML/db/p1_migrations.sql",
+      "target": "table:4K_ML/db/schema.sql:scene_scores",
+      "type": "migrates",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "schema:4K_ML/db/schema.sql",
+      "target": "table:4K_ML/db/schema.sql:subtitles",
+      "type": "migrates",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "schema:4K_ML/db/schema.sql",
+      "target": "table:4K_ML/db/schema.sql:scenes",
+      "type": "migrates",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "schema:4K_ML/db/schema.sql",
+      "target": "table:4K_ML/db/schema.sql:dialogues",
+      "type": "migrates",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "schema:4K_ML/db/schema.sql",
+      "target": "table:4K_ML/db/schema.sql:model_versions",
+      "type": "migrates",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "schema:4K_ML/db/schema.sql",
+      "target": "table:4K_ML/db/schema.sql:scene_scores",
+      "type": "migrates",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "schema:4K_ML/db/schema.sql",
+      "target": "table:4K_ML/db/schema.sql:processing_status",
+      "type": "migrates",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "table:4K_ML/db/schema.sql:scenes",
+      "target": "table:4K_ML/db/schema.sql:subtitles",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "table:4K_ML/db/schema.sql:dialogues",
+      "target": "table:4K_ML/db/schema.sql:scenes",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "table:4K_ML/db/schema.sql:scene_scores",
+      "target": "table:4K_ML/db/schema.sql:scenes",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "table:4K_ML/db/schema.sql:scene_scores",
+      "target": "table:4K_ML/db/schema.sql:model_versions",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "schema:4K_ML/db/rpc_arousal_version_filter.sql",
+      "target": "table:4K_ML/db/schema.sql:model_versions",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

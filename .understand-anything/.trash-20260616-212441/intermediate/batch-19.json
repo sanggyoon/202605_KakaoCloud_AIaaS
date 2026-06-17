@@ -1,0 +1,166 @@
+{
+  "nodes": [
+    {
+      "id": "pipeline:Ansible/manifests/4k-ml/cronworkflow-parse.yaml",
+      "type": "pipeline",
+      "name": "cronworkflow-parse.yaml",
+      "filePath": "Ansible/manifests/4k-ml/cronworkflow-parse.yaml",
+      "summary": "Argo CronWorkflow `parse-hourly` — 6시간마다(:10) subtitle-parse WorkflowTemplate를 실행하는 자동 자막 파싱 스케줄. concurrencyPolicy=Forbid로 중복 실행을 막는다.",
+      "tags": ["ci-cd", "argo-workflow", "cronjob", "ml-pipeline", "infrastructure"],
+      "complexity": "simple",
+      "languageNotes": "Argo CronWorkflow는 workflowTemplateRef로 기존 WorkflowTemplate을 cron 스케줄에 바인딩한다."
+    },
+    {
+      "id": "pipeline:Ansible/manifests/4k-ml/cronworkflow-score.yaml",
+      "type": "pipeline",
+      "name": "cronworkflow-score.yaml",
+      "filePath": "Ansible/manifests/4k-ml/cronworkflow-score.yaml",
+      "summary": "Argo CronWorkflow `score-hourly` — 6시간마다(:30, 파싱 20분 뒤) score-scenes WorkflowTemplate를 실행해 활성 모델 점수가 빠진 영화를 결산한다.",
+      "tags": ["ci-cd", "argo-workflow", "cronjob", "ml-pipeline", "infrastructure"],
+      "complexity": "simple"
+    },
+    {
+      "id": "pipeline:Ansible/manifests/4k-ml/cronworkflow-vector.yaml",
+      "type": "pipeline",
+      "name": "cronworkflow-vector.yaml",
+      "filePath": "Ansible/manifests/4k-ml/cronworkflow-vector.yaml",
+      "summary": "Argo CronWorkflow `vector-hourly` — 6시간마다(:50, 스코어 20분 뒤) generate-vectors WorkflowTemplate를 실행해 점수는 있으나 벡터가 없는 영화의 임베딩을 증분 생성한다.",
+      "tags": ["ci-cd", "argo-workflow", "cronjob", "ml-pipeline", "infrastructure"],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:Ansible/manifests/4k-ml/inferenceservice-roberta-va.yaml",
+      "type": "service",
+      "name": "inferenceservice-roberta-va.yaml",
+      "filePath": "Ansible/manifests/4k-ml/inferenceservice-roberta-va.yaml",
+      "summary": "KServe InferenceService `roberta-va` — RawDeployment 모드 CPU 서빙. ml-models PVC를 /mnt/models로 마운트해 학습된 roberta-va-v1 모델을 FastAPI(uvicorn) :8080 KServe V1 프로토콜로 제공한다.",
+      "tags": ["deployment", "kserve", "model-serving", "ml-pipeline", "infrastructure"],
+      "complexity": "moderate",
+      "languageNotes": "custom 컨테이너라 storageUri 대신 PVC 볼륨을 직접 마운트하고, vm5(local-path) PVC 고정을 위해 nodeSelector workload: gpu로 노드를 고정한다(GPU 자체는 요청하지 않음)."
+    },
+    {
+      "id": "resource:Ansible/manifests/4k-ml/pvc-models.yaml",
+      "type": "resource",
+      "name": "pvc-models.yaml",
+      "filePath": "Ansible/manifests/4k-ml/pvc-models.yaml",
+      "summary": "학습 산출물 저장용 PersistentVolumeClaim `ml-models` (vm5 local-path, ReadWriteOnce, 10Gi). train 워크플로가 쓰고 KServe 서빙이 읽는 공유 모델 스토리지.",
+      "tags": ["infrastructure", "storage", "persistent-volume", "ml-pipeline", "kubernetes"],
+      "complexity": "simple"
+    },
+    {
+      "id": "pipeline:Ansible/manifests/4k-ml/workflowtemplate-generate-vectors.yaml",
+      "type": "pipeline",
+      "name": "workflowtemplate-generate-vectors.yaml",
+      "filePath": "Ansible/manifests/4k-ml/workflowtemplate-generate-vectors.yaml",
+      "summary": "Argo WorkflowTemplate `generate-vectors` (단계 G) — vm5 roberta 점수를 읽어 vm4 movie_vectors 임베딩을 생성한다. GPU 불필요, generate_vectors.generate_vectors 모듈 실행.",
+      "tags": ["ci-cd", "argo-workflow", "ml-pipeline", "embedding", "infrastructure"],
+      "complexity": "simple"
+    },
+    {
+      "id": "pipeline:Ansible/manifests/4k-ml/workflowtemplate-llm-labeling.yaml",
+      "type": "pipeline",
+      "name": "workflowtemplate-llm-labeling.yaml",
+      "filePath": "Ansible/manifests/4k-ml/workflowtemplate-llm-labeling.yaml",
+      "summary": "Argo WorkflowTemplate `llm-labeling` (단계 D) — vm5에서 labeling.label_scenes 모듈을 실행해 LLM 기반 씬 라벨링을 수행한다. API 바운드라 GPU 불필요.",
+      "tags": ["ci-cd", "argo-workflow", "ml-pipeline", "llm-labeling", "infrastructure"],
+      "complexity": "simple"
+    },
+    {
+      "id": "pipeline:Ansible/manifests/4k-ml/workflowtemplate-score-scenes-gpu.yaml",
+      "type": "pipeline",
+      "name": "workflowtemplate-score-scenes-gpu.yaml",
+      "filePath": "Ansible/manifests/4k-ml/workflowtemplate-score-scenes-gpu.yaml",
+      "summary": "Argo WorkflowTemplate `score-scenes-gpu` — 대량 백필용 수동 GPU 인프로세스 배치 스코어링. ml-models PVC에서 활성 모델을 로드해 nvidia runtimeClass로 GPU 추론을 수행한다.",
+      "tags": ["ci-cd", "argo-workflow", "ml-pipeline", "gpu-inference", "infrastructure"],
+      "complexity": "moderate",
+      "languageNotes": "podSpecPatch로 runtimeClassName: nvidia를 주입하고 nvidia.com/gpu: 1 리소스를 요청해 GPU 노드에서 실행한다."
+    },
+    {
+      "id": "pipeline:Ansible/manifests/4k-ml/workflowtemplate-score-scenes.yaml",
+      "type": "pipeline",
+      "name": "workflowtemplate-score-scenes.yaml",
+      "filePath": "Ansible/manifests/4k-ml/workflowtemplate-score-scenes.yaml",
+      "summary": "Argo WorkflowTemplate `score-scenes` (단계 F) — KServe roberta-va predictor를 HTTP로 호출해 scene_scores를 적재하는 배치 스코어링. GPU 불필요, serving.score_scenes 모듈 실행.",
+      "tags": ["ci-cd", "argo-workflow", "ml-pipeline", "batch-scoring", "infrastructure"],
+      "complexity": "simple",
+      "languageNotes": "KSERVE_PREDICT_URL로 클러스터 내부 roberta-va-predictor 서비스의 :predict 엔드포인트를 가리킨다."
+    },
+    {
+      "id": "pipeline:Ansible/manifests/4k-ml/workflowtemplate-subtitle-parse.yaml",
+      "type": "pipeline",
+      "name": "workflowtemplate-subtitle-parse.yaml",
+      "filePath": "Ansible/manifests/4k-ml/workflowtemplate-subtitle-parse.yaml",
+      "summary": "Argo WorkflowTemplate `subtitle-parse` (단계 C) — vm5 GPU에서 subtitle_parse.parse_subtitles 모듈을 실행하는 자막 파싱 작업. nvidia runtimeClass + GPU 1개 요청.",
+      "tags": ["ci-cd", "argo-workflow", "ml-pipeline", "subtitle-parsing", "infrastructure"],
+      "complexity": "simple"
+    },
+    {
+      "id": "pipeline:Ansible/manifests/4k-ml/workflowtemplate-train-roberta.yaml",
+      "type": "pipeline",
+      "name": "workflowtemplate-train-roberta.yaml",
+      "filePath": "Ansible/manifests/4k-ml/workflowtemplate-train-roberta.yaml",
+      "summary": "Argo WorkflowTemplate `train-roberta` (단계 E) — vm5 GPU에서 train.train_model 모듈을 실행해 RoBERTa를 학습하고 산출물을 ml-models PVC(/models/roberta-va-v1)에 저장한다.",
+      "tags": ["ci-cd", "argo-workflow", "ml-pipeline", "model-training", "infrastructure"],
+      "complexity": "moderate",
+      "languageNotes": "nvidia runtimeClass로 GPU 학습을 수행하고 MODEL_OUT_DIR 환경변수로 PVC 내 출력 경로를 지정한다."
+    }
+  ],
+  "edges": [
+    {
+      "source": "pipeline:Ansible/manifests/4k-ml/cronworkflow-parse.yaml",
+      "target": "pipeline:Ansible/manifests/4k-ml/workflowtemplate-subtitle-parse.yaml",
+      "type": "triggers",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "pipeline:Ansible/manifests/4k-ml/cronworkflow-score.yaml",
+      "target": "pipeline:Ansible/manifests/4k-ml/workflowtemplate-score-scenes.yaml",
+      "type": "triggers",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "pipeline:Ansible/manifests/4k-ml/cronworkflow-vector.yaml",
+      "target": "pipeline:Ansible/manifests/4k-ml/workflowtemplate-generate-vectors.yaml",
+      "type": "triggers",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "pipeline:Ansible/manifests/4k-ml/workflowtemplate-score-scenes.yaml",
+      "target": "service:Ansible/manifests/4k-ml/inferenceservice-roberta-va.yaml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:Ansible/manifests/4k-ml/inferenceservice-roberta-va.yaml",
+      "target": "resource:Ansible/manifests/4k-ml/pvc-models.yaml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "pipeline:Ansible/manifests/4k-ml/workflowtemplate-train-roberta.yaml",
+      "target": "resource:Ansible/manifests/4k-ml/pvc-models.yaml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "pipeline:Ansible/manifests/4k-ml/workflowtemplate-score-scenes-gpu.yaml",
+      "target": "resource:Ansible/manifests/4k-ml/pvc-models.yaml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "pipeline:Ansible/manifests/4k-ml/workflowtemplate-train-roberta.yaml",
+      "target": "service:Ansible/manifests/4k-ml/inferenceservice-roberta-va.yaml",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

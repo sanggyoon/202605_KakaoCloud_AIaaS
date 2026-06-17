@@ -1,0 +1,21 @@
+{
+  "projectRoot": "/Users/sanggyoon/Documents/KakaoCloud_Project",
+  "batchFiles": [
+    {"path": "Ansible/manifests/argocd/argocd-app-4k-be.yaml", "language": "yaml", "sizeLines": 20, "fileCategory": "config"},
+    {"path": "Ansible/manifests/argocd/argocd-app-4k-fe.yaml", "language": "yaml", "sizeLines": 20, "fileCategory": "config"},
+    {"path": "Ansible/manifests/argocd/argocd-app-4k-ml.yaml", "language": "yaml", "sizeLines": 20, "fileCategory": "config"},
+    {"path": "Ansible/manifests/argocd/argocd-app-argo-workflows.yaml", "language": "yaml", "sizeLines": 26, "fileCategory": "config"},
+    {"path": "Ansible/manifests/argocd/argocd-app-infra.yaml", "language": "yaml", "sizeLines": 20, "fileCategory": "config"},
+    {"path": "Ansible/manifests/argocd/argocd-app-supabase-ai.yaml", "language": "yaml", "sizeLines": 26, "fileCategory": "config"},
+    {"path": "Ansible/manifests/argocd/argocd-app-supabase-data.yaml", "language": "yaml", "sizeLines": 26, "fileCategory": "config"}
+  ],
+  "batchImportData": {
+    "Ansible/manifests/argocd/argocd-app-4k-be.yaml": [],
+    "Ansible/manifests/argocd/argocd-app-4k-fe.yaml": [],
+    "Ansible/manifests/argocd/argocd-app-4k-ml.yaml": [],
+    "Ansible/manifests/argocd/argocd-app-argo-workflows.yaml": [],
+    "Ansible/manifests/argocd/argocd-app-infra.yaml": [],
+    "Ansible/manifests/argocd/argocd-app-supabase-ai.yaml": [],
+    "Ansible/manifests/argocd/argocd-app-supabase-data.yaml": []
+  }
+}

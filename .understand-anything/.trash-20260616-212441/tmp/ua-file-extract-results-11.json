@@ -1,0 +1,182 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 2,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "4K_FE/.dockerignore",
+      "language": "unknown",
+      "fileCategory": "infra",
+      "totalLines": 6,
+      "nonEmptyLines": 6,
+      "metrics": {}
+    },
+    {
+      "path": "4K_FE/Dockerfile",
+      "language": "dockerfile",
+      "fileCategory": "infra",
+      "totalLines": 36,
+      "nonEmptyLines": 31,
+      "services": [
+        {
+          "name": "deps",
+          "image": "node:22-alpine",
+          "ports": [],
+          "startLine": 2,
+          "endLine": 7
+        },
+        {
+          "name": "builder",
+          "image": "node:22-alpine",
+          "ports": [],
+          "startLine": 8,
+          "endLine": 20
+        },
+        {
+          "name": "runner",
+          "image": "node:22-alpine",
+          "ports": [
+            3000
+          ],
+          "startLine": 21,
+          "endLine": 37
+        }
+      ],
+      "steps": [
+        {
+          "name": "FROM node:22-alpine AS deps",
+          "startLine": 2,
+          "endLine": 2
+        },
+        {
+          "name": "WORKDIR /app",
+          "startLine": 3,
+          "endLine": 3
+        },
+        {
+          "name": "COPY package*.json ./",
+          "startLine": 4,
+          "endLine": 4
+        },
+        {
+          "name": "RUN npm ci",
+          "startLine": 5,
+          "endLine": 5
+        },
+        {
+          "name": "FROM node:22-alpine AS builder",
+          "startLine": 8,
+          "endLine": 8
+        },
+        {
+          "name": "WORKDIR /app",
+          "startLine": 9,
+          "endLine": 9
+        },
+        {
+          "name": "COPY --from=deps /app/node_modules ./node_modules",
+          "startLine": 10,
+          "endLine": 10
+        },
+        {
+          "name": "COPY . .",
+          "startLine": 11,
+          "endLine": 11
+        },
+        {
+          "name": "ARG NEXT_PUBLIC_SUPABASE_URL",
+          "startLine": 14,
+          "endLine": 14
+        },
+        {
+          "name": "ARG NEXT_PUBLIC_SUPABASE_ANON_KEY",
+          "startLine": 15,
+          "endLine": 15
+        },
+        {
+          "name": "ENV NEXT_PUBLIC_SUPABASE_URL=$NEXT_PUBLIC_SUPABASE_URL",
+          "startLine": 16,
+          "endLine": 16
+        },
+        {
+          "name": "ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=$NEXT_PUBLIC_SUPABASE_ANON_KEY",
+          "startLine": 17,
+          "endLine": 17
+        },
+        {
+          "name": "RUN npm run build",
+          "startLine": 18,
+          "endLine": 18
+        },
+        {
+          "name": "FROM node:22-alpine AS runner",
+          "startLine": 21,
+          "endLine": 21
+        },
+        {
+          "name": "WORKDIR /app",
+          "startLine": 22,
+          "endLine": 22
+        },
+        {
+          "name": "ENV NODE_ENV=production",
+          "startLine": 23,
+          "endLine": 23
+        },
+        {
+          "name": "ENV PORT=3000",
+          "startLine": 24,
+          "endLine": 24
+        },
+        {
+          "name": "ENV HOSTNAME=\"0.0.0.0\"",
+          "startLine": 25,
+          "endLine": 25
+        },
+        {
+          "name": "RUN addgroup --system --gid 1001 nodejs \\",
+          "startLine": 27,
+          "endLine": 27
+        },
+        {
+          "name": "COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone .",
+          "startLine": 30,
+          "endLine": 30
+        },
+        {
+          "name": "COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.ne",
+          "startLine": 31,
+          "endLine": 31
+        },
+        {
+          "name": "COPY --from=builder --chown=nextjs:nodejs /app/public ./public",
+          "startLine": 32,
+          "endLine": 32
+        },
+        {
+          "name": "USER nextjs",
+          "startLine": 34,
+          "endLine": 34
+        },
+        {
+          "name": "EXPOSE 3000",
+          "startLine": 35,
+          "endLine": 35
+        },
+        {
+          "name": "CMD [\"node\", \"server.js\"]",
+          "startLine": 36,
+          "endLine": 36
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "serviceCount": 3,
+        "stepCount": 25
+      }
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "nodes": [
+    {
+      "id": "config:4K_BE/pytest.ini",
+      "type": "config",
+      "name": "pytest.ini",
+      "filePath": "4K_BE/pytest.ini",
+      "summary": "백엔드 pytest 설정 파일로 asyncio 자동 모드와 function 스코프 fixture 루프를 활성화하여 async 테스트를 별도 데코레이터 없이 실행한다.",
+      "tags": ["configuration", "test", "pytest", "asyncio"],
+      "complexity": "simple",
+      "languageNotes": "asyncio_mode=auto 설정으로 pytest-asyncio가 모든 async 테스트 함수를 자동 감지한다."
+    },
+    {
+      "id": "document:4K_BE/requirements-dev.txt",
+      "type": "document",
+      "name": "requirements-dev.txt",
+      "filePath": "4K_BE/requirements-dev.txt",
+      "summary": "백엔드 개발/테스트 의존성 목록으로 requirements.txt를 포함하고 pytest 및 pytest-asyncio를 추가하여 비동기 테스트 환경을 구성한다.",
+      "tags": ["documentation", "dependencies", "test", "development"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:4K_BE/requirements.txt",
+      "type": "document",
+      "name": "requirements.txt",
+      "filePath": "4K_BE/requirements.txt",
+      "summary": "FastAPI 백엔드 런타임 의존성 목록으로 fastapi, uvicorn(standard), httpx, python-dotenv를 핀 버전으로 고정한다.",
+      "tags": ["documentation", "dependencies", "fastapi", "deployment"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "document:4K_BE/requirements-dev.txt",
+      "target": "document:4K_BE/requirements.txt",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

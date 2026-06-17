@@ -1,0 +1,749 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 3,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "4K_ML/generate_vectors/__init__.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 1,
+      "nonEmptyLines": 0,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/generate_vectors/db.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 197,
+      "nonEmptyLines": 162,
+      "functions": [
+        {
+          "name": "_ai",
+          "startLine": 16,
+          "endLine": 17,
+          "params": []
+        },
+        {
+          "name": "_ai_auth",
+          "startLine": 20,
+          "endLine": 22,
+          "params": []
+        },
+        {
+          "name": "_ai_headers",
+          "startLine": 25,
+          "endLine": 27,
+          "params": []
+        },
+        {
+          "name": "_ai_get_all",
+          "startLine": 30,
+          "endLine": 44,
+          "params": [
+            "client",
+            "table",
+            "params"
+          ]
+        },
+        {
+          "name": "fetch_scene_index",
+          "startLine": 47,
+          "endLine": 53,
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "fetch_axis_scores",
+          "startLine": 56,
+          "endLine": 59,
+          "params": [
+            "client",
+            "model_version_axis"
+          ]
+        },
+        {
+          "name": "build_series",
+          "startLine": 62,
+          "endLine": 73,
+          "params": [
+            "scores",
+            "scene_index"
+          ]
+        },
+        {
+          "name": "_data",
+          "startLine": 77,
+          "endLine": 78,
+          "params": []
+        },
+        {
+          "name": "_data_auth",
+          "startLine": 81,
+          "endLine": 83,
+          "params": []
+        },
+        {
+          "name": "_data_headers",
+          "startLine": 86,
+          "endLine": 92,
+          "params": [
+            "write"
+          ]
+        },
+        {
+          "name": "upsert_vectors",
+          "startLine": 95,
+          "endLine": 105,
+          "params": [
+            "client",
+            "rows"
+          ]
+        },
+        {
+          "name": "set_has_vector",
+          "startLine": 108,
+          "endLine": 119,
+          "params": [
+            "client",
+            "tmdb_ids"
+          ]
+        },
+        {
+          "name": "fetch_active_version",
+          "startLine": 122,
+          "endLine": 133,
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "fetch_vectored_tmdbs",
+          "startLine": 136,
+          "endLine": 154,
+          "params": [
+            "client",
+            "version_axis"
+          ]
+        },
+        {
+          "name": "reconcile_has_vector",
+          "startLine": 157,
+          "endLine": 182,
+          "params": [
+            "client",
+            "active_tmdbs"
+          ]
+        },
+        {
+          "name": "set_vector_state",
+          "startLine": 185,
+          "endLine": 197,
+          "params": [
+            "client",
+            "tmdb_ids"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "_ai",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "_ai_auth",
+          "line": 20,
+          "isDefault": false
+        },
+        {
+          "name": "_ai_headers",
+          "line": 25,
+          "isDefault": false
+        },
+        {
+          "name": "_ai_get_all",
+          "line": 30,
+          "isDefault": false
+        },
+        {
+          "name": "fetch_scene_index",
+          "line": 47,
+          "isDefault": false
+        },
+        {
+          "name": "fetch_axis_scores",
+          "line": 56,
+          "isDefault": false
+        },
+        {
+          "name": "build_series",
+          "line": 62,
+          "isDefault": false
+        },
+        {
+          "name": "_data",
+          "line": 77,
+          "isDefault": false
+        },
+        {
+          "name": "_data_auth",
+          "line": 81,
+          "isDefault": false
+        },
+        {
+          "name": "_data_headers",
+          "line": 86,
+          "isDefault": false
+        },
+        {
+          "name": "upsert_vectors",
+          "line": 95,
+          "isDefault": false
+        },
+        {
+          "name": "set_has_vector",
+          "line": 108,
+          "isDefault": false
+        },
+        {
+          "name": "fetch_active_version",
+          "line": 122,
+          "isDefault": false
+        },
+        {
+          "name": "fetch_vectored_tmdbs",
+          "line": 136,
+          "isDefault": false
+        },
+        {
+          "name": "reconcile_has_vector",
+          "line": 157,
+          "isDefault": false
+        },
+        {
+          "name": "set_vector_state",
+          "line": 185,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_ai",
+          "callee": "os.getenv",
+          "lineNumber": 17
+        },
+        {
+          "caller": "_ai",
+          "callee": "os.getenv",
+          "lineNumber": 17
+        },
+        {
+          "caller": "_ai_auth",
+          "callee": "os.getenv",
+          "lineNumber": 21
+        },
+        {
+          "caller": "_ai_auth",
+          "callee": "os.getenv",
+          "lineNumber": 22
+        },
+        {
+          "caller": "_ai_headers",
+          "callee": "_ai",
+          "lineNumber": 26
+        },
+        {
+          "caller": "_ai_get_all",
+          "callee": "_ai",
+          "lineNumber": 31
+        },
+        {
+          "caller": "_ai_get_all",
+          "callee": "client.get",
+          "lineNumber": 35
+        },
+        {
+          "caller": "_ai_get_all",
+          "callee": "_ai_headers",
+          "lineNumber": 37
+        },
+        {
+          "caller": "_ai_get_all",
+          "callee": "_ai_auth",
+          "lineNumber": 37
+        },
+        {
+          "caller": "_ai_get_all",
+          "callee": "r.raise_for_status",
+          "lineNumber": 38
+        },
+        {
+          "caller": "_ai_get_all",
+          "callee": "r.json",
+          "lineNumber": 39
+        },
+        {
+          "caller": "_ai_get_all",
+          "callee": "out.extend",
+          "lineNumber": 40
+        },
+        {
+          "caller": "_ai_get_all",
+          "callee": "len",
+          "lineNumber": 41
+        },
+        {
+          "caller": "fetch_scene_index",
+          "callee": "_ai_get_all",
+          "lineNumber": 49
+        },
+        {
+          "caller": "fetch_scene_index",
+          "callee": "_ai_get_all",
+          "lineNumber": 51
+        },
+        {
+          "caller": "fetch_scene_index",
+          "callee": "r.get",
+          "lineNumber": 52
+        },
+        {
+          "caller": "fetch_scene_index",
+          "callee": "sub_map.get",
+          "lineNumber": 52
+        },
+        {
+          "caller": "fetch_axis_scores",
+          "callee": "_ai_get_all",
+          "lineNumber": 58
+        },
+        {
+          "caller": "build_series",
+          "callee": "defaultdict",
+          "lineNumber": 64
+        },
+        {
+          "caller": "build_series",
+          "callee": "scene_index.get",
+          "lineNumber": 66
+        },
+        {
+          "caller": "build_series",
+          "callee": "series[tmdb_id].append",
+          "lineNumber": 72
+        },
+        {
+          "caller": "build_series",
+          "callee": "float",
+          "lineNumber": 72
+        },
+        {
+          "caller": "build_series",
+          "callee": "float",
+          "lineNumber": 72
+        },
+        {
+          "caller": "build_series",
+          "callee": "dict",
+          "lineNumber": 73
+        },
+        {
+          "caller": "_data",
+          "callee": "os.getenv",
+          "lineNumber": 78
+        },
+        {
+          "caller": "_data",
+          "callee": "os.getenv",
+          "lineNumber": 78
+        },
+        {
+          "caller": "_data_auth",
+          "callee": "os.getenv",
+          "lineNumber": 82
+        },
+        {
+          "caller": "_data_auth",
+          "callee": "os.getenv",
+          "lineNumber": 83
+        },
+        {
+          "caller": "_data_headers",
+          "callee": "_data",
+          "lineNumber": 87
+        },
+        {
+          "caller": "upsert_vectors",
+          "callee": "_data",
+          "lineNumber": 97
+        },
+        {
+          "caller": "upsert_vectors",
+          "callee": "range",
+          "lineNumber": 98
+        },
+        {
+          "caller": "upsert_vectors",
+          "callee": "len",
+          "lineNumber": 98
+        },
+        {
+          "caller": "upsert_vectors",
+          "callee": "client.post",
+          "lineNumber": 100
+        },
+        {
+          "caller": "upsert_vectors",
+          "callee": "_data_headers",
+          "lineNumber": 102
+        },
+        {
+          "caller": "upsert_vectors",
+          "callee": "_data_auth",
+          "lineNumber": 102
+        },
+        {
+          "caller": "upsert_vectors",
+          "callee": "RuntimeError",
+          "lineNumber": 105
+        },
+        {
+          "caller": "set_has_vector",
+          "callee": "_data",
+          "lineNumber": 110
+        },
+        {
+          "caller": "set_has_vector",
+          "callee": "range",
+          "lineNumber": 111
+        },
+        {
+          "caller": "set_has_vector",
+          "callee": "len",
+          "lineNumber": 111
+        },
+        {
+          "caller": "set_has_vector",
+          "callee": "\",\".join",
+          "lineNumber": 113
+        },
+        {
+          "caller": "set_has_vector",
+          "callee": "str",
+          "lineNumber": 113
+        },
+        {
+          "caller": "set_has_vector",
+          "callee": "client.patch",
+          "lineNumber": 114
+        },
+        {
+          "caller": "set_has_vector",
+          "callee": "_data_headers",
+          "lineNumber": 117
+        },
+        {
+          "caller": "set_has_vector",
+          "callee": "_data_auth",
+          "lineNumber": 117
+        },
+        {
+          "caller": "set_has_vector",
+          "callee": "RuntimeError",
+          "lineNumber": 119
+        },
+        {
+          "caller": "fetch_active_version",
+          "callee": "_ai",
+          "lineNumber": 124
+        },
+        {
+          "caller": "fetch_active_version",
+          "callee": "client.get",
+          "lineNumber": 125
+        },
+        {
+          "caller": "fetch_active_version",
+          "callee": "_ai_headers",
+          "lineNumber": 127
+        },
+        {
+          "caller": "fetch_active_version",
+          "callee": "_ai_auth",
+          "lineNumber": 127
+        },
+        {
+          "caller": "fetch_active_version",
+          "callee": "r.json",
+          "lineNumber": 129
+        },
+        {
+          "caller": "fetch_active_version",
+          "callee": "row.get",
+          "lineNumber": 130
+        },
+        {
+          "caller": "fetch_vectored_tmdbs",
+          "callee": "_data",
+          "lineNumber": 138
+        },
+        {
+          "caller": "fetch_vectored_tmdbs",
+          "callee": "set",
+          "lineNumber": 140
+        },
+        {
+          "caller": "fetch_vectored_tmdbs",
+          "callee": "client.get",
+          "lineNumber": 143
+        },
+        {
+          "caller": "fetch_vectored_tmdbs",
+          "callee": "_data_auth",
+          "lineNumber": 146
+        },
+        {
+          "caller": "fetch_vectored_tmdbs",
+          "callee": "r.json",
+          "lineNumber": 149
+        },
+        {
+          "caller": "fetch_vectored_tmdbs",
+          "callee": "out.update",
+          "lineNumber": 150
+        },
+        {
+          "caller": "fetch_vectored_tmdbs",
+          "callee": "len",
+          "lineNumber": 151
+        },
+        {
+          "caller": "reconcile_has_vector",
+          "callee": "_data",
+          "lineNumber": 159
+        },
+        {
+          "caller": "reconcile_has_vector",
+          "callee": "client.get",
+          "lineNumber": 164
+        },
+        {
+          "caller": "reconcile_has_vector",
+          "callee": "_data_auth",
+          "lineNumber": 167
+        },
+        {
+          "caller": "reconcile_has_vector",
+          "callee": "r.json",
+          "lineNumber": 170
+        },
+        {
+          "caller": "reconcile_has_vector",
+          "callee": "rows.extend",
+          "lineNumber": 171
+        },
+        {
+          "caller": "reconcile_has_vector",
+          "callee": "len",
+          "lineNumber": 172
+        },
+        {
+          "caller": "reconcile_has_vector",
+          "callee": "range",
+          "lineNumber": 176
+        },
+        {
+          "caller": "reconcile_has_vector",
+          "callee": "len",
+          "lineNumber": 176
+        },
+        {
+          "caller": "reconcile_has_vector",
+          "callee": "\",\".join",
+          "lineNumber": 178
+        },
+        {
+          "caller": "reconcile_has_vector",
+          "callee": "str",
+          "lineNumber": 178
+        },
+        {
+          "caller": "reconcile_has_vector",
+          "callee": "client.patch",
+          "lineNumber": 179
+        },
+        {
+          "caller": "reconcile_has_vector",
+          "callee": "_data_headers",
+          "lineNumber": 182
+        },
+        {
+          "caller": "reconcile_has_vector",
+          "callee": "_data_auth",
+          "lineNumber": 182
+        },
+        {
+          "caller": "set_vector_state",
+          "callee": "_ai",
+          "lineNumber": 187
+        },
+        {
+          "caller": "set_vector_state",
+          "callee": "range",
+          "lineNumber": 188
+        },
+        {
+          "caller": "set_vector_state",
+          "callee": "len",
+          "lineNumber": 188
+        },
+        {
+          "caller": "set_vector_state",
+          "callee": "\",\".join",
+          "lineNumber": 190
+        },
+        {
+          "caller": "set_vector_state",
+          "callee": "str",
+          "lineNumber": 190
+        },
+        {
+          "caller": "set_vector_state",
+          "callee": "_ai_headers",
+          "lineNumber": 191
+        },
+        {
+          "caller": "set_vector_state",
+          "callee": "client.patch",
+          "lineNumber": 192
+        },
+        {
+          "caller": "set_vector_state",
+          "callee": "_ai_auth",
+          "lineNumber": 195
+        },
+        {
+          "caller": "set_vector_state",
+          "callee": "RuntimeError",
+          "lineNumber": 197
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 16,
+        "functionCount": 16,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/tests/test_gen_db.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 48,
+      "nonEmptyLines": 41,
+      "functions": [
+        {
+          "name": "test_build_series_joins_score_scene_subtitle",
+          "startLine": 4,
+          "endLine": 25,
+          "params": []
+        },
+        {
+          "name": "test_fetch_axis_scores_paginates",
+          "startLine": 28,
+          "endLine": 48,
+          "params": [
+            "monkeypatch"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "test_build_series_joins_score_scene_subtitle",
+          "line": 4,
+          "isDefault": false
+        },
+        {
+          "name": "test_fetch_axis_scores_paginates",
+          "line": 28,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "test_build_series_joins_score_scene_subtitle",
+          "callee": "db.build_series",
+          "lineNumber": 22
+        },
+        {
+          "caller": "test_build_series_joins_score_scene_subtitle",
+          "callee": "set",
+          "lineNumber": 23
+        },
+        {
+          "caller": "test_build_series_joins_score_scene_subtitle",
+          "callee": "series.keys",
+          "lineNumber": 23
+        },
+        {
+          "caller": "test_build_series_joins_score_scene_subtitle",
+          "callee": "sorted",
+          "lineNumber": 24
+        },
+        {
+          "caller": "get",
+          "callee": "FakeResp",
+          "lineNumber": 41
+        },
+        {
+          "caller": "get",
+          "callee": "range",
+          "lineNumber": 41
+        },
+        {
+          "caller": "get",
+          "callee": "FakeResp",
+          "lineNumber": 42
+        },
+        {
+          "caller": "test_fetch_axis_scores_paginates",
+          "callee": "monkeypatch.setenv",
+          "lineNumber": 44
+        },
+        {
+          "caller": "test_fetch_axis_scores_paginates",
+          "callee": "monkeypatch.setenv",
+          "lineNumber": 45
+        },
+        {
+          "caller": "test_fetch_axis_scores_paginates",
+          "callee": "db.fetch_axis_scores",
+          "lineNumber": 46
+        },
+        {
+          "caller": "test_fetch_axis_scores_paginates",
+          "callee": "FakeClient",
+          "lineNumber": 46
+        },
+        {
+          "caller": "test_fetch_axis_scores_paginates",
+          "callee": "len",
+          "lineNumber": 47
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    }
+  ]
+}

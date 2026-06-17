@@ -1,0 +1,84 @@
+{
+  "nodes": [
+    {
+      "id": "pipeline:.github/workflows/deploy-4k-be.yml",
+      "type": "pipeline",
+      "name": "deploy-4k-be.yml",
+      "filePath": ".github/workflows/deploy-4k-be.yml",
+      "summary": "백엔드 배포용 GitHub Actions 워크플로우. main 브랜치의 4K_BE/ 변경 시 Docker 이미지를 빌드해 GHCR에 푸시하고 kustomization.yaml의 이미지 태그를 short SHA로 갱신해 커밋하는 GitOps 파이프라인.",
+      "tags": ["ci-cd", "deployment", "containerization", "gitops", "infrastructure"],
+      "complexity": "moderate",
+      "languageNotes": "build-push-action의 GHA 캐시(type=gha)와 sed 기반 매니페스트 태그 갱신 후 [skip ci] 커밋으로 무한 루프를 방지하는 GitOps 패턴."
+    },
+    {
+      "id": "step:.github/workflows/deploy-4k-be.yml:build-and-deploy",
+      "type": "step",
+      "name": "build-and-deploy",
+      "filePath": ".github/workflows/deploy-4k-be.yml",
+      "summary": "체크아웃 → GHCR 로그인 → Buildx 설정 → short SHA 추출 → 4K_BE 이미지 빌드/푸시 → kustomization 태그 갱신 → 매니페스트 커밋/푸시까지 수행하는 단일 빌드-배포 잡.",
+      "tags": ["ci-cd", "deployment", "docker-build", "gitops"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "pipeline:.github/workflows/deploy-4k-fe.yml",
+      "type": "pipeline",
+      "name": "deploy-4k-fe.yml",
+      "filePath": ".github/workflows/deploy-4k-fe.yml",
+      "summary": "프런트엔드 배포용 GitHub Actions 워크플로우. main 브랜치의 4K_FE/ 변경 시 Docker 이미지를 빌드해 GHCR에 푸시하고 kustomization.yaml의 이미지 태그를 short SHA로 갱신해 커밋하는 GitOps 파이프라인.",
+      "tags": ["ci-cd", "deployment", "containerization", "gitops", "infrastructure"],
+      "complexity": "moderate",
+      "languageNotes": "BE 워크플로우와 동일한 구조로 context만 ./4K_FE로 다른 미러 파이프라인."
+    },
+    {
+      "id": "step:.github/workflows/deploy-4k-fe.yml:build-and-deploy",
+      "type": "step",
+      "name": "build-and-deploy",
+      "filePath": ".github/workflows/deploy-4k-fe.yml",
+      "summary": "체크아웃 → GHCR 로그인 → Buildx 설정 → short SHA 추출 → 4K_FE 이미지 빌드/푸시 → kustomization 태그 갱신 → 매니페스트 커밋/푸시까지 수행하는 단일 빌드-배포 잡.",
+      "tags": ["ci-cd", "deployment", "docker-build", "gitops"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "pipeline:.github/workflows/deploy-4k-ml.yml",
+      "type": "pipeline",
+      "name": "deploy-4k-ml.yml",
+      "filePath": ".github/workflows/deploy-4k-ml.yml",
+      "summary": "ML 파이프라인 배포용 GitHub Actions 워크플로우. main 브랜치의 4K_ML/ 변경 시 HF_TOKEN 빌드 시크릿으로 Docker 이미지를 빌드/푸시하고 Argo WorkflowTemplate 및 KServe InferenceService 매니페스트 7종의 이미지 태그를 일괄 갱신해 커밋하는 GitOps 파이프라인.",
+      "tags": ["ci-cd", "deployment", "containerization", "gitops", "infrastructure"],
+      "complexity": "moderate",
+      "languageNotes": "build secrets로 hf_token을 주입하고 sed로 다수의 Argo WorkflowTemplate/KServe 매니페스트 이미지 태그를 동시 갱신하는 멀티 타깃 GitOps 패턴."
+    },
+    {
+      "id": "step:.github/workflows/deploy-4k-ml.yml:build-and-deploy",
+      "type": "step",
+      "name": "build-and-deploy",
+      "filePath": ".github/workflows/deploy-4k-ml.yml",
+      "summary": "체크아웃 → GHCR 로그인 → Buildx 설정 → short SHA 추출 → HF_TOKEN 시크릿으로 4K_ML 이미지 빌드/푸시 → WorkflowTemplate 7종 태그 갱신 → 매니페스트 커밋/푸시까지 수행하는 단일 빌드-배포 잡.",
+      "tags": ["ci-cd", "deployment", "docker-build", "gitops"],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "pipeline:.github/workflows/deploy-4k-be.yml",
+      "target": "step:.github/workflows/deploy-4k-be.yml:build-and-deploy",
+      "type": "triggers",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "pipeline:.github/workflows/deploy-4k-fe.yml",
+      "target": "step:.github/workflows/deploy-4k-fe.yml:build-and-deploy",
+      "type": "triggers",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "pipeline:.github/workflows/deploy-4k-ml.yml",
+      "target": "step:.github/workflows/deploy-4k-ml.yml:build-and-deploy",
+      "type": "triggers",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

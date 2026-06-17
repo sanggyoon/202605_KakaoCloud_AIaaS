@@ -1,0 +1,402 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 3,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "4K_ML/generate_vectors/generate_vectors.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 82,
+      "nonEmptyLines": 65,
+      "functions": [
+        {
+          "name": "select_vector_targets",
+          "startLine": 16,
+          "endLine": 18,
+          "params": [
+            "ar_series_keys",
+            "vectored"
+          ]
+        },
+        {
+          "name": "build_rows",
+          "startLine": 21,
+          "endLine": 44,
+          "params": [
+            "ar_series",
+            "va_series",
+            "model_version"
+          ]
+        },
+        {
+          "name": "run",
+          "startLine": 47,
+          "endLine": 78,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "select_vector_targets",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "build_rows",
+          "line": 21,
+          "isDefault": false
+        },
+        {
+          "name": "run",
+          "line": 47,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "build_rows",
+          "callee": "set",
+          "lineNumber": 26
+        },
+        {
+          "caller": "build_rows",
+          "callee": "ar_series.items",
+          "lineNumber": 27
+        },
+        {
+          "caller": "build_rows",
+          "callee": "transform.process_axis",
+          "lineNumber": 28
+        },
+        {
+          "caller": "build_rows",
+          "callee": "rows.append",
+          "lineNumber": 31
+        },
+        {
+          "caller": "build_rows",
+          "callee": "va_series.get",
+          "lineNumber": 35
+        },
+        {
+          "caller": "build_rows",
+          "callee": "transform.process_axis",
+          "lineNumber": 37
+        },
+        {
+          "caller": "build_rows",
+          "callee": "rows.append",
+          "lineNumber": 39
+        },
+        {
+          "caller": "build_rows",
+          "callee": "done.add",
+          "lineNumber": 43
+        },
+        {
+          "caller": "run",
+          "callee": "os.getenv",
+          "lineNumber": 48
+        },
+        {
+          "caller": "run",
+          "callee": "os.getenv",
+          "lineNumber": 48
+        },
+        {
+          "caller": "run",
+          "callee": "SystemExit",
+          "lineNumber": 49
+        },
+        {
+          "caller": "run",
+          "callee": "os.getenv",
+          "lineNumber": 50
+        },
+        {
+          "caller": "run",
+          "callee": "os.getenv",
+          "lineNumber": 50
+        },
+        {
+          "caller": "run",
+          "callee": "SystemExit",
+          "lineNumber": 51
+        },
+        {
+          "caller": "run",
+          "callee": "httpx.Client",
+          "lineNumber": 53
+        },
+        {
+          "caller": "run",
+          "callee": "db.fetch_active_version",
+          "lineNumber": 54
+        },
+        {
+          "caller": "run",
+          "callee": "print",
+          "lineNumber": 56
+        },
+        {
+          "caller": "run",
+          "callee": "db.fetch_scene_index",
+          "lineNumber": 58
+        },
+        {
+          "caller": "run",
+          "callee": "db.fetch_axis_scores",
+          "lineNumber": 59
+        },
+        {
+          "caller": "run",
+          "callee": "db.fetch_axis_scores",
+          "lineNumber": 60
+        },
+        {
+          "caller": "run",
+          "callee": "db.build_series",
+          "lineNumber": 61
+        },
+        {
+          "caller": "run",
+          "callee": "db.build_series",
+          "lineNumber": 62
+        },
+        {
+          "caller": "run",
+          "callee": "db.fetch_vectored_tmdbs",
+          "lineNumber": 64
+        },
+        {
+          "caller": "run",
+          "callee": "set",
+          "lineNumber": 65
+        },
+        {
+          "caller": "run",
+          "callee": "select_vector_targets",
+          "lineNumber": 65
+        },
+        {
+          "caller": "run",
+          "callee": "ar_series.keys",
+          "lineNumber": 65
+        },
+        {
+          "caller": "run",
+          "callee": "print",
+          "lineNumber": 68
+        },
+        {
+          "caller": "run",
+          "callee": "len",
+          "lineNumber": 68
+        },
+        {
+          "caller": "run",
+          "callee": "len",
+          "lineNumber": 68
+        },
+        {
+          "caller": "run",
+          "callee": "len",
+          "lineNumber": 68
+        },
+        {
+          "caller": "run",
+          "callee": "build_rows",
+          "lineNumber": 70
+        },
+        {
+          "caller": "run",
+          "callee": "print",
+          "lineNumber": 71
+        },
+        {
+          "caller": "run",
+          "callee": "len",
+          "lineNumber": 71
+        },
+        {
+          "caller": "run",
+          "callee": "len",
+          "lineNumber": 71
+        },
+        {
+          "caller": "run",
+          "callee": "db.upsert_vectors",
+          "lineNumber": 72
+        },
+        {
+          "caller": "run",
+          "callee": "db.set_has_vector",
+          "lineNumber": 73
+        },
+        {
+          "caller": "run",
+          "callee": "list",
+          "lineNumber": 73
+        },
+        {
+          "caller": "run",
+          "callee": "db.set_vector_state",
+          "lineNumber": 74
+        },
+        {
+          "caller": "run",
+          "callee": "list",
+          "lineNumber": 74
+        },
+        {
+          "caller": "run",
+          "callee": "db.reconcile_has_vector",
+          "lineNumber": 77
+        },
+        {
+          "caller": "run",
+          "callee": "print",
+          "lineNumber": 78
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 3,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/tests/test_gen_run.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 27,
+      "nonEmptyLines": 23,
+      "functions": [
+        {
+          "name": "test_build_rows_arousal_required_valence_optional",
+          "startLine": 4,
+          "endLine": 27,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "test_build_rows_arousal_required_valence_optional",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "test_build_rows_arousal_required_valence_optional",
+          "callee": "range",
+          "lineNumber": 7
+        },
+        {
+          "caller": "test_build_rows_arousal_required_valence_optional",
+          "callee": "build_rows",
+          "lineNumber": 10
+        },
+        {
+          "caller": "test_build_rows_arousal_required_valence_optional",
+          "callee": "all",
+          "lineNumber": 20
+        },
+        {
+          "caller": "test_build_rows_arousal_required_valence_optional",
+          "callee": "next",
+          "lineNumber": 24
+        },
+        {
+          "caller": "test_build_rows_arousal_required_valence_optional",
+          "callee": "r[\"vector_version\"].endswith",
+          "lineNumber": 24
+        },
+        {
+          "caller": "test_build_rows_arousal_required_valence_optional",
+          "callee": "len",
+          "lineNumber": 25
+        },
+        {
+          "caller": "test_build_rows_arousal_required_valence_optional",
+          "callee": "next",
+          "lineNumber": 26
+        },
+        {
+          "caller": "test_build_rows_arousal_required_valence_optional",
+          "callee": "r[\"vector_version\"].endswith",
+          "lineNumber": 26
+        },
+        {
+          "caller": "test_build_rows_arousal_required_valence_optional",
+          "callee": "len",
+          "lineNumber": 27
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "4K_ML/tests/test_vector_targets.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 11,
+      "nonEmptyLines": 7,
+      "functions": [
+        {
+          "name": "test_only_unvectored_movies",
+          "startLine": 4,
+          "endLine": 7,
+          "params": []
+        },
+        {
+          "name": "test_all_vectored_returns_empty",
+          "startLine": 10,
+          "endLine": 11,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "test_only_unvectored_movies",
+          "line": 4,
+          "isDefault": false
+        },
+        {
+          "name": "test_all_vectored_returns_empty",
+          "line": 10,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "test_only_unvectored_movies",
+          "callee": "sorted",
+          "lineNumber": 7
+        },
+        {
+          "caller": "test_only_unvectored_movies",
+          "callee": "select_vector_targets",
+          "lineNumber": 7
+        },
+        {
+          "caller": "test_all_vectored_returns_empty",
+          "callee": "select_vector_targets",
+          "lineNumber": 11
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    }
+  ]
+}
