@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter_Tight, Playfair_Display, JetBrains_Mono, Nanum_Myeongjo } from "next/font/google";
 import "./globals.css";
 
@@ -29,7 +29,17 @@ const nanumMyeongjo = Nanum_Myeongjo({
 export const metadata: Metadata = {
   title: "Peakly — Climax-based Movie Recommendation",
   description: "클라이맥스 그래프를 분석해 비슷한 영화를 추천하는 서비스",
-  icons: { icon: "/peakly-black-bg.svg" },
+  icons: { icon: "/peakly-black-bg.svg", apple: "/apple-touch-icon.png" },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Peakly",
+  },
+};
+
+// theme-color는 metadata가 아닌 viewport로 지정(Next 16 권장).
+export const viewport: Viewport = {
+  themeColor: "#08090d",
 };
 
 export default function RootLayout({
