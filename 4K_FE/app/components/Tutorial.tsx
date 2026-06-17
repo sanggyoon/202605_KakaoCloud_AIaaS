@@ -2,6 +2,7 @@
 
 // Peakly 온보딩 튜토리얼 — 중앙 모달 캐러셀(5단계) + 단계별 자체 완결형 데모.
 // 데모는 라이브 데이터를 fetch하지 않고 정적 더미/SVG로 구성한다.
+import { useState } from 'react';
 import MiniGraph from './MiniGraph';
 
 interface TutorialProps {
@@ -25,33 +26,39 @@ const DEMO_VALENCE = [
 // 단계 메타. demo는 step 인덱스로 스위치한다(아래 렌더).
 const STEPS = [
   {
-    label: 'STEP 1 / 5',
+    label: 'STEP 1 / 6',
     title: 'Peakly에 오신 걸 환영합니다',
     desc: '영화의 감정 흐름을 선으로 그려, 당신의 클라이맥스에 맞는 영화를 찾아드려요.',
     action: '시작하기',
   },
   {
-    label: 'STEP 2 / 5',
+    label: 'STEP 2 / 6',
     title: '감정을 선으로 읽다',
     desc: '높이는 감정의 고조, 색은 분위기를 나타냅니다. 어두운 분위기에서 밝은 분위기까지.',
     action: '다음',
   },
   {
-    label: 'STEP 3 / 5',
+    label: 'STEP 3 / 6',
     title: '원하는 조건으로 좁히기',
     desc: '제목 검색, 연도 범위, 선호·비선호 장르, 선호·비선호 영화로 추천 풀을 좁힙니다.',
     action: '다음',
   },
   {
-    label: 'STEP 4 / 5',
+    label: 'STEP 4 / 6',
     title: '고민될 땐 랜덤픽',
     desc: '무엇을 볼지 모르겠다면, 전체 DB에서 무작위로 한 편을 골라드려요.',
     action: '다음',
   },
   {
-    label: 'STEP 5 / 5',
+    label: 'STEP 5 / 6',
     title: '더 깊이: 클라이맥스 커브',
     desc: '포스터를 누르면 전체 감정 곡선과 비슷한 패턴의 영화까지 볼 수 있어요.',
+    action: '다음',
+  },
+  {
+    label: 'STEP 6 / 6',
+    title: '휴대폰에 앱으로 설치하기',
+    desc: '홈 화면에 추가하면 주소창 없이 앱처럼 빠르게 열려요.',
     action: '시작하기',
   },
 ];
@@ -203,6 +210,52 @@ function DemoDetail() {
   );
 }
 
+// STEP 6 — 홈 화면 설치 안내. userAgent로 플랫폼 감지(데스크탑은 둘 다).
+function DemoInstall() {
+  // 튜토리얼은 localStorage 기반이라 클라이언트에서만 렌더 → navigator를 lazy 초기화로 1회 읽음.
+  const [platform] = useState<'ios' | 'android' | 'both'>(() => {
+    if (typeof navigator === 'undefined') return 'both';
+    const ua = navigator.userAgent;
+    const isIOS =
+      /iPad|iPhone|iPod/.test(ua) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const isAndroid = /Android/.test(ua);
+    return isIOS ? 'ios' : isAndroid ? 'android' : 'both';
+  });
+
+  const stepRow = (n: number, text: string) => (
+    <div key={n} style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 6 }}>
+      <span style={{
+        flexShrink: 0, width: 16, height: 16, borderRadius: 999,
+        background: 'color-mix(in oklch, var(--accent) 22%, transparent)',
+        color: 'var(--accent)', fontSize: 9, fontWeight: 800,
+        display: 'grid', placeItems: 'center',
+      }}>{n}</span>
+      <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.72)' }}>{text}</span>
+    </div>
+  );
+
+  const block = (label: string, s1: string, s2: string) => (
+    <div key={label} style={{
+      borderRadius: 10, background: 'rgba(255,255,255,0.03)',
+      border: '1px solid rgba(255,255,255,0.07)', padding: '11px 13px',
+    }}>
+      <div style={{ fontSize: 8, fontWeight: 800, letterSpacing: '0.16em', color: 'var(--accent)' }}>{label}</div>
+      {stepRow(1, s1)}
+      {stepRow(2, s2)}
+    </div>
+  );
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 18, textAlign: 'left' }}>
+      {(platform === 'ios' || platform === 'both') &&
+        block('iOS · SAFARI', '하단 공유 버튼을 탭', '"홈 화면에 추가" 선택')}
+      {(platform === 'android' || platform === 'both') &&
+        block('ANDROID · CHROME', '우측 상단 ⋮ 메뉴를 탭', '"앱 설치" 선택')}
+    </div>
+  );
+}
+
 export default function Tutorial({ step, onNext, onSkip, onComplete }: TutorialProps) {
   const current = STEPS[step];
   const isLast = step === STEPS.length - 1;
@@ -213,6 +266,7 @@ export default function Tutorial({ step, onNext, onSkip, onComplete }: TutorialP
     <DemoFilters key="f" />,
     <DemoRandom key="r" />,
     <DemoDetail key="d" />,
+    <DemoInstall key="i" />,
   ][step];
 
   return (
