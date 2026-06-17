@@ -188,6 +188,18 @@ input::placeholder {
 @media (max-width: 1023px) { .filter-bar-inner { padding: 16px 32px 18px; } }
 @media (max-width: 639px)  { .filter-bar-inner { padding: 14px 16px 16px; } }
 
+/* 모바일: 필터바를 헤더 아래 화면 전체로 채우고 내부 스크롤. 데스크탑(인라인 600px)은 그대로.
+   60px ≈ 모바일 헤더 높이(패딩10*2 + 콘텐츠 ~40 + border) — 화면 하단까지 닿게 함. */
+@media (max-width: 639px) {
+  .filter-panel-open {
+    max-height: calc(100dvh - 60px) !important;
+    overflow-y: auto !important;
+    background: rgba(8, 9, 13, 0.97) !important;
+  }
+  /* 필터바가 열려 화면을 덮는 동안 '맨 위로' 버튼 비활성화 */
+  .move-top-btn--filter-open { display: none !important; }
+}
+
 /* 연도 컨트롤(스텝퍼 2개 + 슬라이더 트랙) 레이아웃.
    데스크탑: [시작년도] [트랙] [끝년도] 한 줄. */
 .year-control {

@@ -658,8 +658,10 @@ export default function Dashboard() {
         />
       )}
 
-      {/* 맨 위로 버튼 — 항상 DOM에 두고 opacity+translateY로 슬라이드 인/아웃 */}
+      {/* 맨 위로 버튼 — 항상 DOM에 두고 opacity+translateY로 슬라이드 인/아웃.
+          모바일에선 필터바가 열려 화면을 덮는 동안 숨김(globals.css). */}
       <button
+        className={filterOpen ? 'move-top-btn move-top-btn--filter-open' : 'move-top-btn'}
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         style={{
           position: 'fixed',

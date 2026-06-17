@@ -556,8 +556,10 @@ export default function FilterBar({
   const dataMax = new Date().getFullYear();
 
   return (
-    // max-height 트랜지션으로 슬라이드 애니메이션 구현 — height 자체는 애니메이션 불가
+    // max-height 트랜지션으로 슬라이드 애니메이션 구현 — height 자체는 애니메이션 불가.
+    // 모바일에선 globals.css의 .filter-panel-open이 화면 전체 높이+내부 스크롤로 override(데스크탑 무영향).
     <div
+      className={open ? 'filter-panel filter-panel-open' : 'filter-panel'}
       style={{
         maxHeight: open ? 600 : 0,
         overflow: 'hidden',
