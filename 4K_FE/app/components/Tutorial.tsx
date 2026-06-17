@@ -81,12 +81,17 @@ function DemoWelcome() {
   return (
     <DemoBox cap="WELCOME">
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
-        <div style={{
-          width: 48, height: 48, borderRadius: 14,
-          background: 'linear-gradient(145deg, #7b61ff, #3a1a9e)',
-          boxShadow: '0 0 32px color-mix(in oklch, var(--accent) 55%, transparent)',
-          display: 'grid', placeItems: 'center', fontWeight: 900, fontSize: 24, color: '#fff',
-        }}>P</div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/peakly-gradient-bg.svg"
+          alt="Peakly"
+          width={52}
+          height={52}
+          style={{
+            borderRadius: 14,
+            filter: 'drop-shadow(0 0 28px color-mix(in oklch, var(--accent) 50%, transparent))',
+          }}
+        />
         <div style={{
           fontFamily: 'var(--font-serif-ko), serif', fontSize: 13, fontWeight: 700,
           color: 'rgba(255,255,255,0.85)',
