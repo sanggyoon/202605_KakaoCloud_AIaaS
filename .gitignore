@@ -24,3 +24,5 @@ yarn-error.log*
 
 # claude plugin - UnderstandAnything
 # .understand-anything
+# Brainstorming visual companion
+.superpowers/
