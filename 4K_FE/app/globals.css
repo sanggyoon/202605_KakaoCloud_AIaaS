@@ -146,6 +146,32 @@ input::placeholder {
 }
 @media (max-width: 767px) { .similar-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
 
+/* 비슷한 패턴의 영화 — 카드 레이아웃.
+   데스크탑: [%] [포스터] [정보] [그래프] [>] 한 줄.
+   모바일: 상단(%·포스터·정보·>) + 하단 풀폭 그래프로 분리해 가로 넘침 방지. */
+.similar-card {
+  display: grid;
+  grid-template-columns: 66px 64px 240px 1fr 18px;
+  align-items: center;
+  column-gap: 18px;
+  width: 100%;
+}
+@media (max-width: 639px) {
+  .similar-card {
+    grid-template-columns: auto 64px 1fr auto;
+    grid-template-areas:
+      "pct poster info chev"
+      "graph graph graph graph";
+    column-gap: 12px;
+    row-gap: 14px;
+  }
+  .similar-card .sc-pct { grid-area: pct; }
+  .similar-card .sc-poster { grid-area: poster; }
+  .similar-card .sc-info { grid-area: info; }
+  .similar-card .sc-chev { grid-area: chev; }
+  .similar-card .sc-graph { grid-area: graph; width: 100%; min-width: 0; height: 72px; }
+}
+
 /* 랜덤 픽 모달 너비 */
 .random-modal { width: 440px; padding: 28px; }
 @media (max-width: 639px) { .random-modal { width: calc(100vw - 32px); padding: 20px; } }

@@ -379,6 +379,7 @@ export default function DetailOverlay({
                         return (
                           <button
                             key={m.tmdb_id}
+                            className="similar-card"
                             onClick={() => onSelectMovie(m)}
                             style={{
                               background: 'transparent',
@@ -392,9 +393,6 @@ export default function DetailOverlay({
                               color: 'inherit',
                               fontFamily: 'inherit',
                               textAlign: 'left',
-                              display: 'flex',
-                              gap: 18,
-                              alignItems: 'center',
                               transition: 'background 0.2s',
                             }}
                             onMouseEnter={(e) => {
@@ -410,6 +408,7 @@ export default function DetailOverlay({
                           >
                             {/* MATCH % */}
                             <div
+                              className="sc-pct"
                               style={{
                                 flexShrink: 0,
                                 width: 66,
@@ -440,6 +439,7 @@ export default function DetailOverlay({
                             </div>
                             {/* 포스터 */}
                             <div
+                              className="sc-poster"
                               style={{
                                 width: 64,
                                 flexShrink: 0,
@@ -476,9 +476,7 @@ export default function DetailOverlay({
                               )}
                             </div>
                             {/* 제목·메타(연도·장르·곡선 설명) */}
-                            <div
-                              style={{ flexShrink: 0, width: 240, minWidth: 0 }}
-                            >
+                            <div className="sc-info" style={{ minWidth: 0 }}>
                               <div
                                 style={{
                                   fontSize: 17,
@@ -509,11 +507,12 @@ export default function DetailOverlay({
                               </div>
                             </div>
                             {/* 미니그래프 */}
-                            <div style={{ flex: 1, minWidth: 80, height: 76 }}>
+                            <div className="sc-graph" style={{ minWidth: 80, height: 76 }}>
                               <MiniGraph data={simVec} valence={simVal} height={76} />
                             </div>
                             {/* chevron */}
                             <svg
+                              className="sc-chev"
                               width="18"
                               height="18"
                               viewBox="0 0 24 24"
