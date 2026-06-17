@@ -10,4 +10,4 @@ resources:
 
 images:
   - name: ghcr.io/sanggyoon/understand-dashboard
-    newTag: "latest"
+    newTag: "780d272"
