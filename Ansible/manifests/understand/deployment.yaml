@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: understand-dashboard
+  namespace: understand
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: understand-dashboard
+  template:
+    metadata:
+      labels:
+        app: understand-dashboard
+    spec:
+      nodeSelector:
+        workload: app
+      containers:
+        - name: understand-dashboard
+          image: ghcr.io/sanggyoon/understand-dashboard:latest
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 25m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi

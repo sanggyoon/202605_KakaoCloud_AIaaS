@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: understand-dashboard
+  namespace: understand
+spec:
+  selector:
+    app: understand-dashboard
+  ports:
+    - port: 80
+      targetPort: 80
