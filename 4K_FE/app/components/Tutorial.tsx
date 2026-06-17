@@ -57,6 +57,148 @@ const STEPS = [
   },
 ];
 
+// 데모 영역 공통 래퍼 — 카드 안 약 150px 높이 박스
+function DemoBox({ children, cap }: { children: React.ReactNode; cap?: string }) {
+  return (
+    <div style={{
+      position: 'relative', height: 150, marginBottom: 18,
+      borderRadius: 12, background: '#0a0712',
+      border: '1px solid rgba(255,255,255,0.07)', overflow: 'hidden',
+      display: 'grid', placeItems: 'center',
+    }}>
+      {children}
+      {cap && (
+        <div style={{
+          position: 'absolute', bottom: 8, left: 0, right: 0, textAlign: 'center',
+          fontSize: 8, fontWeight: 800, letterSpacing: '0.16em', color: 'rgba(255,255,255,0.38)',
+        }}>{cap}</div>
+      )}
+    </div>
+  );
+}
+
+// STEP 1 — 로고 글로우 + 태그라인
+function DemoWelcome() {
+  return (
+    <DemoBox cap="WELCOME">
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
+        <div style={{
+          width: 48, height: 48, borderRadius: 14,
+          background: 'linear-gradient(145deg, #7b61ff, #3a1a9e)',
+          boxShadow: '0 0 32px color-mix(in oklch, var(--accent) 55%, transparent)',
+          display: 'grid', placeItems: 'center', fontWeight: 900, fontSize: 24, color: '#fff',
+        }}>P</div>
+        <div style={{
+          fontFamily: 'var(--font-serif-ko), serif', fontSize: 13, fontWeight: 700,
+          color: 'rgba(255,255,255,0.85)',
+        }}>한 편의 감정을 선으로 그리다</div>
+      </div>
+    </DemoBox>
+  );
+}
+
+// STEP 2 — 그려지는 클라이맥스 곡선 (valence 색)
+function DemoGraph() {
+  return (
+    <DemoBox cap="CLIMAX GRAPH">
+      <div style={{ width: '88%', height: 92 }}>
+        <MiniGraph data={DEMO_AROUSAL} valence={DEMO_VALENCE} height={92} />
+      </div>
+      <div style={{ position: 'absolute', left: 12, top: 12, fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,0.55)' }}>↑ 높이 = 고조</div>
+      <div style={{ position: 'absolute', right: 12, top: 30, fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,0.55)' }}>색 = 분위기</div>
+    </DemoBox>
+  );
+}
+
+// STEP 3 — 미니 필터 데모 (검색/장르 pill)
+function DemoFilters() {
+  const pill = (text: string, kind: 'on' | 'no' | 'off') => {
+    const map = {
+      on: { bg: 'color-mix(in oklch, var(--accent) 18%, transparent)', bd: 'color-mix(in oklch, var(--accent) 45%, transparent)', fg: 'var(--accent)' },
+      no: { bg: 'rgba(255,80,80,0.15)', bd: 'rgba(255,100,100,0.4)', fg: '#ff7070' },
+      off: { bg: 'rgba(255,255,255,0.05)', bd: 'rgba(255,255,255,0.1)', fg: 'rgba(255,255,255,0.7)' },
+    }[kind];
+    return (
+      <span key={text} style={{
+        fontSize: 9, fontWeight: 700, padding: '4px 9px', borderRadius: 999,
+        background: map.bg, border: `1px solid ${map.bd}`, color: map.fg,
+      }}>{text}</span>
+    );
+  };
+  return (
+    <DemoBox cap="FILTERS">
+      <div style={{ width: '86%', display: 'flex', flexDirection: 'column', gap: 9, alignItems: 'center' }}>
+        <div style={{
+          width: '100%', height: 22, borderRadius: 7, display: 'flex', alignItems: 'center', padding: '0 9px',
+          background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
+          fontSize: 9, color: 'rgba(255,255,255,0.4)',
+        }}>🔍 영화 제목…</div>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, justifyContent: 'center' }}>
+          {pill('드라마', 'on')}{pill('SF', 'off')}{pill('공포', 'no')}{pill('로맨스', 'off')}
+        </div>
+      </div>
+    </DemoBox>
+  );
+}
+
+// STEP 4 — 포스터 셔플 → 한 장 확정
+function DemoRandom() {
+  const poster = (pick = false) => (
+    <div style={{
+      width: 34, aspectRatio: '2/3', borderRadius: 5,
+      background: 'linear-gradient(145deg, #2a1a55, #140a30)',
+      outline: pick ? '2px solid var(--accent)' : 'none',
+      boxShadow: pick ? '0 0 20px color-mix(in oklch, var(--accent) 55%, transparent)' : 'none',
+    }} />
+  );
+  return (
+    <DemoBox cap="RANDOM PICK">
+      <div style={{ display: 'flex', gap: 7 }}>
+        {poster()}{poster()}{poster(true)}{poster()}
+      </div>
+    </DemoBox>
+  );
+}
+
+// STEP 5 — 상세 모달(클라이맥스 커브 + 분위기 범례 + 유사영화 행)
+function DemoDetail() {
+  const simRow = (pct: string, name: string, meta: string) => (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '7px 0', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+      <div style={{ width: 30, fontSize: 16, fontWeight: 900, fontStyle: 'italic', letterSpacing: '-0.03em', flexShrink: 0 }}>{pct}<sup style={{ fontSize: 8 }}>%</sup></div>
+      <div style={{ width: 20, aspectRatio: '2/3', borderRadius: 3, background: 'linear-gradient(145deg, #2a1a55, #140a30)', flexShrink: 0 }} />
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontSize: 9, fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{name}</div>
+        <div style={{ fontSize: 7, color: 'rgba(255,255,255,0.4)', marginTop: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{meta}</div>
+      </div>
+      <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', flexShrink: 0 }}>›</span>
+    </div>
+  );
+  return (
+    <div style={{
+      position: 'relative', marginBottom: 18, borderRadius: 12, background: '#07060e',
+      border: '1px solid rgba(255,255,255,0.07)', padding: '12px 12px 11px', textAlign: 'left',
+    }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 7 }}>
+        <span style={{ fontSize: 8, fontWeight: 800, letterSpacing: '0.18em', color: 'var(--accent)' }}>CLIMAX CURVE</span>
+        <span style={{ fontSize: 7, color: 'rgba(255,255,255,0.4)' }}>자막·장면 AI 분석</span>
+      </div>
+      <div style={{ height: 56 }}>
+        <MiniGraph data={DEMO_AROUSAL} valence={DEMO_VALENCE} height={56} />
+      </div>
+      {/* 분위기 범례 바 */}
+      <div style={{ marginTop: 7 }}>
+        <div style={{ height: 6, borderRadius: 9, background: 'linear-gradient(90deg, #2dd4bf, #7b61ff, #ff6ec7)' }} />
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 6.5, color: 'rgba(255,255,255,0.45)', marginTop: 3 }}>
+          <span>어두운 분위기</span><span>밝은 분위기</span>
+        </div>
+      </div>
+      <div style={{ fontSize: 7.5, fontWeight: 800, letterSpacing: '0.12em', color: 'rgba(255,255,255,0.5)', margin: '12px 0 6px' }}>비슷한 패턴의 영화 · 클라이맥스 유사도 기반</div>
+      {simRow('48', "'고스팅' - Ghosted", '2023 · 액션 · 코미디 · 중반 정점의 산형 곡선')}
+      {simRow('43', '캐스트 어웨이', '2000 · 모험 · 드라마 · 초반부터 달아오르는 곡선')}
+    </div>
+  );
+}
+
 export default function Tutorial({ step, onNext, onSkip, onComplete }: TutorialProps) {
   const current = STEPS[step];
   // 임시 렌더 — Task 3에서 교체
