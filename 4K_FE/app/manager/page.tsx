@@ -3,6 +3,7 @@
 // 매니저 허브 — 서비스 모니터링(방문자/영화 데이터 통계) + 주요 기능 진입점.
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import ApiKeyManager from '@/app/components/ApiKeyManager';
 
 interface Stats {
   visitors: { total: number; month: number; week: number; day: number };
@@ -204,6 +205,8 @@ export default function ManagerPage() {
     });
   };
 
+  const [apiKeyOpen, setApiKeyOpen] = useState(false);
+
   const handleLogout = async () => {
     await fetch('/api/manager/auth/logout', { method: 'POST' });
     router.replace('/login');
@@ -231,20 +234,36 @@ export default function ManagerPage() {
           <h1 style={{ margin: 0, fontSize: 18, fontWeight: 700, letterSpacing: '-0.02em' }}>서비스 모니터링</h1>
           <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.15em', color: 'var(--accent)', background: 'color-mix(in oklch, var(--accent) 14%, transparent)', padding: '3px 8px', borderRadius: 4 }}>MANAGER</span>
         </div>
-        <button
-          onClick={handleLogout}
-          title="로그아웃"
-          style={{
-            padding: '8px 14px',
-            background: 'rgba(239,68,68,0.12)',
-            border: '1px solid rgba(239,68,68,0.25)',
-            borderRadius: 7,
-            color: 'rgb(239,120,120)',
-            fontSize: 12, fontWeight: 600, fontFamily: 'inherit', cursor: 'pointer',
-          }}
-        >
-          로그아웃
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <button
+            onClick={() => setApiKeyOpen(true)}
+            title="API 키 관리"
+            style={{
+              padding: '8px 14px',
+              background: 'color-mix(in oklch, var(--accent) 14%, transparent)',
+              border: '1px solid color-mix(in oklch, var(--accent) 35%, transparent)',
+              borderRadius: 7,
+              color: 'var(--fg)',
+              fontSize: 12, fontWeight: 600, fontFamily: 'inherit', cursor: 'pointer',
+            }}
+          >
+            API 키
+          </button>
+          <button
+            onClick={handleLogout}
+            title="로그아웃"
+            style={{
+              padding: '8px 14px',
+              background: 'rgba(239,68,68,0.12)',
+              border: '1px solid rgba(239,68,68,0.25)',
+              borderRadius: 7,
+              color: 'rgb(239,120,120)',
+              fontSize: 12, fontWeight: 600, fontFamily: 'inherit', cursor: 'pointer',
+            }}
+          >
+            로그아웃
+          </button>
+        </div>
       </header>
 
       <main style={{ padding: '32px 64px 60px', display: 'flex', flexDirection: 'column', gap: 28 }}>
@@ -362,6 +381,8 @@ export default function ManagerPage() {
           job={collect} onCloseJob={() => setCollect(null)} jobLabel="자막 수집"
         />
       </main>
+
+      <ApiKeyManager open={apiKeyOpen} onClose={() => setApiKeyOpen(false)} />
     </div>
   );
 }
