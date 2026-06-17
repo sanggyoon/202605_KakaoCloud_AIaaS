@@ -36,6 +36,9 @@ export default function ClimaxGraph({ data, valence, height = 380 }: ClimaxGraph
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [hover, setHover] = useState<number | null>(null);
+  // 마운트 시 그래프를 왼쪽→오른쪽으로 그려내는 1회성 wipe. 끝나면 클래스를 떼어
+  // 잔여 clip-path가 글로우를 자르지 않게 한다. (prefers-reduced-motion 시 즉시 표시)
+  const [drawn, setDrawn] = useState(false);
   const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const el = containerRef.current;
     if (!el) return;
@@ -64,6 +67,8 @@ export default function ClimaxGraph({ data, valence, height = 380 }: ClimaxGraph
       <svg
         viewBox={`0 0 ${W} ${H}`}
         preserveAspectRatio="none"
+        className={drawn ? undefined : 'cg-draw'}
+        onAnimationEnd={() => setDrawn(true)}
         style={{ width: '100%', height: '100%', display: 'block', overflow: 'visible' }}
       >
         <defs>
