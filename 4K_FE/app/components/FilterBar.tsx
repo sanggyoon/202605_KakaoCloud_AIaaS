@@ -149,11 +149,13 @@ function YearStepper({
   min,
   max,
   onChange,
+  className,
 }: {
   value: number;
   min: number;
   max: number;
   onChange: (v: number) => void;
+  className?: string;
 }) {
   const arrowBtn = (disabled: boolean): React.CSSProperties => ({
     display: 'grid',
@@ -170,6 +172,7 @@ function YearStepper({
 
   return (
     <div
+      className={className}
       style={{
         display: 'inline-flex',
         alignItems: 'center',
@@ -316,16 +319,9 @@ function YearRangeRow({
       >
         연도
       </span>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 14,
-          flex: 1,
-          maxWidth: 540,
-        }}
-      >
+      <div className="year-control">
         <YearStepper
+          className="year-stepper year-stepper-from"
           value={from}
           min={min}
           max={to} // from은 to를 초과할 수 없음
@@ -425,6 +421,7 @@ function YearRangeRow({
           })}
         </div>
         <YearStepper
+          className="year-stepper year-stepper-to"
           value={to}
           min={from} // to는 from 미만이 될 수 없음
           max={max}

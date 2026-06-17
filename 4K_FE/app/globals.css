@@ -99,7 +99,9 @@ input::placeholder {
     font-size: 13px; font-family: inherit; outline: none; box-sizing: border-box;
   }
   .filter-mobile-search svg {
-    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    /* 컨테이너 하단 구분선(padding-bottom 12px + border 1px)을 보정해
+       돋보기를 입력창 세로 중앙에 맞춤 */
+    position: absolute; left: 12px; top: calc(50% - 6px); transform: translateY(-50%);
     pointer-events: none;
   }
 }
@@ -186,8 +188,33 @@ input::placeholder {
 @media (max-width: 1023px) { .filter-bar-inner { padding: 16px 32px 18px; } }
 @media (max-width: 639px)  { .filter-bar-inner { padding: 14px 16px 16px; } }
 
-/* 연도 범위 슬라이더 — 모바일에서 트랙/핸들을 키워 터치 조작을 쉽게 */
+/* 연도 컨트롤(스텝퍼 2개 + 슬라이더 트랙) 레이아웃.
+   데스크탑: [시작년도] [트랙] [끝년도] 한 줄. */
+.year-control {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  max-width: 540px;
+}
+
+/* 모바일: 1행=[시작년도][끝년도], 2행=슬라이더 풀폭. 트랙/핸들도 확대해 터치 쉽게. */
 @media (max-width: 639px) {
+  .year-control {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "from to"
+      "slider slider";
+    gap: 10px 12px;
+    max-width: none;
+  }
+  .year-control .year-stepper-from { grid-area: from; }
+  .year-control .year-stepper-to { grid-area: to; }
+  .year-control .year-track { grid-area: slider; }
+  /* 스텝퍼가 각 칸을 채우고 화살표는 양끝, 숫자는 가운데로 */
+  .year-control .year-stepper { width: 100%; justify-content: space-between; }
+
   .year-track { height: 40px !important; }
   .year-handle { width: 26px !important; height: 26px !important; }
 }
