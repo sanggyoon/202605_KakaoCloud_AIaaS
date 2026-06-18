@@ -1,9 +1,0 @@
-# llm-labeling WorkflowTemplate을 1회 실행. 제출: kubectl create -n ai -f 이파일
-apiVersion: argoproj.io/v1alpha1
-kind: Workflow
-metadata:
-  generateName: llm-labeling-
-  namespace: ai
-spec:
-  workflowTemplateRef:
-    name: llm-labeling

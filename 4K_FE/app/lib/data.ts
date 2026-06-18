@@ -86,25 +86,6 @@ export async function fetchPreferredMovies(
   }
 }
 
-// pgvector 코사인 유사도로 비슷한 패턴의 영화 4개를 반환
-// vm4 Supabase RPC(find_similar_movies) 호출 — movie.id 기준
-export async function fetchSimilarMovies(movieId: number, count = 4): Promise<Movie[]> {
-  try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/find_similar_movies`, {
-      method: 'POST',
-      headers: {
-        apikey: SUPABASE_ANON_KEY,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ query_movie_id: movieId, match_count: count }),
-    });
-    if (!res.ok) return [];
-    return await res.json() as Movie[];
-  } catch {
-    return [];
-  }
-}
-
 // 여러 tmdb_id의 벡터를 한 번에 fetch — Map<tmdb_id, number[]> 반환
 export async function fetchMovieVectors(tmdbIds: number[]): Promise<Map<number, number[]>> {
   const map = new Map<number, number[]>();
