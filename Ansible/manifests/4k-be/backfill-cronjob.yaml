@@ -26,6 +26,8 @@ spec:
               env:
                 - name: BACKFILL_MAX_NEW
                   value: "300"
+                - name: BACKFILL_MAX_PAGES   # 인기순 스캔 깊이(실효 상한은 TMDB ~500p)
+                  value: "500"
               resources:
                 requests:
                   cpu: 100m

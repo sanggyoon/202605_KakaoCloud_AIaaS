@@ -1,4 +1,4 @@
-# P1 자동화 — 매시 :05 파싱(subtitle done & parse 미완). 겹침 금지.
+# P1 자동화 — 하루 1회 파싱(subtitle done & parse 미완). 겹침 금지.
 apiVersion: argoproj.io/v1alpha1
 kind: CronWorkflow
 metadata:
@@ -6,7 +6,7 @@ metadata:
   namespace: ai
 spec:
   schedules:
-    - "10 */6 * * *"   # 6시간마다(UTC 00/06/12/18시 :10)
+    - "0 20 * * *"   # 하루 1회 (UTC 20:00 = KST 05:00, 자막수집 19:00 다음)
   concurrencyPolicy: Forbid
   startingDeadlineSeconds: 300
   successfulJobsHistoryLimit: 3
