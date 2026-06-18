@@ -7,6 +7,7 @@ resources:
   - deployment.yaml
   - service.yaml
   - ingress.yaml
+  - hpa.yaml
 
 images:
   - name: ghcr.io/sanggyoon/4k-fe

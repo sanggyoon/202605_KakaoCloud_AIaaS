@@ -4,7 +4,6 @@ metadata:
   name: backend
   namespace: be
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: backend
@@ -37,7 +36,7 @@ spec:
             periodSeconds: 20
           resources:
             requests:
-              cpu: 100m
+              cpu: 200m
               memory: 128Mi
             limits:
               cpu: 300m
