@@ -1,6 +1,7 @@
 """영화 단위 분할 + 토치 Dataset(텍스트 토큰 + 숫자피처 + 타깃)."""
 import random
 
+import numpy as np
 import torch
 from torch.utils.data import Dataset
 
@@ -39,3 +40,57 @@ class SceneDataset(Dataset):
             "target": torch.tensor([r["arousal"], r["valence"]], dtype=torch.float),
             "movie_id": r["movie_id"],
         }
+
+
+def group_by_movie(records: list[dict]) -> list[list[dict]]:
+    """records를 movie_id별로 묶고 scene_index 오름차순 정렬한 영화 리스트로 반환."""
+    by: dict = {}
+    for r in records:
+        by.setdefault(r["movie_id"], []).append(r)
+    movies = []
+    for recs in by.values():
+        movies.append(sorted(recs, key=lambda r: r["scene_index"]))
+    return movies
+
+
+class MovieSequenceDataset(Dataset):
+    """영화당 1 샘플. 각 record에 'emb'(사전계산 임베딩)가 부착돼 있어야 한다."""
+
+    def __init__(self, movies: list[list[dict]], scaler):
+        self.movies = movies
+        self.scaler = scaler
+
+    def __len__(self) -> int:
+        return len(self.movies)
+
+    def __getitem__(self, i: int) -> dict:
+        recs = self.movies[i]
+        embs = torch.tensor(np.stack([r["emb"] for r in recs]), dtype=torch.float)
+        numeric = torch.tensor(
+            self.scaler.transform([compute_features(r) for r in recs]), dtype=torch.float)
+        target = torch.tensor([[r["arousal"], r["valence"]] for r in recs], dtype=torch.float)
+        return {"embs": embs, "numeric": numeric, "target": target,
+                "length": len(recs), "movie_id": recs[0]["movie_id"]}
+
+
+def collate_movies(batch: list[dict]) -> dict:
+    """가변 길이 영화 시퀀스 패딩 + 마스크."""
+    lengths = torch.tensor([b["length"] for b in batch], dtype=torch.long)
+    bsz = len(batch)
+    t_max = int(lengths.max())
+    enc_dim = batch[0]["embs"].shape[1]
+    num_dim = batch[0]["numeric"].shape[1]
+    embs = torch.zeros(bsz, t_max, enc_dim)
+    numeric = torch.zeros(bsz, t_max, num_dim)
+    target = torch.zeros(bsz, t_max, 2)
+    mask = torch.zeros(bsz, t_max, dtype=torch.bool)
+    movie_ids = []
+    for i, b in enumerate(batch):
+        t = b["length"]
+        embs[i, :t] = b["embs"]
+        numeric[i, :t] = b["numeric"]
+        target[i, :t] = b["target"]
+        mask[i, :t] = True
+        movie_ids.append(b["movie_id"])
+    return {"embs": embs, "numeric": numeric, "target": target,
+            "lengths": lengths, "mask": mask, "movie_ids": movie_ids}
