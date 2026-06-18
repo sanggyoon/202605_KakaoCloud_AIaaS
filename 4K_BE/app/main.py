@@ -24,7 +24,6 @@ from app import jobs
 # 기본적으로 기존 환경변수를 덮어쓰지 않으므로(override=False) 안전하다.
 _BASE_DIR = os.path.dirname(os.path.dirname(__file__))  # 4K_BE/
 load_dotenv(os.path.join(_BASE_DIR, ".env"))
-load_dotenv(os.path.join(_BASE_DIR, "DB_SCRIPTS", ".env"))
 
 TMDB_KEY  = os.getenv("TMDB_API_KEY", "")
 DATA_URL  = os.getenv("DATA_SUPABASE_URL", "https://data.peakly.art")
