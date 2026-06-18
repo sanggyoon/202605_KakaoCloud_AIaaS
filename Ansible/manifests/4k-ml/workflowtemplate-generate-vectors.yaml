@@ -11,7 +11,7 @@ spec:
   templates:
     - name: main
       container:
-        image: ghcr.io/sanggyoon/4k-ml:f7dbde9
+        image: ghcr.io/sanggyoon/4k-ml:817e650
         command: ["python", "-m", "generate_vectors.generate_vectors"]
         envFrom:
           - secretRef:
