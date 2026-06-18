@@ -29,6 +29,17 @@ spec:
             # 세션 서명 시크릿 — 운영에서는 Secret으로 분리 권장 (openssl rand -hex 32)
             - name: MANAGER_SESSION_SECRET
               value: '7e21bb198957970f12bccb5584b4a2ef8a409a2971357f51af7073c6620b402a'
+            # vm5(AI DB) 접속 — 외부 점수 API(/api/movies/[tmdb_id]/scores)용.
+            # URL은 공개값, KEY는 클러스터 Secret(frontend-secrets)에서 주입.
+            # 적용 전 1회: kubectl -n fe create secret generic frontend-secrets \
+            #   --from-literal=ai-database-key='<vm5 PostgREST key>'
+            - name: AI_DATABASE_URL
+              value: 'https://ai.peakly.art'
+            - name: AI_DATABASE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secrets
+                  key: ai-database-key
           ports:
             - containerPort: 3000
           readinessProbe:
