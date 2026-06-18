@@ -11,7 +11,7 @@ spec:
   templates:
     - name: main
       container:
-        image: ghcr.io/sanggyoon/4k-ml:39dc6eb
+        image: ghcr.io/sanggyoon/4k-ml:f7dbde9
         command: ["python", "-m", "serving.score_scenes"]
         env:
           - name: KSERVE_PREDICT_URL
