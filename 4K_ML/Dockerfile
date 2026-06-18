@@ -31,7 +31,6 @@ COPY subtitle_parse/ ./subtitle_parse/
 COPY labeling/ ./labeling/
 COPY train/ ./train/
 COPY serving/ ./serving/
-COPY db/ ./db/
 COPY generate_vectors/ ./generate_vectors/
 
 # ENTRYPOINT 없음 — WorkflowTemplate가 `python -m <module>` 지정
