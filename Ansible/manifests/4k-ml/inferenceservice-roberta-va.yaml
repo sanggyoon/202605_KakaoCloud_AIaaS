@@ -31,7 +31,7 @@ spec:
         volumeMounts:
           - name: models
             mountPath: /mnt/models
-            subPath: roberta-va-v1
+            subPath: roberta-va-v2
         readinessProbe:
           httpGet:
             path: /v1/models/roberta-va
