@@ -64,7 +64,7 @@ def _largest_srt(zip_bytes: bytes) -> str:
 
 
 import asyncio
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 import httpx
 
@@ -137,16 +137,20 @@ MAX_RETRIES = 3  # failed가 이 횟수에 도달하면 종료 상태로 간주(
 
 
 async def fetch_status(client: httpx.AsyncClient) -> dict[int, dict]:
-    """processing_status를 {tmdb_id: {"state": str, "retry": int}}로 한 번에 조회."""
+    """processing_status를 {tmdb_id: {"state", "retry", "updated"}}로 한 번에 조회."""
     r = await client.get(
         f"{ai_url()}/rest/v1/processing_status",
-        params={"select": "tmdb_id,subtitle_state,retry_count", "limit": "1000000"},
+        params={"select": "tmdb_id,subtitle_state,retry_count,updated_at", "limit": "1000000"},
         headers=ai_headers(), auth=_ai_auth(),
     )
     if r.status_code != 200:
         return {}
     return {
-        row["tmdb_id"]: {"state": row.get("subtitle_state"), "retry": row.get("retry_count") or 0}
+        row["tmdb_id"]: {
+            "state": row.get("subtitle_state"),
+            "retry": row.get("retry_count") or 0,
+            "updated": row.get("updated_at"),
+        }
         for row in r.json()
     }
 
@@ -159,13 +163,38 @@ def _is_terminal(info: dict) -> bool:
     return st == "failed" and (info.get("retry") or 0) >= MAX_RETRIES
 
 
+def _cooldown_days() -> int:
+    return int(os.getenv("SUBTITLE_RETRY_COOLDOWN_DAYS", "7"))
+
+
+def _in_cooldown(info: dict, now: datetime, days: int) -> bool:
+    """failed 영화가 마지막 시도 후 days일 이내면 True(이번 회차 건너뜀)."""
+    if info.get("state") != "failed":
+        return False
+    ts = info.get("updated")
+    if not ts:
+        return False
+    try:
+        last = datetime.fromisoformat(ts)
+    except ValueError:
+        return False
+    if last.tzinfo is None:
+        last = last.replace(tzinfo=timezone.utc)
+    return (now - last) < timedelta(days=days)
+
+
 async def remaining_counts(client: httpx.AsyncClient) -> dict:
-    """수집 가능한(=종료 상태 아닌) 영화 수. {total, terminal, remaining}."""
+    """수집 가능한(=종료·쿨다운 아닌) 영화 수. {total, terminal, remaining}."""
     movie_ids = await tc.get_existing_tmdb_ids(client)
     status = await fetch_status(client)
-    terminal = sum(1 for mid in movie_ids if mid in status and _is_terminal(status[mid]))
+    now = datetime.now(timezone.utc)
+    cooldown = _cooldown_days()
+    blocked = sum(
+        1 for mid in movie_ids
+        if mid in status and (_is_terminal(status[mid]) or _in_cooldown(status[mid], now, cooldown))
+    )
     total = len(movie_ids)
-    return {"total": total, "terminal": terminal, "remaining": total - terminal}
+    return {"total": total, "terminal": blocked, "remaining": total - blocked}
 
 
 async def save_subtitle(client: httpx.AsyncClient, tmdb_id: int, chosen: dict, raw_text: str) -> None:
@@ -238,6 +267,8 @@ async def collect_events(client: httpx.AsyncClient, max_new: int, rate_delay: fl
     """
     movie_ids = sorted(await tc.get_existing_tmdb_ids(client))
     status = await fetch_status(client)
+    now = datetime.now(timezone.utc)
+    cooldown = _cooldown_days()
     processed = 0
     added = 0
     skipped = 0
@@ -247,7 +278,7 @@ async def collect_events(client: httpx.AsyncClient, max_new: int, rate_delay: fl
         if processed >= max_new:
             break
         info = status.get(tmdb_id)
-        if info and _is_terminal(info):
+        if info and (_is_terminal(info) or _in_cooldown(info, now, cooldown)):
             continue
         prev_retry = (info or {}).get("retry", 0)
         title = None
