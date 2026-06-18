@@ -52,7 +52,7 @@ export default function ClimaxGraph({ data, valence, height = 380 }: ClimaxGraph
   const graphRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [hover, setHover] = useState<number | null>(null);
-  const [thumbRatio, setThumbRatio] = useState(0);
+  const [thumbRatio, setThumbRatio] = useState(0.5); // 슬라이더 첫 위치: 중앙
   const [fading, setFading] = useState(false);
   const [drawn, setDrawn] = useState(false);
 
