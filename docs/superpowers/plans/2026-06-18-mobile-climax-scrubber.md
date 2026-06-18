@@ -1,3 +1,45 @@
+# 모바일 클라이맥스 그래프 스크럽 Implementation Plan
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** 모바일에서 클라이맥스 그래프 높이를 210px로 줄이고, 그래프 하단에 스크럽 슬라이더를 추가해 드래그/탭하면 데스크탑 호버와 동일한 정보(진행도/피크/분위기)가 그래프를 따라 이동하고 손을 떼면 잠시 후 페이드아웃되게 한다.
+
+**Architecture:** `ClimaxGraph`에 `matchMedia` 기반 `isMobile` 감지를 넣어 모바일이면 높이 210·하단 슬라이더를 렌더한다. 기존 `hover` 인덱스 상태를 슬라이더의 Pointer 이벤트가 제어하고, 손을 떼면 타이머(1.2s 유지 + 0.4s 페이드)로 정보를 지운다. 데스크탑은 기존 호버 그대로. `DetailOverlay`의 그래프 컨테이너 높이만 반응형으로 바꾼다.
+
+**Tech Stack:** Next.js 16.2.5 App Router, React(클라이언트 컴포넌트), Pointer Events, SVG, 인라인 스타일.
+
+## Global Constraints
+
+- 작업 디렉토리: `4K_FE/`. import alias: `@/*` → `./*`.
+- 코드 작성 전 `4K_FE/node_modules/next/dist/docs/` 확인 (커스텀 Next — `AGENTS.md`).
+- 테스트 러너 없음 → 검증 = `npx tsc --noEmit` + `npx eslint <변경파일>`(변경 파일만 클린; 기존 pre-existing 에러 제외) + `npm run build` + dev 모바일 뷰포트 수동 확인.
+- 데스크탑(>639px) 동작·외형은 **변경 없음**: 호버, 높이 380px 유지.
+- 모바일 기준: `matchMedia('(max-width: 639px)')`. 모바일 그래프 높이 **210px**.
+- 페이드: 손 뗌 후 **1.2s 유지 + 0.4s 페이드아웃**. 재터치 시 즉시 복귀.
+- 커밋 메시지 끝에 `Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>`.
+- 작업 브랜치: `feat/mobile-graph-scrubber` (이미 생성됨).
+
+## File Structure
+
+- **Modify(전면 갱신)** `4K_FE/app/components/ClimaxGraph.tsx` — isMobile 감지, 반응형 높이(210/380), 그래프를 내부 div로 분리, 호버/마커/툴팁을 페이드 래퍼로 감싸기, 모바일 하단 스크럽 슬라이더 + Pointer 핸들러 + 페이드 타이머.
+- **Modify** `4K_FE/app/components/DetailOverlay.tsx` — 그래프 컨테이너 고정 높이 380 → 그래프 렌더 시 `auto`.
+
+---
+
+### Task 1: ClimaxGraph — 반응형 높이 + 스크럽 슬라이더 + 페이드
+
+**Files:**
+- Modify(전면 갱신): `4K_FE/app/components/ClimaxGraph.tsx`
+
+**Interfaces:**
+- Consumes: `toDisplayScale`(`@/app/lib/climax`), `valenceGradientStops`/`valenceToUnit`/`valenceColorAt`(`@/app/lib/color`), `catmullRomPath`(`@/app/lib/svgPath`). props `{ data: number[]; valence?: number[]; height?: number }` 유지.
+- Produces: 동일 props의 `ClimaxGraph`(외부 인터페이스 불변). 내부에 모바일 스크럽 UI 추가.
+
+- [ ] **Step 1: 파일 전면 교체**
+
+`4K_FE/app/components/ClimaxGraph.tsx` 전체를 아래로 교체:
+
+```tsx
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
@@ -240,3 +282,85 @@ export default function ClimaxGraph({ data, valence, height = 380 }: ClimaxGraph
     </div>
   );
 }
+```
+
+- [ ] **Step 2: 타입 검사**
+
+Run: `cd 4K_FE && npx tsc --noEmit 2>&1 | grep -i "ClimaxGraph" || echo "NO ClimaxGraph ERRORS"`
+Expected: `NO ClimaxGraph ERRORS`
+
+- [ ] **Step 3: 린트 (변경 파일)**
+
+Run: `cd 4K_FE && npx eslint app/components/ClimaxGraph.tsx`
+Expected: 출력 없음 (클린). 만약 `set-state-in-effect` 류가 나오면, 이 컴포넌트의 `useEffect`는 외부 시스템(matchMedia) 구독·타이머 정리용이라 해당 규칙 대상이 아니어야 한다 — 출력이 깨끗한지 확인.
+
+- [ ] **Step 4: 빌드**
+
+Run: `cd 4K_FE && npm run build 2>&1 | grep -E "Compiled successfully|Failed|Error" | head -2`
+Expected: `✓ Compiled successfully`
+
+- [ ] **Step 5: 커밋**
+
+```bash
+cd 4K_FE && git add app/components/ClimaxGraph.tsx
+git commit -m "$(printf 'feat(fe): 모바일 클라이맥스 그래프 높이 축소 + 스크럽 슬라이더\n\nCo-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>')"
+```
+
+---
+
+### Task 2: DetailOverlay 그래프 컨테이너 높이 반응형
+
+**Files:**
+- Modify: `4K_FE/app/components/DetailOverlay.tsx`
+
+**Interfaces:**
+- Consumes: `ClimaxGraph`(Task 1) — 모바일에서 자체적으로 210px+슬라이더 높이를 차지.
+- Produces: 없음(시각 변경).
+
+- [ ] **Step 1: 컨테이너 고정 높이 → 그래프 렌더 시 auto**
+
+`4K_FE/app/components/DetailOverlay.tsx`에서 그래프 컨테이너 `<div>`의 `height: 380,`을 아래로 교체한다(같은 style 객체 내 `marginTop: 18,` 다음 줄):
+
+```tsx
+                marginTop: 18,
+                height: vectorLoading || !vector ? 380 : 'auto',
+```
+
+> 그래프가 렌더되면 컨테이너가 그래프(데스크탑 380 / 모바일 210+슬라이더)에 맞춰 높이를 잡는다. 로딩/없음 placeholder는 기존처럼 380으로 공간을 유지한다. 데스크탑은 그래프가 380이라 외형 동일.
+
+- [ ] **Step 2: 타입 검사 + 빌드**
+
+Run: `cd 4K_FE && npx tsc --noEmit 2>&1 | grep -i "DetailOverlay" || echo "NO DetailOverlay ERRORS"`
+Expected: `NO DetailOverlay ERRORS`
+
+Run: `cd 4K_FE && npm run build 2>&1 | grep -E "Compiled successfully|Failed" | head -1`
+Expected: `✓ Compiled successfully`
+
+- [ ] **Step 3: 린트**
+
+Run: `cd 4K_FE && npx eslint app/components/DetailOverlay.tsx 2>&1 | grep -nE ":[0-9]+:[0-9]+" | grep -v "no-img-element" | head || echo "no new errors"`
+Expected: 새 에러 없음 (기존 pre-existing 제외).
+
+- [ ] **Step 4: 모바일/데스크탑 수동 확인 (dev)**
+
+```bash
+cd 4K_FE && npm run dev
+```
+- 데스크탑 폭: 영화 상세 진입 → 그래프 높이 380, 마우스 호버 시 십자선+툴팁(진행도/피크/분위기) 정상.
+- 모바일 폭(devtools responsive ≤639px, 또는 실제 기기): 그래프 높이 210로 낮아짐, 하단 슬라이더 표시. 슬라이더 드래그/탭 → 마커+툴팁이 그래프를 따라 이동, 정보 일치. 손 떼면 약 1.2초 뒤 페이드아웃, 재터치 시 즉시 복귀. 페이지 스크롤이 슬라이더 드래그를 방해하지 않음(touchAction:none).
+
+> 터치 상호작용은 시각 확인 항목이다. 자동 검증은 tsc/lint/build로 갈음하고, dev에서 위 항목을 눈으로 확인한다.
+
+- [ ] **Step 5: 커밋**
+
+```bash
+cd 4K_FE && git add app/components/DetailOverlay.tsx
+git commit -m "$(printf 'feat(fe): 상세 그래프 컨테이너 높이 반응형(모바일 축소 대응)\n\nCo-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>')"
+```
+
+---
+
+## 완료 후
+
+- `superpowers:finishing-a-development-branch`로 main 머지/PR 결정.
+- push 거부 시 `git fetch origin && git rebase origin/main` 후 재push.

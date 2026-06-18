@@ -290,7 +290,7 @@ export default function DetailOverlay({
             <div
               style={{
                 marginTop: 18,
-                height: 380,
+                height: vectorLoading || !vector ? 380 : 'auto',
                 borderRadius: 12,
                 background:
                   'radial-gradient(120% 100% at 70% 0%, rgba(123,97,255,0.10), rgba(0,0,0,0.35) 70%)',
