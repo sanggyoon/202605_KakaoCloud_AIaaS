@@ -9,7 +9,7 @@ import os
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-from serving.predict_core import load_artifacts, score_instances
+from serving.predict_core import load_artifacts, score_instances, score_instances_seq
 
 MODEL_NAME = "roberta-va"
 
@@ -26,10 +26,12 @@ def create_app(loader=load_artifacts) -> FastAPI:
     def _load():
         model_dir = os.getenv("MODEL_DIR", "/mnt/models")
         model, scaler, tok, cfg = loader(model_dir)
+        scorer = score_instances_seq if cfg.get("model_kind") == "seq" else score_instances
         state.update({
             "model": model, "scaler": scaler, "tok": tok,
             "max_len": int(cfg.get("max_len", 512)),
             "model_version": cfg.get("model_version", "roberta-va-v1"),
+            "scorer": scorer,
             "ready": True,
         })
 
@@ -39,7 +41,7 @@ def create_app(loader=load_artifacts) -> FastAPI:
 
     @app.post("/v1/models/" + MODEL_NAME + ":predict")
     def predict(req: PredictRequest):
-        preds = score_instances(state["model"], state["scaler"], state["tok"],
+        preds = state["scorer"](state["model"], state["scaler"], state["tok"],
                                 state["max_len"], req.instances)
         return {"predictions": preds, "model_version": state["model_version"]}
 

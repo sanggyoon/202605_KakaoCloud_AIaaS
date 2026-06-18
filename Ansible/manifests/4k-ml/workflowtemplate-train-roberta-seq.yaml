@@ -1,0 +1,37 @@
+# RoBERTa 시퀀스 모델(roberta-va-v2) 학습 — vm5 GPU. 산출물 ml-models PVC(/models/roberta-va-v2).
+# 제출: argo submit --from workflowtemplate/train-roberta-seq -n ai
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: train-roberta-seq
+  namespace: ai
+spec:
+  serviceAccountName: argo-workflow
+  podSpecPatch: |
+    runtimeClassName: nvidia
+  entrypoint: main
+  volumes:
+    - name: models
+      persistentVolumeClaim:
+        claimName: ml-models
+  templates:
+    - name: main
+      nodeSelector:
+        workload: gpu
+      container:
+        image: ghcr.io/sanggyoon/4k-ml:latest
+        command: ["python", "-m", "train.train_seq"]
+        env:
+          - name: MODEL_OUT_DIR
+            value: /models/roberta-va-v2
+          - name: V1_MODEL_DIR
+            value: /models/roberta-va-v1
+        envFrom:
+          - secretRef:
+              name: 4k-ml-secrets
+        volumeMounts:
+          - name: models
+            mountPath: /models
+        resources:
+          limits:
+            nvidia.com/gpu: 1
