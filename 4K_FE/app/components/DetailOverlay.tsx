@@ -10,6 +10,8 @@ import {
   fetchVectorPair,
   fetchPreferredMovies,
   fetchMovieVectorPairs,
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY,
 } from '@/app/lib/data';
 import { cosineSimilarity, climaxDescriptor, meanCenter } from '@/app/lib/climax';
 
@@ -35,8 +37,31 @@ export default function DetailOverlay({
   onClose,
   onSelectMovie,
 }: DetailOverlayProps) {
+  // props movie는 목록에서 온 축소 레코드일 수 있다. 상세에 필요한 전체 컬럼
+  // (overview/actors/director/runtime/youtube_key)을 tmdb_id로 직접 1건 조회해 채운다.
+  const [enriched, setEnriched] = useState<Movie | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    fetch(
+      `${SUPABASE_URL}/rest/v1/movies?tmdb_id=eq.${movie.tmdb_id}&select=*&limit=1`,
+      { headers: { apikey: SUPABASE_ANON_KEY } },
+    )
+      .then((r) => r.json())
+      .then((rows: Movie[]) => {
+        if (!cancelled && Array.isArray(rows) && rows[0]) setEnriched(rows[0]);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [movie.tmdb_id]);
+
+  // enriched가 현재 영화 것이면 사용, 아니면 props로 폴백(영화 전환 시 즉시 폴백)
+  const full =
+    enriched && enriched.tmdb_id === movie.tmdb_id ? enriched : movie;
+
   const genres = genreList(movie.genre);
-  const cast = castList(movie.actors);
+  const cast = castList(full.actors);
 
   const [vector, setVector] = useState<number[] | null>(null);   // arousal(높이)
   const [valence, setValence] = useState<number[] | null>(null); // valence(색)
@@ -200,7 +225,7 @@ export default function DetailOverlay({
             }}
           >
             {movie.release_year}
-            {movie.runtime ? ` · ${movie.runtime}MIN` : ''}
+            {full.runtime ? ` · ${full.runtime}MIN` : ''}
           </div>
           <h1
             className="detail-title"
@@ -532,7 +557,7 @@ export default function DetailOverlay({
           )}
 
         {/* 줄거리 */}
-        {movie.overview && (
+        {full.overview && (
           <section style={{ marginTop: 40 }}>
             <h3 style={sectionLabel}>SYNOPSIS</h3>
             <p
@@ -544,7 +569,7 @@ export default function DetailOverlay({
                 maxWidth: 760,
               }}
             >
-              {movie.overview}
+              {full.overview}
             </p>
           </section>
         )}
@@ -558,10 +583,10 @@ export default function DetailOverlay({
             marginTop: 32,
           }}
         >
-          {movie.director && (
+          {full.director && (
             <section>
               <h3 style={sectionLabel}>DIRECTOR</h3>
-              <div style={{ fontSize: 14, marginTop: 8 }}>{movie.director}</div>
+              <div style={{ fontSize: 14, marginTop: 8 }}>{full.director}</div>
             </section>
           )}
           {cast.length > 0 && (
@@ -593,9 +618,9 @@ export default function DetailOverlay({
               border: '1px solid rgba(255,255,255,0.08)',
             }}
           >
-            {movie.youtube_key ? (
+            {full.youtube_key ? (
               <iframe
-                src={`https://www.youtube.com/embed/${movie.youtube_key}`}
+                src={`https://www.youtube.com/embed/${full.youtube_key}`}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
                 style={{
