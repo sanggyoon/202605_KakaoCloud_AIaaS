@@ -50,12 +50,38 @@ export default function Dashboard() {
   const [recentIds, setRecentIds] = useState<number[]>(() =>
     typeof window === 'undefined' ? [] : getRecentIds(),
   );
+  // 히스토리 영화 데이터 캐시 — 메인 목록(movies)과 독립적으로 id 기준 조회해
+  // 정렬/검색/필터로 movies가 바뀌어도 최근 본 영화가 사라지지 않게 한다.
+  const [recentCache, setRecentCache] = useState<Map<number, Movie>>(new Map());
+  useEffect(() => {
+    const missing = recentIds.filter((id) => !recentCache.has(id));
+    if (missing.length === 0) return;
+    const url = `${SUPABASE_URL}/rest/v1/movies?select=*&tmdb_id=in.(${missing.join(',')})`;
+    fetch(url, { headers: { apikey: SUPABASE_ANON_KEY } })
+      .then((r) => r.json())
+      .then((data: Movie[]) => {
+        const arr = Array.isArray(data) ? data : [];
+        if (arr.length === 0) return;
+        setRecentCache((prev) => {
+          const next = new Map(prev);
+          for (const m of arr) next.set(m.tmdb_id, m);
+          return next;
+        });
+      })
+      .catch(() => {});
+  }, [recentIds, recentCache]);
   const [search, setSearch] = useState('');
   // 검색어를 fetch 콜백/페이지네이션에서 항상 최신값으로 참조하기 위한 ref
   const searchRef = useRef('');
   useEffect(() => {
     searchRef.current = search;
   }, [search]);
+  // 연도 정렬 방향 — false=최신순(기본), true=오래된 순. fetchMovies가 useCallback([])이라 ref로 최신값 참조
+  const [sortAsc, setSortAsc] = useState(false);
+  const sortAscRef = useRef(false);
+  useEffect(() => {
+    sortAscRef.current = sortAsc;
+  }, [sortAsc]);
   const [filterOpen, setFilterOpen] = useState(false);
   // draft: 편집 중인 필터 상태 / applied: 실제 목록에 적용된 필터 상태
   const [draft, setDraft] = useState<Filters>(INITIAL_FILTERS);
@@ -78,7 +104,9 @@ export default function Dashboard() {
     if (offset > 0) setLoadingMore(true);
 
     // 연도·장르·비선호 조건을 쿼리 파라미터로 서버에 전달
-    let url = `${SUPABASE_URL}/rest/v1/movies?select=*&limit=${PAGE_SIZE}&offset=${offset}&order=has_vector.desc,release_year.desc,id.desc`;
+    // 그래프 보유 영화(has_vector)는 항상 맨 앞 유지, 연도+id 방향만 토글
+    const dir = sortAscRef.current ? 'asc' : 'desc';
+    let url = `${SUPABASE_URL}/rest/v1/movies?select=*&limit=${PAGE_SIZE}&offset=${offset}&order=has_vector.desc,release_year.${dir},id.${dir}`;
     url += `&release_year=gte.${filters.yearRange[0]}&release_year=lte.${filters.yearRange[1]}`;
     if (filters.genre !== 'All') {
       url += `&genre=ilike.*${encodeURIComponent(filters.genre)}*`;
@@ -157,6 +185,23 @@ export default function Dashboard() {
     return () => clearTimeout(t);
   }, [search, fetchMovies]);
 
+  // 정렬 방향 변경 → offset=0부터 재조회(무한스크롤 누적 초기화). 첫 마운트는 applied effect가
+  // 이미 초기 로드하므로 건너뛴다. 벡터 모드(선호/비선호)는 유사도순 RPC 결과라 정렬 무시.
+  const sortMountRef = useRef(true);
+  useEffect(() => {
+    if (sortMountRef.current) {
+      sortMountRef.current = false;
+      return;
+    }
+    if (appliedRef.current.likes.length > 0 || appliedRef.current.dislikes.length > 0) return;
+    isFetchingRef.current = false;
+    setMovies([]);
+    offsetRef.current = 0;
+    setHasMore(true);
+    setLoading(true);
+    fetchMovies(0, appliedRef.current);
+  }, [sortAsc, fetchMovies]);
+
   // sentinel 요소가 뷰포트에 진입하면 다음 페이지 fetch — appliedRef로 현재 필터 참조
   useEffect(() => {
     const el = sentinelRef.current;
@@ -233,9 +278,9 @@ export default function Dashboard() {
     );
   });
 
-  // recentIds 순서(최신순)를 유지하면서 로드된 movies에서 매핑
+  // recentIds 순서(최신순)를 유지하면서 독립 캐시에서 매핑 — 메인 목록과 무관
   const recentMovies = recentIds
-    .map((id) => movies.find((m) => m.tmdb_id === id))
+    .map((id) => recentCache.get(id))
     .filter((m): m is Movie => Boolean(m))
     .slice(0, 10);
 
@@ -589,11 +634,44 @@ export default function Dashboard() {
             >
               {loading ? '불러오는 중...' : '영화 목록'}
             </h2>
-            {/* {!loading && (
-              <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)' }}>
-                {filtered.length}편
-              </span>
-            )} */}
+            {/* 정렬 토글 — 벡터(선호/비선호) 모드에서는 유사도순이라 숨김 */}
+            {!isVectorMode && (
+              <div
+                style={{
+                  display: 'flex',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  borderRadius: 8,
+                  overflow: 'hidden',
+                }}
+              >
+                {([
+                  { label: '최신순', asc: false },
+                  { label: '오래된 순', asc: true },
+                ] as const).map((opt) => {
+                  const active = sortAsc === opt.asc;
+                  return (
+                    <button
+                      key={opt.label}
+                      onClick={() => setSortAsc(opt.asc)}
+                      disabled={loading}
+                      style={{
+                        background: active ? 'color-mix(in oklch, var(--accent) 22%, transparent)' : 'none',
+                        border: 'none',
+                        color: active ? 'var(--accent)' : 'rgba(255,255,255,0.55)',
+                        fontSize: 12,
+                        fontWeight: 600,
+                        fontFamily: 'inherit',
+                        padding: '5px 12px',
+                        cursor: loading ? 'not-allowed' : 'pointer',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {opt.label}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           {/* 스켈레톤 UI — 초기 로딩 중 레이아웃 자리 유지 */}
