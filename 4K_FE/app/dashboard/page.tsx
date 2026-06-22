@@ -25,6 +25,8 @@ import BackgroundThread from '@/app/components/BackgroundThread';
 
 // 한 번에 가져올 영화 수 — 서버사이드 필터링으로 Supabase가 조건 적용 후 이 단위로 반환
 const PAGE_SIZE = 120;
+// 목록 카드에 필요한 컬럼만 — overview/actors 등 무거운 필드 제외(상세에서 지연 로드)
+const LIST_SELECT = 'id,tmdb_id,title,original_title,poster_path,release_year,genre,has_vector';
 
 // 안정적인 참조 — 인라인 배열이면 리렌더(카드 호버 등)마다 새 참조가 되어
 // BackgroundThread의 useEffect가 재실행→캔버스 재생성→흰 깜빡임이 발생한다.
@@ -56,7 +58,7 @@ export default function Dashboard() {
   useEffect(() => {
     const missing = recentIds.filter((id) => !recentCache.has(id));
     if (missing.length === 0) return;
-    const url = `${SUPABASE_URL}/rest/v1/movies?select=*&tmdb_id=in.(${missing.join(',')})`;
+    const url = `${SUPABASE_URL}/rest/v1/movies?select=${LIST_SELECT}&tmdb_id=in.(${missing.join(',')})`;
     fetch(url, { headers: { apikey: SUPABASE_ANON_KEY } })
       .then((r) => r.json())
       .then((data: Movie[]) => {
@@ -106,7 +108,7 @@ export default function Dashboard() {
     // 연도·장르·비선호 조건을 쿼리 파라미터로 서버에 전달
     // 그래프 보유 영화(has_vector)는 항상 맨 앞 유지, 연도+id 방향만 토글
     const dir = sortAscRef.current ? 'asc' : 'desc';
-    let url = `${SUPABASE_URL}/rest/v1/movies?select=*&limit=${PAGE_SIZE}&offset=${offset}&order=has_vector.desc,release_year.${dir},id.${dir}`;
+    let url = `/api/movies?select=${LIST_SELECT}&limit=${PAGE_SIZE}&offset=${offset}&order=has_vector.desc,release_year.${dir},id.${dir}`;
     url += `&release_year=gte.${filters.yearRange[0]}&release_year=lte.${filters.yearRange[1]}`;
     if (filters.genre !== 'All') {
       url += `&genre=ilike.*${encodeURIComponent(filters.genre)}*`;
@@ -125,7 +127,7 @@ export default function Dashboard() {
       url += `&or=(title.ilike.*${enc}*,original_title.ilike.*${enc}*)`;
     }
 
-    fetch(url, { headers: { apikey: SUPABASE_ANON_KEY } })
+    fetch(url)
       .then((r) => r.json())
       .then((data: Movie[]) => {
         const arr = Array.isArray(data) ? data : [];
