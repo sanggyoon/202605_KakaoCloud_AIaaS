@@ -38,8 +38,8 @@
 - **라우트 캐싱 ≠ Redis ≠ CDN.** Next.js Route Handler 내부 `fetch(..., { next: {
   revalidate } })`의 Data Cache를 사용 — 별도 서버 없이 **FE 파드 안**에 캐시. FE 파드는
   HPA(2→8)로 확장되므로 캐시 서빙도 함께 확장된다.
-- **파드별 캐시**라 DB는 "5분 × 파드 수"만큼만 갱신된다(예 8파드 → 5분에 8회). 현재
-  수백 req/초 대비 천 분의 일 수준 → DB 천장 해소에 충분. 공유 단일 캐시(=Redis)는
+- **파드별 캐시**라 DB는 "1시간 × 파드 수"만큼만 갱신된다(예 8파드 → 1시간에 8회). 현재
+  수백 req/초 대비 만 분의 일 수준 → DB 천장 해소에 충분. 공유 단일 캐시(=Redis)는
   과하므로 도입하지 않는다(YAGNI).
 - **캐시는 URL(쿼리)별로 키가 분리**된다. 필터 조합마다 별도 캐시 엔트리이고, 각 엔트리는
   **vm4가 서버에서 필터링한 결과**다. 즉 캐싱은 "필터 결과의 사본"일 뿐, 필터링 주체는
@@ -51,7 +51,7 @@
 | 항목 | 결정 |
 |---|---|
 | 캐싱 위치 | Next.js Route Handler 내장 Data Cache (FE 파드 내, Redis/CDN 미사용) |
-| 캐시 TTL | `revalidate: 300`(5분). 하루 1회 갱신 데이터라 충분, 수동 추가도 5분 내 반영 |
+| 캐시 TTL | `revalidate: 3600`(1시간). 하루 1회 갱신 데이터라 충분, 수동 추가도 1시간 내 반영 |
 | 라우트 성격 | **투명 프록시** — 쿼리스트링을 변형 없이 vm4로 포워딩, apikey만 서버에서 부착 |
 | 목록 select | `id,tmdb_id,title,original_title,poster_path,release_year,genre,has_vector` |
 | 상세 데이터 | `DetailOverlay`가 열릴 때 `tmdb_id`로 전체 레코드 1건 지연 fetch |
@@ -65,7 +65,7 @@
 
 - GET Route Handler. 들어온 쿼리스트링을 **그대로** `${SUPABASE_URL}/rest/v1/movies?<동일
   쿼리스트링>`으로 전달. 헤더에 `apikey`(서버 보관 또는 기존 공개 anon 키) 부착.
-- 업스트림 호출을 `fetch(upstreamUrl, { headers: { apikey }, next: { revalidate: 300 } })`
+- 업스트림 호출을 `fetch(upstreamUrl, { headers: { apikey }, next: { revalidate: 3600 } })`
   로 감싸 Data Cache 적용. 응답 JSON 본문을 그대로 반환(`Content-Range` 등 불필요 —
   대시보드는 `arr.length === PAGE_SIZE`로 hasMore 판정).
 - 업스트림 실패(비2xx) 시 동일 상태코드/빈 배열로 안전 반환.
@@ -84,15 +84,16 @@
 - 열릴 때(`movie.tmdb_id` 변경 시) 전체 레코드 1건을 fetch
   (`overview, actors, director, runtime, youtube_key, imdb_id` 등). 기존 벡터/유사영화
   fetch와 같은 `useEffect` 패턴. 로딩 중에는 props로 받은 축소 필드로 먼저 렌더.
-- 사용자가 영화를 클릭할 때만 발생(저빈도) → DB 부담 미미. `/api/movies` 경유 또는 직접
-  조회 중 택1(저빈도라 직접 조회도 무방).
+- 사용자가 영화를 클릭할 때만 발생(저빈도) → DB 부담 미미. **직접 Supabase 조회**로 한다
+  (`${SUPABASE_URL}/rest/v1/movies?tmdb_id=eq.{id}&select=*&limit=1`, 기존 data.ts 패턴 재사용).
+  단건·저빈도라 캐시 라우트 불필요.
 
 ### 데이터 흐름
 
 ```
 [목록] 브라우저 → /api/movies?<필터쿼리> → (Data Cache 적중?) 
         ├ 적중: FE 파드 메모리에서 반환 (vm4 미접촉)
-        └ 미적중(5분 경과): vm4 PostgREST가 서버 필터링 → 캐시 저장 → 반환
+        └ 미적중(1시간 경과): vm4 PostgREST가 서버 필터링 → 캐시 저장 → 반환
 [상세] 영화 클릭 → DetailOverlay가 tmdb_id로 전체 1건 fetch (저빈도)
 [이미지] 포스터 → TMDB CDN (변경 없음)
 ```
@@ -113,4 +114,4 @@
 - CDN(CloudFront) 도입(새 인프라 + DR DNS 복잡도).
 - DB 읽기 replica / PgBouncer 커넥션 풀링(인프라 변경, 후속 과제).
 - 벡터 모드/매니저 경로 캐싱.
-- 캐시 능동 무효화(수동 영화 추가 시) — 5분 TTL로 충분, 필요 시 후속.
+- 캐시 능동 무효화(수동 영화 추가 시) — 1시간 TTL로 충분, 필요 시 후속.
