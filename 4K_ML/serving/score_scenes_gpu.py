@@ -31,7 +31,7 @@ def run() -> None:
         raise SystemExit("AI_DATABASE_URL, AI_DATABASE_KEY 필요 (vm5).")
     base = os.getenv("MODEL_BASE_DIR", "/models")
     counts = {"done": 0, "failed": 0}
-    with httpx.Client(timeout=60, verify=False) as client:
+    with httpx.Client(timeout=60) as client:
         mv = db.fetch_active_version(client)
         model_dir = f"{base}/{mv}"
         print(f"=== GPU 배치 스코어링: 활성모델 {mv} ({model_dir}) ===")

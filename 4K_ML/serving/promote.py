@@ -29,7 +29,7 @@ if __name__ == "__main__":
     def metrics(mv):
         r = httpx.get(f"{url}/rest/v1/model_versions",
                       params={"select": "metrics", "model_version": f"eq.{mv}", "limit": "1"},
-                      headers=headers, timeout=30, verify=False)
+                      headers=headers, timeout=30)
         r.raise_for_status()
         rows = r.json()
         return rows[0]["metrics"] if rows else {}

@@ -50,7 +50,7 @@ async def list_movies(page: int = 1):
     TMDB 최신 영화 목록 + 각 영화의 Supabase 존재 여부 반환.
     vote_count.gte=10 으로 소규모 영화 필터링.
     """
-    async with httpx.AsyncClient(timeout=15, verify=False) as client:
+    async with httpx.AsyncClient(timeout=15) as client:
         # TMDB discover (최신 개봉순)
         r = await client.get(
             f"{TMDB_BASE}/discover/movie",
@@ -110,7 +110,7 @@ async def search_movies(q: str = "", page: int = 1):
     if not q.strip():
         return {"page": 1, "total_pages": 1, "movies": []}
 
-    async with httpx.AsyncClient(timeout=15, verify=False) as client:
+    async with httpx.AsyncClient(timeout=15) as client:
         r = await client.get(
             f"{TMDB_BASE}/search/movie",
             params={
@@ -161,7 +161,7 @@ async def search_movies(q: str = "", page: int = 1):
 async def recent_movies(limit: int = 50):
     """최근 추가된 영화를 created_at 내림차순으로 반환 (매니저 '최근 추가 데이터' 화면용)."""
     limit = max(1, min(limit, 200))
-    async with httpx.AsyncClient(timeout=15, verify=False) as client:
+    async with httpx.AsyncClient(timeout=15) as client:
         r = await client.get(
             f"{tc.data_url()}/rest/v1/movies",
             params={
@@ -201,14 +201,14 @@ async def job_status(job_type: str):
 @app.get("/api/subtitles/remaining")
 async def subtitles_remaining():
     """수집 가능한(종료 상태 아닌) 영화 수 — 매니저 입력칸의 최대치 표시용."""
-    async with httpx.AsyncClient(timeout=30, verify=False) as client:
+    async with httpx.AsyncClient(timeout=30) as client:
         return await sc.remaining_counts(client)
 
 
 @app.get("/api/movies/{tmdb_id}/detail")
 async def movie_detail(tmdb_id: int):
     """Supabase에서 영화 메타데이터(movies) + 클라이맥스 벡터(movie_vectors)를 조회."""
-    async with httpx.AsyncClient(timeout=15, verify=False) as client:
+    async with httpx.AsyncClient(timeout=15) as client:
         m_r = await client.get(
             f"{DATA_URL}/rest/v1/movies",
             params={"select": "*", "tmdb_id": f"eq.{tmdb_id}", "limit": "1"},
@@ -234,7 +234,7 @@ async def movie_detail(tmdb_id: int):
 @app.post("/api/movies/{tmdb_id}/reprocess")
 async def reprocess_movie(tmdb_id: int):
     """단건 자막 강제 재수집 → 성공 시 parse/score/vector 리셋(크론·GPU가 재처리)."""
-    async with httpx.AsyncClient(timeout=120, verify=False) as client:
+    async with httpx.AsyncClient(timeout=120) as client:
         result = await sc.collect_one(client, tmdb_id)
         if result["state"] == "done":
             await sc.reset_downstream(client, tmdb_id)
@@ -322,7 +322,7 @@ async def update_movie(tmdb_id: int, payload: dict):
     # 화이트리스트에 있는 필드만 통과
     movie_update = {k: v for k, v in movie_fields.items() if k in _EDITABLE_FIELDS}
 
-    async with httpx.AsyncClient(timeout=15, verify=False) as client:
+    async with httpx.AsyncClient(timeout=15) as client:
         if movie_update:
             r = await client.patch(
                 f"{DATA_URL}/rest/v1/movies",
@@ -351,7 +351,7 @@ async def update_movie(tmdb_id: int, payload: dict):
 @app.post("/api/movies/{tmdb_id}")
 async def add_movie(tmdb_id: int):
     """TMDB에서 상세 정보를 가져와 Supabase에 upsert"""
-    async with httpx.AsyncClient(timeout=15, verify=False) as client:
+    async with httpx.AsyncClient(timeout=15) as client:
         r = await client.get(
             f"{TMDB_BASE}/movie/{tmdb_id}",
             params={
@@ -407,7 +407,7 @@ async def _reset_processing(client: httpx.AsyncClient, tmdb_id: int) -> None:
 @app.delete("/api/movies/{tmdb_id}")
 async def delete_movie(tmdb_id: int):
     """vm4 movies 삭제 + vm4 movie_vectors 삭제 + vm5 processing_status pending 리셋."""
-    async with httpx.AsyncClient(timeout=15, verify=False) as client:
+    async with httpx.AsyncClient(timeout=15) as client:
         sb_r = await client.delete(
             f"{DATA_URL}/rest/v1/movies",
             params={"tmdb_id": f"eq.{tmdb_id}"},
@@ -435,7 +435,7 @@ async def log_visit(payload: dict):
     visitor_id = (payload.get("visitor_id") or "").strip()
     if not visitor_id:
         raise HTTPException(status_code=400, detail="visitor_id is required")
-    async with httpx.AsyncClient(timeout=15, verify=False) as client:
+    async with httpx.AsyncClient(timeout=15) as client:
         r = await client.post(
             f"{tc.data_url()}/rest/v1/visits",
             json=[{"visitor_id": visitor_id}],
@@ -479,7 +479,7 @@ async def active_model():
         headers = {"apikey": key, "Authorization": f"Bearer {key}"}
         bu = os.getenv("AI_BASIC_USER")
         auth = (bu, os.getenv("AI_BASIC_PASS", "")) if bu else None
-        async with httpx.AsyncClient(timeout=15, verify=False) as client:
+        async with httpx.AsyncClient(timeout=15) as client:
             r = await client.get(
                 f"{url}/rest/v1/model_versions",
                 params={"select": "model_version,metrics", "active": "eq.true"},
@@ -539,7 +539,7 @@ async def visits_range(start: str, end: str):
         raise HTTPException(status_code=400, detail="시작일이 종료일보다 늦습니다")
     e_plus = e + timedelta(days=1)
     cond = f"(created_at.gte.{s.isoformat()}T00:00:00,created_at.lt.{e_plus.isoformat()}T00:00:00)"
-    async with httpx.AsyncClient(timeout=15, verify=False) as client:
+    async with httpx.AsyncClient(timeout=15) as client:
         count = await _count(client, "visits", {"and": cond})
     return {"start": start, "end": end, "count": count}
 
@@ -552,7 +552,7 @@ async def stats():
     week_start = now - timedelta(days=7)
     month_start = now - timedelta(days=30)
 
-    async with httpx.AsyncClient(timeout=15, verify=False) as client:
+    async with httpx.AsyncClient(timeout=15) as client:
         total_v = await _count(client, "visits", {})
         month_v = await _count(client, "visits", {"created_at": f"gte.{month_start.isoformat()}"})
         week_v = await _count(client, "visits", {"created_at": f"gte.{week_start.isoformat()}"})
@@ -574,7 +574,7 @@ async def create_api_key(payload: dict):
     plaintext = f"peakly_{secrets.token_urlsafe(24)}"
     key_hash = hashlib.sha256(plaintext.encode()).hexdigest()
     key_prefix = plaintext[:12]
-    async with httpx.AsyncClient(timeout=15, verify=False) as client:
+    async with httpx.AsyncClient(timeout=15) as client:
         r = await client.post(
             f"{DATA_URL}/rest/v1/api_keys",
             json=[{"name": name, "key_hash": key_hash, "key_prefix": key_prefix}],
@@ -594,7 +594,7 @@ async def create_api_key(payload: dict):
 
 @app.get("/api/api-keys")
 async def list_api_keys():
-    async with httpx.AsyncClient(timeout=15, verify=False) as client:
+    async with httpx.AsyncClient(timeout=15) as client:
         r = await client.get(
             f"{DATA_URL}/rest/v1/api_keys",
             params={
@@ -610,7 +610,7 @@ async def list_api_keys():
 
 @app.delete("/api/api-keys/{key_id}")
 async def revoke_api_key(key_id: int):
-    async with httpx.AsyncClient(timeout=15, verify=False) as client:
+    async with httpx.AsyncClient(timeout=15) as client:
         r = await client.patch(
             f"{DATA_URL}/rest/v1/api_keys",
             params={"id": f"eq.{key_id}"},

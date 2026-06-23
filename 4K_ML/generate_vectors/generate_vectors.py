@@ -50,7 +50,7 @@ def run() -> None:
     if not os.getenv("DATA_SUPABASE_URL") or not os.getenv("DATA_SUPABASE_KEY"):
         raise SystemExit("DATA_SUPABASE_URL, DATA_SUPABASE_KEY 필요 (vm4).")
 
-    with httpx.Client(timeout=60, verify=False) as client:
+    with httpx.Client(timeout=60) as client:
         mv = db.fetch_active_version(client)
         arousal_mv = f"{mv}::arousal"
         print(f"=== 활성 모델: {mv} ===")

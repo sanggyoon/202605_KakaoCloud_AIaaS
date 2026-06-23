@@ -31,7 +31,7 @@ def run() -> None:
 
     counts = {"done": 0, "failed": 0}
     ensured: set[str] = set()
-    with httpx.Client(timeout=60, verify=False) as client:
+    with httpx.Client(timeout=60) as client:
         targets = db.fetch_score_targets(client)
         for tmdb_id in targets:
             try:

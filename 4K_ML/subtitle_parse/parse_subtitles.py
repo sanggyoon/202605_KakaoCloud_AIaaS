@@ -58,7 +58,7 @@ def run() -> None:
         raise SystemExit("AI_DATABASE_URL 환경변수가 필요합니다 (vm5).")
     gap_ms, sim_threshold, min_lines, min_ms = config_from_env()
     counts = {"done": 0, "failed": 0}
-    with httpx.Client(timeout=60, verify=False) as client:
+    with httpx.Client(timeout=60) as client:
         targets = db.fetch_targets(client)
         for n, tmdb_id in enumerate(targets, 1):
             sub = db.fetch_subtitle(client, tmdb_id)
