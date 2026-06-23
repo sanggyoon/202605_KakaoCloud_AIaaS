@@ -30,17 +30,35 @@ export function verifyCredentials(id: string, password: string): boolean {
   return id === MANAGER_ID && password === MANAGER_PASSWORD;
 }
 
-// ID + 시크릿 기반 HMAC 세션 토큰 (쿠키에 원문 시크릿을 담지 않음)
-export function sessionToken(): string {
-  return crypto.createHmac('sha256', SESSION_SECRET).update(`${MANAGER_ID}:manager`).digest('hex');
+// payload를 HMAC 서명 (base64url)
+function sign(payload: string): string {
+  return crypto.createHmac('sha256', SESSION_SECRET).update(payload).digest('base64url');
 }
 
-// 쿠키의 토큰이 유효한지 상수시간 비교로 검증. 설정 오류 시 항상 거부(위조 차단).
+// 만료시각(exp)을 담아 서명한 세션 토큰. 형식: <payload>.<sig>
+// → 토큰마다 exp가 박혀 8시간 후 무효, 변조 시 서명 불일치로 거부.
+export function sessionToken(): string {
+  const exp = Date.now() + SESSION_MAX_AGE * 1000;
+  const payload = Buffer.from(JSON.stringify({ exp })).toString('base64url');
+  return `${payload}.${sign(payload)}`;
+}
+
+// 토큰 검증: 서명 상수시간 비교 + 만료 확인. 설정 오류 시 항상 거부(위조 차단).
 export function isValidSession(token: string | undefined | null): boolean {
   if (MISCONFIGURED) return false;
   if (!token) return false;
-  const expected = sessionToken();
-  const a = Buffer.from(token);
+  const dot = token.lastIndexOf('.');
+  if (dot <= 0) return false;
+  const payload = token.slice(0, dot);
+  const sig = token.slice(dot + 1);
+  const expected = sign(payload);
+  const a = Buffer.from(sig);
   const b = Buffer.from(expected);
-  return a.length === b.length && crypto.timingSafeEqual(a, b);
+  if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return false;
+  try {
+    const { exp } = JSON.parse(Buffer.from(payload, 'base64url').toString()) as { exp?: number };
+    return typeof exp === 'number' && Date.now() < exp;
+  } catch {
+    return false;
+  }
 }
