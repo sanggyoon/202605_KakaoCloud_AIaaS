@@ -89,6 +89,9 @@ environment:
   studio:
     DEFAULT_ORGANIZATION_NAME: 'Default Organization'
     DEFAULT_PROJECT_NAME: 'Service DB'
+  rest:
+    # PostgREST DB 커넥션 풀(기본 ~10 → 40). 인증 RPC 동시 처리량 상향.
+    PGRST_DB_POOL: '40'
 
 # ─────────────────────────────────────────
 # PVC (PostgreSQL용)
