@@ -1,0 +1,42 @@
+# /api/visit 전용 rate limit — 방문 비콘 스팸/플러딩 차단.
+# 실사용자는 방문자당 하루 1회 수준이라 IP당 분당 30(+nginx burst)은 정상에 영향 없음.
+# 읽기 경로(movies/scores)는 1h 캐싱으로 이미 DoS 완화되어 전역 제한은 두지 않음.
+# nginx 컨트롤러가 실 클라이언트 IP를 보므로 per-IP 제한이 유효.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: frontend-visit-ratelimit
+  namespace: fe
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+    nginx.ingress.kubernetes.io/limit-rpm: '30'
+    nginx.ingress.kubernetes.io/limit-connections: '5'
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - peakly.art
+        - www.peakly.art
+      secretName: frontend-peakly-tls
+  rules:
+    - host: peakly.art
+      http:
+        paths:
+          - path: /api/visit
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80
+    - host: www.peakly.art
+      http:
+        paths:
+          - path: /api/visit
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80
