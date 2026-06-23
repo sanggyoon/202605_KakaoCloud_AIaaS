@@ -14,22 +14,9 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - data.4kakao.kro.kr   # 전환 후 제거
-      secretName: data-supabase-tls
-    - hosts:
         - data.peakly.art
       secretName: data-supabase-peakly-tls
   rules:
-    - host: data.4kakao.kro.kr   # 전환 후 제거
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: supabase-data-supabase-studio
-                port:
-                  number: 3000
     - host: data.peakly.art
       http:
         paths:
@@ -54,36 +41,9 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - data.4kakao.kro.kr   # 전환 후 제거
-      secretName: data-supabase-tls
-    - hosts:
         - data.peakly.art
       secretName: data-supabase-peakly-tls
   rules:
-    - host: data.4kakao.kro.kr   # 전환 후 제거
-      http:
-        paths:
-          - path: /rest/v1
-            pathType: Prefix
-            backend:
-              service:
-                name: supabase-data-supabase-kong
-                port:
-                  number: 8000
-          - path: /auth/v1
-            pathType: Prefix
-            backend:
-              service:
-                name: supabase-data-supabase-kong
-                port:
-                  number: 8000
-          - path: /storage/v1
-            pathType: Prefix
-            backend:
-              service:
-                name: supabase-data-supabase-kong
-                port:
-                  number: 8000
     - host: data.peakly.art
       http:
         paths:
@@ -124,22 +84,9 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - ai.4kakao.kro.kr   # 전환 후 제거
-      secretName: ai-supabase-tls
-    - hosts:
         - ai.peakly.art
       secretName: ai-supabase-peakly-tls
   rules:
-    - host: ai.4kakao.kro.kr   # 전환 후 제거
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: supabase-ai-supabase-studio
-                port:
-                  number: 3000
     - host: ai.peakly.art
       http:
         paths:
@@ -164,36 +111,9 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - ai.4kakao.kro.kr   # 전환 후 제거
-      secretName: ai-supabase-tls
-    - hosts:
         - ai.peakly.art
       secretName: ai-supabase-peakly-tls
   rules:
-    - host: ai.4kakao.kro.kr   # 전환 후 제거
-      http:
-        paths:
-          - path: /rest/v1
-            pathType: Prefix
-            backend:
-              service:
-                name: supabase-ai-supabase-kong
-                port:
-                  number: 8000
-          - path: /auth/v1
-            pathType: Prefix
-            backend:
-              service:
-                name: supabase-ai-supabase-kong
-                port:
-                  number: 8000
-          - path: /storage/v1
-            pathType: Prefix
-            backend:
-              service:
-                name: supabase-ai-supabase-kong
-                port:
-                  number: 8000
     - host: ai.peakly.art
       http:
         paths:
@@ -231,22 +151,9 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - grafana.4kakao.kro.kr   # 전환 후 제거
-      secretName: grafana-tls
-    - hosts:
         - grafana.peakly.art
       secretName: grafana-peakly-tls
   rules:
-    - host: grafana.4kakao.kro.kr   # 전환 후 제거
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: kube-prometheus-stack-grafana
-                port:
-                  number: 80
     - host: grafana.peakly.art
       http:
         paths:
@@ -272,22 +179,9 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - argocd.4kakao.kro.kr   # 전환 후 제거
-      secretName: argocd-tls
-    - hosts:
         - argocd.peakly.art
       secretName: argocd-peakly-tls
   rules:
-    - host: argocd.4kakao.kro.kr   # 전환 후 제거
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: argocd-server
-                port:
-                  number: 80
     - host: argocd.peakly.art
       http:
         paths:
@@ -298,4 +192,3 @@ spec:
                 name: argocd-server
                 port:
                   number: 80
-

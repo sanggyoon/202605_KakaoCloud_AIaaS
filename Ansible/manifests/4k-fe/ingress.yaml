@@ -10,27 +10,11 @@ metadata:
 spec:
   ingressClassName: nginx
   tls:
-    # 전환 완료 후 제거 (구 도메인)
-    - hosts:
-        - cinema.4kakao.kro.kr
-      secretName: frontend-tls
-    # 신규 도메인 — apex + www. 별도 secret으로 분리해 기존 인증서에 영향 없음
     - hosts:
         - peakly.art
         - www.peakly.art
       secretName: frontend-peakly-tls
   rules:
-    # 전환 완료 후 제거 (구 도메인)
-    - host: cinema.4kakao.kro.kr
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: frontend
-                port:
-                  number: 80
     - host: peakly.art
       http:
         paths:
