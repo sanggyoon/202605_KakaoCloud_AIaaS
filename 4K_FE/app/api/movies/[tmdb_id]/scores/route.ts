@@ -1,4 +1,4 @@
-import { fetchSceneTimeline } from '@/app/lib/aiDb';
+import { getSceneTimelineCached } from '@/app/lib/aiDb';
 import { isValidApiKey } from '@/app/lib/apiKeys';
 
 // 외부 점수 API — vm5 scene_scores 원본 타임라인 반환.
@@ -21,7 +21,7 @@ export async function GET(
   }
 
   // 3. 조회 → 상태코드 매핑.
-  const result = await fetchSceneTimeline(id);
+  const result = await getSceneTimelineCached(id);
   if (result.kind === 'not_found') {
     return Response.json({ error: 'movie not found' }, { status: 404 });
   }
