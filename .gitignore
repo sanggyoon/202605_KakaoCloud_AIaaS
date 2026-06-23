@@ -26,3 +26,6 @@ yarn-error.log*
 # .understand-anything
 # Brainstorming visual companion
 .superpowers/
+
+# 보안 점검 문서(취약점 상세 — 커밋 제외)
+/SECURITY.md
