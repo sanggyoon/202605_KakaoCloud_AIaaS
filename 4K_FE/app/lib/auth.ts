@@ -6,27 +6,69 @@ export const SESSION_COOKIE = 'manager_session';
 // 세션 유효 시간 (초) — 8시간
 export const SESSION_MAX_AGE = 60 * 60 * 8;
 
-// 자격증명/시크릿은 env에서 관리. 미설정 시 로컬 개발용 기본값(admin/admin).
-const MANAGER_ID = process.env.MANAGER_ID ?? 'admin';
-const MANAGER_PASSWORD = process.env.MANAGER_PASSWORD ?? 'admin';
-// 세션 토큰 서명용 시크릿 — 운영에서는 반드시 env로 무작위 값 주입 권장
-const SESSION_SECRET = process.env.MANAGER_SESSION_SECRET ?? 'dev-only-insecure-secret';
+// 자격증명/시크릿은 env에서 관리.
+const IS_PROD = process.env.NODE_ENV === 'production';
+// 로컬 개발 편의 기본값은 비운영에서만 사용. 운영(NODE_ENV=production)에서 미설정이면
+// 아래 MISCONFIGURED로 인증을 전면 거부(fail-closed) — 기본 시크릿으로 우회 불가.
+const MANAGER_ID = process.env.MANAGER_ID ?? (IS_PROD ? '' : 'admin');
+const MANAGER_PASSWORD = process.env.MANAGER_PASSWORD ?? (IS_PROD ? '' : 'admin');
+const SESSION_SECRET =
+  process.env.MANAGER_SESSION_SECRET ?? (IS_PROD ? '' : 'dev-only-insecure-secret');
 
-// 입력한 ID/비밀번호가 env 값과 일치하는지 검증
+// 운영에서 비밀번호/세션 시크릿이 비어 있으면 설정 오류 → 인증 자체를 막는다.
+// (공개 사이트는 그대로 동작, 매니저만 잠김)
+const MISCONFIGURED = IS_PROD && (!process.env.MANAGER_PASSWORD || !process.env.MANAGER_SESSION_SECRET);
+if (MISCONFIGURED) {
+  console.error(
+    '[auth] MANAGER_PASSWORD/MANAGER_SESSION_SECRET 미설정 — 매니저 인증 비활성화(fail-closed).',
+  );
+}
+
+// 길이 차이를 흘리지 않도록 sha256 해시 후 상수시간 비교
+function constantTimeEqual(a: string, b: string): boolean {
+  const ha = crypto.createHash('sha256').update(a).digest();
+  const hb = crypto.createHash('sha256').update(b).digest();
+  return crypto.timingSafeEqual(ha, hb);
+}
+
+// 입력한 ID/비밀번호가 env 값과 일치하는지 검증. 설정 오류 시 항상 거부.
 export function verifyCredentials(id: string, password: string): boolean {
-  return id === MANAGER_ID && password === MANAGER_PASSWORD;
+  if (MISCONFIGURED) return false;
+  // 단락(&&)으로 인한 타이밍 누출 방지 위해 둘 다 계산 후 AND
+  const idOk = constantTimeEqual(id, MANAGER_ID);
+  const pwOk = constantTimeEqual(password, MANAGER_PASSWORD);
+  return idOk && pwOk;
 }
 
-// ID + 시크릿 기반 HMAC 세션 토큰 (쿠키에 원문 시크릿을 담지 않음)
+// payload를 HMAC 서명 (base64url)
+function sign(payload: string): string {
+  return crypto.createHmac('sha256', SESSION_SECRET).update(payload).digest('base64url');
+}
+
+// 만료시각(exp)을 담아 서명한 세션 토큰. 형식: <payload>.<sig>
+// → 토큰마다 exp가 박혀 8시간 후 무효, 변조 시 서명 불일치로 거부.
 export function sessionToken(): string {
-  return crypto.createHmac('sha256', SESSION_SECRET).update(`${MANAGER_ID}:manager`).digest('hex');
+  const exp = Date.now() + SESSION_MAX_AGE * 1000;
+  const payload = Buffer.from(JSON.stringify({ exp })).toString('base64url');
+  return `${payload}.${sign(payload)}`;
 }
 
-// 쿠키의 토큰이 유효한지 상수시간 비교로 검증
+// 토큰 검증: 서명 상수시간 비교 + 만료 확인. 설정 오류 시 항상 거부(위조 차단).
 export function isValidSession(token: string | undefined | null): boolean {
+  if (MISCONFIGURED) return false;
   if (!token) return false;
-  const expected = sessionToken();
-  const a = Buffer.from(token);
+  const dot = token.lastIndexOf('.');
+  if (dot <= 0) return false;
+  const payload = token.slice(0, dot);
+  const sig = token.slice(dot + 1);
+  const expected = sign(payload);
+  const a = Buffer.from(sig);
   const b = Buffer.from(expected);
-  return a.length === b.length && crypto.timingSafeEqual(a, b);
+  if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return false;
+  try {
+    const { exp } = JSON.parse(Buffer.from(payload, 'base64url').toString()) as { exp?: number };
+    return typeof exp === 'number' && Date.now() < exp;
+  } catch {
+    return false;
+  }
 }

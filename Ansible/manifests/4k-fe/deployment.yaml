@@ -20,14 +20,28 @@ spec:
           env:
             - name: BE_INTERNAL_URL
               value: 'http://backend.be.svc.cluster.local:8000'
-            # 매니저 페이지 로그인 자격증명 — 값만 바꾸면 ID/비밀번호 변경 가능
+            # 매니저 자격증명/세션 시크릿 — frontend-secrets에서 주입(평문 금지).
+            # 1회 설정/회전:
+            #   kubectl -n fe create secret generic frontend-secrets \
+            #     --from-literal=MANAGER_ID='<id>' \
+            #     --from-literal=MANAGER_PASSWORD='<강력 비밀번호>' \
+            #     --from-literal=MANAGER_SESSION_SECRET="$(openssl rand -hex 32)" \
+            #     --from-literal=ai-database-key='<vm5 key>' --dry-run=client -o yaml | kubectl apply -f -
             - name: MANAGER_ID
-              value: 'admin'
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secrets
+                  key: MANAGER_ID
             - name: MANAGER_PASSWORD
-              value: 'admin'
-            # 세션 서명 시크릿 — 운영에서는 Secret으로 분리 권장 (openssl rand -hex 32)
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secrets
+                  key: MANAGER_PASSWORD
             - name: MANAGER_SESSION_SECRET
-              value: '7e21bb198957970f12bccb5584b4a2ef8a409a2971357f51af7073c6620b402a'
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secrets
+                  key: MANAGER_SESSION_SECRET
             # vm5(AI DB) 접속 — 외부 점수 API(/api/movies/[tmdb_id]/scores)용.
             # URL은 공개값, KEY는 클러스터 Secret(frontend-secrets)에서 주입.
             # 적용 전 1회: kubectl -n fe create secret generic frontend-secrets \

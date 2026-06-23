@@ -37,7 +37,7 @@ def run() -> None:
         raise SystemExit("ANTHROPIC_API_KEY 환경변수가 필요합니다.")
     ac = Anthropic()
     counts = {"done": 0, "failed": 0}
-    with httpx.Client(timeout=60, verify=False) as client:
+    with httpx.Client(timeout=60) as client:
         db.ensure_model_versions(client)
         targets = db.fetch_label_targets(client)
         movies, sid_maps = [], {}

@@ -125,7 +125,7 @@ def run(out_dir=None, v1_dir=None, encoder_name="roberta-base", max_epochs=20,
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
     import httpx
-    with httpx.Client(timeout=60, verify=False) as client:
+    with httpx.Client(timeout=60) as client:
         records = load_training_data(client)
         if not records:
             raise SystemExit("학습 레코드 없음 (라벨 데이터 확인).")

@@ -82,7 +82,7 @@ def run(out_dir=None, model_name="roberta-base", max_epochs=10, batch_size=16,
     np.random.seed(seed)
 
     import httpx
-    with httpx.Client(timeout=60, verify=False) as client:
+    with httpx.Client(timeout=60) as client:
         records = load_training_data(client)
         if not records:
             raise SystemExit("학습 레코드 없음 (라벨 데이터 확인).")

@@ -9,6 +9,7 @@ resources:
   - backfill-cronjob.yaml
   - subtitle-cronjob.yaml
   - hpa.yaml
+  - networkpolicy.yaml
 
 images:
   - name: ghcr.io/sanggyoon/4k-be

@@ -1,0 +1,26 @@
+# BE(backend:8000) 인그레스 제한 — fe/be 네임스페이스에서만 호출 허용.
+# 목적: BE는 무인증이므로(클러스터 내부 전용), 다른 네임스페이스/파드의 측면이동 차단.
+# 주의: kubelet health probe(httpGet /health:8000)는 노드에서 오므로, NP 적용 후
+#       backend 파드가 Ready 유지되는지 반드시 확인(kube-router는 보통 노드→파드 허용).
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: backend-allow-fe
+  namespace: be
+spec:
+  podSelector:
+    matchLabels:
+      app: backend
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: fe
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: be
+      ports:
+        - protocol: TCP
+          port: 8000

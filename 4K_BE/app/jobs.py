@@ -41,7 +41,7 @@ def _log_line(ev: dict) -> str:
 async def _run(job_type: str, factory) -> None:
     st = _REGISTRY[job_type]
     try:
-        async with httpx.AsyncClient(timeout=60, verify=False) as client:
+        async with httpx.AsyncClient(timeout=60) as client:
             async for ev in factory(client):
                 if ev.get("type") == "progress":
                     st["processed"] = ev.get("processed", st["processed"])

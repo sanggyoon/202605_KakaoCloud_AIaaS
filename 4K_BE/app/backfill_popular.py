@@ -103,7 +103,7 @@ async def main() -> None:
     load_dotenv(os.path.join(_base_dir, "DB_SCRIPTS", ".env"))
 
     max_new, max_pages, rate_delay = config_from_env()
-    async with httpx.AsyncClient(timeout=20, verify=False) as client:
+    async with httpx.AsyncClient(timeout=20) as client:
         result = await run_backfill(client, max_new, max_pages, rate_delay)
     print(f"[backfill] 신규 {result['added']}개, 마지막 page {result['last_page']}, "
           f"실패 {len(result['failed'])}개: {result['failed']}")

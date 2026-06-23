@@ -340,7 +340,7 @@ async def main() -> None:
     from dotenv import load_dotenv
     base = os.path.dirname(os.path.dirname(__file__))  # 4K_BE/
     load_dotenv(os.path.join(base, ".env"))
-    async with httpx.AsyncClient(timeout=60, verify=False) as client:
+    async with httpx.AsyncClient(timeout=60) as client:
         await run(client)
 
 
