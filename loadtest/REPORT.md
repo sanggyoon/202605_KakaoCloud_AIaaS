@@ -35,6 +35,9 @@
 > 3차(캐시 개선 후) 2000 VU 완주·vm4 ~20%·p95 0.66s — DB 천장 제거 /
 > **4차(FE max16, 고VU) ~3600 VU 붕괴 — 천장이 app 노드(vm2/vm3 CPU 100% + Pending 5)로 이동.**
 > 붕괴점 추이: ~700(DB) → ~3600(app 노드), 약 5배. 상세는 아래 각 섹션 참고.
+>
+> **외부 스코어 API 트랙:** 무캐시 ~750 → 데이터/인증 캐싱 + vm4 PostgREST 풀 40 →
+> **~3777 VU(약 7배)**, 인증(vm4)·데이터(vm5) 천장 제거, app 노드로 수렴. (아래 전용 섹션 참고)
 
 ## 전체 결과 (k6 집계)
 
@@ -184,6 +187,45 @@ DB 부하 감소 작업(라우트 캐싱 1h + 페이로드 축소, spec `2026-06
 - **FE max 추가 상향은 무의미**(16 원했으나 노드가 11개만 수용). 다음 capacity 확장은
   **app 워커 노드 증설(VM 추가/vCPU 상향)** 이 정답.
 - 붕괴점 추이: **~700(DB) → 2000 견딤 → ~3600(app 노드)**, 캐시 도입으로 약 5배 향상.
+
+## 외부 스코어 API (`/api/movies/{id}/scores`) — 인증/데이터 캐싱 + 풀 상향
+
+영화 목록과 별개 엔드포인트. 요청당 **vm4 인증(`validate_api_key`) + vm5 데이터(scene_scores)**
+를 모두 친다(원래 둘 다 `cache:'no-store'`). 스크립트는 `loadtest/peakly-stress-scores*.js`.
+
+### 여정
+| 단계 | 결과 | 천장/원인 |
+|---|---|---|
+| 무캐시 | ~750 VU 붕괴 | vm5 데이터 + vm4 인증 fan-out |
+| **데이터 캐싱**(scene_scores 1h) 후 | 389/503 VU에서 hang | **부하 VM**(ulimit 1024) — 서비스 아님 |
+| 진단 | 같은 부하 VM이 `/api/movies`는 3600 도달 | 차이=인증 → **vm4 PostgREST 풀(기본 ~10)이 천장** |
+| **A 인증캐싱(60s) + B 풀 40** + 부하VM(ulimit·sysctl) 후 | **~3777 VU 붕괴** | **app 노드(vm2/vm3)** — 인증 천장 제거 |
+
+### 최종 결과 (`peakly-stress-scores-max.js`, A+B+부하VM 튜닝)
+| 지표 | 개선 전 | 최종 |
+|---|---|---|
+| 붕괴 VU | ~500 | **~3777** |
+| 처리량 | 96 req/s | **1071 req/s** |
+| 에러율 | hang(사실상 측정불가) | 0.01% |
+| p95 | (hang) | 3.09s(임계 도달) |
+| **vm4(인증, 10.1.5)** | 풀 대기로 천장 | **~20% 평탄** |
+| vm5(데이터, 10.1.7) | — | ~0%(캐시) |
+| FE 레플리카 | — | 2→10(max), Pending 0 |
+| 새 천장 | vm4 인증 | **app 노드 vm2/vm3 ~100%** |
+
+### 적용한 개선
+- **데이터 캐싱**: `getSceneTimelineCached`(unstable_cache, tmdb_id 키, 1h, 'ok'만). vm5 부하 제거.
+- **A 인증 캐싱**: `isValidApiKey` 결과를 sha256 해시 기준 60초 캐시(true/false, RPC 에러는 미캐시).
+  키 폐기는 ≤60초 지연. 키 재사용 트래픽에서 vm4 호출 급감.
+- **B PostgREST 풀**: `values-data.yaml` `environment.rest.PGRST_DB_POOL: '40'`(기본 ~10→40).
+  helm 수동 배포(`helm upgrade supabase-data ... -f values-data.yaml`, revision 4) — vm4 supabase는
+  ArgoCD 미관리라 GitOps 자동 배포 경로 없음(후속: argocd app 등록 또는 수동 유지).
+
+### 결론
+- 스코어 API 천장 **~500 → ~3777 VU(약 7배)**. **인증(vm4)·데이터(vm5) 둘 다 천장에서 제거**,
+  천장이 영화 목록과 동일한 **app 노드**로 수렴.
+- 측정 교훈: ① 부하 도구가 캐시를 우회하면 효과가 안 보임(반드시 실제 경로 측정). ② 부하 VM의
+  ulimit/conntrack 한계를 서비스 천장으로 오인 금지("서버 유휴인데 hang"이면 생성기 의심).
 
 ## 다음 개선 (범위 밖 / 후속 과제)
 
