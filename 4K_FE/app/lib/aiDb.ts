@@ -2,6 +2,8 @@
 // FE의 SUPABASE_URL(vm4, data.peakly.art)와 별개. ML 파이프라인 db.py의
 // _ai_headers(apikey + Bearer) 패턴 재사용. NEXT_PUBLIC_ 없음 → 브라우저 비노출.
 
+import { unstable_cache } from 'next/cache';
+
 const AI_DATABASE_URL = process.env.AI_DATABASE_URL || 'https://ai.peakly.art';
 const AI_DATABASE_KEY = process.env.AI_DATABASE_KEY || '';
 
@@ -125,6 +127,35 @@ export async function fetchSceneTimeline(tmdbId: number): Promise<TimelineResult
       },
     };
   } catch {
+    return { kind: 'upstream_error' };
+  }
+}
+
+// 'ok'가 아니면 throw → unstable_cache가 캐시하지 않음(매 요청 재조회).
+class TimelineMiss extends Error {
+  constructor(public kind: 'not_found' | 'upstream_error') {
+    super(kind);
+  }
+}
+
+// scene timeline을 tmdb_id 단위로 1시간 캐시(전 고객 공유). 'ok'만 캐시.
+const cachedOkTimeline = unstable_cache(
+  async (tmdbId: number): Promise<ScoresResponse> => {
+    const r = await fetchSceneTimeline(tmdbId);
+    if (r.kind === 'ok') return r.data;
+    throw new TimelineMiss(r.kind);
+  },
+  ['scene-timeline'], // keyParts; 실제 캐시 키엔 인자(tmdbId)가 자동 포함됨
+  { revalidate: 3600 },
+);
+
+export async function getSceneTimelineCached(
+  tmdbId: number,
+): Promise<TimelineResult> {
+  try {
+    return { kind: 'ok', data: await cachedOkTimeline(tmdbId) };
+  } catch (e) {
+    if (e instanceof TimelineMiss) return { kind: e.kind };
     return { kind: 'upstream_error' };
   }
 }
