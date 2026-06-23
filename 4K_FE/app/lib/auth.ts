@@ -24,10 +24,20 @@ if (MISCONFIGURED) {
   );
 }
 
+// 길이 차이를 흘리지 않도록 sha256 해시 후 상수시간 비교
+function constantTimeEqual(a: string, b: string): boolean {
+  const ha = crypto.createHash('sha256').update(a).digest();
+  const hb = crypto.createHash('sha256').update(b).digest();
+  return crypto.timingSafeEqual(ha, hb);
+}
+
 // 입력한 ID/비밀번호가 env 값과 일치하는지 검증. 설정 오류 시 항상 거부.
 export function verifyCredentials(id: string, password: string): boolean {
   if (MISCONFIGURED) return false;
-  return id === MANAGER_ID && password === MANAGER_PASSWORD;
+  // 단락(&&)으로 인한 타이밍 누출 방지 위해 둘 다 계산 후 AND
+  const idOk = constantTimeEqual(id, MANAGER_ID);
+  const pwOk = constantTimeEqual(password, MANAGER_PASSWORD);
+  return idOk && pwOk;
 }
 
 // payload를 HMAC 서명 (base64url)
