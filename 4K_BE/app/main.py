@@ -28,6 +28,17 @@ load_dotenv(os.path.join(_BASE_DIR, ".env"))
 TMDB_KEY  = os.getenv("TMDB_API_KEY", "")
 DATA_URL  = os.getenv("DATA_SUPABASE_URL", "https://data.peakly.art")
 TMDB_BASE = "https://api.themoviedb.org/3"
+# 단일 Supabase에서 ai를 별도 스키마로 둘 때만 profile 지정(미설정=기본 스키마, 하위호환).
+AI_SCHEMA = os.getenv("AI_SCHEMA", "")
+
+
+def ai_headers(write: bool = False) -> dict:
+    """ai PostgREST 헤더. AI_SCHEMA 설정 시 profile(읽기 Accept-Profile / 쓰기 Content-Profile)."""
+    key = os.getenv("AI_DATABASE_KEY", "")
+    h = ai_headers()
+    if AI_SCHEMA:
+        h["Content-Profile" if write else "Accept-Profile"] = AI_SCHEMA
+    return h
 
 app = FastAPI(title="4K Cinema Manager API")
 
@@ -244,7 +255,7 @@ async def reprocess_movie(tmdb_id: int):
 async def _active_base(client: httpx.AsyncClient) -> str:
     url = os.getenv("AI_DATABASE_URL", "")
     key = os.getenv("AI_DATABASE_KEY", "")
-    h = {"apikey": key, "Authorization": f"Bearer {key}"}
+    h = ai_headers()
     bu = os.getenv("AI_BASIC_USER")
     auth = (bu, os.getenv("AI_BASIC_PASS", "")) if bu else None
     r = await client.get(f"{url}/rest/v1/model_versions",
@@ -264,7 +275,7 @@ async def _movie_processing(client: httpx.AsyncClient, tmdb_id: int) -> dict:
     key = os.getenv("AI_DATABASE_KEY", "")
     if not url or not key:
         return {}
-    h = {"apikey": key, "Authorization": f"Bearer {key}"}
+    h = ai_headers()
     bu = os.getenv("AI_BASIC_USER")
     auth = (bu, os.getenv("AI_BASIC_PASS", "")) if bu else None
 
@@ -388,7 +399,7 @@ async def _reset_processing(client: httpx.AsyncClient, tmdb_id: int) -> None:
     key = os.getenv("AI_DATABASE_KEY", "")
     if not url or not key:
         return
-    h = {"apikey": key, "Authorization": f"Bearer {key}",
+    h = {**ai_headers(write=True),
          "Content-Type": "application/json",
          "Prefer": "resolution=merge-duplicates,return=minimal"}
     bu = os.getenv("AI_BASIC_USER")
@@ -476,7 +487,7 @@ async def active_model():
     url = os.getenv("AI_DATABASE_URL", "")
     key = os.getenv("AI_DATABASE_KEY", "")
     if url and key:
-        headers = {"apikey": key, "Authorization": f"Bearer {key}"}
+        headers = ai_headers()
         bu = os.getenv("AI_BASIC_USER")
         auth = (bu, os.getenv("AI_BASIC_PASS", "")) if bu else None
         async with httpx.AsyncClient(timeout=15) as client:
@@ -502,7 +513,7 @@ async def _processing_counts(client: httpx.AsyncClient) -> dict:
     key = os.getenv("AI_DATABASE_KEY", "")
     if not url or not key:
         return {}
-    headers = {"apikey": key, "Authorization": f"Bearer {key}"}
+    headers = ai_headers()
     bu = os.getenv("AI_BASIC_USER")
     auth = (bu, os.getenv("AI_BASIC_PASS", "")) if bu else None
     result: dict = {s: {} for s in PROC_STATES}

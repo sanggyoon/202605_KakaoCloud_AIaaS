@@ -6,9 +6,16 @@ import { unstable_cache } from 'next/cache';
 
 const AI_DATABASE_URL = process.env.AI_DATABASE_URL || 'https://ai.peakly.art';
 const AI_DATABASE_KEY = process.env.AI_DATABASE_KEY || '';
+// 단일 Supabase에서 ai를 별도 스키마로 둘 때만 profile 지정(미설정=기본 스키마, 하위호환).
+const AI_SCHEMA = process.env.AI_SCHEMA || '';
 
 function aiHeaders(): Record<string, string> {
-  return { apikey: AI_DATABASE_KEY, Authorization: `Bearer ${AI_DATABASE_KEY}` };
+  const h: Record<string, string> = {
+    apikey: AI_DATABASE_KEY,
+    Authorization: `Bearer ${AI_DATABASE_KEY}`,
+  };
+  if (AI_SCHEMA) h['Accept-Profile'] = AI_SCHEMA; // aiGet은 읽기 전용
+  return h;
 }
 
 // vm5 PostgREST GET — 실패(비 2xx/네트워크) 시 throw.
