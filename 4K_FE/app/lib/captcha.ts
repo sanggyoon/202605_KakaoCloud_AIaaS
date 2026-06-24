@@ -9,16 +9,17 @@ export async function verifyCaptcha(token: string): Promise<boolean> {
   if (!AGAMI_SECRET) return true; // dev: 검증 스킵
   if (!token) return false;
   try {
+    // agami siteverify 는 form-urlencoded(secret, token)를 받는다.
     const res = await fetch(SITEVERIFY_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ secret: AGAMI_SECRET, token }),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ secret: AGAMI_SECRET, token }).toString(),
       cache: 'no-store',
     });
     if (!res.ok) return false;
-    const data = (await res.json()) as { error?: unknown; success?: boolean };
-    if (data.error) return false; // {"error":{...}} → 실패
-    return data.success !== false; // 성공류 응답(방어적)
+    // 성공 응답: {"success":true,"verdict":"human",...}
+    const data = (await res.json()) as { success?: boolean };
+    return data.success === true;
   } catch {
     return false; // 네트워크/파싱 오류 → 실패(비차단, 알림만)
   }
