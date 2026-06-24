@@ -46,7 +46,8 @@ export default function LoginPage() {
         setError(data.detail ?? '로그인에 실패했습니다.');
         return;
       }
-      // 캡챠는 비차단(테스트) — 실패해도 진입하되 알림.
+      // SECURITY(의도됨): 캡챠 실패 시에도 차단하지 않고 **무조건 매니저로 진입**한다.
+      // 테스트 도입 단계라 alert로 알리기만 함(접근 게이트는 ID/비밀번호). 취약점 아님 — 설계상 비차단.
       if (data.captcha === 'failed') {
         alert('캡챠 인증에 실패했습니다. (테스트)');
       }
