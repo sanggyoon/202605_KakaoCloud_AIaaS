@@ -1,5 +1,7 @@
 # 단일 루트 .env (시크릿) — 커밋 금지
 .env
+# 단, 템플릿은 추적 (상위 .gitignore의 .env* 규칙 무력화)
+!.env.example
 # 공식 Supabase self-host 디렉토리(런북에서 clone) — 커밋 금지
 supabase/
 # 마이그레이션 덤프 산출물
