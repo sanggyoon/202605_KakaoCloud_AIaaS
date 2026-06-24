@@ -3,7 +3,8 @@
 #   docker compose --env-file .env -f supabase/docker-compose.yml -f docker-compose.yml up -d
 # nginx-proxy는 VIRTUAL_HOST/LETSENCRYPT_HOST 라벨로 자동 라우팅·인증서 발급(네트워크 'proxy').
 # 내부 통신(backend↔kong↔db↔rest)은 프로젝트 default 네트워크.
-name: peakly
+# ⚠️ supabase compose와 같은 프로젝트로 실행(name 미지정 → supabase/ 디렉토리명 'supabase').
+# 이미지는 사전 빌드(README 참고): peakly-frontend/backend/understand:latest
 
 networks:
   default:
@@ -26,8 +27,7 @@ services:
       LETSENCRYPT_HOST: "${DATA_DOMAIN}"
 
   backend:
-    build:
-      context: ../../4K_BE
+    image: peakly-backend:latest
     container_name: peakly-backend
     restart: unless-stopped
     environment:
@@ -50,11 +50,7 @@ services:
       start_period: 20s
 
   frontend:
-    build:
-      context: ../../4K_FE
-      args:
-        NEXT_PUBLIC_SUPABASE_URL: "${NEXT_PUBLIC_SUPABASE_URL}"
-        NEXT_PUBLIC_SUPABASE_ANON_KEY: "${NEXT_PUBLIC_SUPABASE_ANON_KEY}"
+    image: peakly-frontend:latest
     container_name: peakly-frontend
     restart: unless-stopped
     networks: [default, proxy]
@@ -73,8 +69,7 @@ services:
       - backend
 
   understand:
-    build:
-      context: ../../understand-dashboard
+    image: peakly-understand:latest
     container_name: peakly-understand
     restart: unless-stopped
     networks: [default, proxy]
