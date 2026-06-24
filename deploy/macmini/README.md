@@ -80,4 +80,4 @@ curl -s -H "apikey:$ANON" "$B/rest/v1/api_keys?select=*&limit=1"   # RLS → [] 
 - 단일 .env 하나로 supabase compose(--env-file) + 앱 compose(env_file/치환) 공유.
 - main 병합 금지. 원격 보관은 `git push -u origin backup/macmini-migration` 만.
 - 정기 백업: 맥미니 Postgres `pg_dump` 크론(선택).
-- studio가 필요하면 supabase studio + Caddy basic_auth 뒤로.
+- studio가 필요하면 supabase studio에 VIRTUAL_HOST 부여 + nginx-proxy basic auth(htpasswd) 뒤로.
