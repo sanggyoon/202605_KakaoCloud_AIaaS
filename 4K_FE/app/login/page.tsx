@@ -1,8 +1,18 @@
 'use client';
 
-// 매니저 페이지 로그인 — env로 관리되는 ID/비밀번호로 인증 후 세션 쿠키 발급.
-import { useState } from 'react';
+// 매니저 페이지 로그인 — env 기반 ID/비밀번호 인증 + agami 캡챠(테스트·비차단).
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Script from 'next/script';
+
+const AGAMI_SITEKEY = process.env.NEXT_PUBLIC_AGAMI_SITEKEY || '';
+
+declare global {
+  interface Window {
+    onCaptchaToken?: (token: string) => void;
+    onCaptchaError?: (info: unknown) => void;
+  }
+}
 
 export default function LoginPage() {
   const router = useRouter();
@@ -10,6 +20,16 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState('');
+
+  useEffect(() => {
+    window.onCaptchaToken = (token: string) => setCaptchaToken(token);
+    window.onCaptchaError = () => setCaptchaToken('');
+    return () => {
+      window.onCaptchaToken = undefined;
+      window.onCaptchaError = undefined;
+    };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,12 +39,17 @@ export default function LoginPage() {
       const res = await fetch('/api/manager/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id, password }),
+        body: JSON.stringify({ id, password, captchaToken }),
       });
       const data = await res.json();
       if (!res.ok) {
         setError(data.detail ?? '로그인에 실패했습니다.');
         return;
+      }
+      // SECURITY(의도됨): 캡챠 실패 시에도 차단하지 않고 **무조건 매니저로 진입**한다.
+      // 테스트 도입 단계라 alert로 알리기만 함(접근 게이트는 ID/비밀번호). 취약점 아님 — 설계상 비차단.
+      if (data.captcha === 'failed') {
+        alert('캡챠 인증에 실패했습니다. (테스트)');
       }
       // 원래 가려던 목적지(next)로 복귀, 없으면 매니저 페이지로
       const next = new URLSearchParams(window.location.search).get('next');
@@ -44,6 +69,9 @@ export default function LoginPage() {
       fontFamily: 'var(--font-sans), "Inter Tight", sans-serif',
       padding: 20,
     }}>
+      {AGAMI_SITEKEY && (
+        <Script src="https://agami-captcha.cloud/widget/loader.js" strategy="afterInteractive" />
+      )}
       <form
         onSubmit={handleSubmit}
         style={{
@@ -83,6 +111,16 @@ export default function LoginPage() {
             style={inputStyle}
           />
         </label>
+
+        {AGAMI_SITEKEY && (
+          <div
+            className="agami-captcha"
+            data-sitekey={AGAMI_SITEKEY}
+            data-kind="flashlight"
+            data-callback="onCaptchaToken"
+            data-error-callback="onCaptchaError"
+          />
+        )}
 
         {error && (
           <div style={{ fontSize: 12, color: 'rgb(248,113,113)' }}>{error}</div>
