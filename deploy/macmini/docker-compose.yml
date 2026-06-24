@@ -1,7 +1,15 @@
-# 맥미니 앱 오버레이 — 공식 Supabase compose와 같은 프로젝트로 병합 실행:
+# 맥미니 앱 오버레이 — 기존 nginx-proxy + acme-companion(자동 TLS)을 그대로 사용.
+# 공식 Supabase compose와 같은 프로젝트로 병합 실행:
 #   docker compose --env-file .env -f supabase/docker-compose.yml -f docker-compose.yml up -d
-# 같은 프로젝트라 backend/frontend가 supabase의 kong/rest/db 를 서비스명으로 호출.
+# nginx-proxy는 VIRTUAL_HOST/LETSENCRYPT_HOST 라벨로 자동 라우팅·인증서 발급(네트워크 'proxy').
+# 내부 통신(backend↔kong↔db↔rest)은 프로젝트 default 네트워크.
 name: peakly
+
+networks:
+  default:
+  proxy:
+    external: true
+    name: proxy
 
 services:
   # Supabase PostgREST에 svc/ai 스키마 노출(공식 rest 서비스 env 오버라이드)
@@ -9,15 +17,20 @@ services:
     environment:
       PGRST_DB_SCHEMAS: "svc, ai"
 
+  # Supabase 게이트웨이를 nginx-proxy로 공개(브라우저 → peakly-data.sanggyoon.com)
+  kong:
+    networks: [default, proxy]
+    environment:
+      VIRTUAL_HOST: "${DATA_DOMAIN}"
+      VIRTUAL_PORT: "8000"
+      LETSENCRYPT_HOST: "${DATA_DOMAIN}"
+
   backend:
     build:
       context: ../../4K_BE
     container_name: peakly-backend
     restart: unless-stopped
-    expose:
-      - "8000"
     environment:
-      # 컴포즈 내부 Kong 게이트웨이로 svc/ai 둘 다 접근
       DATA_SUPABASE_URL: "http://kong:8000"
       AI_DATABASE_URL: "http://kong:8000"
       DATA_SUPABASE_KEY: "${SERVICE_ROLE_KEY}"
@@ -44,8 +57,7 @@ services:
         NEXT_PUBLIC_SUPABASE_ANON_KEY: "${NEXT_PUBLIC_SUPABASE_ANON_KEY}"
     container_name: peakly-frontend
     restart: unless-stopped
-    expose:
-      - "3000"
+    networks: [default, proxy]
     environment:
       BE_INTERNAL_URL: "http://backend:8000"
       AI_DATABASE_URL: "http://kong:8000"
@@ -54,6 +66,9 @@ services:
       MANAGER_ID: "${MANAGER_ID}"
       MANAGER_PASSWORD: "${MANAGER_PASSWORD}"
       MANAGER_SESSION_SECRET: "${MANAGER_SESSION_SECRET}"
+      VIRTUAL_HOST: "${FE_DOMAIN}"
+      VIRTUAL_PORT: "3000"
+      LETSENCRYPT_HOST: "${FE_DOMAIN}"
     depends_on:
       - backend
 
@@ -62,29 +77,8 @@ services:
       context: ../../understand-dashboard
     container_name: peakly-understand
     restart: unless-stopped
-    expose:
-      - "80"
-
-  caddy:
-    image: caddy:2
-    container_name: peakly-caddy
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy_data:/data
-      - caddy_config:/config
+    networks: [default, proxy]
     environment:
-      FE_DOMAIN: "${FE_DOMAIN}"
-      DATA_DOMAIN: "${DATA_DOMAIN}"
-      UNDERSTAND_DOMAIN: "${UNDERSTAND_DOMAIN}"
-    depends_on:
-      - frontend
-      - kong
-      - understand
-
-volumes:
-  caddy_data:
-  caddy_config:
+      VIRTUAL_HOST: "${UNDERSTAND_DOMAIN}"
+      VIRTUAL_PORT: "80"
+      LETSENCRYPT_HOST: "${UNDERSTAND_DOMAIN}"
