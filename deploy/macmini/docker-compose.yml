@@ -12,10 +12,10 @@ networks:
     name: proxy
 
 services:
-  # Supabase PostgREST에 svc/ai 스키마 노출(공식 rest 서비스 env 오버라이드)
+  # Supabase PostgREST에 public/ai 스키마 노출(기본=public). data=public, ai=ai 스키마.
   rest:
     environment:
-      PGRST_DB_SCHEMAS: "svc, ai"
+      PGRST_DB_SCHEMAS: "public, ai"
 
   # Supabase 게이트웨이를 nginx-proxy로 공개(브라우저 → peakly-data.sanggyoon.com)
   kong:
