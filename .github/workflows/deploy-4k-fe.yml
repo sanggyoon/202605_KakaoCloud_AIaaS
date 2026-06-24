@@ -46,6 +46,9 @@ jobs:
           tags: |
             ${{ env.IMAGE }}:${{ steps.vars.outputs.sha }}
             ${{ env.IMAGE }}:latest
+          # NEXT_PUBLIC_* 는 빌드타임에 번들로 baked. agami 사이트키는 공개값이라 그대로 주입.
+          build-args: |
+            NEXT_PUBLIC_AGAMI_SITEKEY=agami_site_f2b79bd56427599514155ea5c018c175
           cache-from: type=gha
           cache-to: type=gha,mode=max
 

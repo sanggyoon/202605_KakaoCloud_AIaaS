@@ -53,6 +53,15 @@ spec:
                 secretKeyRef:
                   name: frontend-secrets
                   key: ai-database-key
+            # agami CAPTCHA 서버 검증 secret(테스트·비차단). 미설정 시 검증 스킵.
+            # 1회 설정: kubectl -n fe create secret generic frontend-secrets \
+            #   --from-literal=agami-secret='agami_secret_...' (위 명령에 키 추가)
+            - name: AGAMI_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secrets
+                  key: agami-secret
+                  optional: true
           ports:
             - containerPort: 3000
           readinessProbe:
