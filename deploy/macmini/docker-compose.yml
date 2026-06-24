@@ -1,0 +1,90 @@
+# 맥미니 앱 오버레이 — 공식 Supabase compose와 같은 프로젝트로 병합 실행:
+#   docker compose --env-file .env -f supabase/docker-compose.yml -f docker-compose.yml up -d
+# 같은 프로젝트라 backend/frontend가 supabase의 kong/rest/db 를 서비스명으로 호출.
+name: peakly
+
+services:
+  # Supabase PostgREST에 svc/ai 스키마 노출(공식 rest 서비스 env 오버라이드)
+  rest:
+    environment:
+      PGRST_DB_SCHEMAS: "svc, ai"
+
+  backend:
+    build:
+      context: ../../4K_BE
+    container_name: peakly-backend
+    restart: unless-stopped
+    expose:
+      - "8000"
+    environment:
+      # 컴포즈 내부 Kong 게이트웨이로 svc/ai 둘 다 접근
+      DATA_SUPABASE_URL: "http://kong:8000"
+      AI_DATABASE_URL: "http://kong:8000"
+      DATA_SUPABASE_KEY: "${SERVICE_ROLE_KEY}"
+      AI_DATABASE_KEY: "${SERVICE_ROLE_KEY}"
+      AI_SCHEMA: "${AI_SCHEMA}"
+      TMDB_API_KEY: "${TMDB_API_KEY}"
+      MANAGER_ID: "${MANAGER_ID}"
+      MANAGER_PASSWORD: "${MANAGER_PASSWORD}"
+      MANAGER_SESSION_SECRET: "${MANAGER_SESSION_SECRET}"
+    depends_on:
+      - kong
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')\" || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  frontend:
+    build:
+      context: ../../4K_FE
+      args:
+        NEXT_PUBLIC_SUPABASE_URL: "${NEXT_PUBLIC_SUPABASE_URL}"
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: "${NEXT_PUBLIC_SUPABASE_ANON_KEY}"
+    container_name: peakly-frontend
+    restart: unless-stopped
+    expose:
+      - "3000"
+    environment:
+      BE_INTERNAL_URL: "http://backend:8000"
+      AI_DATABASE_URL: "http://kong:8000"
+      AI_DATABASE_KEY: "${SERVICE_ROLE_KEY}"
+      AI_SCHEMA: "${AI_SCHEMA}"
+      MANAGER_ID: "${MANAGER_ID}"
+      MANAGER_PASSWORD: "${MANAGER_PASSWORD}"
+      MANAGER_SESSION_SECRET: "${MANAGER_SESSION_SECRET}"
+    depends_on:
+      - backend
+
+  understand:
+    build:
+      context: ../../understand-dashboard
+    container_name: peakly-understand
+    restart: unless-stopped
+    expose:
+      - "80"
+
+  caddy:
+    image: caddy:2
+    container_name: peakly-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    environment:
+      FE_DOMAIN: "${FE_DOMAIN}"
+      DATA_DOMAIN: "${DATA_DOMAIN}"
+      UNDERSTAND_DOMAIN: "${UNDERSTAND_DOMAIN}"
+    depends_on:
+      - frontend
+      - kong
+      - understand
+
+volumes:
+  caddy_data:
+  caddy_config:
