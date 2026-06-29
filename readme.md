@@ -34,15 +34,15 @@ GitOps(ArgoCD)로 운영하며, 자막 수집 → 감정 라벨링 → 벡터화
 
 ```
             ┌────────────────────────── 브라우저 ──────────────────────────┐
-            │                                                              │
-   (A) anon 직접 읽기            (B) Next 서버 경유            (C) 매니저/쓰기
-   /rest/v1 (RLS)                /api/movies (캐시)           /api/manager/*
-            │                          │                          │
-            ▼                          ▼                          ▼
-   Supabase data            Next.js route handler        Next route → FastAPI(BE)
-   (PostgREST, anon)        (unstable_cache) → data       → data/ai DB
-                                                          │
-   (D) 서버 전용: aiDb.ts (service key) ─────────────────→ Supabase ai (점수)
+            │                                                            │
+   (A) anon 직접 읽기            (B) Next 서버 경유                    (C) 매니저/쓰기
+   /rest/v1 (RLS)                /api/movies (캐시)                 /api/manager/*
+            │                          │                                 │
+            ▼                          ▼                                 ▼
+   Supabase data            Next.js route handler             Next route → FastAPI(BE)
+   (PostgREST, anon)        (unstable_cache) → data                      → data/ai DB
+                                                                         │
+            (D) 서버 전용: aiDb.ts (service key) ─────────────────→ Supabase ai (점수)
 ```
 
 - **(A) 브라우저 → Supabase 직접**: 일부 공개 읽기(영화 상세, 누락분 보강)는 빌드타임에 baked된 anon 키로
@@ -97,11 +97,10 @@ KakaoCloud_Project/
 ├── Ansible/                     # 인프라 (IaC)
 │   └── playbooks/  manifests/(ArgoCD 관리 K8s)  values/  helm-values/
 ├── understand-dashboard/        # 코드베이스 지식그래프 정적 대시보드(nginx)
-├── loadtest/                    # k6 부하테스트 스크립트 + REPORT.md
+├── loadtest/                    # k6 부하테스트 스크립트
 ├── aws/                         # AWS DR 청사진(terraform + docker-compose, 참고용)
 └── docs/
     ├── db_script/               # schema.sql, rls_policies.sql, api_keys.sql, RPC 등
-    ├── roberta-va-v2-rollout.md
     └── superpowers/             # specs/ · plans/ (설계·구현 계획 문서)
 ```
 
@@ -224,11 +223,15 @@ k6 run loadtest/peakly-rampup.js
 
 ## 문서
 
-| 문서                                 | 내용                                         |
-| ------------------------------------ | -------------------------------------------- |
-| `docs/db_script/`                    | 스키마·RLS 정책·API 키·RPC SQL               |
-| `docs/roberta-va-v2-rollout.md`      | 감정 모델 v2 롤아웃                          |
-| `docs/superpowers/specs/` · `plans/` | 기능 설계 spec·구현 계획(캡챠, 백업 이전 등) |
-| `Ansible/README.md`                  | 쿠버네티스 구조, 서비스 정리                 |
-| `loadtest/REPORT.md`                 | 1~5차 부하테스트 결과 정리                   |
-| `aws/DR-DB-RUNBOOK.md`               | DB DR 절차                                   |
+| 문서                                 | 내용                                         | URL |
+| ------------------------------------ | -------------------------------------------- | ------------------------------------------- |
+| `docs/db_script/`                    | 스키마·RLS 정책·API 키·RPC SQL               |  |
+| `docs/superpowers/specs/` · `plans/` | 기능 설계 spec·구현 계획(캡챠, 백업 이전 등) |  |
+| `docs/api.md`                        | api 3종 문서 | https://github.com/sanggyoon/202605_KakaoCloud_AIaaS/blob/main/docs/api.md |
+| `docs/architecture.md`               | 시스템 아키텍처 (클라이언트~인프라)             | https://github.com/sanggyoon/202605_KakaoCloud_AIaaS/blob/main/docs/architecture.md | 
+| `docs/devops.md`                     | DevOps 문서                         | https://github.com/sanggyoon/202605_KakaoCloud_AIaaS/blob/main/docs/devops.md |
+| `docs/ml-pipeline.md`                | ML Pipeline 문서                         | https://github.com/sanggyoon/202605_KakaoCloud_AIaaS/blob/main/docs/ml-pipeline.md |
+| `docs/mlops.md`                      | MLOps 문서                                | https://github.com/sanggyoon/202605_KakaoCloud_AIaaS/blob/main/docs/mlops.md |
+| `Ansible/README.md`                  | 쿠버네티스 구조, 서비스 정리                 | https://github.com/sanggyoon/202605_KakaoCloud_AIaaS/blob/main/Ansible/README.md |
+| `loadtest/README.md`                 | 1~5차 부하테스트 결과 정리                   | https://github.com/sanggyoon/202605_KakaoCloud_AIaaS/blob/main/loadtest/README.md |
+| `aws/DR-DB-RUNBOOK.md`               | DB DR 절차                                 | https://github.com/sanggyoon/202605_KakaoCloud_AIaaS/blob/main/aws/README.md |
