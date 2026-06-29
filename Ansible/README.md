@@ -213,7 +213,34 @@ flowchart LR
 
 ---
 
-## 8. Ansible 파일 구성
+## 8. GPU 스택 (vm5) — 수동 설치(GitOps 미관리)
+
+vm5(Tesla T4)에서 ML 워크로드가 GPU를 쓰려면 아래 스택이 필요하며, **이 레포의 ArgoCD 매니페스트가
+아니라 노드 레벨에서 수동 설치**되어 있다(그래서 `manifests/`에는 없음).
+
+| 요소 | 역할 |
+|---|---|
+| NVIDIA 드라이버 + `nvidia-container-toolkit` | vm5에서 컨테이너가 GPU 접근 |
+| `nvidia` **RuntimeClass** | 워크로드의 `runtimeClassName: nvidia`가 참조 |
+| NVIDIA **device plugin** (수동, GPU Operator 아님) | `nvidia.com/gpu` 리소스를 스케줄러에 광고 |
+
+워크로드는 `runtimeClassName: nvidia` + `resources.limits.nvidia.com/gpu: 1`로 이를 소비한다.
+
+### GPU 사용 현황
+| 워크로드 | GPU |
+|---|---|
+| `workflowtemplate-train-roberta(-seq)` (학습) | ✅ `nvidia.com/gpu: 1` |
+| `workflowtemplate-score-scenes-gpu` (GPU 점수) | ✅ |
+| `workflowtemplate-subtitle-parse` (임베딩) | ✅ |
+| `workflowtemplate-score-scenes` (기본 점수) | ❌ CPU |
+| **KServe `roberta-va`** (서빙) | ❌ GPU 미요청 — **CPU 추론**(vm5 배치는 PVC 때문) |
+
+> 즉 **학습·임베딩·GPU 점수 산출은 GPU 사용**, **상시 서빙은 CPU**. GPU 스택은 GitOps 밖이라
+> 노드 재구축 시 수동 재설치 필요. 확인: `kubectl get runtimeclass` / `kubectl get nodes -o json | jq '.items[].status.allocatable' | grep nvidia`.
+
+---
+
+## 9. Ansible 파일 구성
 
 | 경로 | 역할 |
 |---|---|
