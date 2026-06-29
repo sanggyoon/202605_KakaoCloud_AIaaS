@@ -1,4 +1,3 @@
 # 실제 시크릿이 담긴 .env 는 추적 제외, 예시는 포함
 .env
 !.env.example
-README.md
