@@ -8,13 +8,13 @@ GitOps(ArgoCD)로 운영하며, 자막 수집 → 감정 라벨링 → 벡터화
 
 ## 라이브 서비스
 
-| 서비스 | URL | 인증 |
-|---|---|---|
-| Peakly (FE) | https://peakly.art | 공개 (매니저 페이지만 로그인) |
-| Supabase **data** Studio/API | https://data.peakly.art | Basic Auth / anon·service 키 |
-| Supabase **ai** API | https://ai.peakly.art | service 키(서버 전용) |
-| Grafana | https://grafana.peakly.art | Grafana 인증 |
-| ArgoCD | https://argocd.peakly.art | ArgoCD 인증 |
+| 서비스                       | URL                        | 인증                          |
+| ---------------------------- | -------------------------- | ----------------------------- |
+| Peakly (FE)                  | https://peakly.art         | 공개 (매니저 페이지만 로그인) |
+| Supabase **data** Studio/API | https://data.peakly.art    | Basic Auth / anon·service 키  |
+| Supabase **ai** API          | https://ai.peakly.art      | service 키(서버 전용)         |
+| Grafana                      | https://grafana.peakly.art | Grafana 인증                  |
+| ArgoCD                       | https://argocd.peakly.art  | ArgoCD 인증                   |
 
 > 백업 환경(맥미니 단독)은 별도 브랜치 `backup/macmini-migration` 참조 — `peakly.sanggyoon.com`.
 
@@ -59,18 +59,18 @@ GitOps(ArgoCD)로 운영하며, 자막 수집 → 감정 라벨링 → 벡터화
 
 ## 기술 스택
 
-| 계층 | 기술 |
-|---|---|
-| Frontend | Next.js 16 (App Router), TypeScript, `unstable_cache` |
-| Backend | FastAPI, Python 3.11, Uvicorn |
-| Database | Supabase 2종(PostgreSQL + pgvector + PostgREST + Kong), RLS |
-| ML | RoBERTa 기반 arousal/valence 회귀, pgvector 임베딩, KServe 서빙 |
-| Infra | KakaoCloud VM × 5, K3s v1.30, Ansible, Helm |
-| CI | GitHub Actions → GHCR (`ghcr.io/sanggyoon`) |
-| CD | ArgoCD (GitOps) + Kustomize |
-| Batch/Orchestration | Argo Workflows, CronJob (자막 수집·backfill) |
-| Monitoring | Prometheus, Grafana, Loki/Promtail |
-| TLS | cert-manager + Let's Encrypt |
+| 계층                | 기술                                                            |
+| ------------------- | --------------------------------------------------------------- |
+| Frontend            | Next.js 16 (App Router), TypeScript, `unstable_cache`           |
+| Backend             | FastAPI, Python 3.11, Uvicorn                                   |
+| Database            | Supabase 2종(PostgreSQL + pgvector + PostgREST + Kong), RLS     |
+| ML                  | RoBERTa 기반 arousal/valence 회귀, pgvector 임베딩, KServe 서빙 |
+| Infra               | KakaoCloud VM × 5, K3s v1.30, Ansible, Helm                     |
+| CI                  | GitHub Actions → GHCR (`ghcr.io/sanggyoon`)                     |
+| CD                  | ArgoCD (GitOps) + Kustomize                                     |
+| Batch/Orchestration | Argo Workflows, CronJob (자막 수집·backfill)                    |
+| Monitoring          | Prometheus, Grafana, Loki/Promtail                              |
+| TLS                 | cert-manager + Let's Encrypt                                    |
 
 ---
 
@@ -152,13 +152,13 @@ git push (main)
 
 ## 클러스터 구성
 
-| VM | 역할 | Private IP | Public IP |
-|---|---|---|---|
-| vm1 | Control Plane + Ingress + NAT | 10.1.1.10 | 210.109.83.10 |
-| vm2 | Worker (FE/BE) | 10.1.3.10 | - |
-| vm3 | Worker (FE/BE) | 10.1.4.10 | - |
-| vm4 | Worker (Data/DB) | 10.1.5.10 | - |
-| vm5 | Worker (GPU/AI) — Tesla T4 | 10.1.7.10 | - |
+| VM  | 역할                          | Private IP | Public IP     |
+| --- | ----------------------------- | ---------- | ------------- |
+| vm1 | Control Plane + Ingress + NAT | 10.1.1.10  | 210.109.83.10 |
+| vm2 | Worker (FE/BE)                | 10.1.3.10  | -             |
+| vm3 | Worker (FE/BE)                | 10.1.4.10  | -             |
+| vm4 | Worker (Data/DB)              | 10.1.5.10  | -             |
+| vm5 | Worker (GPU/AI) — Tesla T4    | 10.1.7.10  | -             |
 
 NetworkPolicy(k3s kube-router)로 네임스페이스 간 트래픽 통제, ingress-nginx rate limit 적용.
 
@@ -224,10 +224,11 @@ k6 run loadtest/peakly-rampup.js
 
 ## 문서
 
-| 문서 | 내용 |
-|---|---|
-| `docs/db_script/` | 스키마·RLS 정책·API 키·RPC SQL |
-| `docs/roberta-va-v2-rollout.md` | 감정 모델 v2 롤아웃 |
+| 문서                                 | 내용                                         |
+| ------------------------------------ | -------------------------------------------- |
+| `docs/db_script/`                    | 스키마·RLS 정책·API 키·RPC SQL               |
+| `docs/roberta-va-v2-rollout.md`      | 감정 모델 v2 롤아웃                          |
 | `docs/superpowers/specs/` · `plans/` | 기능 설계 spec·구현 계획(캡챠, 백업 이전 등) |
-| `loadtest/REPORT.md` | 1~5차 부하테스트 결과 정리 |
-| `aws/DR-DB-RUNBOOK.md` | DB DR 절차 |
+| `Ansible/README.md`                  | 쿠버네티스 구조, 서비스 정리                 |
+| `loadtest/REPORT.md`                 | 1~5차 부하테스트 결과 정리                   |
+| `aws/DR-DB-RUNBOOK.md`               | DB DR 절차                                   |
