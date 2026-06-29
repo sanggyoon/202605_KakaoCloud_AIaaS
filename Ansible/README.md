@@ -28,6 +28,31 @@ flowchart TB
 > 워크로드는 `nodeSelector`로 노드에 고정: **app**(FE/BE) → vm2/vm3, **data**(Supabase data) → vm4,
 > **gpu**(Supabase ai + ML/KServe) → vm5. (라벨 종류: app×5, data×7, gpu×14 사용처)
 
+### 배치 매트릭스 (앱/서비스 → NS → VM)
+
+| 앱/서비스 | NS | VM(배치) | 근거 |
+|---|---|---|---|
+| **frontend** (4k-fe) | `fe` | **vm2/vm3** | `nodeSelector workload=app` |
+| **backend** + 자막/backfill CronJob (4k-be) | `be` | **vm2/vm3** | `workload=app` |
+| **Supabase data** (Postgres+pgvector·PostgREST·Kong·Studio) | `data` | **vm4** | values `workload=data` |
+| **Supabase ai** (점수 DB) | `ai` | **vm5** | values `workload=gpu` |
+| **ML** — KServe `roberta-va` + Workflow/CronWorkflow (4k-ml) | `ai` | **vm5** | `workload=gpu` (ml-models PVC가 vm5 local-path) |
+| **understand-dashboard** | `understand` | 워커(핀 없음) | nodeSelector 없음 → 스케줄러 배치 |
+| **Argo Workflows** (controller/server) | `argo` | 핀 없음 | 플랫폼 |
+| **ArgoCD** | `argocd` | 핀 없음 | 플랫폼 |
+| **infra-manifests** (ClusterIssuer·ingress configs·RBAC) | `default` | (클러스터 리소스) | path `manifests/apps` |
+| **모니터링** (Prometheus·Grafana·Loki·Promtail) | `monitoring` | 핀 없음 | values |
+| ingress-nginx / cert-manager / Longhorn | (각 시스템 ns) | vm1 중심 / 전체 | 플랫폼 |
+
+**VM별 요약**
+- **vm1** — Control Plane, ingress-nginx(진입점), 플랫폼 파드
+- **vm2·vm3** — `fe`(frontend) · `be`(backend+CronJob) — HPA로 확장되는 앱 티어
+- **vm4** — `data`(Supabase 서비스 DB)
+- **vm5** — `ai`(Supabase ai DB **+** ML 워크플로/KServe) — GPU 노드라 ai 관련 전부 여기
+
+> 핀 고정: fe/be→vm2·3, data→vm4, ai/ml→vm5. nodeSelector 없는 것(argocd·argo·monitoring·understand)은
+> 스케줄러가 배치 → 실제 위치는 `kubectl get pods -A -o wide`로 확인.
+
 ---
 
 ## 2. ArgoCD 애플리케이션 (GitOps 단위)
