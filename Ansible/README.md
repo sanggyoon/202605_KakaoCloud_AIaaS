@@ -28,6 +28,48 @@ flowchart TB
 > 워크로드는 `nodeSelector`로 노드에 고정: **app**(FE/BE) → vm2/vm3, **data**(Supabase data) → vm4,
 > **gpu**(Supabase ai + ML/KServe) → vm5. (라벨 종류: app×5, data×7, gpu×14 사용처)
 
+```mermaid
+flowchart TB
+  Ingress["🌐 ingress-nginx (진입점)"] --> VM1
+
+  subgraph VM1["vm1 · 10.1.1.10 · Control Plane+Ingress (라벨 없음)"]
+    CP["k3s server / ingress-nginx"]
+    ARGOCD["ArgoCD (controller·server·repo·redis·appset)"]
+    MONC["모니터링 제어부<br/>Grafana·Prometheus·Alertmanager·operator·KSM"]
+  end
+
+  subgraph VM2["vm2 · 10.1.3.10 · workload=app"]
+    FE2["frontend (fe)"]
+    BE2["backend (be)"]
+    UND["understand"]
+  end
+
+  subgraph VM3["vm3 · 10.1.4.10 · workload=app"]
+    FE3["frontend (fe)"]
+    BE3["backend (be)"]
+  end
+
+  subgraph VM4["vm4 · 10.1.5.10 · workload=data"]
+    SBD["Supabase data<br/>(Postgres+pgvector·PostgREST·Kong)"]
+    LOKI["Loki"]
+  end
+
+  subgraph VM5["vm5 · 10.1.7.10 · workload=gpu · Tesla T4"]
+    SBA["Supabase ai (점수 DB)"]
+    ML["ML: KServe roberta-va<br/>Argo WorkflowTemplate/CronWorkflow"]
+    AWF["Argo Workflows (controller·server)"]
+  end
+
+  VM1 --> VM2 & VM3 & VM4 & VM5
+
+  DS["DaemonSet: node-exporter · promtail<br/>(모든 노드 vm1~vm5에 1개씩)"]
+  DS -.-> VM1 & VM2 & VM3 & VM4 & VM5
+```
+
+> 핀(nodeSelector): `app`→fe/be(vm2·3) · `data`→Supabase data(vm4) · `gpu`→Supabase ai·ML(vm5).
+> 핀 없음(실측 배치): ArgoCD·모니터링 제어부→vm1, Loki→vm4, Argo Workflows→vm5, understand→vm2.
+> DaemonSet(node-exporter·promtail)은 설계상 전 노드 1개씩.
+
 ### 배치 매트릭스 (앱/서비스 → NS → VM)
 
 | 앱/서비스 | NS | VM(배치) | 근거 |
