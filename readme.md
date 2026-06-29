@@ -15,8 +15,8 @@ GitOps(ArgoCD)로 운영하며, 자막 수집 → 감정 라벨링 → 벡터화
 | Supabase **ai** API          | https://ai.peakly.art      | service 키(서버 전용)         |
 | Grafana                      | https://grafana.peakly.art | Grafana 인증                  |
 | ArgoCD                       | https://argocd.peakly.art  | ArgoCD 인증                   |
-
-> 백업 환경(맥미니 단독)은 별도 브랜치 `backup/macmini-migration` 참조 — `peakly.sanggyoon.com`.
+| ArgoWorkflow                 | https://workflows.peakly.art | ArgoWorkflow 인증           |
+| 코드베이스 지식그래프 정적 대시보드   | https://understand.peakly.art | 공개                       |
 
 ---
 
